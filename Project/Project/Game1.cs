@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace Project
 {
@@ -10,6 +12,11 @@ namespace Project
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        private Texture2D sheep;
+        private Song music;
+        int restPoseX, restPoseY, curPoseY, curPoseX;
+        double curSpeed;
+        private VideoPlayer player;
 
         public Game1()
         {
@@ -26,7 +33,11 @@ namespace Project
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            restPoseY = 210;
+            restPoseX = 250;
+            curPoseY = restPoseY;
+            curPoseX = restPoseX;
+            curSpeed = 0.0;
             base.Initialize();
         }
 
@@ -40,6 +51,11 @@ namespace Project
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            sheep = Content.Load<Texture2D>("Miner");
+            music = Content.Load<Song>("caveMusic");
+
+            MediaPlayer.Play(music);
+            player = new VideoPlayer();
         }
 
         /// <summary>
@@ -59,7 +75,48 @@ namespace Project
         protected override void Update(GameTime gameTime)
         {
             // TODO: Add your update logic here
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
 
+            //Check for input on controller
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+            if (gamePadState.IsConnected)
+            {
+                if (gamePadState.Buttons.A == ButtonState.Pressed)
+                    curSpeed = -300.0;
+            }
+            // Keyboard input otherwise
+            else
+            {
+                KeyboardState state = Keyboard.GetState();
+                if (state.IsKeyDown(Keys.Space))
+                    curSpeed = -300.0;
+                if (state.IsKeyDown(Keys.Right))
+                {
+                    curSpeed = 5.0;
+                    curPoseX += (int)(curSpeed);
+                }
+                if (state.IsKeyDown(Keys.R))
+                {
+                    curPoseX = restPoseX;
+                    curPoseY = restPoseY;
+                }
+
+            }
+
+            if ((int)curPoseY < restPoseY || curSpeed != 0.0)
+            {
+                if (curSpeed > 0.0 && (int)curPoseY >= restPoseY)
+                    curSpeed = 0.0;
+                else
+                {
+                    double dt = 0.01;
+                    double g = 1000;
+                    curPoseY += (int)(curSpeed * dt);
+                    curSpeed += g * dt;
+                }
+            }
             base.Update(gameTime);
         }
 
@@ -71,7 +128,9 @@ namespace Project
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            spriteBatch.Draw(sheep, new Rectangle((int)curPoseX, (int)curPoseY, 490, 600), Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
