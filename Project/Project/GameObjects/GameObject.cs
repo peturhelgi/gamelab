@@ -6,34 +6,29 @@ namespace Project.GameObjects
 {
     interface IGameObject
     {
-        BoundingBox Box
-        {
+        BoundingBox Box {
             get;
             set;
         }
 
-        double Mass
-        {
+        double Mass {
             get;
             set;
         }
 
-        Vector2 Position
-        {
+        Vector2 Position {
             get;
             set;
         }
 
-        Vector2 Speed
-        {
+        Vector2 Speed {
             get;
             set;
         }
 
     }
 
-    class GameObject : IGameObject
-    {
+    class GameObject : IGameObject {
         
         public Vector2 Position { get; set; }
 

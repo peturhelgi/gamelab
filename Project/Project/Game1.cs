@@ -34,8 +34,7 @@ namespace Project
         protected override void Initialize()
         {
 
-           test = new Miner( new Vector2(210, 250), new Vector2(0.0f), 80.0, new BoundingBox()) ;
-
+            test = new Miner( new Vector2(210, 250), new Vector2(0.0f), 80.0, new BoundingBox()) ;
             base.Initialize();
         }
 
@@ -96,7 +95,6 @@ namespace Project
                 if (state.IsKeyDown(Keys.R))
                 {
                     test.Position = new Vector2(210,250);
-
                 }
 
             }
