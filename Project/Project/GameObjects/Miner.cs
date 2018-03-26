@@ -27,7 +27,7 @@ namespace Project.GameObjects.Miner
         /// Makes the miner jump if possible
         /// </summary>
         /// <returns>True if 1==1</returns>
-        protected bool Jump() {
+        public bool Jump() {
             this.Stance = Stance.jump;
             this.Gait = Gait.jump;
             // TODO: add jump logic
@@ -39,7 +39,7 @@ namespace Project.GameObjects.Miner
         /// Makes the miner crouch if possible
         /// </summary>
         /// <returns></returns>
-        protected bool Crouch() {
+        public bool Crouch() {
             this.Stance = Stance.crouch;
             this.Gait = Gait.crawl;
             // TODO: add crouch logic
@@ -52,7 +52,7 @@ namespace Project.GameObjects.Miner
         /// </summary>
         /// <param name="direction">Direction in which to move the miner</param>
         /// <returns>True iff 1==1</returns>
-        protected bool Move(Vector2 direction) {
+        public bool Move(Vector2 direction) {
             //TODO: add move logic, the one here is just an example
             switch (this.Gait) {
                 case Gait.crawl:
@@ -76,7 +76,8 @@ namespace Project.GameObjects.Miner
                     // Nothing happens yet
                     break;
             }
-            
+
+            this.Position += this.Speed;
             return true;
         }
 
@@ -84,7 +85,7 @@ namespace Project.GameObjects.Miner
         /// Uses the tool that the miner currenty has
         /// </summary>
         /// <returns>True iff 1==1</returns>
-        protected bool UseTool() {
+        public bool UseTool() {
             this.Stance = Stance.stand;
             // TODO: add some tool logic, using the tools interface
 

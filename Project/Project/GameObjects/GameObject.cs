@@ -40,6 +40,5 @@ namespace Project.GameObjects
 
         public Texture2D Texture { get; set; }
 
-
     }
 }

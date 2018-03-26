@@ -17,7 +17,7 @@ namespace Project
         private Song music;
         private VideoPlayer player;
 
-        Miner test;
+        Miner miner;
 
         public Game1()
         {
@@ -33,8 +33,7 @@ namespace Project
         /// </summary>
         protected override void Initialize()
         {
-
-            test = new Miner( new Vector2(210, 250), new Vector2(0.0f), 80.0, new BoundingBox()) ;
+            miner = new Miner( new Vector2(210, 250), new Vector2(0.0f), 80.0, new BoundingBox()) ;
             base.Initialize();
         }
 
@@ -49,7 +48,7 @@ namespace Project
 
             // TODO: use this.Content to load your game content here
             music = Content.Load<Song>("caveMusic");
-            test.Texture = Content.Load<Texture2D>("Miner");
+            miner.Texture = Content.Load<Texture2D>("Miner");
 
             MediaPlayer.Play(music);
             player = new VideoPlayer();
@@ -80,23 +79,33 @@ namespace Project
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
             if (gamePadState.IsConnected)
             {
-                
+
             }
             // Keyboard input otherwise
             else
             {
                 KeyboardState state = Keyboard.GetState();
+
                 if (state.IsKeyDown(Keys.Space))
-                    test.Speed = new Vector2(0, -300);
+                {
+                    miner.Jump();
+                    miner.Speed = new Vector2(0, -300);
+                }
                 if (state.IsKeyDown(Keys.Right))
                 {
-                    test.Position += new Vector2(5, 0);
+                    miner.Move(new Vector2(5, 0));
+                    //miner.Position += new Vector2(5, 0);
+                }
+                if (state.IsKeyDown(Keys.Left))
+                {
+                    miner.Move(new Vector2(-5, 0));
+                    //miner.Position += new Vector2(5, 0);
                 }
                 if (state.IsKeyDown(Keys.R))
                 {
-                    test.Position = new Vector2(210,250);
+                    miner.Position = new Vector2(210, 250);
                 }
-
+            
             }
 
 
@@ -105,21 +114,21 @@ namespace Project
 
             // TODO make this with the physics engine and with bounding boxes!
             // if character is jumping
-            if (test.Speed.Y > 0.0) {
+            if (miner.Speed.Y > 0.0) {
 
                 // some hard coded bounding "box"
-                if (test.Position.Y > 240)
+                if (miner.Position.Y > 240)
                 {
-                    test.Speed = new Vector2(0, 0);
+                    miner.Speed = new Vector2(0, 0);
                 }
                 else {
-                    test.Speed += (float)gameTime.ElapsedGameTime.TotalSeconds * gravity;
+                    miner.Speed += (float)gameTime.ElapsedGameTime.TotalSeconds * gravity;
                 }
 
 
             }
 
-            test.Position += (float)gameTime.ElapsedGameTime.TotalSeconds * test.Speed;
+            miner.Position += (float)gameTime.ElapsedGameTime.TotalSeconds * miner.Speed;
 
             base.Update(gameTime);
         }
@@ -133,7 +142,7 @@ namespace Project
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(test.Texture, new Rectangle((int)test.Position.X, (int)test.Position.Y, 490, 600), Color.White);
+            spriteBatch.Draw(miner.Texture, new Rectangle((int)miner.Position.X, (int)miner.Position.Y, 490, 600), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
