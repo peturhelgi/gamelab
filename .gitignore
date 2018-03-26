@@ -288,3 +288,5 @@ __pycache__/
 
 
 .DS_Store
+Project/Project/project.json
+Project/Project/Project.csproj

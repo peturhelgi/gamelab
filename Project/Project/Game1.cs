@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Project.GameObjects.Miner;
+
 
 namespace Project
 {
@@ -12,11 +14,12 @@ namespace Project
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        private Texture2D sheep;
         private Song music;
         int restPoseX, restPoseY, curPoseY, curPoseX;
         double curSpeed;
         private VideoPlayer player;
+
+        Miner test;
 
         public Game1()
         {
@@ -32,12 +35,9 @@ namespace Project
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-            restPoseY = 210;
-            restPoseX = 250;
-            curPoseY = restPoseY;
-            curPoseX = restPoseX;
-            curSpeed = 0.0;
+
+           test = new Miner( new Vector2(210, 250), new Vector2(0.0f), 80.0, new BoundingBox()) ;
+
             base.Initialize();
         }
 
@@ -51,8 +51,8 @@ namespace Project
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            sheep = Content.Load<Texture2D>("Miner");
             music = Content.Load<Song>("caveMusic");
+            test.Texture = Content.Load<Texture2D>("Miner");
 
             MediaPlayer.Play(music);
             player = new VideoPlayer();
@@ -83,40 +83,48 @@ namespace Project
             GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
             if (gamePadState.IsConnected)
             {
-                if (gamePadState.Buttons.A == ButtonState.Pressed)
-                    curSpeed = -300.0;
+                
             }
             // Keyboard input otherwise
             else
             {
                 KeyboardState state = Keyboard.GetState();
                 if (state.IsKeyDown(Keys.Space))
-                    curSpeed = -300.0;
+                    test.Speed = new Vector2(0, -300);
                 if (state.IsKeyDown(Keys.Right))
                 {
-                    curSpeed = 5.0;
-                    curPoseX += (int)(curSpeed);
+                    test.Position += new Vector2(5, 0);
                 }
                 if (state.IsKeyDown(Keys.R))
                 {
-                    curPoseX = restPoseX;
-                    curPoseY = restPoseY;
+                    test.Position = new Vector2(210,250);
+
                 }
 
             }
 
-            if ((int)curPoseY < restPoseY || curSpeed != 0.0)
-            {
-                if (curSpeed > 0.0 && (int)curPoseY >= restPoseY)
-                    curSpeed = 0.0;
-                else
+
+            Vector2 gravity = new Vector2(0, -1000);
+
+
+            // TODO make this with the physics engine and with bounding boxes!
+            // if character is jumping
+            if (test.Speed.Y > 0.0) {
+
+                // some hard coded bounding "box"
+                if (test.Position.Y > 240)
                 {
-                    double dt = 0.01;
-                    double g = 1000;
-                    curPoseY += (int)(curSpeed * dt);
-                    curSpeed += g * dt;
+                    test.Speed = new Vector2(0, 0);
                 }
+                else {
+                    test.Speed += (float)gameTime.ElapsedGameTime.TotalSeconds * gravity;
+                }
+
+
             }
+
+            test.Position += (float)gameTime.ElapsedGameTime.TotalSeconds * test.Speed;
+
             base.Update(gameTime);
         }
 
@@ -129,7 +137,7 @@ namespace Project
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(sheep, new Rectangle((int)curPoseX, (int)curPoseY, 490, 600), Color.White);
+            spriteBatch.Draw(test.Texture, new Rectangle((int)test.Position.X, (int)test.Position.Y, 490, 600), Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);
