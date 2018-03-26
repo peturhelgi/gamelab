@@ -15,8 +15,6 @@ namespace Project
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Song music;
-        int restPoseX, restPoseY, curPoseY, curPoseX;
-        double curSpeed;
         private VideoPlayer player;
 
         Miner test;
