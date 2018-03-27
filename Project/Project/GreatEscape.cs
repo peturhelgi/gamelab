@@ -10,7 +10,7 @@ namespace Project
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public class GreatEscape : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -21,7 +21,7 @@ namespace Project
         Vector2 gravity = new Vector2(0, -1000);
         Vector2 direction, up, down, left, right;
 
-        public Game1()
+        public GreatEscape()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";

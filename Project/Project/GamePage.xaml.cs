@@ -22,7 +22,7 @@ namespace Project
     /// </summary>
     public sealed partial class GamePage : Page
     {
-		readonly Game1 _game;
+		readonly GreatEscape _game;
 
 		public GamePage()
         {
@@ -30,7 +30,7 @@ namespace Project
 
 			// Create the game.
 			var launchArguments = string.Empty;
-            _game = MonoGame.Framework.XamlGame<Game1>.Create(launchArguments, Window.Current.CoreWindow, swapChainPanel);
+            _game = MonoGame.Framework.XamlGame<GreatEscape>.Create(launchArguments, Window.Current.CoreWindow, swapChainPanel);
         }
     }
 }
