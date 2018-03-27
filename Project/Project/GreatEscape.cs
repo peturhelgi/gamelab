@@ -3,7 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Project.GameObjects.Miner;
-
+using Project.GameObjects;
+using System.Collections.Generic;
 
 namespace Project
 {
@@ -16,8 +17,11 @@ namespace Project
         SpriteBatch spriteBatch;
         private Song music;
         private VideoPlayer player;
+        private List<GameObject> gameObjects;
         private Vector2 startingPosition;
+        private Vector2 rockPosition;
         Miner miner;
+        Rock rock;
         Vector2 gravity = new Vector2(0, -1000);
         Vector2 direction, up, down, left, right;
 
@@ -25,7 +29,9 @@ namespace Project
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            gameObjects = new List<GameObject>();
             startingPosition = new Vector2(210, 250);
+            rockPosition = new Vector2(900, 600);
             up    = new Vector2( 0, -150);
             down  = new Vector2( 0,  150);
             left  = new Vector2(-150,  0);
@@ -41,6 +47,9 @@ namespace Project
         protected override void Initialize()
         {
             miner = new Miner( startingPosition, new Vector2(0.0f), 80.0, new BoundingBox()) ;
+            rock = new Rock(rockPosition, 300, 215);
+            gameObjects.Add(miner);
+            gameObjects.Add(rock);
             base.Initialize();
         }
 
@@ -56,6 +65,7 @@ namespace Project
             // TODO: use this.Content to load your game content here
             music = Content.Load<Song>("caveMusic");
             miner.Texture = Content.Load<Texture2D>("Miner");
+            rock.Texture = Content.Load<Texture2D>("Rock");
 
             MediaPlayer.Play(music);
             player = new VideoPlayer();
@@ -138,7 +148,10 @@ namespace Project
                     miner.Position = startingPosition;
                     miner.Halt();
                 }
-                
+                if (state.IsKeyDown(Keys.Q))
+                {
+                    miner.UseTool(this.gameObjects);
+                }
             }
 
             // TODO make this with the physics engine and with bounding boxes!
@@ -171,7 +184,9 @@ namespace Project
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            spriteBatch.Draw(miner.Texture, new Rectangle((int)miner.Position.X, (int)miner.Position.Y, 490, 600), Color.White);
+            foreach (GameObject obj in gameObjects) {
+                if (obj.visible) spriteBatch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, obj.Texture.Width, obj.Texture.Height), Color.White);
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);
