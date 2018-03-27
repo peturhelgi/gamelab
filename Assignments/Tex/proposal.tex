@@ -1,0 +1,121 @@
+\section{Game Description}
+
+\subsection{Overview}
+Our game is a 2D-multiplayer platformer, where the players are supposed to escape from a dark cave within the Gotthard massiv. On their way out, the players need to solve puzzles and can collect points. To solve the puzzles, the players must interact with different elements, like levers, buttons, boxes etc.
+
+There are more miners then players. The players can therefore switch between miners. Miners can die and when there aren't any miners left, the game is lost. The game is won, as soon as all players escape the cave.
+
+Another highlight of the game is the level editor, where new obstacles/tracks can be created. This will give freedom to the player to design new challenges that he can play out with his friends.
+
+
+\subsection{Background Story}
+
+The action takes place in 1878, during the excavation-works for the Gotthard tunnel. It turned out that the project was more complex than expected, and the allocated funds would not suffice for a successful completion. There were a lot of stakes involved in this ambitious project and unfortunately some unexpected complications have appeared. Morale was running low among the miners who stood to lose their jobs. Alfred Escher was battling on many fields, trying to keep this operation alive, but his proposals kept getting rejected. 
+
+One day, a group of miners made an astounding discovery. By mistakenly digging into an unplanned area of the tunnel, they came upon a natural cave flush with gold. This unexpected chance gave them the possibility to financially salvage the entire project; however, only hours after the incident, a nearby tunnel collapsed (possibly from the accidental discovery) and left them trapped inside the tunnels. 
+
+Their mission is now to get out of the tunnels and inform everybody else of the stroke of luck, but most importantly to save their lives. This very thing could greatly help Escher regain the favor of other parties and their support in seeing this project to the very end. Or will the miners be greedy and keep the gold?
+
+\subsection{Design Decisions}
+
+There are more miners than players in the cave. When the miners spawn, they get tools (e.g. pick-axes, hammers, buckets, shovels, …). The players can switch between miners with the click of a button. 
+Miners can be killed in different ways (e.g. drown, being hit by a stone, …). When killed, a miner drops his tool, which can be collected by the remaining miners. If a player doesn't swap out his tool for the one of the dead miner, he can always go back later and pick it up afterwards. The player whose miner has been killed can choose one of the remaining miners. When the last miner has been killed, the game is lost.
+
+\begin{figure}
+    \centering
+    %\includegraphics{}
+    \caption{Insert photo}
+    \label{fig:my_label}
+\end{figure}
+
+The route is a continuous cave, which is divided by checkpoints (e.g. separated by doors), at which the miners can re-equip themselves with tools.
+
+There is a fixed number of two players which need to help each other to unlock the pathway towards freedom and to escape the cave. The players will play on a shared screen, i.e. not split screen. Furthermore, the screen has a fixed view in the sense that players are not able to pan the camera or zoom out in order to see more of the level.
+
+
+\begin{figure}
+    \centering
+    %\includegraphics{}
+    \caption{Caption}
+    \label{fig:my_label}
+\end{figure}
+
+
+The style of the game will be very dark, as there is basically no light in the cave. The cave is only lit by the miners’ flash lights, lights on walls or on the ceiling, in addition to torches carried by the miners. The graphics are done in 2D and the players are allowed to move in any direction their environment allows them to, i.e. there is no automatic scrolling. 
+
+There can also some doors that will either lead towards the right path or get the player to a dead end. Sometimes more paths can conjoin and become one. This will give the game a labyrinth feeling which can add even more to the suspense of trying to escape from the caves. 
+
+\vspace{0.5cm}
+Additional effects:
+\begin{itemize}
+    \item Gas leaks which make players dizzy, hallucinate, become weak or powerless
+    \item Add a treasure-hunt, where one has to defeat demonic creatures.
+    \item Give names to the tunnel sections 
+    \item Create a side-story, possibly including local stories
+
+\end{itemize}
+
+
+\section{\enquote{Big Idea} Bullseye}
+\begin{figure}
+    \centering
+    %\includegraphics{}
+    \caption{Caption}
+    \label{fig:my_label}
+\end{figure}
+Intense running through a deep, dark cave with soothing water/lighting effects. The technical component is achieved through the implementation of level designer.
+
+
+\section{Technical Achievement}
+We want to build a level editor that can be used on the console. This will not only greatly increase the appeal of our game, it will also streamline the creation of interesting parts of the game and engaging levels.
+As stated, the aim is to make the editor usable on the console. This means working with a restricted set of input possibilities. Another challenge will be to include an option to save created levels.
+
+\section{Development Schedule}
+\subsection{Layered Task Breakdown}
+\subsubsection{Functional Minimum}
+\begin{itemize}
+    \item Control over one player which has to go through only one checkpoint, get over one simple obstacle and escape the caves. The characters each have one single tool and the challenge reflects that. 
+\item The game will be 2D, simplistic drawings and renderings.
+\end{itemize}
+
+\subsubsection{Low Target}
+\begin{itemize}
+    \item Add a game menu (continue, start new game, simple settings). 
+    \item Introduce more obstacles (locked doors, getting gravel out of way, etc).
+    \item Add shadows and torches.
+\end{itemize}
+
+\subsubsection{Desired Target}
+\begin{itemize}
+    \item Add voices and/or sound effects.
+    \item Implement level editor that can be used on the computer.
+    \item Possibility of choosing the tools for the characters in the game menu.
+    \item Multiplayer (two-player) mode.
+    \item Also add a background story, the introduction of the game and narration. 
+    \item Add animations and more visual effects.
+\end{itemize}
+
+\subsubsection{High Target}
+
+\begin{itemize}
+    \item Add a possibility for the characters to go treasure hunting instead of a direct escape attempt. 
+    \item Upgrade level editor to be usable on the console.
+    \item Implement visualization for hallucinating effects due to gas exposure. 
+    \item Demonic creatures guarding the treasures.
+\end{itemize}
+
+\subsubsection{Extras}
+\begin{itemize}
+    \item Fluid simulation based puzzles.
+    \item Online mode.
+    \item Use higher dimension (2.5D or 3D) assets.
+\end{itemize}
+ 
+\subsection{Task List}
+\input{tasklist.tex}
+
+\subsection{Timeline}
+\#TODO: add the Gantt chart
+The public link to the gantt chart is \url{https://app.teamweek.com/#pg/rXDJbrPWGcHY6nWfog2FrtfkeUBUvSNF}
+
+\section{Assessment}

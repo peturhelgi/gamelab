@@ -1,0 +1,50 @@
+\documentclass{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[german]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage[autostyle,english=british]{csquotes}
+\usepackage[a4paper, margin=1in]{geometry}
+\MakeOuterQuote{"}
+
+
+
+\title{{\Huge The Great Escape}\\{\large\textit{\enquote{A Pursuit of Freedom}}}
+%\begin{figure}[h!]
+%    \centering
+%    \includegraphics[width=4in]{img/floor.png}
+%\end{figure}
+}
+
+\author{
+    \begin{tabular}{ll}
+    \hspace*{5em}\\
+    Simon Ringeisen & Producer, Programmer, Designer\hspace*{5em}\\
+    Nicolas Mesot & Programmer, Designer, Visual Artist\hspace*{5em}\\
+    Andreea Rădoescu & Programmer, Designer, Visual Artist\hspace*{5em}\\
+    Pétur Helgi Einarsson & Programmer, Designer, Sound Effects\hspace*{5em}\\
+    Bjarni Hannesson & Programmer, Designer, QA Engineer \hspace*{5em}
+    \end{tabular}
+}
+\date{}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\chapter{Formal Project Proposal}
+\input{proposal.tex}
+\chapter{Prototype}
+\input{prototype.tex}
+\chapter{Interim Report}
+\input{interim.tex}
+\chapter{Alpha Release}
+\input{alpha.tex}
+\chapter{Playtest}
+\input{playtest.tex}
+\chapter{Conclusion}
+\input{conclusion.tex}
+\end{document}

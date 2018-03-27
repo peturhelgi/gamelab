@@ -1,0 +1,49 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[ht]
+\centering
+\caption{My caption}
+\label{tab:tasks}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lllll}
+\textbf{Topic}                          & \textbf{What? }                                                   & \textbf{Who?}                            & \textbf{Man Hours} & \textbf{Week}              \\
+\hline
+\multirow{3}{*}{Game proposal} & Rough proposal                                           & Everybody                       & 15          & 10                \\
+                               & Final proposal                                           & Everybody                       & 10          & 11                \\
+                               & Physical prototype                                       & Everybody                       & 15          & 12                \\
+                               \\
+\multicolumn{4}{c}{\textbf{Functional minimum}}                                                                                           & \textbf{13/14}    \\
+Setup                          & Setup Mono-Game project, install tools etc.              & Everybody                       & 15          &                   \\
+\multirow{3}{*}{Player}        & Player entity                                            & Andreea, Simon                  & 10          &                   \\
+                               & Basic Player controlling                                 & Bjarni, Petur                   & 15          &                   \\
+                               & Tool (only one)                                          & Nicolas                         & 20          &                   \\
+\multirow{2}{*}{Map}           & Simple static map                                        & Simon, Nicolas                  & 30          &                   \\
+                               & Interactive elements (checkpoints, escape, …)            & Simon, Petur                    & 20          &                   \\
+Technical                      & Camera                                                   & Bjarni, Petur                   & 10          &                   \\
+Mechanics                      & Collision detection                                      & Andreea                         & 15          &                   \\\\
+\multicolumn{4}{c}{\textbf{Low target}}                                                                                                   & \textbf{14/15}    \\
+Technical                      & Game Menu                                                & Nicolas                         & 10          &                   \\
+\multirow{2}{*}{Mechanics}     & Basic level editor                                       & Petur, Andreea                  & 30          &                   \\
+                               & Design level components                                  & Bjarni                          & 10          &                   \\
+Map                            & Dynamic maps (load game map from file)                   & Simon, Bjarni                   & 30          &                   \\\\
+\multicolumn{4}{c}{\textbf{Desired Target}}                                                                                               & \textbf{14/15-17} \\
+\multirow{2}{*}{Sound}         & Music                                                    & Petur                           & 15          &                   \\
+                               & Sound effects                                            & Petur                           & 15          &                   \\
+Player                         & Add multiplayer (incl. Controlling, swapping players, …) & Bjarni                          & 25          &                   \\
+Tools                          & More tools                                               & Nicolas                         & 20          &                   \\
+Technical                      & Multiplayer camera constraint                            & Bjarni                          & 20          &                   \\
+Visuals                        & Use nice visuals / animations                            & Andreea, Simon                  & 35          &                   \\
+\multirow{2}{*}{Storytelling}  & Narration                                                & Andreea                         & 20          &                   \\
+                               & Tutorial                                                 & Nicolas, Simon                  & 30          &                   \\\\
+\multicolumn{4}{c}{\textbf{High Target}}                                                                                                  & 18-19             \\
+\multirow{2}{*}{Mechanical}    & Fancier level editor.                                    & Petur, Andreea                  & 40          &                   \\
+                               & Gas (hallucination, distortion…)                         & Simon, Bjarni                   & 40          &                   \\
+\multirow{2}{*}{Fun}           & Treasure hunting                                         & Nicolas, Petur                  & 30          &                   \\
+                               & Demonic Creatures                                        & Nicolas, Andreea, Bjarni, Simon & 40          &                   \\\\
+\multicolumn{4}{c}{\textbf{Extras}}                                                                                                       & 20-$\infty$        \\
+Mechanics                      & Fluid Mechanics                                          & Simon                           & 40          &                   \\
+Fun                            & Online mode                                              & Nicolas                         & 50          &                   \\
+Visuals                        & 2.5D / 3D assets                                         & Andreea                         & 25          &                  
+\end{tabular}
+}
+\end{table}
