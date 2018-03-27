@@ -26,9 +26,14 @@ namespace Project.GameObjects
             set;
         }
 
+        bool visible {
+            get;
+            set;
+        }
+
     }
 
-    class GameObject : IGameObject {
+    abstract class GameObject : IGameObject {
         
         public Vector2 Position { get; set; }
 
@@ -39,6 +44,8 @@ namespace Project.GameObjects
         public BoundingBox Box { get; set; }
 
         public Texture2D Texture { get; set; }
+
+        public bool visible { get; set; }
 
     }
 }
