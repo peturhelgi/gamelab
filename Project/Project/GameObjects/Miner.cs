@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-
+using System.Collections.Generic;
 
 namespace Project.GameObjects.Miner
 {
@@ -10,7 +10,7 @@ namespace Project.GameObjects.Miner
     enum Stance { stand, jump, crouch, lie };
     class Miner : GameObject
     {
-        // add some Tool variable
+        Tool tool;
         Gait Gait;
         Stance Stance;
         public Miner(Vector2 position, Vector2 speed, double mass, BoundingBox box)
@@ -19,8 +19,10 @@ namespace Project.GameObjects.Miner
             this.Speed    = speed;
             this.Mass     = mass;
             this.Box      = box;
+            this.visible  = true;
             this.Gait     = Gait.walk;
             this.Stance   = Stance.stand;
+            this.tool = new Pickaxe();
         }
 
         /// <summary>
@@ -164,9 +166,9 @@ namespace Project.GameObjects.Miner
         /// Uses the tool that the miner currenty has
         /// </summary>
         /// <returns>True iff 1==1</returns>
-        public bool UseTool() {
+        public bool UseTool(List<GameObject> gameObjects) {
             this.Stance = Stance.stand;
-            // TODO: add some tool logic, using the tools interface
+            tool.use(this, gameObjects);
 
             return true;
         }

@@ -101,6 +101,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameObjects\Pickaxe.cs" />
+    <Compile Include="GameObjects\Rock.cs" />
+    <Compile Include="GameObjects\Tool.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\Miner.cs" />
     <Compile Include="GamePage.xaml.cs">
@@ -121,6 +124,7 @@
   <ItemGroup>
     <Content Include="Content\caveMusic.mp3" />
     <Content Include="Content\Miner.png" />
+    <Content Include="Content\Rock.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
