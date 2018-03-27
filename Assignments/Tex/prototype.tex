@@ -1,5 +1,81 @@
 \section{Prototype Setup}
+For our prototype we created three scenes of game play. Our game will be structured in such a way that the whole world is comprised of levels and a level consists of one or more scenes. The level designer then needs to connect the scenes in a graph like structure, such that each scene is a vertex and a directed edge (A, B), meaning that the players can go from scene A to scene B. Solving the level means to traverse the scene graph from the source vertex to the target vertex. The players do not see the graph structure explicitly.
+
+	As mentioned before, there will be two controllable characters in the game, with the possibility of switching between the character that is controlled and other inactive ones who have special tools needed in a specific scenario. 
+	
+	We started from rough sketches of various situations in which our characters can find themselves and we combined those in order to create the scenes for our prototype. 
+	
+	\begin{figure}
+	\centering
+	\includegraphics[width=0.7\textwidth]{img/prototype/ideas.png}
+	\caption{Sketches of obstacle ideas}
+	\end{figure}
+
+	\begin{figure}
+	\centering
+	\includegraphics[scale=0.4]{img/prototype/level.png}
+	\caption{These are the initial ideas for the scenes in our prototype and how the passage ways connect.}
+	\end{figure}
+	
+	\begin{figure}
+	\centering
+	\includegraphics[scale=0.4]{img/prototype/assets.png}
+	\caption{Separate assets from our scenes can be seen in this image.}
+	\end{figure}
+	
+	\begin{figure}
+	\centering
+	\includegraphics[scale=0.4]{img/prototype/crafting.png}
+	\caption{Working on the cardboard scenes.}
+	\end{figure}
+	
 
 \section{Playing Experience}
+We have play-tested our game, first on a rough sketch before finalizing the drawn scenes. We cannot exactly reproduce the dark atmosphere in the caves with the prototype, but we have found a workaround.
+To play the prototype, there are two players that are controlling the characters and looking through a tube to limit their vision. The view should always be focused on the character. Another person will play the role of the computer, managing the events that are triggered by the players' actions. 
+
+	\begin{figure}
+	\centering
+	\includegraphics[scale=0.4]{img/prototype/gameplay.png}
+	\caption{Playing the prototype with the improvised \enquote{goggles} for simulating the darkness in the caves and what is actually visible during the game play.}
+	\end{figure}
+	
+	\begin{figure}
+	\centering
+	\includegraphics[scale=0.4]{img/prototype/tunnelvision.png}
+	\caption{This is an actual \enquote{view} while playing our prototype. The players have a limited vision. In the actual game we also want to implement directional light which will make more of the scene visible.}
+	\end{figure}
+	
+	%\begin{figure}
+	%\centering
+	%\includegraphics[angle=90, width=0.4\textwidth]{img/prototype/scene1.jpg}
+	%\includegraphics[height=0.4\textwidth]{img/prototype/scene2.jpg}
+	%\includegraphics[angle=90, width=0.4\textwidth]{img/prototype/scene3.jpg}
+	%\caption{The three scenes of our prototype, first one is the source scene A, next one is scene B, and the bottom one is the target scene C.}
+	%\end{figure}
+	
+\begin{figure}
+\ffigbox[0.9\textwidth]{%
+\begin{subfloatrow}
+  \hsize0.7\hsize
+  \vbox to 0.5\textwidth{
+  \ffigbox[\FBwidth]
+    {\caption{Source scene A}\label{sfig:testa}}
+    {\includegraphics[angle=90, width=0.4\textwidth,height=0.2\textwidth]{img/prototype/scene1.jpg}}\vss
+  \ffigbox[\FBwidth]
+    {\caption{Target scene C}\label{sfig:testb}}
+    {\includegraphics[angle=90, width=0.4\textwidth, height=0.2\textwidth]{img/prototype/scene3.jpg}}
+  }
+\end{subfloatrow}\hspace*{\columnsep}
+\begin{subfloatrow}
+  \ffigbox[\FBwidth][]
+    {\caption{Scene B}\label{sfig:testc}}
+    {\includegraphics[height=0.478\textwidth]{img/prototype/scene2.jpg}}
+\end{subfloatrow}
+}{\caption{The three scenes of our prototype.}\label{fig:test}}
+\end{figure}
 
 \section{Findings and Conclusions}
+We put to practice the game play that we had in mind and it proved more fun than we imagined. Adding the limited vision greatly improved the prototype and completely changed the experience. We found that the miners should all start the game with their own specific tool, the miners then discover caves and they need to inspect their surroundings in order to find an escape path. No help is given to the players although there is a special exit sign that will mark the exit.
+
+	We have made the game more agility-based than we proposed in the beginning, but it still has some minor puzzles which are harder to solve due to the darkness in the tunnels. However, the players must be agile in order to complete the levels and avoid traps. It has proved to be harder to design obstacles and levels than we first thought, but given some initial ideas we can combine them to create new levels. But the level editor will of course allow the player to create either more agility-based or puzzle-based levels.

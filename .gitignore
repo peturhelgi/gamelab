@@ -289,3 +289,8 @@ __pycache__/
 
 .DS_Store
 
+# Live Tex generated files
+*.out
+*.aux
+*.toc
+*.synctex.gz
