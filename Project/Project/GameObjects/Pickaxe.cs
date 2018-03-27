@@ -12,14 +12,13 @@ namespace Project.GameObjects
         public override void use(Miner.Miner user, List<GameObject> gameObjects)
         {
             foreach (GameObject obj in gameObjects) {
-                if (obj is Rock) {
-                    if (obj.visible)
+                if (obj is Rock && obj.visible) { 
+                    //TODO: add collision detection
+                    if (true)
                     {
-                        if (true) //TODO: add collision detection
-                        {
-                            obj.visible = false;
-                        }
+                        obj.visible = false;
                     }
+                    
                 }
             }
         }
