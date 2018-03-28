@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Media;
 using Project.GameObjects.Miner;
 using Project.GameObjects;
 using System.Collections.Generic;
+using Project.Util;
 
 namespace Project
 {
@@ -18,10 +19,8 @@ namespace Project
         private Song music;
         private VideoPlayer player;
         private List<GameObject> gameObjects;
-        private Vector2 startingPosition;
-        private Vector2 rockPosition;
-        Miner miner;
-        Rock rock;
+        private MapLoader mapLoader;
+        private GameState gameState;
         Vector2 gravity = new Vector2(0, -1000);
         Vector2 direction, up, down, left, right;
 
@@ -30,8 +29,8 @@ namespace Project
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             gameObjects = new List<GameObject>();
-            startingPosition = new Vector2(210, 250);
-            rockPosition = new Vector2(900, 600);
+            mapLoader = new MapLoader(gameObjects, Content);
+            
             up    = new Vector2( 0, -150);
             down  = new Vector2( 0,  150);
             left  = new Vector2(-150,  0);
@@ -46,10 +45,7 @@ namespace Project
         /// </summary>
         protected override void Initialize()
         {
-            miner = new Miner( startingPosition, new Vector2(0.0f), 80.0, new BoundingBox()) ;
-            rock = new Rock(rockPosition, 300, 215);
-            gameObjects.Add(miner);
-            gameObjects.Add(rock);
+            gameState = mapLoader.initMap();
             base.Initialize();
         }
 
@@ -64,8 +60,8 @@ namespace Project
 
             // TODO: use this.Content to load your game content here
             music = Content.Load<Song>("caveMusic");
-            miner.Texture = Content.Load<Texture2D>("Miner");
-            rock.Texture = Content.Load<Texture2D>("Rock");
+
+            mapLoader.loadMapContent(gameState);
 
             MediaPlayer.Play(music);
             player = new VideoPlayer();
@@ -87,6 +83,9 @@ namespace Project
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            Miner miner = gameState.getMiner1();
+            Vector2 startingPosition = new Vector2(210, 250);
+
             // TODO: Add your update logic here
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -102,6 +101,7 @@ namespace Project
             else
             {
                 // This is very incomplete...
+
 
                 KeyboardState state = Keyboard.GetState();
 
