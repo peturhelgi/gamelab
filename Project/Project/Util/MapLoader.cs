@@ -5,9 +5,11 @@ using Project.GameObjects;
 using Project.GameObjects.Miner;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Project.Util
 {
@@ -21,24 +23,22 @@ namespace Project.Util
             this.contentManager = contentManager;
         }
 
-        //TODO: Pass file with map description
-        public GameState initMap() {
+        public GameState initMap(string levelName) {
             GameState gameState = new GameState();
 
-            Vector2 startingPosition;
-            Vector2 rockPosition;
-            Miner miner;
-            Rock rock;
-            startingPosition = new Vector2(210, 250);
-            rockPosition = new Vector2(900, 600);
-            miner = new Miner(startingPosition, new Vector2(0.0f), 80.0, new BoundingBox());
-            rock = new Rock(rockPosition, 300, 215);
-            gameObjects.Add(miner);
-            gameObjects.Add(rock);
+            string text = contentManager.Load<string>(levelName);
+            Level level = JsonConvert.DeserializeObject<Level>(text);
 
-            gameState.addMiner1(miner);
-            gameState.addRock(rock);
-            
+            Miner miner1 = new Miner(new Vector2(level.player1Start.x, level.player1Start.y), new Vector2(level.player1Start.vx, level.player1Start.vy), level.player1Start.m, new BoundingBox());
+            gameObjects.Add(miner1);
+            gameState.addMiner1(miner1);
+            //TODO: add miner2
+            foreach (Obj obj in level.rocks) {
+                Rock rock = new Rock(new Vector2(obj.x, obj.y), obj.w, obj.h);
+                gameObjects.Add(rock);
+                gameState.addRock(rock);
+            }
+
             return gameState;
         }
 

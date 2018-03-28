@@ -112,9 +112,11 @@
     <Compile Include="GreatEscape.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\GameState.cs" />
+    <Compile Include="Util\Level.cs" />
     <Compile Include="Util\MapLoader.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\samplelvl.json" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>

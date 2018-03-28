@@ -24,6 +24,8 @@ namespace Project
         Vector2 gravity = new Vector2(0, -1000);
         Vector2 direction, up, down, left, right;
 
+        string lvlName = "samplelvl";
+
         public GreatEscape()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -45,7 +47,7 @@ namespace Project
         /// </summary>
         protected override void Initialize()
         {
-            gameState = mapLoader.initMap();
+            gameState = mapLoader.initMap(lvlName);
             base.Initialize();
         }
 
