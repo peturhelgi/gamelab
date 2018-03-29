@@ -29,14 +29,29 @@ namespace Project.Util
             string text = contentManager.Load<string>(levelName);
             Level level = JsonConvert.DeserializeObject<Level>(text);
 
-            Miner miner1 = new Miner(new Vector2(level.player1Start.x, level.player1Start.y), new Vector2(level.player1Start.vx, level.player1Start.vy), level.player1Start.m, new BoundingBox());
-            gameObjects.Add(miner1);
-            gameState.addMiner1(miner1);
-            //TODO: add miner2
-            foreach (Obj obj in level.rocks) {
-                Rock rock = new Rock(new Vector2(obj.x, obj.y), obj.w, obj.h);
-                gameObjects.Add(rock);
-                gameState.addRock(rock);
+           
+            foreach (Obj obj in level.objects) {
+
+                switch (obj.Type) {
+                    case "miner":
+                        Miner miner = new Miner(obj.Position,obj.Velocity, obj.Mass, new BoundingBox());
+                        gameObjects.Add(miner);
+                        gameState.addMiner1(miner);
+                        break;
+                    case "rock":
+                        Rock rock = new Rock(obj.Position, obj.Dimension);
+                        gameObjects.Add(rock);
+                        gameState.addRock(rock);
+                        break;
+
+                    case "end":
+                        break;
+
+                    default:
+                        Console.WriteLine("Object of Type "+obj.Type+" not implemented.");
+                        break;
+                }
+                
             }
 
             return gameState;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Project.Util
 {
-    class GameState
+    class GameState : Level
     {
         private Miner miner1;
         private List<Rock> rocks;
