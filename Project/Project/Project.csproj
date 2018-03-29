@@ -358,6 +358,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\caveMusic.mp3" />
+    <Content Include="Content\Ground.png" />
     <Content Include="Content\Miner.png" />
     <Content Include="Content\Rock.png" />
     <Content Include="Properties\Default.rd.xml" />

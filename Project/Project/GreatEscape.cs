@@ -45,17 +45,6 @@ namespace Project
         private GameState gameState;
         Vector2 gravity = new Vector2(0, -1000);
 
-#if !XBOX360
-
-        private const string Text = "Press Left or Right to move the miner\n" +
-                                    "Press Space to jump\n" +
-                                    "Use A or D keys to move the camera";
-
-#else
-                const string Text = "Use left stick to move\n" +
-                                    "Use right stick to move camera\n" +
-                                    "Press A to jump\n";
-#endif
 
         string lvlName = "samplelvl";
 
@@ -303,11 +292,7 @@ namespace Project
             sprite_batch.Draw(ground_2, ConvertUnits.ToDisplayUnits(groundBody_2.Position), null, Color.White, 0f, new Vector2(400f, 100f), 0.5f, SpriteEffects.None, 0f);
             sprite_batch.End();
 
-            // Display instructions
-            sprite_batch.Begin();
-            sprite_batch.DrawString(font, Text, new Vector2(14f, 14f), Color.Black);
-            sprite_batch.DrawString(font, Text, new Vector2(12f, 12f), Color.White);
-            sprite_batch.End();
+         
 
             base.Draw(gameTime);
         }
