@@ -6,6 +6,7 @@ using Project.GameObjects.Miner;
 using Project.GameObjects;
 using System.Collections.Generic;
 using Project.Util;
+using System;
 
 namespace Project
 {
@@ -26,6 +27,13 @@ namespace Project
 
         string lvlName = "samplelvl";
 
+        // Simple camera controls
+        private Vector2 _viewCenter;
+        private float _viewZoom;
+        private Matrix view;
+        private Vector2 cameraPosition;
+
+
         public GreatEscape()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -39,6 +47,22 @@ namespace Project
             right = new Vector2( 150,  0);
         }
 
+        public float ViewZoom {
+            get { return _viewZoom; }
+            set {
+                _viewZoom = value;
+                Resize();
+            }
+        }
+
+        public Vector2 ViewCenter {
+            get { return _viewCenter; }
+            set {
+                _viewCenter = value;
+                Resize();
+            }
+        }
+
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -48,6 +72,8 @@ namespace Project
         protected override void Initialize()
         {
             gameState = mapLoader.initMap(lvlName);
+            ResetView();
+
             base.Initialize();
         }
 
@@ -106,6 +132,8 @@ namespace Project
 
 
                 KeyboardState state = Keyboard.GetState();
+
+                HandleCameraControls(state);
 
                 if (state.IsKeyDown(Keys.B)) {
                     if (miner.IsStanding() || miner.IsLying())
@@ -177,6 +205,35 @@ namespace Project
             base.Update(gameTime);
         }
 
+        private void HandleCameraControls(KeyboardState state) {
+
+            if (state.IsKeyDown(Keys.Z)) // Press 'z' to zoom in.
+                ViewZoom = Math.Min(1.1f * ViewZoom, 20.0f);
+            else if (state.IsKeyDown(Keys.X)) // Press 'x' to zoom out.
+                ViewZoom = Math.Max(0.9f * ViewZoom, 0.02f);
+            else if (state.IsKeyDown(Keys.R)) // Press 'r' to reset.
+                ResetView();
+
+            if (state.IsKeyDown(Keys.A)) // Press left to pan left.
+                ViewCenter = new Vector2(ViewCenter.X - 2f, ViewCenter.Y);
+            else if (state.IsKeyDown(Keys.D)) // Press right to pan right.
+                ViewCenter = new Vector2(ViewCenter.X + 2f, ViewCenter.Y);
+            else if (state.IsKeyDown(Keys.S)) // Press down to pan down.
+                ViewCenter = new Vector2(ViewCenter.X, ViewCenter.Y + 2f);
+            else if (state.IsKeyDown(Keys.W)) // Press up to pan up.
+                ViewCenter = new Vector2(ViewCenter.X, ViewCenter.Y - 2f);
+
+        }
+        private void Resize() {
+            view = Matrix.CreateTranslation(new Vector3(-ViewCenter.X, -ViewCenter.Y, 0)) * Matrix.CreateScale(ViewZoom);
+        }
+
+        private void ResetView() {
+            _viewZoom = 0.8f;
+            _viewCenter = Vector2.Zero;
+            //_viewCenter = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2f, graphics.GraphicsDevice.Viewport.Height / 2f);
+            Resize();
+        }
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -185,7 +242,7 @@ namespace Project
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, view);
             foreach (GameObject obj in gameObjects) {
                 if (obj.visible) spriteBatch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, obj.Texture.Width, obj.Texture.Height), Color.White);
             }
