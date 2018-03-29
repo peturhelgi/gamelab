@@ -57,6 +57,8 @@ namespace Project
                                     "Press A to jump\n";
 #endif
 
+        string lvlName = "samplelvl";
+
         public GreatEscape()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -86,6 +88,7 @@ namespace Project
         {
             gameState = mapLoader.initMap();
 
+            gameState = mapLoader.initMap(lvlName);
             base.Initialize();
         }
 

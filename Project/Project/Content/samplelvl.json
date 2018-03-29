@@ -1,0 +1,51 @@
+{
+  "levelnr" : 0,
+  "levelname" : "sample",
+  "prevlvl" : -1,
+  "prevlvlname" : "0",
+  "nextlvl" : 1,
+  "nextlvlname" : "tbd",
+  "background" : "path/to/pixelmap",
+  "player1Start" : {
+    "w" : 100,
+    "h" : 100,
+    "x" : 210,
+    "y" : 250,
+    "vx": 0,
+    "vy": 0,
+    "m" : 80
+  },
+  "player2Start" : {
+    "w" : 100,
+    "h" : 100,
+    "x" : 250,
+    "y" : 250,
+    "vx": 0,
+    "vy": 0,
+    "m" : 80
+  },
+  "end" : {
+    "x" : 1000,
+    "y" : 1000
+  },
+  "rocks" : [
+    {
+      "w" : 300,
+      "h" : 215,
+      "x" : 900,
+      "y" : 600,
+      "vx": 0,
+      "vy": 0,
+      "m" : 50
+    },
+    {
+      "w" : 200,
+      "h" : 100,
+      "x" : 600,
+      "y" : 300,
+      "vx": 0,
+      "vy": 0,
+      "m" : 20
+    }
+  ]
+}

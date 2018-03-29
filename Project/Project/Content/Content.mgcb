@@ -10,6 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\..\Level Importer\bin\Debug\Level Importer.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -62,3 +63,7 @@
 /processorParam:TextureFormat=Color
 /build:Ground.png
 
+#begin samplelvl.json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:samplelvl.json
