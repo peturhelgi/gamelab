@@ -6,7 +6,7 @@
   "nextlvl" : 1,
   "nextlvlname" : "tbd",
   "background" : "path/to/pixelmap",
-  
+
   "objects": [
     {
       "pos": {

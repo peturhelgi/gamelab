@@ -2,6 +2,9 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using VelcroPhysics.Dynamics;
+using VelcroPhysics.Factories;
+using VelcroPhysics.Utilities;
 
 namespace Project.GameObjects.Miner
 {
@@ -13,7 +16,7 @@ namespace Project.GameObjects.Miner
         Tool tool;
         Gait Gait;
         Stance Stance;
-        public Miner(Vector2 position, Vector2 speed, double mass, BoundingBox box)
+        public Miner(Vector2 position, Vector2 speed, double mass, BoundingBox box, World world)
         {
             this.Position = position;
             this.Speed    = speed;
@@ -23,6 +26,9 @@ namespace Project.GameObjects.Miner
             this.Gait     = Gait.walk;
             this.Stance   = Stance.stand;
             this.tool = new Pickaxe();
+            this.Body = BodyFactory.CreateCircle(world, ConvertUnits.ToSimUnits(128f / 2f), 1f, ConvertUnits.ToSimUnits(new Vector2(0,0)), BodyType.Dynamic);
+            Body.Restitution = 0.3f;
+            Body.Friction = 1f;
         }
 
         /// <summary>
@@ -145,6 +151,7 @@ namespace Project.GameObjects.Miner
 
                 case Gait.walk:
                     this.Speed = dv;   // for example, there could be some more logic here using our physics
+                    this.Body.ApplyLinearImpulse(dv);
                     break;
 
                 case Gait.run:

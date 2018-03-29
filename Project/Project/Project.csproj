@@ -102,6 +102,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="GameObjects\Pickaxe.cs" />
+    <Compile Include="GameObjects\Ground.cs" />
     <Compile Include="GameObjects\Rock.cs" />
     <Compile Include="GameObjects\Tool.cs" />
     <Compile Include="GameObjects\GameObject.cs" />

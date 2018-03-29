@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using VelcroPhysics.Dynamics;
 
 namespace Project.GameObjects
 {
@@ -31,6 +32,11 @@ namespace Project.GameObjects
             set;
         }
 
+        Body Body{
+            get;
+            set;
+        }
+
     }
 
     abstract class GameObject : IGameObject {
@@ -46,6 +52,8 @@ namespace Project.GameObjects
         public Texture2D Texture { get; set; }
 
         public bool Visible { get; set; }
+
+        public Body Body { get; set; }
 
     }
 }
