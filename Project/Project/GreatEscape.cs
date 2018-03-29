@@ -282,7 +282,7 @@ namespace Project
                 if (obj is Miner) {
                     continue;
                 }
-                if (obj.visible) sprite_batch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, obj.Texture.Width, obj.Texture.Height), Color.White);
+                if (obj.Visible) sprite_batch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, obj.Texture.Width, obj.Texture.Height), Color.White);
             }
 
             sprite_batch.Draw(miner.Texture, ConvertUnits.ToDisplayUnits(minerBody.Position), null, Color.White, 0f, minerOrigin, 1f, SpriteEffects.None, 0f);
