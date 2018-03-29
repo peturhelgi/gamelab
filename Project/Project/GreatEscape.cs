@@ -43,7 +43,6 @@ namespace Project
         private List<GameObject> gameObjects;
         private MapLoader mapLoader;
         private GameState gameState;
-        Vector2 gravity = new Vector2(0, -1000);
 
 
         string lvlName = "samplelvl";
