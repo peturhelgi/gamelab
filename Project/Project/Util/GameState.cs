@@ -12,9 +12,11 @@ namespace Project.Util
     {
         private Miner miner1;
         private List<Rock> rocks;
+        private List<Ground> ground_parts;
 
         public GameState() {
             this.rocks = new List<Rock>();
+            this.ground_parts = new List<Ground>();
         }
 
         public void addMiner1(Miner miner1) {
@@ -25,12 +27,20 @@ namespace Project.Util
             rocks.Add(rock);
         }
 
+        public void addGround(Ground ground) {
+            ground_parts.Add(ground);
+        }
+
         public Miner getMiner1() {
             return miner1;
         }
 
         public List<Rock> getRocks() {
             return rocks;
+        }
+
+        public List<Ground> getGround() {
+            return ground_parts;
         }
     }
 }

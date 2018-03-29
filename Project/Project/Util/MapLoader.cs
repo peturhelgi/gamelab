@@ -43,7 +43,11 @@ namespace Project.Util
                         gameObjects.Add(rock);
                         gameState.addRock(rock);
                         break;
-
+                    case "ground":
+                        Ground ground = new Ground(obj.Position, obj.Dimension, world);
+                        gameObjects.Add(ground);
+                        gameState.addGround(ground);
+                        break;
                     case "end":
                         break;
 
@@ -62,6 +66,11 @@ namespace Project.Util
             foreach (Rock rock in gameState.getRocks()) {
                 rock.Texture = contentManager.Load<Texture2D>("Rock");
             }
+
+            foreach (Ground gnd in gameState.getGround()) {
+                gnd.Texture = contentManager.Load<Texture2D>("Ground");
+            }
+
         }
     }
 }
