@@ -14,7 +14,7 @@ namespace Project.GameObjects
             Speed = new Vector2(0);
             Mass = 10;
             Box = new BoundingBox(new Vector3(position, 0), new Vector3(position.X + dimension.X, position.Y + dimension.Y, 0));
-            visible = true;
+            Visible = true;
         }
     }
 }

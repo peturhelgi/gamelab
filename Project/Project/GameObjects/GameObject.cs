@@ -26,7 +26,7 @@ namespace Project.GameObjects
             set;
         }
 
-        bool visible {
+        bool Visible {
             get;
             set;
         }
@@ -45,7 +45,7 @@ namespace Project.GameObjects
 
         public Texture2D Texture { get; set; }
 
-        public bool visible { get; set; }
+        public bool Visible { get; set; }
 
     }
 }
