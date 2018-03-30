@@ -26,7 +26,8 @@ namespace Project.GameObjects.Miner
             this.Gait     = Gait.walk;
             this.Stance   = Stance.stand;
             this.tool = new Pickaxe();
-            this.Body = BodyFactory.CreateCircle(world, ConvertUnits.ToSimUnits(128f / 2f), 1f, ConvertUnits.ToSimUnits(new Vector2(0,0)), BodyType.Dynamic);
+            this.Body = BodyFactory.CreateCircle(world, ConvertUnits.ToSimUnits(128f / 2f), 1f, ConvertUnits.ToSimUnits(position), BodyType.Dynamic);
+            //this.Body = BodyFactory.CreateBody(world, ConvertUnits.ToSimUnits(position), 0f, BodyType.Dynamic); //
             Body.Restitution = 0.3f;
             Body.Friction = 1f;
         }
@@ -39,7 +40,8 @@ namespace Project.GameObjects.Miner
             this.Stance = Stance.jump;
             this.Gait = Gait.jump;
             // TODO: add jump logic
-            this.Speed = new Vector2(this.Speed.X, -400);
+            this.Body.ApplyLinearImpulse(new Vector2(0, -0.4f));
+            //this.Speed = new Vector2(this.Speed.X, -400);
 
             return true;
         }
@@ -151,7 +153,6 @@ namespace Project.GameObjects.Miner
 
                 case Gait.walk:
                     this.Speed = dv;   // for example, there could be some more logic here using our physics
-                    this.Body.ApplyLinearImpulse(dv);
                     break;
 
                 case Gait.run:
@@ -160,6 +161,7 @@ namespace Project.GameObjects.Miner
 
                 default:
                     // Nothing happens yet
+                    this.Body.ApplyLinearImpulse(dv);
                     this.Speed = dv;
                     break;
             }

@@ -43,7 +43,7 @@ namespace Project
 
         private Song music;
         private VideoPlayer player;
-        private static List<GameObject> gameObjects;
+        private List<GameObject> gameObjects;
         private MapLoader mapLoader;
         private GameState gameState;
 
@@ -60,12 +60,14 @@ namespace Project
             graphics.IsFullScreen = false;
             graphics.ApplyChanges();
 
+
             // Create a world with gravity.
             //this.world = new World(new Vector2(0, 9.82f));
             Content.RootDirectory = "Content";
             gameObjects = new List<GameObject>();
             world = new World(new Vector2(0, 9.82f));
-            mapLoader = new MapLoader(gameObjects, Content);
+            mapLoader = new MapLoader(gameObjects, Content, world);
+            ConvertUnits.SetDisplayUnitToSimUnitRatio(128f);
             
         }
 
@@ -86,6 +88,7 @@ namespace Project
         protected override void Initialize()
         {
             gameState = mapLoader.initMap(lvlName);
+            this.IsMouseVisible = true;
             base.Initialize();
 
         }
@@ -118,26 +121,25 @@ namespace Project
 
             // Velcro Physics expects objects to be scaled to MKS (meters, kilos, seconds)
             // 1 meters equals 64 pixels here
-            ConvertUnits.SetDisplayUnitToSimUnitRatio(128f);
 
             miner = gameState.getMiner1();
-            minerOrigin = miner.Position;
+            minerOrigin = new Vector2(miner.Texture.Width / 2f, miner.Texture.Height/ 2f) ;
             Vector2 minerPosition = ConvertUnits.ToSimUnits(screenCenter) + new Vector2(0, -1.5f);
 
             // The height is connected to the restitution when applying a linear impulse 
-            minerBody = BodyFactory.CreateCircle(world, ConvertUnits.ToSimUnits(miner.Texture.Height / 2f), 1f, minerPosition, BodyType.Dynamic);
-            minerBody.Restitution = 0.3f;
-            minerBody.Friction = 1f;
+            //minerBody = BodyFactory.CreateCircle(world, ConvertUnits.ToSimUnits(miner.Texture.Height / 2f), 1f, minerPosition, BodyType.Dynamic);
+            //minerBody.Restitution = 0.3f;
+            //minerBody.Friction = 1f;
 
             /* Ground */
             Vector2 groundPosition_1 = ConvertUnits.ToSimUnits(screenCenter) + new Vector2(0, 4.25f);
             Vector2 groundPosition_2 = ConvertUnits.ToSimUnits(screenCenter) + new Vector2(1.25f, 4.25f);
 
-            groundBody_1 = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits(512f), ConvertUnits.ToSimUnits(128f), 1f, groundPosition_1);
-            groundBody_2 = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits(512f), ConvertUnits.ToSimUnits(128f), 1f, groundPosition_2);
-            groundBody_1.BodyType = groundBody_2.BodyType = BodyType.Static;
-            groundBody_1.Restitution = groundBody_2.Restitution = 0.3f;
-            groundBody_1.Friction = groundBody_2.Friction = 0.5f;
+            //groundBody_1 = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits(512f), ConvertUnits.ToSimUnits(128f), 1f, groundPosition_1);
+            //groundBody_2 = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits(512f), ConvertUnits.ToSimUnits(128f), 1f, groundPosition_2);
+            //groundBody_1.BodyType = groundBody_2.BodyType = BodyType.Static;
+            //groundBody_1.Restitution = groundBody_2.Restitution = 0.3f;
+            //groundBody_1.Friction = groundBody_2.Friction = 0.5f;
 
             // TODO: use this.Content to load your game content here
             //music = Content.Load<Song>("caveMusic");
@@ -146,6 +148,10 @@ namespace Project
             //player = new VideoPlayer();
         }
 
+        private void RestartGame() {
+            Initialize();
+            LoadContent();
+        }
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// game-specific content.
@@ -165,10 +171,15 @@ namespace Project
             HandleGamePad();
             HandleKeyboard();
 
+            MouseState ms = Mouse.GetState();
+            if (ms.LeftButton == ButtonState.Pressed) {
+                Debug.WriteLine(ms.Position.X);
+                Debug.WriteLine(ms.Position.Y);
+            }
+
             //We update the world
             //mapLoader.world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
             world.Step((float)gameTime.ElapsedGameTime.TotalMilliseconds * 0.001f);
-            //mapLoader.world.Step((float)3);
 
             base.Update(gameTime);
         }
@@ -194,29 +205,20 @@ namespace Project
             }
         }
 
-        private void HandleKeyboard() {
-
-            KeyboardState state = Keyboard.GetState();
-
-
-            if (state.IsKeyDown(Keys.Escape))
-                Exit();
-
-            Miner miner = gameState.getMiner1();
-            Vector2 startingPosition = new Vector2(210, 250);
+        private void HandleCamera(KeyboardState state) {
 
             // Move camera
             if (state.IsKeyDown(Keys.A))
-                cameraPosition.X += 1.5f;
+                cameraPosition.X -= 2.5f;
 
             if (state.IsKeyDown(Keys.D))
-                cameraPosition.X -= 1.5f;
+                cameraPosition.X += 2.5f;
 
             if (state.IsKeyDown(Keys.W))
-                cameraPosition.Y += 1.5f;
+                cameraPosition.Y -= 2.5f;
 
             if (state.IsKeyDown(Keys.S))
-                cameraPosition.Y -= 1.5f;
+                cameraPosition.Y += 2.5f;
 
             if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.S))
                 Resize();
@@ -227,22 +229,20 @@ namespace Project
                 ViewZoom = Math.Max(0.9f * ViewZoom, 0.02f);
             else if (state.IsKeyDown(Keys.R)) // Press 'r' to reset.
                 ResetView();
+        }
+        private void HandleKeyboard() {
 
+            KeyboardState state = Keyboard.GetState();
 
-            if (state.IsKeyDown(Keys.Left))
-                miner.Body.ApplyLinearImpulse(new Vector2(0, 10));
-                //miner.Move(new Vector2(-20, 0));
-            if (state.IsKeyDown(Keys.Right))
-                miner.Move(new Vector2(20, 0));
+            if (state.IsKeyDown(Keys.Escape))
+                Exit();
 
-            //if (!miner.IsAirborne())
-            //    miner.Jump();
+            HandleCamera(state);
 
-            //if (state.IsKeyDown(Keys.Space) && oldKeyState.IsKeyUp(Keys.Space))
-            //    minerBody.ApplyLinearImpulse(new Vector2(0, -2));
+            Miner miner = gameState.getMiner1();
 
-            //oldKeyState = state;
-
+            if (state.IsKeyDown(Keys.Home))
+                RestartGame();
 
             //if (state.IsKeyDown(Keys.B)) {
             //    if (miner.IsStanding() || miner.IsLying())
@@ -261,31 +261,37 @@ namespace Project
             //        miner.Walk();
             //    }
             //}
+
             //if (state.IsKeyDown(Keys.Space)) {
             //    if (!miner.IsAirborne())
             //        miner.Jump();
             //}
-            //if (state.IsKeyDown(Keys.Right)) {
-            //    miner.Move(new Vector2(2, 0));
+
+            if (state.IsKeyDown(Keys.Left) && oldKeyState.IsKeyUp(Keys.Left))
+                //miner.Body.ApplyLinearImpulse(new Vector2(0, 10));
+                miner.Move(new Vector2(-2, 0));
+            if (state.IsKeyDown(Keys.Right) && oldKeyState.IsKeyUp(Keys.Right)) {
+                miner.Move(new Vector2(2, 0));
+
+
+            }
+
+            //if (!miner.IsAirborne()) {
+            //    miner.Halt();
             //}
 
-            //else if (state.IsKeyDown(Keys.Left)) {
-            //    miner.Move(new Vector2(-2, 0));
-            //}
-            //            else if (!miner.IsAirborne())
-            //            {
-            //                miner.Halt();
-            //            }
 
-            //            if (state.IsKeyDown(Keys.R))
-            //            {
-            //                miner.Position = startingPosition;
-            //                miner.Halt();
-            //            }
-            //            if (state.IsKeyDown(Keys.Q))
-            //            {
-            //                miner.UseTool(this.gameObjects);
-            //            }
+            // cannot integrate this IsKeyUp for Space, I do not know why yet
+            if (state.IsKeyDown(Keys.Space)) // && oldKeyState.IsKeyUp(Keys.Space))
+                miner.Jump();
+
+            if (state.IsKeyDown(Keys.T)) {
+                //miner.Position = startingPosition;
+                miner.Halt();
+            }
+            if (state.IsKeyDown(Keys.Q)) {
+                miner.UseTool(this.gameObjects);
+            }
 
             //            // TODO make this with the physics engine and with bounding boxes!
             //            // if character is jumping
@@ -303,6 +309,7 @@ namespace Project
             //            }
 
             //            miner.Position += (float) gameTime.ElapsedGameTime.TotalSeconds * miner.Speed;
+            oldKeyState = state;
         }
 
         /// <summary>
@@ -319,24 +326,26 @@ namespace Project
 
             foreach (GameObject obj in gameObjects) {
                 if (obj is Miner) {
-                    //Vector2 miner_pos = ConvertUnits.ToDisplayUnits(obj.Body.Position);
+                    Vector2 miner_pos = ConvertUnits.ToDisplayUnits(obj.Body.Position);
                     //sprite_batch.Draw(obj.Texture, new Rectangle((int)miner_pos.X, (int)miner_pos.Y, obj.Texture.Width, obj.Texture.Height), Color.White);
+                    sprite_batch.Draw(obj.Texture, miner_pos, null, Color.White, 0f, minerOrigin, 1f, SpriteEffects.None, 0f);
                     //sprite_batch.Draw(obj.Texture, ConvertUnits.ToDisplayUnits(obj.Body.Position), Color.White);
                     continue;
                 }
 
                 if (obj is Ground) {
-                    //Vector2 ground_pos = ConvertUnits.ToDisplayUnits(obj.Body.Position);
+                    Vector2 ground_pos = ConvertUnits.ToDisplayUnits(obj.Body.Position);
+                    sprite_batch.Draw(obj.Texture, ground_pos, null, Color.White, 0f, groundOrigin_1, 1f, SpriteEffects.None, 0f);
                     //sprite_batch.Draw(obj.Texture, new Rectangle((int)ground_pos.X, (int)ground_pos.Y, obj.Texture.Width, obj.Texture.Height), Color.White);
                     continue;
                 }
                 if (obj.Visible) sprite_batch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, obj.Texture.Width, obj.Texture.Height), Color.White);
             }
 
-            sprite_batch.Draw(miner.Texture, ConvertUnits.ToDisplayUnits(minerBody.Position), null, Color.White, 0f, minerOrigin, 1f, SpriteEffects.None, 0f);
+            //sprite_batch.Draw(miner.Texture, ConvertUnits.ToDisplayUnits(minerBody.Position), null, Color.White, 0f, minerOrigin, 1f, SpriteEffects.None, 0f);
 
-            sprite_batch.Draw(ground_1, ConvertUnits.ToDisplayUnits(groundBody_1.Position), null, Color.White, 0f, new Vector2(100f, 100f), 0.5f, SpriteEffects.None, 0f);
-            sprite_batch.Draw(ground_2, ConvertUnits.ToDisplayUnits(groundBody_2.Position), null, Color.White, 0f, new Vector2(400f, 100f), 0.5f, SpriteEffects.None, 0f);
+            //sprite_batch.Draw(ground_1, ConvertUnits.ToDisplayUnits(groundBody_1.Position), null, Color.White, 0f, new Vector2(100f, 100f), 0.5f, SpriteEffects.None, 0f);
+            //sprite_batch.Draw(ground_2, ConvertUnits.ToDisplayUnits(groundBody_2.Position), null, Color.White, 0f, new Vector2(400f, 100f), 0.5f, SpriteEffects.None, 0f);
             //sprite_batch.Draw(ground_1, ConvertUnits.ToDisplayUnits(groundBody_1.Position), Color.White);
             //sprite_batch.Draw(ground_2, ConvertUnits.ToDisplayUnits(groundBody_2.Position), Color.White);
             sprite_batch.End();

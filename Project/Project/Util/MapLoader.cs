@@ -23,13 +23,13 @@ namespace Project.Util
         //static MapLoader() {
         //    MapLoader.world = new World(new Vector2(0, 9.82f));
         //}
-        public MapLoader(List<GameObject> gameObjects, ContentManager contentManager) {
+        public MapLoader(List<GameObject> gameObjects, ContentManager contentManager, World world) {
             this.gameObjects = gameObjects;
             this.contentManager = contentManager;
 
             // Create a world with gravity.
-            world = new World(new Vector2(0, 9.82f));
-            //this.world = world;
+            //world = new World(new Vector2(0, 9.82f));
+            this.world = world;
         }
 
         public GameState initMap(string levelName) {
