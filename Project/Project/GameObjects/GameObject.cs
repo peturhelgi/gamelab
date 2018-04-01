@@ -26,15 +26,21 @@ namespace Project.GameObjects
             set;
         }
 
-        bool visible {
+        bool Visible {
             get;
-            set;
         }
 
+        bool Movable {
+            get;
+        }
     }
 
     abstract class GameObject : IGameObject {
         
+        public bool Destroyable { get; set; }
+
+        public bool Movable { get;  set; }
+
         public Vector2 Position { get; set; }
 
         public Vector2 Speed { get; set; }
@@ -45,7 +51,7 @@ namespace Project.GameObjects
 
         public Texture2D Texture { get; set; }
 
-        public bool visible { get; set; }
+        public bool Visible { get; set; }
 
     }
 }

@@ -33,6 +33,7 @@ namespace Project
             gameObjects = new List<GameObject>();
             mapLoader = new MapLoader(gameObjects, Content);
             
+            // TODO: Remove this hard coding
             up    = new Vector2( 0, -150);
             down  = new Vector2( 0,  150);
             left  = new Vector2(-150,  0);
@@ -47,6 +48,9 @@ namespace Project
         /// </summary>
         protected override void Initialize()
         {
+            graphics.PreferredBackBufferWidth = (int)ScreenManager.Instance.Dimensions.X;
+            graphics.PreferredBackBufferHeight = (int)ScreenManager.Instance.Dimensions.Y;
+            graphics.ApplyChanges();
             gameState = mapLoader.initMap(lvlName);
             base.Initialize();
         }
@@ -61,6 +65,8 @@ namespace Project
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            ScreenManager.Instance.LoadContent(this.Content);
+            
             music = Content.Load<Song>("caveMusic");
 
             mapLoader.loadMapContent(gameState);
@@ -76,6 +82,7 @@ namespace Project
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
+            //ScreenManager.Instance.UnloadContent();
         }
 
         /// <summary>
@@ -87,6 +94,8 @@ namespace Project
         {
             Miner miner = gameState.getMiner1();
             Vector2 startingPosition = new Vector2(210, 250);
+
+            //ScreenManager.Instance.Update(gameTime);
 
             // TODO: Add your update logic here
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
@@ -183,11 +192,12 @@ namespace Project
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            //ScreenManager.Instance.Draw(spriteBatch);
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
             foreach (GameObject obj in gameObjects) {
-                if (obj.visible) spriteBatch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, obj.Texture.Width, obj.Texture.Height), Color.White);
+                if (obj.Visible) spriteBatch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, obj.Texture.Width, obj.Texture.Height), Color.White);
             }
             spriteBatch.End();
 

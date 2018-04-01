@@ -19,7 +19,7 @@ namespace Project.GameObjects.Miner
             this.Speed    = speed;
             this.Mass     = mass;
             this.Box      = box;
-            this.visible  = true;
+            this.Visible  = true;
             this.Gait     = Gait.walk;
             this.Stance   = Stance.stand;
             this.tool = new Pickaxe();

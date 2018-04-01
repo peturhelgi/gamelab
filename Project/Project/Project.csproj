@@ -101,6 +101,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameObjects\Crate.cs" />
     <Compile Include="GameObjects\Pickaxe.cs" />
     <Compile Include="GameObjects\Rock.cs" />
     <Compile Include="GameObjects\Tool.cs" />
@@ -111,9 +112,13 @@
     </Compile>
     <Compile Include="GreatEscape.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Screens\SplashScreen.cs" />
+    <Compile Include="Util\Contols.cs" />
+    <Compile Include="Util\GameScreen.cs" />
     <Compile Include="Util\GameState.cs" />
     <Compile Include="Util\Level.cs" />
     <Compile Include="Util\MapLoader.cs" />
+    <Compile Include="Util\ScreenManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\samplelvl.json" />
