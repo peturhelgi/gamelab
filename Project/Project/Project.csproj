@@ -47,7 +47,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\WindowsUniversal\$(Platform)\$(Configuration)\</OutputPath>
+    <OutputPath>.\</OutputPath>
     <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UAP</DefineConstants>
     <NoWarn>;2008</NoWarn>
     <DebugType>full</DebugType>
@@ -112,6 +112,9 @@
     </Compile>
     <Compile Include="GreatEscape.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Screens\EditorScreen.cs" />
+    <Compile Include="Screens\MenuScreen.cs" />
+    <Compile Include="Screens\PlayingScreen.cs" />
     <Compile Include="Screens\SplashScreen.cs" />
     <Compile Include="Util\Contols.cs" />
     <Compile Include="Util\GameScreen.cs" />
@@ -119,9 +122,12 @@
     <Compile Include="Util\Level.cs" />
     <Compile Include="Util\MapLoader.cs" />
     <Compile Include="Util\ScreenManager.cs" />
+    <Compile Include="Util\DataManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\samplelvl.json" />
+    <None Include="Content\SplashScreen.json" />
+    <None Include="Load\SplashScreen.json" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>

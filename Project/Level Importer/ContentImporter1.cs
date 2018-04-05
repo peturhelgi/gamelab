@@ -20,13 +20,13 @@ namespace Level_Importer
     /// extension, display name, and default processor for this importer.
     /// </summary>
 
-    [ContentImporter(".json", DisplayName = "Level Importer", DefaultProcessor = "LevelProcessor")]
+    [ContentImporter(".json", DisplayName = "JSON Importer", DefaultProcessor = "LevelProcessor")]
     public class ContentImporter1 : ContentImporter<TInput>
     {
 
         public override TInput Import(string filename, ContentImporterContext context)
         {
-            context.Logger.LogMessage("Importing Map file: {0}", filename);
+            context.Logger.LogMessage("Importing JSON file: {0}", filename);
 
             using (StreamReader streamReader = new StreamReader(filename))
             {

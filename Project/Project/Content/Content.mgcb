@@ -49,3 +49,6 @@
 /processor:ContentProcessor1
 /build:samplelvl.json
 
+#begin SplashScreen.json
+/copy:SplashScreen.json
+

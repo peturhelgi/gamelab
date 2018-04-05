@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 
 namespace Project.Util
@@ -13,8 +14,15 @@ namespace Project.Util
     public class GameScreen
     {
         protected ContentManager content;
+        [JsonIgnore]
+        public Type Type;
+        
+        public GameScreen() {
+            Type = this.GetType();
+        }
         public virtual void LoadContent() {
-            content = new ContentManager(ScreenManager.Instance.Content.ServiceProvider, "Content");
+            content = new ContentManager(
+                ScreenManager.Instance.Content.ServiceProvider, "Content");
         }
         public virtual void UnloadContent() {
             content.Unload();
@@ -23,7 +31,5 @@ namespace Project.Util
         public virtual void Update(GameTime gameTime) { }
 
         public virtual void Draw(SpriteBatch spriteBatch) { }
-
-
     }
 }

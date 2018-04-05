@@ -14,6 +14,8 @@ namespace Project
     /// </summary>
     public class GreatEscape : Game
     {
+        bool myway = true;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private Song music;
@@ -23,7 +25,6 @@ namespace Project
         private GameState gameState;
         Vector2 gravity = new Vector2(0, -1000);
         Vector2 direction, up, down, left, right;
-
         string lvlName = "samplelvl";
 
         public GreatEscape()
@@ -31,13 +32,7 @@ namespace Project
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             gameObjects = new List<GameObject>();
-            mapLoader = new MapLoader(gameObjects, Content);
-            
-            // TODO: Remove this hard coding
-            up    = new Vector2( 0, -150);
-            down  = new Vector2( 0,  150);
-            left  = new Vector2(-150,  0);
-            right = new Vector2( 150,  0);
+            mapLoader = new MapLoader(gameObjects, Content);            
         }
 
         /// <summary>
@@ -51,7 +46,8 @@ namespace Project
             graphics.PreferredBackBufferWidth = (int)ScreenManager.Instance.Dimensions.X;
             graphics.PreferredBackBufferHeight = (int)ScreenManager.Instance.Dimensions.Y;
             graphics.ApplyChanges();
-            gameState = mapLoader.initMap(lvlName);
+            if(!myway)
+                gameState = mapLoader.InitMap(lvlName);
             base.Initialize();
         }
 
@@ -63,16 +59,8 @@ namespace Project
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
             ScreenManager.Instance.LoadContent(this.Content);
-            
-            music = Content.Load<Song>("caveMusic");
-
-            mapLoader.loadMapContent(gameState);
-
-            MediaPlayer.Play(music);
-            player = new VideoPlayer();
+  
         }
 
         /// <summary>
@@ -82,7 +70,7 @@ namespace Project
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
-            //ScreenManager.Instance.UnloadContent();
+            ScreenManager.Instance.UnloadContent();
         }
 
         /// <summary>
@@ -91,97 +79,10 @@ namespace Project
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
-        {
-            Miner miner = gameState.getMiner1();
-            Vector2 startingPosition = new Vector2(210, 250);
-
-            //ScreenManager.Instance.Update(gameTime);
-
-            // TODO: Add your update logic here
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-                Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            //Check for input on controller
-            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
-            if (gamePadState.IsConnected)
-            {
-
-            }
-            // Keyboard input otherwise
-            else
-            {
-                // This is very incomplete...
-
-
-                KeyboardState state = Keyboard.GetState();
-
-                if (state.IsKeyDown(Keys.B)) {
-                    if (miner.IsStanding() || miner.IsLying())
-                        miner.Crouch();
-                    else if (miner.IsCrouching())
-                        miner.StandUp();
-                }
-                    
-                if (state.IsKeyDown(Keys.X))
-                {
-                    if(!miner.IsAirborne())
-                        miner.Run();
-                }
-                else // either the player wasn't running, or they just quit
-                {
-                    if (miner.IsRunning())
-                    {
-                        miner.Walk();
-                    }
-                }
-                if (state.IsKeyDown(Keys.Space))
-                {
-                    if(!miner.IsAirborne())
-                        miner.Jump();
-                }
-                if (state.IsKeyDown(Keys.Right))
-                {
-                    miner.Move(new Vector2(right.X, miner.Speed.Y));
-                }
-                
-                else if (state.IsKeyDown(Keys.Left))
-                {
-                    miner.Move(new Vector2(left.X, miner.Speed.Y));
-                }
-                else if(!miner.IsAirborne())
-                {
-                    miner.Halt();
-                }
-
-                if (state.IsKeyDown(Keys.R))
-                {
-                    miner.Position = startingPosition;
-                    miner.Halt();
-                }
-                if (state.IsKeyDown(Keys.Q))
-                {
-                    miner.UseTool(this.gameObjects);
-                }
-            }
-
-            // TODO make this with the physics engine and with bounding boxes!
-            // if character is jumping
-
-            if (miner.IsAirborne())
-            {
-                if (miner.Position.Y > startingPosition.Y)
-                {
-                    miner.Halt();
-                    miner.Position = new Vector2(miner.Position.X, startingPosition.Y);
-                }
-                else
-                {
-                    miner.Speed -= (float)gameTime.ElapsedGameTime.TotalSeconds * gravity;
-                }
-            }
-
-            miner.Position += (float)gameTime.ElapsedGameTime.TotalSeconds * miner.Speed;
+        {            
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+                this.Exit();
+            ScreenManager.Instance.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -192,13 +93,10 @@ namespace Project
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            //ScreenManager.Instance.Draw(spriteBatch);
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
-            foreach (GameObject obj in gameObjects) {
-                if (obj.Visible) spriteBatch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, obj.Texture.Width, obj.Texture.Height), Color.White);
-            }
+            ScreenManager.Instance.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

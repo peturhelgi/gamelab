@@ -7,21 +7,24 @@ using Project.Util;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using Project.GameObjects.Miner;
+using Project.GameObjects;
+using Newtonsoft.Json;
 
 namespace Project.Screens
 {
     public class SplashScreen : GameScreen
     {
-
         Texture2D image;
-        string path;
-
-
+        public string Path { get; set; }
+        public Vector2 Position;
+        //private ContentManager contentManager;
         public override void LoadContent()
         {
             base.LoadContent();
-            path = "Assets/SplashScreen.scale-200.png";
-            image = content.Load<Texture2D>(path);
+            image = content.Load<Texture2D>(Path);
         }
 
         public override void UnloadContent()
@@ -34,7 +37,7 @@ namespace Project.Screens
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(image, Vector2.Zero, Color.White);
+            spriteBatch.Draw(image, Position, Color.White);
         }
     }
 }

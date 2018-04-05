@@ -15,7 +15,7 @@ namespace Project.Util
         private static ScreenManager instance;
         public Vector2 Dimensions { private set; get; }
         public ContentManager Content { private set; get; }
-
+        DataManager<GameScreen> jsonGameScreenManager;
         GameScreen currentScreen;
 
         public static ScreenManager Instance {
@@ -28,6 +28,11 @@ namespace Project.Util
         public ScreenManager() {
             Dimensions = new Vector2(640, 480);
             currentScreen = new SplashScreen();
+            jsonGameScreenManager = new DataManager<GameScreen>
+            {
+                Type = currentScreen.Type
+            };
+            currentScreen = jsonGameScreenManager.Load("Content/SplashScreen.json");
         }
 
         public void LoadContent(ContentManager Content) {
@@ -35,7 +40,7 @@ namespace Project.Util
             currentScreen.LoadContent();
         }
 
-        public void UnloadContend(){
+        public void UnloadContent(){
             currentScreen.UnloadContent();
         }
 
