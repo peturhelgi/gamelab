@@ -294,3 +294,6 @@ __pycache__/
 *.aux
 *.toc
 *.synctex.gz
+
+# By us
+*.dll

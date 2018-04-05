@@ -16,7 +16,9 @@ namespace Project.Util
         protected ContentManager content;
         [JsonIgnore]
         public Type Type;
-        
+        [JsonIgnore]
+        public string Source { get; protected set; }
+
         public GameScreen() {
             Type = this.GetType();
         }

@@ -19,6 +19,10 @@ namespace Project.Screens
     {
         Texture2D image;
         public string Path { get; set; }
+
+        public SplashScreen() {
+            Source = "Content/SplashScreen.json";
+        }
         public Vector2 Position;
         //private ContentManager contentManager;
         public override void LoadContent()

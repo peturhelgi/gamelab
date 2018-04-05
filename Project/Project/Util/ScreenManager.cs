@@ -32,7 +32,7 @@ namespace Project.Util
             {
                 Type = currentScreen.Type
             };
-            currentScreen = jsonGameScreenManager.Load("Content/SplashScreen.json");
+            currentScreen = jsonGameScreenManager.Load(currentScreen.Source);
         }
 
         public void LoadContent(ContentManager Content) {

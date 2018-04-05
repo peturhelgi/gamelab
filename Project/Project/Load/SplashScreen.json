@@ -1,0 +1,8 @@
+﻿{
+  "$type": "Project.Screens.SplashScreen, Project",
+  "Path": "Rock",
+  "Position": {
+    "X": 50,
+    "Y": 50
+  }
+}
