@@ -43,7 +43,7 @@ namespace Project.Util
         }
 
         public void loadMapContent(GameState gameState) {
-            gameState.getMiner1().Texture = contentManager.Load<Texture2D>("Miner");
+            gameState.getMiner1().Texture = contentManager.Load<Texture2D>("Miner_hands_in_pants");
             foreach (Rock rock in gameState.getRocks()) {
                 rock.Texture = contentManager.Load<Texture2D>("Rock");
             }

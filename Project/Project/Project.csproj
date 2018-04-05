@@ -115,6 +115,8 @@
     <Compile Include="Util\MapLoader.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Content.mgcb" />
+    <MonoGameContentReference Include="Content\visual_assets\visuals.mgcb" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -126,7 +128,10 @@
   <ItemGroup>
     <Content Include="Content\caveMusic.mp3" />
     <Content Include="Content\Miner.png" />
-    <Content Include="Content\Rock.png" />
+    <Content Include="Content\visual_assets\Miner_hands_in_pants.png" />
+    <Content Include="Content\visual_assets\Miner_hands_out.png" />
+    <Content Include="Content\visual_assets\Pickaxe.png" />
+    <Content Include="Content\visual_assets\Rope.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -135,9 +140,6 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
