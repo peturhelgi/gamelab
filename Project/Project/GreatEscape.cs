@@ -26,6 +26,8 @@ namespace Project
         Texture2D background;
         Texture2D ground_1, ground_2;
 
+        string lvlName = "samplelvl";
+
         public GreatEscape()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -51,7 +53,7 @@ namespace Project
         /// </summary>
         protected override void Initialize()
         {
-            gameState = mapLoader.initMap();
+            gameState = mapLoader.initMap(lvlName);
             base.Initialize();
         }
 

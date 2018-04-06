@@ -21,6 +21,11 @@ namespace Project.GameObjects
             set;
         }
 
+        Vector2 SpriteSize {
+            get;
+            set;
+        }
+
         Vector2 Speed {
             get;
             set;
@@ -36,6 +41,8 @@ namespace Project.GameObjects
     abstract class GameObject : IGameObject {
         
         public Vector2 Position { get; set; }
+
+        public Vector2 SpriteSize { get; set; }
 
         public Vector2 Speed { get; set; }
 
