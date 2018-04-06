@@ -23,10 +23,16 @@ namespace Project
         private GameState gameState;
         Vector2 gravity = new Vector2(0, -1000);
         Vector2 direction, up, down, left, right;
+        Texture2D background;
+        Texture2D ground_1, ground_2;
 
         public GreatEscape()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferWidth = 720;
+            graphics.ApplyChanges();
+
             Content.RootDirectory = "Content";
             gameObjects = new List<GameObject>();
             mapLoader = new MapLoader(gameObjects, Content);
@@ -62,6 +68,9 @@ namespace Project
             music = Content.Load<Song>("caveMusic");
 
             mapLoader.loadMapContent(gameState);
+            background = mapLoader.getBackground();
+            ground_1 = Content.Load<Texture2D>("rocks/ground_1");
+            ground_2 = Content.Load<Texture2D>("rocks/ground_3");
 
             MediaPlayer.Play(music);
             player = new VideoPlayer();
@@ -184,9 +193,13 @@ namespace Project
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             spriteBatch.Begin();
+            spriteBatch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
+            spriteBatch.Draw(ground_1, new Rectangle(200, 500, ground_1.Width, ground_1.Height), Color.White);
+            spriteBatch.Draw(ground_2, new Rectangle(900, 500, ground_2.Width, ground_2.Height), Color.White);
             foreach (GameObject obj in gameObjects) {
-                if (obj.visible) spriteBatch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, obj.Texture.Width, obj.Texture.Height), Color.White);
+                    if (obj.visible) spriteBatch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, obj.Texture.Width / 2, obj.Texture.Height / 2), Color.White);
             }
+
             spriteBatch.End();
 
             base.Draw(gameTime);

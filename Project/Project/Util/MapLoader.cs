@@ -15,6 +15,7 @@ namespace Project.Util
     {
         public List<GameObject> gameObjects;
         public ContentManager contentManager;
+        public Texture2D background;
 
         public MapLoader(List<GameObject> gameObjects, ContentManager contentManager) {
             this.gameObjects = gameObjects;
@@ -43,10 +44,16 @@ namespace Project.Util
         }
 
         public void loadMapContent(GameState gameState) {
-            gameState.getMiner1().Texture = contentManager.Load<Texture2D>("Miner_hands_in_pants");
+            background = contentManager.Load<Texture2D>("backgrounds/background_1");
+
+            gameState.getMiner1().Texture = contentManager.Load<Texture2D>("miners/miner_hands_in_pants");
             foreach (Rock rock in gameState.getRocks()) {
-                rock.Texture = contentManager.Load<Texture2D>("Rock");
+                rock.Texture = contentManager.Load<Texture2D>("rocks/rock");
             }
+        }
+
+        public Texture2D getBackground() {
+            return background;
         }
     }
 }

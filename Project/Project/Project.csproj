@@ -127,11 +127,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\caveMusic.mp3" />
-    <Content Include="Content\Miner.png" />
-    <Content Include="Content\visual_assets\Miner_hands_in_pants.png" />
-    <Content Include="Content\visual_assets\Miner_hands_out.png" />
-    <Content Include="Content\visual_assets\Pickaxe.png" />
-    <Content Include="Content\visual_assets\Rope.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
