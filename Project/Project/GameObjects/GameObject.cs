@@ -61,6 +61,7 @@ namespace Project.GameObjects
 
 
         public bool Falling { get; set; }
+
         public Vector2 Position { get; set; }
 
         public Vector2 Dimension { get; set; }
