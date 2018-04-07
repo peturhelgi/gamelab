@@ -10,7 +10,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using VelcroPhysics.Dynamics;
 
 namespace Project.Util
 {
@@ -18,18 +17,11 @@ namespace Project.Util
     {
         public List<GameObject> gameObjects;
         public ContentManager contentManager;
-        public readonly World world;
 
-        //static MapLoader() {
-        //    MapLoader.world = new World(new Vector2(0, 9.82f));
-        //}
-        public MapLoader(List<GameObject> gameObjects, ContentManager contentManager, World world) {
+
+        public MapLoader(List<GameObject> gameObjects, ContentManager contentManager) {
             this.gameObjects = gameObjects;
             this.contentManager = contentManager;
-
-            // Create a world with gravity.
-            //world = new World(new Vector2(0, 9.82f));
-            this.world = world;
         }
 
         public GameState initMap(string levelName) {
@@ -42,17 +34,17 @@ namespace Project.Util
 
                 switch (obj.Type) {
                     case "miner":
-                        Miner miner = new Miner(obj.Position,obj.Velocity, obj.Mass, new BoundingBox(), world);
+                        Miner miner = new Miner(obj.Position,obj.Velocity, obj.Mass, new BoundingBox());
                         gameObjects.Add(miner);
                         gameState.addMiner1(miner);
                         break;
                     case "rock":
-                        Rock rock = new Rock(obj.Position, obj.Dimension, world);
+                        Rock rock = new Rock(obj.Position, obj.Dimension);
                         gameObjects.Add(rock);
                         gameState.addRock(rock);
                         break;
                     case "ground":
-                        Ground ground = new Ground(obj.Position, obj.Dimension, world);
+                        Ground ground = new Ground(obj.Position, obj.Dimension);
                         gameObjects.Add(ground);
                         gameState.addGround(ground);
                         break;

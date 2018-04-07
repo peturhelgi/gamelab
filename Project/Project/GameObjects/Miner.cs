@@ -2,9 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using VelcroPhysics.Dynamics;
-using VelcroPhysics.Factories;
-using VelcroPhysics.Utilities;
 
 namespace Project.GameObjects.Miner
 {
@@ -16,7 +13,7 @@ namespace Project.GameObjects.Miner
         Tool tool;
         Gait Gait;
         Stance Stance;
-        public Miner(Vector2 position, Vector2 speed, double mass, BoundingBox box, World world)
+        public Miner(Vector2 position, Vector2 speed, double mass, BoundingBox box)
         {
             this.Position = position;
             this.Speed    = speed;
@@ -26,10 +23,9 @@ namespace Project.GameObjects.Miner
             this.Gait     = Gait.walk;
             this.Stance   = Stance.stand;
             this.tool = new Pickaxe();
-            this.Body = BodyFactory.CreateCircle(world, ConvertUnits.ToSimUnits(128f / 2f), 1f, ConvertUnits.ToSimUnits(position), BodyType.Dynamic);
+            //this.Body = BodyFactory.CreateCircle(world, ConvertUnits.ToSimUnits(128f / 2f), 1f, ConvertUnits.ToSimUnits(position), BodyType.Dynamic);
             //this.Body = BodyFactory.CreateBody(world, ConvertUnits.ToSimUnits(position), 0f, BodyType.Dynamic); //
-            Body.Restitution = 0.3f;
-            Body.Friction = 1f;
+          
         }
 
         /// <summary>
@@ -40,7 +36,6 @@ namespace Project.GameObjects.Miner
             this.Stance = Stance.jump;
             this.Gait = Gait.jump;
             // TODO: add jump logic
-            this.Body.ApplyLinearImpulse(new Vector2(0, -0.4f));
             //this.Speed = new Vector2(this.Speed.X, -400);
 
             return true;
@@ -161,7 +156,6 @@ namespace Project.GameObjects.Miner
 
                 default:
                     // Nothing happens yet
-                    this.Body.ApplyLinearImpulse(dv);
                     this.Speed = dv;
                     break;
             }
