@@ -51,7 +51,7 @@ namespace Project.Util
         }
 
         void TryToInteract(GameObject obj) {
-            List<GameObject> collisions = CollisionDetector.FindCollisions(obj.Box, GameState.Collectibles);
+            List<GameObject> collisions = CollisionDetector.FindCollisions(obj.BBox, GameState.Collectibles);
             foreach (GameObject c in collisions) {
                 c.Visible = false;
                 Debug.WriteLine(c.TextureString);

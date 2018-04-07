@@ -6,7 +6,7 @@ namespace Project.GameObjects
 {
     interface IGameObject
     {
-        BoundingBox Box {
+        BoundingBox BBox {
             get;
         }
 
@@ -62,7 +62,7 @@ namespace Project.GameObjects
 
         public double Mass { get; set; }
 
-        public BoundingBox Box { get {
+        public BoundingBox BBox { get {
                 return new BoundingBox(new Vector3(Position,0), new Vector3(Position+Dimension, 0));
                 
             } }
