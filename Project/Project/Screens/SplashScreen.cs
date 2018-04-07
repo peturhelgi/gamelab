@@ -17,31 +17,38 @@ namespace Project.Screens
 {
     public class SplashScreen : GameScreen
     {
-        Texture2D image;
+        public Image Image;
         public string Path { get; set; }
 
         public SplashScreen() {
-            Source = "Content/SplashScreen.json";
+            Path = "Content/Load/SplashScreen.json";
         }
         public Vector2 Position;
         //private ContentManager contentManager;
         public override void LoadContent()
         {
             base.LoadContent();
-            image = content.Load<Texture2D>(Path);
+            Image.LoadContent();
         }
 
         public override void UnloadContent()
         {
             base.UnloadContent();
+            Image.UnloadContent();
         }
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            Image.Update(gameTime);
+
+            if (InputManager.Instance.KeyPressed(Keys.Enter, Keys.Z))
+            {
+                ScreenManager.Instance.ChangeScreen("TitleScreen");
+            }
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(image, Position, Color.White);
+            Image.Draw(spriteBatch);
         }
     }
 }

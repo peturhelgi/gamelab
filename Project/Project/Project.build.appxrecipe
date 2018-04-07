@@ -412,11 +412,17 @@
     <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\caveMusic.mp3">
       <PackagePath>Content\caveMusic.mp3</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\Miner.png">
-      <PackagePath>Content\Miner.png</PackagePath>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\Sounds\caveMusic.mp3">
+      <PackagePath>Content\Sounds\caveMusic.mp3</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\Rock.png">
-      <PackagePath>Content\Rock.png</PackagePath>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\ScreenManager\FadeImage.png">
+      <PackagePath>Content\ScreenManager\FadeImage.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\Sprites\Miner.png">
+      <PackagePath>Content\Sprites\Miner.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\Sprites\Rock.png">
+      <PackagePath>Content\Sprites\Rock.png</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Assets\LockScreenLogo.scale-200.png">
       <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
@@ -447,20 +453,44 @@
     <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\SplashScreen.xml">
       <PackagePath>Content\SplashScreen.xml</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\caveMusic.wma">
-      <PackagePath>Content\caveMusic.wma</PackagePath>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Sprites\Miner.xnb">
+      <PackagePath>Content\Sprites\Miner.xnb</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\caveMusic.xnb">
-      <PackagePath>Content\caveMusic.xnb</PackagePath>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Sprites\Rock.xnb">
+      <PackagePath>Content\Sprites\Rock.xnb</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Miner.xnb">
-      <PackagePath>Content\Miner.xnb</PackagePath>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Sounds\caveMusic.xnb">
+      <PackagePath>Content\Sounds\caveMusic.xnb</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Rock.xnb">
-      <PackagePath>Content\Rock.xnb</PackagePath>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\mySounds\caveMusic.xnb">
+      <PackagePath>Content\mySounds\caveMusic.xnb</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\samplelvl.xnb">
-      <PackagePath>Content\samplelvl.xnb</PackagePath>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\ScreenManager\FadeImage.xnb">
+      <PackagePath>Content\ScreenManager\FadeImage.xnb</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\mySprites\Miner.xnb">
+      <PackagePath>Content\mySprites\Miner.xnb</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\mySprites\Rock.xnb">
+      <PackagePath>Content\mySprites\Rock.xnb</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Fonts\Orbitron.xnb">
+      <PackagePath>Content\Fonts\Orbitron.xnb</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Sounds\caveMusic.wma">
+      <PackagePath>Content\Sounds\caveMusic.wma</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\mySounds\caveMusic.wma">
+      <PackagePath>Content\mySounds\caveMusic.wma</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Load\ScreenManager.json">
+      <PackagePath>Content\Load\ScreenManager.json</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Load\SplashScreen.json">
+      <PackagePath>Content\Load\SplashScreen.json</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Load\TitleMenu.json">
+      <PackagePath>Content\Load\TitleMenu.json</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\SplashScreen.json">
       <PackagePath>Content\SplashScreen.json</PackagePath>

@@ -16,11 +16,12 @@ namespace Project.Util
         protected ContentManager content;
         [JsonIgnore]
         public Type Type;
-        [JsonIgnore]
-        public string Source { get; protected set; }
+
+        public string Path;
 
         public GameScreen() {
             Type = this.GetType();
+            Path = "Content/Load/" + Type.ToString().Replace("Project.Screens.", "") + ".json";
         }
         public virtual void LoadContent() {
             content = new ContentManager(
@@ -30,7 +31,9 @@ namespace Project.Util
             content.Unload();
         }
 
-        public virtual void Update(GameTime gameTime) { }
+        public virtual void Update(GameTime gameTime) {
+            InputManager.Instance.Update();
+        }
 
         public virtual void Draw(SpriteBatch spriteBatch) { }
     }

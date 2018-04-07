@@ -111,23 +111,35 @@
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="GreatEscape.cs" />
+    <Compile Include="ImageEffects\FadeEffect.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screens\EditorScreen.cs" />
     <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Screens\PlayingScreen.cs" />
     <Compile Include="Screens\SplashScreen.cs" />
+    <Compile Include="Screens\TitleScreen.cs" />
+    <Compile Include="Util\ImageEffect.cs" />
     <Compile Include="Util\Contols.cs" />
     <Compile Include="Util\GameScreen.cs" />
     <Compile Include="Util\GameState.cs" />
+    <Compile Include="Util\Image.cs" />
+    <Compile Include="Util\InputManager.cs" />
     <Compile Include="Util\Level.cs" />
     <Compile Include="Util\MapLoader.cs" />
+    <Compile Include="Util\Menu.cs" />
+    <Compile Include="Util\MenuItem.cs" />
+    <Compile Include="Util\MenuManager.cs" />
     <Compile Include="Util\ScreenManager.cs" />
     <Compile Include="Util\DataManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Fonts\Orbitron.spritefont" />
+    <None Include="Content\Load\SplashScreen.json" />
+    <None Include="Content\Load\TitleMenu.json" />
     <None Include="Content\samplelvl.json" />
-    <None Include="Content\SplashScreen.json" />
-    <None Include="Load\SplashScreen.json" />
+    <None Include="Content\Load\ScreenManager.json" />
+    <None Include="Content\Sprites\Miner.xnb" />
+    <None Include="Content\Sprites\Rock.xnb" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -138,8 +150,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\caveMusic.mp3" />
-    <Content Include="Content\Miner.png" />
-    <Content Include="Content\Rock.png" />
+    <Content Include="Content\ScreenManager\FadeImage.png" />
+    <Content Include="Content\Sounds\caveMusic.mp3" />
+    <Content Include="Content\Sprites\Miner.png" />
+    <Content Include="Content\Sprites\Rock.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -162,6 +176,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -14,13 +14,16 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin caveMusic.mp3
+#begin Load/SplashScreen.json
+/copy:Load/SplashScreen.json
+
+#begin Sounds/caveMusic.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:caveMusic.mp3
+/build:Sounds/caveMusic.mp3
 
-#begin Miner.png
+#begin Sprites/Miner.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -30,9 +33,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Miner.png
+/build:Sprites/Miner.png
 
-#begin Rock.png
+#begin Sprites/Rock.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -42,13 +45,30 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Rock.png
+/build:Sprites/Rock.png
 
-#begin samplelvl.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:samplelvl.json
+#begin Fonts/Orbitron.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Orbitron.spritefont
 
-#begin SplashScreen.json
-/copy:SplashScreen.json
+#begin Load/ScreenManager.json
+/copy:Load/ScreenManager.json
+
+#begin ScreenManager/FadeImage.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:ScreenManager/FadeImage.png
+
+#begin Load/TitleMenu.json
+/copy:Load/TitleMenu.json
 

@@ -46,8 +46,8 @@ namespace Project
             graphics.PreferredBackBufferWidth = (int)ScreenManager.Instance.Dimensions.X;
             graphics.PreferredBackBufferHeight = (int)ScreenManager.Instance.Dimensions.Y;
             graphics.ApplyChanges();
-            if(!myway)
-                gameState = mapLoader.InitMap(lvlName);
+            //if(!myway)
+             //   gameState = mapLoader.InitMap(lvlName);
             base.Initialize();
         }
 
@@ -59,8 +59,9 @@ namespace Project
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            ScreenManager.Instance.LoadContent(this.Content);
-  
+            ScreenManager.Instance.GraphicsDevice = GraphicsDevice;
+            ScreenManager.Instance.SpriteBatch = spriteBatch;
+            ScreenManager.Instance.LoadContent(this.Content);  
         }
 
         /// <summary>
@@ -80,7 +81,8 @@ namespace Project
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {            
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
+                || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
             ScreenManager.Instance.Update(gameTime);
 
