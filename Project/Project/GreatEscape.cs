@@ -25,6 +25,7 @@ namespace Project
         Vector2 direction, up, down, left, right;
         Texture2D background;
         Texture2D ground_1, ground_2;
+        Texture2D exitSign;
 
         string lvlName = "samplelvl";
 
@@ -73,6 +74,7 @@ namespace Project
             background = mapLoader.getBackground();
             ground_1 = Content.Load<Texture2D>("Sprites/Rocks/Ground1");
             ground_2 = Content.Load<Texture2D>("Sprites/Rocks/Ground3");
+            exitSign = Content.Load<Texture2D>("Sprites/Backgrounds/ExitSign_2");
 
             MediaPlayer.Play(music);
             player = new VideoPlayer();
@@ -198,6 +200,7 @@ namespace Project
             spriteBatch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
             spriteBatch.Draw(ground_1, new Rectangle(200, 500, ground_1.Width, ground_1.Height), Color.White);
             spriteBatch.Draw(ground_2, new Rectangle(900, 500, ground_2.Width, ground_2.Height), Color.White);
+            spriteBatch.Draw(exitSign, new Rectangle(900, 100, exitSign.Width/5, exitSign.Height/5), Color.White);
             foreach (GameObject obj in gameObjects) {
                     if (obj.visible) spriteBatch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, obj.Texture.Width / 2, obj.Texture.Height / 2), Color.White);
             }
