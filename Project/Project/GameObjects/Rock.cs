@@ -9,13 +9,15 @@ namespace Project.GameObjects
 {
     class Rock : GameObject
     {
-        public Rock(Vector2 position, Vector2 dimension) {
+        public Rock(Vector2 position, Vector2 dimension, string textureString) {
+
+            TextureString = textureString;
             Position = position;
+            Dimension = dimension;
+
             Speed = new Vector2(0);
             Mass = 10;
-            Box = new BoundingBox(new Vector3(position, 0), new Vector3(position.X + dimension.X, position.Y + dimension.Y, 0));
             Visible = true;
-           // Body = BodyFactory.CreateRectangle(world, dimension.X, dimension.Y, 1f, position);
         }
     }
 }

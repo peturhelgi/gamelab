@@ -29,7 +29,8 @@
         "y": 0
       },
       "m": 80,
-      "type": "miner"
+      "type": "miner",
+      "texture":  "Miner"
     },
     {
       "dim": {
@@ -45,7 +46,9 @@
         "y": 0
       },
       "m": 50,
-      "type": "rock"
+      "type": "rock",
+      "texture": "Rock"
+
     },
     {
       "dim": {
@@ -61,7 +64,9 @@
         "y": 0
       },
       "m": 20,
-      "type": "rock"
+      "type": "rock",
+      "texture": "Rock"
+
     },
     {
       "dim": {
@@ -77,7 +82,8 @@
         "y": 0
       },
       "m": 1000,
-      "type": "ground"
+      "type": "ground",
+      "texture":  "Ground"
     },
     {
       "dim": {
@@ -93,7 +99,8 @@
         "y": 0
       },
       "m": 1000,
-      "type": "ground"
+      "type": "ground",
+      "texture": "Ground"
     }
   ]
 }

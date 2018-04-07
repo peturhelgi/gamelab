@@ -12,6 +12,16 @@ namespace Project.Util
 {
     class GameController
     {
+        public GameEngine GameEngine;
+
+        public Camera Camera;
+
+
+        public GameController(GameEngine gameEngine, Camera camera) {
+            GameEngine = gameEngine;
+            Camera = camera;
+        }
+
         internal void HandleInput()
         {
             HandleMouse( Mouse.GetState());
@@ -27,7 +37,8 @@ namespace Project.Util
             }
 
 
-
+            HandleKeyboard(Keyboard.GetState());
+            
         }
 
         private void HandleMouse(MouseState ms) {
@@ -38,8 +49,26 @@ namespace Project.Util
             }
         }
 
-        private void HandleKeyboard()
+        private void HandleKeyboard(KeyboardState state)
         {
+            // START Handle camera
+            if (state.IsKeyDown(Keys.A)) Camera.HandleAction(Camera.CameraAction.left);
+            if (state.IsKeyDown(Keys.D)) Camera.HandleAction(Camera.CameraAction.right);
+            if (state.IsKeyDown(Keys.W)) Camera.HandleAction(Camera.CameraAction.up);
+            if (state.IsKeyDown(Keys.S)) Camera.HandleAction(Camera.CameraAction.down);
+            if (state.IsKeyDown(Keys.Z)) Camera.HandleAction(Camera.CameraAction.zoom_out);
+            if (state.IsKeyDown(Keys.X)) Camera.HandleAction(Camera.CameraAction.zoom_in);
+            // END Handle camera
+
+            // START Handle GameAction
+            if (state.IsKeyDown(Keys.Right)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_right, 0);
+            if (state.IsKeyDown(Keys.Left)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_left, 0);
+            if (state.IsKeyDown(Keys.I)) GameEngine.HandleInput(0, GameEngine.GameAction.interact, 0);
+
+            // END Handle GameAction
+
+
+
 
         }
 

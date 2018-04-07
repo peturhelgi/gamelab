@@ -15,38 +15,33 @@ namespace Project.Util
 {
     class MapLoader
     {
-        public List<GameObject> gameObjects;
-        public ContentManager contentManager;
+        public ContentManager ContentManager;
 
 
-        public MapLoader(List<GameObject> gameObjects, ContentManager contentManager) {
-            this.gameObjects = gameObjects;
-            this.contentManager = contentManager;
+        public MapLoader(ContentManager contentManager) {
+            ContentManager = contentManager;
         }
 
-        public GameState initMap(string levelName) {
+        public GameState InitMap(string levelName) {
             GameState gameState = new GameState();
 
-            string text = contentManager.Load<string>(levelName);
+            string text = ContentManager.Load<string>(levelName);
             Level level = JsonConvert.DeserializeObject<Level>(text);
 
             foreach (Obj obj in level.objects) {
 
                 switch (obj.Type) {
                     case "miner":
-                        Miner miner = new Miner(obj.Position,obj.Velocity, obj.Mass, new BoundingBox());
-                        gameObjects.Add(miner);
-                        gameState.addMiner1(miner);
+                        Miner miner = new Miner(obj.Position, obj.Dimension, obj.Velocity, obj.Mass, obj.Texture);
+                        gameState.AddActor(miner);
                         break;
                     case "rock":
-                        Rock rock = new Rock(obj.Position, obj.Dimension);
-                        gameObjects.Add(rock);
-                        gameState.addRock(rock);
+                        Rock rock = new Rock(obj.Position, obj.Dimension, obj.Texture);
+                        gameState.AddCollectible(rock);
                         break;
                     case "ground":
-                        Ground ground = new Ground(obj.Position, obj.Dimension);
-                        gameObjects.Add(ground);
-                        gameState.addGround(ground);
+                        Ground ground = new Ground(obj.Position, obj.Dimension, obj.Texture);
+                        gameState.AddSolid(ground);
                         break;
                     case "end":
                         break;
@@ -60,14 +55,11 @@ namespace Project.Util
             return gameState;
         }
 
-        public void loadMapContent(GameState gameState) {
-            gameState.getMiner1().Texture = contentManager.Load<Texture2D>("Miner");
-            foreach (Rock rock in gameState.getRocks()) {
-                rock.Texture = contentManager.Load<Texture2D>("Rock");
-            }
-
-            foreach (Ground gnd in gameState.getGround()) {
-                gnd.Texture = contentManager.Load<Texture2D>("Ground");
+        public void LoadMapContent(GameState gameState) {
+           
+            // TODO possibly add a hashed Map to only load every Texture once
+            foreach (GameObject obj in gameState.GetAll()) {
+                obj.Texture = ContentManager.Load<Texture2D>(obj.TextureString);
             }
 
         }

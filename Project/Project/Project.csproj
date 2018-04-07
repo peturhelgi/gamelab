@@ -113,7 +113,9 @@
     <Compile Include="GreatEscape.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\Camera.cs" />
+    <Compile Include="Util\CollisionDetector.cs" />
     <Compile Include="Util\GameController.cs" />
+    <Compile Include="Util\GameEngine.cs" />
     <Compile Include="Util\GameState.cs" />
     <Compile Include="Util\Level.cs" />
     <Compile Include="Util\MapLoader.cs" />

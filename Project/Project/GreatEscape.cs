@@ -18,29 +18,15 @@ namespace Project
     {
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch sprite_batch;
-        private KeyboardState oldKeyState;
-        private GamePadState oldPadState;
-        private SpriteFont font;
-
-        Texture2D ground_1, ground_2;
-
-        GameObject miner;
-
-        private Vector2 screenCenter;
-        private Vector2 groundOrigin_1, groundOrigin_2;
-        private Vector2 minerOrigin;
-
-        private Song music;
-        private VideoPlayer player;
-        private List<GameObject> gameObjects;
+        
+        //private List<GameObject> gameObjects;
         private MapLoader mapLoader;
-        private GameState gameState;
 
-        private Camera camera;
         private GameController controller;
 
         string lvlName = "samplelvl";
 
+        
 
 
         public GreatEscape()
@@ -55,9 +41,8 @@ namespace Project
 
 
             Content.RootDirectory = "Content";
-            gameObjects = new List<GameObject>();
 
-            mapLoader = new MapLoader(gameObjects, Content);
+            mapLoader = new MapLoader(Content);
 
         }
 
@@ -70,8 +55,9 @@ namespace Project
         /// </summary>
         protected override void Initialize()
         {
-            gameState = mapLoader.initMap(lvlName);
-            this.IsMouseVisible = true;
+            controller = new GameController(new GameEngine(mapLoader.InitMap(lvlName)), new Camera(0.5f, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2f, graphics.GraphicsDevice.Viewport.Height / 2f)));
+
+            IsMouseVisible = true;
             base.Initialize();
 
         }
@@ -82,42 +68,10 @@ namespace Project
         /// </summary>
         protected override void LoadContent()
         {
-            mapLoader.loadMapContent(gameState);
-
-
-
-            // initialize Camera
-            camera = new Camera(0.5f, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2f, graphics.GraphicsDevice.Viewport.Height / 2f));
-            controller = new GameController();
-
-            font = Content.Load<SpriteFont>("font");
-
+            mapLoader.LoadMapContent(controller.GameEngine.GameState);
+            
             // Create a new SpriteBatch, which can be used to draw textures.
             sprite_batch = new SpriteBatch(GraphicsDevice);
-
-            ground_1 = Content.Load<Texture2D>("Ground"); // 1000x482px
-            ground_2 = Content.Load<Texture2D>("Ground"); // 1000x482px
-
-            groundOrigin_1 = new Vector2(ground_1.Width / 2f, ground_1.Height / 2f);
-            groundOrigin_2 = new Vector2(ground_2.Width / 2f, ground_2.Height / 2f);
-
-
-            miner = gameState.getMiner1();
-
-
-            /* Ground */
-
-            //groundBody_1 = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits(512f), ConvertUnits.ToSimUnits(128f), 1f, groundPosition_1);
-            //groundBody_2 = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits(512f), ConvertUnits.ToSimUnits(128f), 1f, groundPosition_2);
-            //groundBody_1.BodyType = groundBody_2.BodyType = BodyType.Static;
-            //groundBody_1.Restitution = groundBody_2.Restitution = 0.3f;
-            //groundBody_1.Friction = groundBody_2.Friction = 0.5f;
-
-            // TODO: use this.Content to load your game content here
-            //music = Content.Load<Song>("caveMusic");
-
-            //MediaPlayer.Play(music);
-            //player = new VideoPlayer();
         }
 
         private void RestartGame()
@@ -142,40 +96,16 @@ namespace Project
         protected override void Update(GameTime gameTime)
         {
             controller.HandleInput();
+
+            // TODO integrate these into the controller and remove them here
+           // HandleKeyboard();
             
             base.Update(gameTime);
         }
 
         
-        // The camera is still handled here, as it is for testing only (at least for know)
-        private void HandleCamera(KeyboardState state)
-        {
-
-            // Move camera
-            if (state.IsKeyDown(Keys.A))
-            {
-                camera.Translate(new Vector2(-1, 0));
-            }
-            if (state.IsKeyDown(Keys.D)) { camera.Translate(new Vector2(1, 0)); }
-
-            if (state.IsKeyDown(Keys.W))
-            {
-                camera.Translate(new Vector2(0, -1));
-            }
-
-            if (state.IsKeyDown(Keys.S))
-            {
-                camera.Translate(new Vector2(0, 1 ));
-            }
-
-          
-            if (state.IsKeyDown(Keys.Z)) // Press 'z' to zoom out.
-                camera.ZoomOut();
-            else if (state.IsKeyDown(Keys.X)) // Press 'x' to zoom in.
-                camera.ZoomIn();
-           
-        }
-
+       
+        /*
         private void HandleKeyboard()
         {
 
@@ -184,45 +114,24 @@ namespace Project
             if (state.IsKeyDown(Keys.Escape))
                 Exit();
 
-            HandleCamera(state);
-
-            Miner miner = gameState.getMiner1();
 
             if (state.IsKeyDown(Keys.Home))
                 RestartGame();
 
-            //if (state.IsKeyDown(Keys.B)) {
-            //    if (miner.IsStanding() || miner.IsLying())
-            //        miner.Crouch();
-            //    else if (miner.IsCrouching())
-            //        miner.StandUp();
-            //}
 
-            //if (state.IsKeyDown(Keys.X)) {
-            //    if (!miner.IsAirborne())
-            //        miner.Run();
-            //}
-            //else // either the player wasn't running, or they just quit
-            //{
-            //    if (miner.IsRunning()) {
-            //        miner.Walk();
-            //    }
-            //}
+            if (state.IsKeyDown(Keys.Right))
+                miner.Position += new Vector2(5, 0);
 
-            //if (state.IsKeyDown(Keys.Space)) {
-            //    if (!miner.IsAirborne())
-            //        miner.Jump();
-            //}
+            if (state.IsKeyDown(Keys.Left))
+                miner.Position += new Vector2(-5, 0);
 
-            if (state.IsKeyDown(Keys.Left) && oldKeyState.IsKeyUp(Keys.Left))
-                //miner.Body.ApplyLinearImpulse(new Vector2(0, 10));
-                miner.Move(new Vector2(-2, 0));
-            if (state.IsKeyDown(Keys.Right) && oldKeyState.IsKeyUp(Keys.Right))
-            {
-                miner.Move(new Vector2(2, 0));
+            if (state.IsKeyDown(Keys.Up))
+                miner.Position += new Vector2(0, -5);
+
+            if (state.IsKeyDown(Keys.Down))
+                miner.Position += new Vector2(0, 5);
 
 
-            }
 
             //if (!miner.IsAirborne()) {
             //    miner.Halt();
@@ -261,7 +170,7 @@ namespace Project
             //            miner.Position += (float) gameTime.ElapsedGameTime.TotalSeconds * miner.Speed;
             oldKeyState = state;
         }
-
+        */
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -269,23 +178,13 @@ namespace Project
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
-            sprite_batch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, camera.view);
+            sprite_batch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, controller.Camera.view);
 
-            foreach (GameObject obj in gameObjects)
+            foreach (GameObject obj in controller.GameEngine.GameState.GetAll())
             {
-                if (obj is Miner)
-                {
-                    sprite_batch.Draw(obj.Texture, obj.Position, Color.White);
-                    continue;
-                }
-
-                if (obj is Ground)
-                {
-                    sprite_batch.Draw(obj.Texture, obj.Position, Color.White);
-                    continue;
-                }
+                if(obj.Visible) sprite_batch.Draw(obj.Texture, obj.Position, Color.White);
             }
 
 

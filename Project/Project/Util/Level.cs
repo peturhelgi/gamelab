@@ -40,5 +40,8 @@ namespace Project.Util
 
         [JsonProperty("type")]
         public string Type;
+
+        [JsonProperty("texture")]
+        public string Texture;
     }
 }
