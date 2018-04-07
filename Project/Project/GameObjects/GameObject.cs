@@ -6,9 +6,8 @@ namespace Project.GameObjects
 {
     interface IGameObject
     {
-        BoundingBox Box {
+        BoundingBox BBox {
             get;
-            set;
         }
 
         double Mass {
@@ -16,7 +15,8 @@ namespace Project.GameObjects
             set;
         }
 
-        Vector2 Position {
+        Vector2 Position
+        {
             get;
             set;
         }
@@ -31,7 +31,18 @@ namespace Project.GameObjects
             set;
         }
 
-        bool visible {
+        bool Visible {
+            get;
+            set;
+        }
+
+        string TextureString
+        {
+            get;
+            set;
+        }
+
+        Texture2D Texture {
             get;
             set;
         }
@@ -39,7 +50,7 @@ namespace Project.GameObjects
     }
 
     abstract class GameObject : IGameObject {
-        
+
         public Vector2 Position { get; set; }
 
         public Vector2 SpriteSize { get; set; }
@@ -48,11 +59,14 @@ namespace Project.GameObjects
 
         public double Mass { get; set; }
 
-        public BoundingBox Box { get; set; }
+        public BoundingBox BBox { get {
+                return new BoundingBox(new Vector3(Position,0), new Vector3(Position + SpriteSize, 0));
+            } }
 
         public Texture2D Texture { get; set; }
 
-        public bool visible { get; set; }
+        public bool Visible { get; set; }
 
+        public string TextureString { get; set; }
     }
 }

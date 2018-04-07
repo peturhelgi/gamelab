@@ -7,17 +7,16 @@ using System.Threading.Tasks;
 
 namespace Project.GameObjects
 {
-    class Rock : GameObject
+    class Ground : GameObject
     {
-        public Rock(Vector2 position, Vector2 spriteSize, string textureString) {
-
-            TextureString = textureString;
+        public Ground(Vector2 position, Vector2 spriteSize, string TextureString) {
             Position = position;
-            SpriteSize = spriteSize;
-
             Speed = new Vector2(0);
-            Mass = 10;
+            Mass = 1000;
+            SpriteSize = spriteSize;
             Visible = true;
+            this.TextureString = TextureString;
+
         }
     }
 }

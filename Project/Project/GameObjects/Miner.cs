@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Project.Util;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Project.GameObjects.Miner
 {
@@ -13,16 +15,18 @@ namespace Project.GameObjects.Miner
         Tool tool;
         Gait Gait;
         Stance Stance;
-        public Miner(Vector2 position, Vector2 speed, double mass, BoundingBox box)
+        public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
         {
-            this.Position = position;
-            this.Speed    = speed;
-            this.Mass     = mass;
-            this.Box      = box;
-            this.visible  = true;
-            this.Gait     = Gait.walk;
-            this.Stance   = Stance.stand;
-            this.tool = new Pickaxe();
+            Position = position;
+            Speed    = speed;
+            Mass     = mass;
+            SpriteSize = spriteSize;
+            Visible  = true;
+            Gait     = Gait.walk;
+            Stance   = Stance.stand;
+            tool = new Pickaxe();
+            TextureString = textureString;
+
         }
 
         /// <summary>
@@ -33,7 +37,7 @@ namespace Project.GameObjects.Miner
             this.Stance = Stance.jump;
             this.Gait = Gait.jump;
             // TODO: add jump logic
-            this.Speed = new Vector2(this.Speed.X, -400);
+            //this.Speed = new Vector2(this.Speed.X, -400);
 
             return true;
         }
