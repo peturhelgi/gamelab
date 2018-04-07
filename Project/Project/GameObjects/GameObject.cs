@@ -43,7 +43,14 @@ namespace Project.GameObjects
             set;
         }
 
-        Texture2D Texture {
+        Texture2D Texture
+        {
+            get;
+            set;
+        }
+
+        bool Falling
+        {
             get;
             set;
         }
@@ -54,7 +61,7 @@ namespace Project.GameObjects
     abstract class GameObject : IGameObject {
 
 
-
+        public bool Falling { get; set; }
         public Vector2 Position { get; set; }
         public Vector2 Dimension { get; set; }
 
