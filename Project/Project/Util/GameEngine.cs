@@ -78,12 +78,12 @@ namespace Project.Util
         void TryToMakeMovement(GameObject obj, Vector2 direction)
         {
             Miner actor = (Miner)obj;
-            BoundingBox oldBox = actor.Box;
+            BoundingBox oldBox = actor.BBox;
             Vector2 OldPosition = actor.Position;
 
             actor.Position += CalculateActualDirectionOfMovement(actor, direction);
             
-            BoundingBox tempBox = BoundingBox.CreateMerged(oldBox, actor.Box);
+            BoundingBox tempBox = BoundingBox.CreateMerged(oldBox, actor.BBox);
 
             List<GameObject> collisions = CollisionDetector.FindCollisions(tempBox, GameState.Solids);
             if (collisions.Count > 0)
@@ -94,7 +94,7 @@ namespace Project.Util
             }
 
             // Next, we need to check if we are "flying", i.e. walking over an edge to store it to the character, to calculate the difference in height for the next iteration
-            tempBox = actor.Box;
+            tempBox = actor.BBox;
             tempBox.Min -= new Vector3(0.1f, 0.1f, 0);
             tempBox.Max += new Vector3(0.1f, 0.1f, 0);
 
