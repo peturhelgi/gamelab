@@ -9,12 +9,15 @@ namespace Project.GameObjects
 {
     class Rock : GameObject
     {
-        public Rock(Vector2 position, float width, float height) {
+        public Rock(Vector2 position, Vector2 dimension, string textureString) {
+
+            TextureString = textureString;
             Position = position;
+            Dimension = dimension;
+
             Speed = new Vector2(0);
             Mass = 10;
-            Box = new BoundingBox(new Vector3(position, 0), new Vector3(position.X + width, position.Y + height, 0));
-            visible = true;
+            Visible = true;
         }
     }
 }

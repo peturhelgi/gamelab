@@ -8,29 +8,56 @@ using System.Threading.Tasks;
 
 namespace Project.Util
 {
-    class GameState
+    class GameState : Level
     {
-        private Miner miner1;
-        private List<Rock> rocks;
+        public List<GameObject> Actors;
+        public List<GameObject> Solids;
+        public List<GameObject> Collectibles;
+        CollisionDetector CollisionDetector;
+
 
         public GameState() {
-            this.rocks = new List<Rock>();
+            Actors = new List<GameObject>();
+            Solids = new List<GameObject>();
+            Collectibles = new List<GameObject>();
+            CollisionDetector = new CollisionDetector();
         }
 
-        public void addMiner1(Miner miner1) {
-            this.miner1 = miner1;
+        public List<GameObject> GetAll() {
+            return Actors.Concat(Solids).Concat(Collectibles).ToList();
         }
 
-        public void addRock(Rock rock) {
-            rocks.Add(rock);
+
+        public void AddActor(GameObject actor)
+        {
+            Actors.Add(actor);
         }
 
-        public Miner getMiner1() {
-            return miner1;
+        public List<GameObject> GetActors() {
+            return Actors;
         }
 
-        public List<Rock> getRocks() {
-            return rocks;
+
+        public void AddSolid(GameObject solid)
+        {
+            Solids.Add(solid);
         }
+        public List<GameObject> GetSolids()
+        {
+            return Solids;
+        }
+
+
+        public void AddCollectible(GameObject collectible)
+        {
+            Collectibles.Add(collectible);
+        }
+        public List<GameObject> GetCollectibles()
+        {
+            return Collectibles;
+        }
+
+
+
     }
 }

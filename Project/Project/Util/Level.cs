@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,26 +17,31 @@ namespace Project.Util
         public int nextlvl;
         public string nextlvlname;
         public string background;
-        public Obj player1Start;
-        public Obj player2Start;
-        public Pos end;
-        public List<Obj> rocks;
+
+        public List<Obj> objects;
     }
 
-    class Pos
-    {
-        public float x;
-        public float y;
-    }
+
 
     class Obj
     {
-        public float w;
-        public float h;
-        public float x;
-        public float y;
-        public float vx;
-        public float vy;
-        public float m;
+
+        [JsonProperty("dim")]
+        public Vector2 Dimension;
+
+        [JsonProperty("pos")]
+        public Vector2 Position;
+
+        [JsonProperty("vel")]
+        public Vector2 Velocity;
+
+        [JsonProperty("m")]
+        public float Mass;
+
+        [JsonProperty("type")]
+        public string Type;
+
+        [JsonProperty("texture")]
+        public string Texture;
     }
 }

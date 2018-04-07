@@ -15,38 +15,53 @@ namespace Project.Util
 {
     class MapLoader
     {
-        public List<GameObject> gameObjects;
-        public ContentManager contentManager;
+        public ContentManager ContentManager;
 
-        public MapLoader(List<GameObject> gameObjects, ContentManager contentManager) {
-            this.gameObjects = gameObjects;
-            this.contentManager = contentManager;
+
+        public MapLoader(ContentManager contentManager) {
+            ContentManager = contentManager;
         }
 
-        public GameState initMap(string levelName) {
+        public GameState InitMap(string levelName) {
             GameState gameState = new GameState();
 
-            string text = contentManager.Load<string>(levelName);
+            string text = ContentManager.Load<string>(levelName);
             Level level = JsonConvert.DeserializeObject<Level>(text);
 
-            Miner miner1 = new Miner(new Vector2(level.player1Start.x, level.player1Start.y), new Vector2(level.player1Start.vx, level.player1Start.vy), level.player1Start.m, new BoundingBox());
-            gameObjects.Add(miner1);
-            gameState.addMiner1(miner1);
-            //TODO: add miner2
-            foreach (Obj obj in level.rocks) {
-                Rock rock = new Rock(new Vector2(obj.x, obj.y), obj.w, obj.h);
-                gameObjects.Add(rock);
-                gameState.addRock(rock);
+            foreach (Obj obj in level.objects) {
+
+                switch (obj.Type) {
+                    case "miner":
+                        Miner miner = new Miner(obj.Position, obj.Dimension, obj.Velocity, obj.Mass, obj.Texture);
+                        gameState.AddActor(miner);
+                        break;
+                    case "rock":
+                        Rock rock = new Rock(obj.Position, obj.Dimension, obj.Texture);
+                        gameState.AddCollectible(rock);
+                        break;
+                    case "ground":
+                        Ground ground = new Ground(obj.Position, obj.Dimension, obj.Texture);
+                        gameState.AddSolid(ground);
+                        break;
+                    case "end":
+                        break;
+
+                    default:
+                        Console.WriteLine("Object of Type "+obj.Type+" not implemented.");
+                        break;
+                }
             }
 
             return gameState;
         }
 
-        public void loadMapContent(GameState gameState) {
-            gameState.getMiner1().Texture = contentManager.Load<Texture2D>("Miner");
-            foreach (Rock rock in gameState.getRocks()) {
-                rock.Texture = contentManager.Load<Texture2D>("Rock");
+        public void LoadMapContent(GameState gameState) {
+           
+            // TODO possibly add a hashed Map to only load every Texture once
+            foreach (GameObject obj in gameState.GetAll()) {
+                obj.Texture = ContentManager.Load<Texture2D>(obj.TextureString);
             }
+
         }
     }
 }
