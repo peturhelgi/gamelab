@@ -48,14 +48,12 @@ namespace Project.GameObjects
             set;
         }
 
-
     }
 
     abstract class GameObject : IGameObject {
 
-
-
         public Vector2 Position { get; set; }
+
         public Vector2 Dimension { get; set; }
 
         public Vector2 Speed { get; set; }
@@ -64,12 +62,12 @@ namespace Project.GameObjects
 
         public BoundingBox BBox { get {
                 return new BoundingBox(new Vector3(Position,0), new Vector3(Position+Dimension, 0));
-                
             } }
 
         public Texture2D Texture { get; set; }
 
         public bool Visible { get; set; }
+
         public string TextureString { get; set; }
     }
 }
