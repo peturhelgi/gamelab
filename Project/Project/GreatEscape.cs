@@ -107,6 +107,7 @@ namespace Project
         {
             controller.HandleInput();
 
+            controller.GameEngine.Update(0, gameTime);
             // TODO integrate these into the controller and remove them here
            // HandleKeyboard();
             

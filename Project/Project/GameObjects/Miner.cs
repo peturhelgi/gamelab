@@ -33,11 +33,11 @@ namespace Project.GameObjects.Miner
         /// Makes the miner jump if possible
         /// </summary>
         /// <returns>True if 1==1</returns>
-        public bool Jump() {
+        public bool Jump(Vector2 speed) {
             this.Stance = Stance.jump;
             this.Gait = Gait.jump;
             // TODO: add jump logic
-            //this.Speed = new Vector2(this.Speed.X, -400);
+            this.Speed += speed;
 
             return true;
         }
