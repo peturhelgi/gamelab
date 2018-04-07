@@ -29,19 +29,19 @@ namespace Project.Util
             switch (action)
             {
                 case (CameraAction.right):
-                    Translate(new Vector2(1, 0));
+                    Translate(new Vector2(2, 0));
                     break;
 
                 case (CameraAction.left):
-                    Translate(new Vector2(-1, 0));
+                    Translate(new Vector2(-2, 0));
                     break;
 
                 case (CameraAction.up):
-                    Translate(new Vector2(0, -1));
+                    Translate(new Vector2(0, -2));
                     break;
 
                 case (CameraAction.down):
-                    Translate(new Vector2(0, 1));
+                    Translate(new Vector2(0, 2));
                     break;
 
                 case (CameraAction.zoom_in):

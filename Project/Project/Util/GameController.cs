@@ -64,6 +64,7 @@ namespace Project.Util
             if (state.IsKeyDown(Keys.Right)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_right, 0);
             if (state.IsKeyDown(Keys.Left)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_left, 0);
             if (state.IsKeyDown(Keys.I)) GameEngine.HandleInput(0, GameEngine.GameAction.interact, 0);
+            if (state.IsKeyDown(Keys.Space)) GameEngine.HandleInput(0, GameEngine.GameAction.jump, 0);
 
             // END Handle GameAction
 
