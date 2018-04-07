@@ -31,12 +31,12 @@ namespace Project
 
         public GreatEscape()
         {
-            graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this) {
 
-            // this is supposed to change the window resolution, but I can't really get it to work
-            graphics.PreferredBackBufferWidth = 800;
-            graphics.PreferredBackBufferHeight = 600;
-            graphics.IsFullScreen = false;
+                PreferredBackBufferWidth = 800,
+                PreferredBackBufferHeight = 600,
+                IsFullScreen = false
+            };
             graphics.ApplyChanges();
 
 

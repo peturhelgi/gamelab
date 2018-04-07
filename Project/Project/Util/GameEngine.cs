@@ -30,11 +30,14 @@ namespace Project.Util
 
             switch (action) {
                 case (GameAction.walk_right):
-                    TryToMakeMovement(miner, new Vector2(1, 0));
+                    TryToMakeMovement(miner, new Vector2(5, 0));
                     break;
 
                 case (GameAction.walk_left):
-                    TryToMakeMovement(miner, new Vector2(-1, 0));
+                    TryToMakeMovement(miner, new Vector2(-5, 0));
+                    break;
+                case (GameAction.jump):
+                    TryToJump(miner, new Vector2(0, -5));
                     break;
 
                 case (GameAction.interact):
@@ -49,7 +52,7 @@ namespace Project.Util
         }
 
         void TryToInteract(GameObject obj) {
-            List<GameObject> collisions = CollisionDetector.FindCollisions(obj.Box, GameState.Collectibles);
+            List<GameObject> collisions = CollisionDetector.FindCollisions(obj.BBox, GameState.Collectibles);
             foreach (GameObject c in collisions) {
                 c.Visible = false;
                 Debug.WriteLine(c.TextureString);
@@ -113,6 +116,10 @@ namespace Project.Util
 
         }
 
+        void TryToJump(GameObject obj, Vector2 direction) 
+        {
+            obj.Position += direction;
+        }
 
     }
 }

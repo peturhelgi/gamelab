@@ -17,7 +17,7 @@ namespace Project.Util
             List<GameObject> results = new List<GameObject>();
             foreach (GameObject obj in objects)
             {
-                if (box.Intersects(obj.Box))
+                if (box.Intersects(obj.BBox))
                 {
                     results.Add(obj);
                 }
