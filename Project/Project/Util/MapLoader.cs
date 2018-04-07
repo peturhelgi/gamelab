@@ -44,11 +44,11 @@ namespace Project.Util
         }
 
         public void loadMapContent(GameState gameState) {
-            background = contentManager.Load<Texture2D>("backgrounds/background_1");
+            background = contentManager.Load<Texture2D>("Sprites/Backgrounds/Background1");
 
-            gameState.getMiner1().Texture = contentManager.Load<Texture2D>("miners/miner_hands_in_pants");
+            gameState.getMiner1().Texture = contentManager.Load<Texture2D>("Sprites/Miners/MinerHandsInPants");
             foreach (Rock rock in gameState.getRocks()) {
-                rock.Texture = contentManager.Load<Texture2D>("rocks/rock");
+                rock.Texture = contentManager.Load<Texture2D>("Sprites/Rocks/BareRock5");
             }
         }
 

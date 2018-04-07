@@ -71,8 +71,8 @@ namespace Project
 
             mapLoader.loadMapContent(gameState);
             background = mapLoader.getBackground();
-            ground_1 = Content.Load<Texture2D>("rocks/ground_1");
-            ground_2 = Content.Load<Texture2D>("rocks/ground_3");
+            ground_1 = Content.Load<Texture2D>("Sprites/Rocks/Ground1");
+            ground_2 = Content.Load<Texture2D>("Sprites/Rocks/Ground3");
 
             MediaPlayer.Play(music);
             player = new VideoPlayer();

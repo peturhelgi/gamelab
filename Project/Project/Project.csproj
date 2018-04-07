@@ -116,8 +116,7 @@
     <Compile Include="Util\MapLoader.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Content.mgcb" />
-    <MonoGameContentReference Include="Content\visual_assets\visuals.mgcb" />
+    <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="Content\samplelvl.json" />
     <None Include="project.json" />
   </ItemGroup>
