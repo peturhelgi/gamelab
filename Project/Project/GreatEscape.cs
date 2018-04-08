@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Project.Util;
 using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Project
 {
@@ -24,6 +25,7 @@ namespace Project
 
         Texture2D background;
         Texture2D exitSign;
+        Texture2D DebugBox;
 
         private GameController controller;
         string lvlName = "samplelvl";
@@ -71,6 +73,8 @@ namespace Project
             sprite_batch = new SpriteBatch(GraphicsDevice);
             background = mapLoader.getBackground();
             exitSign = Content.Load<Texture2D>("Sprites/Backgrounds/ExitSign_2");
+            DebugBox = Content.Load<Texture2D>("Sprites/Misc/box");
+
         }
 
         private void RestartGame()
@@ -98,22 +102,27 @@ namespace Project
             base.Update(gameTime);
         }
 
+
         
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.White);
 
-            sprite_batch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, controller.Camera.view);
+            bool DebugView = Keyboard.GetState().IsKeyDown(Keys.P);
+            if(DebugView){
+                //To view the bounding boxes
+                sprite_batch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, null, null, null, null, controller.Camera.view);
+            }
+            else {
+                sprite_batch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, controller.Camera.view);
+            }
+            
 
-            //To view the bounding boxes
-            //sprite_batch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, null, null, null, null, controller.Camera.view);
-
-
+            // TODO move to the MapLoader/GameState 
             sprite_batch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
             sprite_batch.Draw(exitSign, new Rectangle(1100, 300, exitSign.Width/5, exitSign.Height/5), Color.White);
 
@@ -123,8 +132,17 @@ namespace Project
 
             foreach (GameObject obj in controller.GameEngine.GameState.GetAll())
             {
-                //if(obj.Visible) sprite_batch.Draw(obj.Texture, obj.Position, Color.White);
-                if (obj.Visible) sprite_batch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White); 
+                if (obj.Visible)
+                {
+                    if (DebugView)
+                    {
+                        sprite_batch.Draw(DebugBox, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);
+                    }
+                    else
+                    {
+                        sprite_batch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);
+                    }
+                }
             }
 
             sprite_batch.End();
