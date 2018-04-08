@@ -22,7 +22,7 @@ namespace Project.Util
             Camera = camera;
         }
 
-        internal void HandleInput()
+        internal void HandleUpdate(GameTime gameTime)
         {
             HandleMouse( Mouse.GetState());
             GamePadState PlayerOneState = GamePad.GetState(PlayerIndex.One);
@@ -38,6 +38,8 @@ namespace Project.Util
 
 
             HandleKeyboard(Keyboard.GetState());
+
+            GameEngine.Update(gameTime);
             
         }
 
