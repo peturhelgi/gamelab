@@ -96,81 +96,10 @@ namespace Project
         protected override void Update(GameTime gameTime)
         {
             controller.HandleInput();
-
-            // TODO integrate these into the controller and remove them here
-           // HandleKeyboard();
             
             base.Update(gameTime);
         }
 
-        
-       
-        /*
-        private void HandleKeyboard()
-        {
-
-            KeyboardState state = Keyboard.GetState();
-
-            if (state.IsKeyDown(Keys.Escape))
-                Exit();
-
-
-            if (state.IsKeyDown(Keys.Home))
-                RestartGame();
-
-
-            if (state.IsKeyDown(Keys.Right))
-                miner.Position += new Vector2(5, 0);
-
-            if (state.IsKeyDown(Keys.Left))
-                miner.Position += new Vector2(-5, 0);
-
-            if (state.IsKeyDown(Keys.Up))
-                miner.Position += new Vector2(0, -5);
-
-            if (state.IsKeyDown(Keys.Down))
-                miner.Position += new Vector2(0, 5);
-
-
-
-            //if (!miner.IsAirborne()) {
-            //    miner.Halt();
-            //}
-
-
-            // cannot integrate this IsKeyUp for Space, I do not know why yet
-            if (state.IsKeyDown(Keys.Space)) // && oldKeyState.IsKeyUp(Keys.Space))
-                miner.Jump();
-
-            if (state.IsKeyDown(Keys.T))
-            {
-                //miner.Position = startingPosition;
-                miner.Halt();
-            }
-            if (state.IsKeyDown(Keys.Q))
-            {
-                miner.UseTool(this.gameObjects);
-            }
-
-            //            // TODO make this with the physics engine and with bounding boxes!
-            //            // if character is jumping
-            //            if (miner.IsAirborne())
-            //            {
-            //                if (miner.Position.Y > startingPosition.Y)
-            //                {
-            //                    miner.Halt();
-            //                    miner.Position = new Vector2(miner.Position.X, startingPosition.Y);
-            //    }
-            //                else
-            //                {
-            //                    miner.Speed -= (float) gameTime.ElapsedGameTime.TotalSeconds * gravity;
-            //}
-            //            }
-
-            //            miner.Position += (float) gameTime.ElapsedGameTime.TotalSeconds * miner.Speed;
-            oldKeyState = state;
-        }
-        */
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
