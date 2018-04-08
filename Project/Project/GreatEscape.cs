@@ -26,7 +26,7 @@ namespace Project
         Texture2D exitSign;
 
         private GameController controller;
-        string lvlName = "samplelvl";
+        string lvlName = "more_platforms";
 
         public GreatEscape()
         {
@@ -53,7 +53,7 @@ namespace Project
         /// </summary>
         protected override void Initialize()
         {
-            controller = new GameController(new GameEngine(mapLoader.InitMap(lvlName)), new Camera(1f, Vector2.Zero));
+            controller = new GameController(new GameEngine(mapLoader.InitMap(lvlName)), new Camera(0.8f, Vector2.Zero));
 
             IsMouseVisible = true;
             base.Initialize();
@@ -192,8 +192,8 @@ namespace Project
             //sprite_batch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, null, null, null, null, controller.Camera.view);
 
 
-            sprite_batch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
-            sprite_batch.Draw(exitSign, new Rectangle(1100, 300, exitSign.Width/5, exitSign.Height/5), Color.White);
+            sprite_batch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth * 3/2,  graphics.PreferredBackBufferHeight * 3/2), Color.White);
+            sprite_batch.Draw(exitSign, new Rectangle(1430, 300, exitSign.Width/5, exitSign.Height/5), Color.White);
 
             RasterizerState state = new RasterizerState();
             state.FillMode = FillMode.WireFrame;
