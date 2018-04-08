@@ -17,12 +17,12 @@
     },
     {
       "dim": {
-        "x": 490,
-        "y": 600
+        "x": 102,
+        "y": 370
       },
       "pos": {
         "x": 210,
-        "y": 250
+        "y": 0
       },
       "vel": {
         "x": 0,
@@ -30,16 +30,16 @@
       },
       "m": 80,
       "type": "miner",
-      "texture":  "Miner"
+      "texture": "Sprites/Miners/MinerHandsInPants"
     },
     {
       "dim": {
-        "x": 100,
-        "y": 100
+        "x": 150,
+        "y": 107.5
       },
       "pos": {
-        "x": 900,
-        "y": 600
+        "x": 881,
+        "y": 390
       },
       "vel": {
         "x": 0,
@@ -47,17 +47,17 @@
       },
       "m": 50,
       "type": "rock",
-      "texture": "Rock"
+      "texture": "Sprites/Rocks/BareRock5"
 
     },
     {
       "dim": {
-        "x": 100,
-        "y": 100
+        "x": 276,
+        "y": 175.3
       },
       "pos": {
-        "x": 600,
-        "y": 300
+        "x": 746,
+        "y": 343
       },
       "vel": {
         "x": 0,
@@ -65,17 +65,17 @@
       },
       "m": 20,
       "type": "rock",
-      "texture": "Rock"
+      "texture": "Sprites/Rocks/BareRock1"
 
     },
     {
       "dim": {
-        "x": 1000,
-        "y": 482
+        "x": 640,
+        "y": 318
       },
       "pos": {
-        "x": 500,
-        "y": 950
+        "x": 600,
+        "y": 500
       },
       "vel": {
         "x": 0,
@@ -83,16 +83,16 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture":  "Ground"
+      "texture": "Sprites/Rocks/Ground1"
     },
     {
       "dim": {
-        "x": 1000,
-        "y": 482
+        "x": 640,
+        "y": 268
       },
       "pos": {
-        "x": 2000,
-        "y": 950
+        "x": -300,
+        "y": 500
       },
       "vel": {
         "x": 0,
@@ -100,7 +100,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Ground"
+      "texture": "Sprites/Rocks/Ground3"
     }
   ]
 }

@@ -9,11 +9,11 @@ namespace Project.GameObjects
 {
     class Rock : GameObject
     {
-        public Rock(Vector2 position, Vector2 dimension, string textureString) {
+        public Rock(Vector2 position, Vector2 spriteSize, string textureString) {
 
             TextureString = textureString;
             Position = position;
-            Dimension = dimension;
+            SpriteSize = spriteSize;
 
             Speed = new Vector2(0);
             Mass = 10;

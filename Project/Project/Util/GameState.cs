@@ -10,14 +10,14 @@ namespace Project.Util
 {
     class GameState : Level
     {
-        public List<GameObject> Actors;
+        public List<Miner> Actors;
         public List<GameObject> Solids;
         public List<GameObject> Collectibles;
         CollisionDetector CollisionDetector;
 
 
         public GameState() {
-            Actors = new List<GameObject>();
+            Actors = new List<Miner>();
             Solids = new List<GameObject>();
             Collectibles = new List<GameObject>();
             CollisionDetector = new CollisionDetector();
@@ -28,12 +28,12 @@ namespace Project.Util
         }
 
 
-        public void AddActor(GameObject actor)
+        public void AddActor(Miner actor)
         {
             Actors.Add(actor);
         }
 
-        public List<GameObject> GetActors() {
+        public List<Miner> GetActors() {
             return Actors;
         }
 

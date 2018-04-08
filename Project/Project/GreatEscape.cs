@@ -22,12 +22,11 @@ namespace Project
         //private List<GameObject> gameObjects;
         private MapLoader mapLoader;
 
+        Texture2D background;
+        Texture2D exitSign;
+
         private GameController controller;
-
         string lvlName = "samplelvl";
-
-        
-
 
         public GreatEscape()
         {
@@ -38,7 +37,6 @@ namespace Project
                 IsFullScreen = false
             };
             graphics.ApplyChanges();
-
 
             Content.RootDirectory = "Content";
 
@@ -55,7 +53,7 @@ namespace Project
         /// </summary>
         protected override void Initialize()
         {
-            controller = new GameController(new GameEngine(mapLoader.InitMap(lvlName)), new Camera(0.5f, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2f, graphics.GraphicsDevice.Viewport.Height / 2f)));
+            controller = new GameController(new GameEngine(mapLoader.InitMap(lvlName)), new Camera(1f, Vector2.Zero));
 
             IsMouseVisible = true;
             base.Initialize();
@@ -71,7 +69,14 @@ namespace Project
             mapLoader.LoadMapContent(controller.GameEngine.GameState);
             
             // Create a new SpriteBatch, which can be used to draw textures.
+            // TODO: use this.Content to load your game content here
+            //music = Content.Load<Song>("caveMusic");
+            //MediaPlayer.Play(music);
+            //player = new VideoPlayer();
+
             sprite_batch = new SpriteBatch(GraphicsDevice);
+            background = mapLoader.getBackground();
+            exitSign = Content.Load<Texture2D>("Sprites/Backgrounds/ExitSign_2");
         }
 
         private void RestartGame()
@@ -97,9 +102,10 @@ namespace Project
         {
             controller.HandleInput();
 
+            controller.GameEngine.Update(0, gameTime);
             // TODO integrate these into the controller and remove them here
-           // HandleKeyboard();
-            
+            // HandleKeyboard();
+
             base.Update(gameTime);
         }
 
@@ -178,15 +184,26 @@ namespace Project
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.White);
 
             sprite_batch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, controller.Camera.view);
 
+            //To view the bounding boxes
+            //sprite_batch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, null, null, null, null, controller.Camera.view);
+
+
+            sprite_batch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
+            sprite_batch.Draw(exitSign, new Rectangle(1100, 300, exitSign.Width/5, exitSign.Height/5), Color.White);
+
+            RasterizerState state = new RasterizerState();
+            state.FillMode = FillMode.WireFrame;
+            sprite_batch.GraphicsDevice.RasterizerState = state;
+
             foreach (GameObject obj in controller.GameEngine.GameState.GetAll())
             {
-                if(obj.Visible) sprite_batch.Draw(obj.Texture, obj.Position, Color.White);
+                //if(obj.Visible) sprite_batch.Draw(obj.Texture, obj.Position, Color.White);
+                if (obj.Visible) sprite_batch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White); 
             }
-
 
             sprite_batch.End();
 

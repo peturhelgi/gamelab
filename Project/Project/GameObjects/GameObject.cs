@@ -21,8 +21,7 @@ namespace Project.GameObjects
             set;
         }
 
-        Vector2 Dimension
-        {
+        Vector2 SpriteSize {
             get;
             set;
         }
@@ -64,14 +63,14 @@ namespace Project.GameObjects
 
         public Vector2 Position { get; set; }
 
-        public Vector2 Dimension { get; set; }
+        public Vector2 SpriteSize { get; set; }
 
         public Vector2 Speed { get; set; }
 
         public double Mass { get; set; }
 
         public BoundingBox BBox { get {
-                return new BoundingBox(new Vector3(Position,0), new Vector3(Position+Dimension, 0));
+                return new BoundingBox(new Vector3(Position,0), new Vector3(Position + SpriteSize, 0));
             } }
 
         public Texture2D Texture { get; set; }

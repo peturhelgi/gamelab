@@ -27,7 +27,7 @@ namespace Project.Util
     {
 
         [JsonProperty("dim")]
-        public Vector2 Dimension;
+        public Vector2 SpriteSize;
 
         [JsonProperty("pos")]
         public Vector2 Position;
