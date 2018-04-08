@@ -229,3 +229,8 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Backgrounds/ExitSign_2.png
 
+#begin more_platforms.json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:more_platforms.json
+
