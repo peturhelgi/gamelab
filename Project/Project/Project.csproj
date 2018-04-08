@@ -122,7 +122,6 @@
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
-    <None Include="Content\Font.spritefont" />
     <None Include="Content\samplelvl.json" />
   </ItemGroup>
   <ItemGroup>

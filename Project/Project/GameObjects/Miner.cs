@@ -23,7 +23,7 @@ namespace Project.GameObjects.Miner
             SpriteSize = spriteSize;
             Visible  = true;
             Gait     = Gait.walk;
-            Stance   = Stance.stand;
+            Stance   = Stance.jump;
             tool = new Pickaxe();
             TextureString = textureString;
 

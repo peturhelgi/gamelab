@@ -189,14 +189,22 @@ namespace Project
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.White);
 
             sprite_batch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, controller.Camera.view);
 
-            sprite_batch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
-            sprite_batch.Draw(exitSign, new Rectangle(1000, 300, exitSign.Width/5, exitSign.Height/5), Color.White);
+            //To view the bounding boxes
+            //sprite_batch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, null, null, null, null, controller.Camera.view);
 
-                foreach (GameObject obj in controller.GameEngine.GameState.GetAll())
+
+            sprite_batch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
+            sprite_batch.Draw(exitSign, new Rectangle(1100, 300, exitSign.Width/5, exitSign.Height/5), Color.White);
+
+            RasterizerState state = new RasterizerState();
+            state.FillMode = FillMode.WireFrame;
+            sprite_batch.GraphicsDevice.RasterizerState = state;
+
+            foreach (GameObject obj in controller.GameEngine.GameState.GetAll())
             {
                 //if(obj.Visible) sprite_batch.Draw(obj.Texture, obj.Position, Color.White);
                 if (obj.Visible) sprite_batch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White); 
