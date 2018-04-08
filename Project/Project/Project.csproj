@@ -122,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
+    <None Include="Content\more_platforms.json" />
     <None Include="Content\samplelvl.json" />
   </ItemGroup>
   <ItemGroup>

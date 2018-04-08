@@ -240,4 +240,8 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Misc/box.png
+#begin more_platforms.json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:more_platforms.json
 

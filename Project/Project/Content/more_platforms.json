@@ -1,0 +1,157 @@
+{
+  "levelnr" : 0,
+  "levelname" : "sample",
+  "prevlvl" : -1,
+  "prevlvlname" : "0",
+  "nextlvl" : 1,
+  "nextlvlname" : "tbd",
+  "background" : "path/to/pixelmap",
+
+  "objects": [
+    {
+      "pos": {
+        "x": 210,
+        "y": 250
+      },
+      "type": "end"
+    },
+    {
+      "dim": {
+        "x": 102,
+        "y": 370
+      },
+      "pos": {
+        "x": 100,
+        "y": 0
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 80,
+      "type": "miner",
+      "texture": "Sprites/Miners/MinerHandsInPants"
+    },
+    {
+      "dim": {
+        "x": 150,
+        "y": 107.5
+      },
+      "pos": {
+        "x": 881,
+        "y": 720
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 50,
+      "type": "rock",
+      "texture": "Sprites/Rocks/BareRock5"
+
+    },
+    {
+      "dim": {
+        "x": 276,
+        "y": 175.3
+      },
+      "pos": {
+        "x": 1046,
+        "y": 650
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 20,
+      "type": "rock",
+      "texture": "Sprites/Rocks/BareRock1"
+
+    },
+    {
+      "dim": {
+        "x": 640,
+        "y": 318
+      },
+      "pos": {
+        "x": 900,
+        "y": 800
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Rocks/Ground1"
+    },
+    {
+      "dim": {
+        "x": 320,
+        "y": 109
+      },
+      "pos": {
+        "x": 450,
+        "y": 600
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Rocks/Ground2"
+    },
+    {
+      "dim": {
+        "x": 640,
+        "y": 268
+      },
+      "pos": {
+        "x": -300,
+        "y": 800
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Rocks/Ground3"
+    },
+    {
+      "dim": {
+        "x": 320,
+        "y": 109
+      },
+      "pos": {
+        "x": 900,
+        "y": 450
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Rocks/Ground4"
+    },
+    {
+      "dim": {
+        "x": 127.3,
+        "y": 69.15
+      },
+      "pos": {
+        "x": 250,
+        "y": 700
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Rocks/SuspendedRock"
+    }
+  ]
+}
