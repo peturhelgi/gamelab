@@ -9,13 +9,12 @@ namespace Project.GameObjects
 {
     class Ground : GameObject
     {
-        public Ground(Vector2 position, Vector2 dimension, string TextureString) {
+        public Ground(Vector2 position, Vector2 spriteSize, string TextureString) {
             Position = position;
             Speed = new Vector2(0);
             Mass = 1000;
-            Dimension = dimension;
+            SpriteSize = spriteSize;
             Visible = true;
-            //Body = BodyFactory.CreateRectangle(world, ConvertUnits.ToSimUnits((float)dimension.X), ConvertUnits.ToSimUnits((float)dimension.Y + (float)dimension.Y / 2f), 1f, ConvertUnits.ToSimUnits(position));
             this.TextureString = TextureString;
 
         }

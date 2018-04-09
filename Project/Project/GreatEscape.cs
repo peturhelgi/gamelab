@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Project.Util;
 using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Project
 {
@@ -22,12 +23,12 @@ namespace Project
         //private List<GameObject> gameObjects;
         private MapLoader mapLoader;
 
+        Texture2D background;
+        Texture2D exitSign;
+        Texture2D DebugBox;
+
         private GameController controller;
-
-        string lvlName = "samplelvl";
-
-        
-
+        string lvlName = "more_platforms";
 
         public GreatEscape()
         {
@@ -38,7 +39,6 @@ namespace Project
                 IsFullScreen = false
             };
             graphics.ApplyChanges();
-
 
             Content.RootDirectory = "Content";
 
@@ -55,7 +55,7 @@ namespace Project
         /// </summary>
         protected override void Initialize()
         {
-            controller = new GameController(new GameEngine(mapLoader.InitMap(lvlName)), new Camera(0.5f, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2f, graphics.GraphicsDevice.Viewport.Height / 2f)));
+            controller = new GameController(new GameEngine(mapLoader.InitMap(lvlName)), new Camera(0.8f, Vector2.Zero));
 
             IsMouseVisible = true;
             base.Initialize();
@@ -70,8 +70,11 @@ namespace Project
         {
             mapLoader.LoadMapContent(controller.GameEngine.GameState);
             
-            // Create a new SpriteBatch, which can be used to draw textures.
             sprite_batch = new SpriteBatch(GraphicsDevice);
+            background = mapLoader.getBackground();
+            exitSign = Content.Load<Texture2D>("Sprites/Backgrounds/ExitSign_2");
+            DebugBox = Content.Load<Texture2D>("Sprites/Misc/box");
+
         }
 
         private void RestartGame()
@@ -95,27 +98,54 @@ namespace Project
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            controller.HandleInput();
-            
+            controller.HandleUpdate(gameTime);
             base.Update(gameTime);
         }
 
+
+        
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.White);
 
-            sprite_batch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, controller.Camera.view);
+            bool DebugView = Keyboard.GetState().IsKeyDown(Keys.P);
+            if(DebugView){
+                //To view the bounding boxes
+                sprite_batch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, null, null, null, null, controller.Camera.view);
+            }
+            else {
+                sprite_batch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, controller.Camera.view);
+            }
+            
+
+            // TODO move to the MapLoader/GameState 
+            sprite_batch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
+            sprite_batch.Draw(exitSign, new Rectangle(1100, 300, exitSign.Width/5, exitSign.Height/5), Color.White);
+            sprite_batch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth * 3/2,  graphics.PreferredBackBufferHeight * 3/2), Color.White);
+            sprite_batch.Draw(exitSign, new Rectangle(1430, 300, exitSign.Width/5, exitSign.Height/5), Color.White);
+
+            RasterizerState state = new RasterizerState();
+            state.FillMode = FillMode.WireFrame;
+            sprite_batch.GraphicsDevice.RasterizerState = state;
 
             foreach (GameObject obj in controller.GameEngine.GameState.GetAll())
             {
-                if(obj.Visible) sprite_batch.Draw(obj.Texture, obj.Position, Color.White);
+                if (obj.Visible)
+                {
+                    if (DebugView)
+                    {
+                        sprite_batch.Draw(DebugBox, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);
+                    }
+                    else
+                    {
+                        sprite_batch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);
+                    }
+                }
             }
-
 
             sprite_batch.End();
 

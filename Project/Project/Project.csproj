@@ -121,7 +121,8 @@
     <Compile Include="Util\MapLoader.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Font.spritefont" />
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <None Include="Content\more_platforms.json" />
     <None Include="Content\samplelvl.json" />
   </ItemGroup>
   <ItemGroup>
@@ -132,9 +133,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\caveMusic.mp3" />
-    <Content Include="Content\Ground.png" />
-    <Content Include="Content\Miner.png" />
-    <Content Include="Content\Rock.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -143,9 +141,6 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
