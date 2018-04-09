@@ -30,7 +30,7 @@
       },
       "m": 80,
       "type": "miner",
-      "texture": "Sprites/Miners/MinerHandsOut"
+      "texture": "Sprites/Miners/MinerPickaxe"
     },
     {
       "dim": {

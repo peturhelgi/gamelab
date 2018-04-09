@@ -56,18 +56,6 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Miners/MinerHandsInPants.png
 
-#begin Sprites/Miners/MinerHandsOut.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Sprites/Miners/MinerHandsOut.png
-
 #begin Sprites/Rocks/BareRock1.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -240,8 +228,33 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Misc/box.png
+
 #begin more_platforms.json
 /importer:ContentImporter1
 /processor:ContentProcessor1
 /build:more_platforms.json
+
+#begin Sprites/Miners/MinerPickaxe.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Miners/MinerPickaxe.png
+
+#begin Sprites/Miners/MinerRope.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Miners/MinerRope.png
 
