@@ -18,26 +18,30 @@ namespace Project.Util
         private CollisionDetector CollisionDetector;
 
         int[] CurrentMiner = {0,1};
-        
+        public static Vector2 GRAVITY = new Vector2(0, 1000);
+        public TimeSpan gameTime;
 
         public GameEngine(GameState gameState) {
             GameState = gameState;
             CollisionDetector = new CollisionDetector();
         }
 
+       
+
+
         public void HandleInput(int player, GameAction action, float value) {
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
 
             switch (action) {
                 case (GameAction.walk_right):
-                    TryToMakeMovement(miner, new Vector2(5, 0));
+                    CalculateAndSetNewPosition(miner, new Vector2(5, 0));
                     break;
 
                 case (GameAction.walk_left):
-                    TryToMakeMovement(miner, new Vector2(-5, 0));
+                    CalculateAndSetNewPosition(miner, new Vector2(-5, 0));
                     break;
                 case (GameAction.jump):
-                    TryToJump(miner, new Vector2(0, -500));
+                    TryToJump(miner, new Vector2(0,-800));
                     break;
 
                 case (GameAction.interact):
@@ -49,15 +53,16 @@ namespace Project.Util
             }
         }
 
-        public void Update(GameTime gameTime) {
-           /* Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
-            if (!OnPlatform(miner)) {
-                miner.Speed -= (float)gameTime.ElapsedGameTime.TotalSeconds * gravity;
-            }
-            else if (miner.IsAirborne())
-                miner.Speed = miner.Speed / 2f;
+        public void Update() {
 
-            miner.Position += (float)gameTime.ElapsedGameTime.TotalSeconds * miner.Speed;*/
+            // TODO make this with all miners
+
+            Miner miner = GameState.Actors.ElementAt(CurrentMiner[0]);
+
+            // we only need to update this, if some time has passed since the last update
+            if (miner.lastUpdated != gameTime) {
+                CalculateAndSetNewPosition(miner, Vector2.Zero);
+            }
         }
 
         void TryToInteract(GameObject obj) {
@@ -68,63 +73,123 @@ namespace Project.Util
                 Debug.WriteLine(c.Position);
             }
         }
+        
 
-        Vector2 CalculateActualDirectionOfMovement(GameObject obj, Vector2 direction) {
-            if (obj.Falling)
-            {
-                // TODO we need to consider the time passed, and not a fixed time
-                float deltaTime = 0.1f;
-                Vector2 gravity = new Vector2(0, 9.8f);
-
-                obj.Speed += gravity * deltaTime;
-                return direction + obj.Speed;
-            }
-            else {
-                return direction;
-            }
-        }
-
-        void TryToMakeMovement(GameObject obj, Vector2 direction)
+        void CalculateAndSetNewPosition(Miner actor, Vector2 direction)
         {
-            Miner actor = (Miner)obj;
+
+            // 1. calulate position without any obstacles
+            if (actor.Falling)
+            {
+                actor.Speed += GRAVITY * (float)(gameTime -actor.lastUpdated).TotalSeconds;
+            }
+            direction += actor.Speed * (float)(gameTime - actor.lastUpdated).TotalSeconds;
+
+
+            // 2. check for collisions in the X-axis, the Y-axis (falling and jumping against something) and the intersection of the movement
+            BoundingBox xBox = new BoundingBox();
+            BoundingBox yBox = new BoundingBox();
+            BoundingBox iBox = new BoundingBox();
+
+            if (direction.X > 0) // we are moving right
+            {
+                xBox.Min = new Vector3(actor.BBox.Max.X, actor.BBox.Min.Y, 0);
+                xBox.Max = new Vector3(actor.BBox.Max.X + direction.X, actor.BBox.Max.Y, 0);
+            }
+            else
+            {
+                xBox.Min = new Vector3(actor.BBox.Min.X + direction.X, actor.BBox.Min.Y, 0);
+                xBox.Max = new Vector3(actor.BBox.Min.X, actor.BBox.Max.Y, 0);
+            }
+
+            
+            if (direction.Y > 0) // we are moving downwards
+            {
+                yBox.Min = new Vector3(actor.BBox.Min.X, actor.BBox.Max.Y, 0);
+                yBox.Max = new Vector3(actor.BBox.Max.X, actor.BBox.Max.Y + direction.Y, 0);
+            }
+            else
+            {
+                yBox.Min = new Vector3(actor.BBox.Min.X, actor.BBox.Min.Y + direction.Y, 0);
+                yBox.Max = new Vector3(actor.BBox.Max.X, actor.BBox.Min.Y, 0);
+            }
+
+            iBox = actor.BBox;
+            iBox.Min += new Vector3(direction, 0);
+            iBox.Max += new Vector3(direction, 0);
+            iBox = BoundingBox.CreateMerged(iBox, actor.BBox);
+
+
+            // 3. check, if there are any collisions in the X-axis and correct position
+            
+            List<GameObject> collisions = CollisionDetector.FindCollisions(xBox, GameState.Solids);
+            if (collisions.Count > 0) {
+                Debug.WriteLine("collided with x-axis");
+                direction.X = 0;
+            }
+
+
+            // We only need to check things in y-axis (including intersection), if we are actually moving in it
+            if (actor.Falling)
+            {
+                collisions = CollisionDetector.FindCollisions(yBox, GameState.Solids);
+                if (collisions.Count > 0)
+                {
+                    Debug.WriteLine("collided with y-axis");
+
+                    float lowestPoint = float.MaxValue;
+                    foreach (GameObject collision in collisions)
+                    {
+                        lowestPoint = Math.Min(lowestPoint, collision.BBox.Min.Y);
+                    }
+
+                    actor.Speed = Vector2.Zero;
+                    if (direction.Y > 0) // hitting floor
+                    {
+                        direction.Y = (lowestPoint - actor.BBox.Max.Y)-0.1f;
+                        actor.Falling = false;
+                        actor.Speed = Vector2.Zero;
+                    }
+
+                }
+                else
+                {
+                    collisions = CollisionDetector.FindCollisions(iBox, GameState.Solids);
+                    if (collisions.Count > 0)
+                    {
+                        Debug.WriteLine("collided with intersection");
+
+                        direction = Vector2.Zero;
+                        actor.Speed = Vector2.Zero;
+                        if (direction.Y > 0) // hitting floor
+                        {
+                            actor.Falling = false;
+                            actor.Speed = Vector2.Zero;
+                        }
+                    }
+                }
+            }
             actor.Position += direction;
-            BoundingBox oldBox = actor.BBox;
-            Vector2 OldPosition = actor.Position;
 
-            actor.Position += CalculateActualDirectionOfMovement(actor, direction);
 
-            BoundingBox tempBox = BoundingBox.CreateMerged(oldBox, actor.BBox);
-
-            List<GameObject> collisions = CollisionDetector.FindCollisions(tempBox, GameState.Solids);
-            if (collisions.Count > 0)
-            {
-                //We somehow collided. Don't move!
-                // TODO figure out, where the collision happened, if it is legit and where we will move instead
-                actor.Position = OldPosition;
+            if (!actor.Falling) { 
+                // Next, we need to check if we are falling, i.e. walking over an edge to store it to the character, to calculate the difference in height for the next iteration
+                BoundingBox tempBox = actor.BBox;
+                tempBox.Min = new Vector3(tempBox.Max.X, tempBox.Min.Y, 0);
+                tempBox.Max += new Vector3(0, 0.5f, 0);
+                
+                collisions = CollisionDetector.FindCollisions(tempBox, GameState.Solids);
+                if (collisions.Count == 0)
+                    actor.Falling = true;
             }
-
-            // Next, we need to check if we are "flying", i.e. walking over an edge to store it to the character, to calculate the difference in height for the next iteration
-            tempBox = actor.BBox;
-            tempBox.Min -= new Vector3(0.1f, 0.1f, 0);
-            tempBox.Max += new Vector3(0.1f, 0.1f, 0);
-
-
-            collisions = CollisionDetector.FindCollisions(tempBox, GameState.Solids);
-            if (collisions.Count > 0)
-            {
-                //We somehow collided. Now we need to check, if it was with the floor > that would mean that we are pretty near to the floor, in which case we are NOT flying.
-                // TODO implement this
-            }
-            else {
-                actor.Falling = true;
-                actor.Speed = Vector2.Zero;
-            }
+            actor.lastUpdated = gameTime;
         }
 
-        void TryToJump(Miner miner, Vector2 direction) 
+        void TryToJump(Miner miner, Vector2 speed) 
         {
             if (!miner.Falling) {
-                miner.Jump(direction);
+                miner.Jump(speed);
+                miner.Falling = true;
             }
         }
     }

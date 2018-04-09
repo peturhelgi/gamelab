@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Project.Util;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -15,6 +16,7 @@ namespace Project.GameObjects.Miner
         Tool tool;
         Gait Gait;
         Stance Stance;
+        public TimeSpan lastUpdated;
         public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
         {
             Position = position;
@@ -26,6 +28,8 @@ namespace Project.GameObjects.Miner
             Stance   = Stance.jump;
             tool = new Pickaxe();
             TextureString = textureString;
+
+            lastUpdated = new TimeSpan();
 
         }
 

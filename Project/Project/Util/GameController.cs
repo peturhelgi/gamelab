@@ -22,8 +22,10 @@ namespace Project.Util
             Camera = camera;
         }
 
+
         internal void HandleUpdate(GameTime gameTime)
         {
+            GameEngine.gameTime = gameTime.TotalGameTime;
             HandleMouse( Mouse.GetState());
             GamePadState PlayerOneState = GamePad.GetState(PlayerIndex.One);
             if (PlayerOneState.IsConnected)
@@ -39,7 +41,7 @@ namespace Project.Util
 
             HandleKeyboard(Keyboard.GetState());
 
-            GameEngine.Update(gameTime);
+            GameEngine.Update();
             
         }
 
