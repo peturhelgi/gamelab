@@ -294,3 +294,7 @@ __pycache__/
 *.aux
 *.toc
 *.synctex.gz
+
+# Build files
+Project/Project/AppX/
+*.dll
