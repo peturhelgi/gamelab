@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27428.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project", "Project\Project.csproj", "{439CD82A-F559-427D-8B17-62E43CAE7C8A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E3F3DC6E-9334-4707-B952-C288A4BFF1A6} = {E3F3DC6E-9334-4707-B952-C288A4BFF1A6}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Level Importer", "Level Importer\Level Importer.csproj", "{E3F3DC6E-9334-4707-B952-C288A4BFF1A6}"
 EndProject
