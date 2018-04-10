@@ -10,13 +10,50 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework;
 using Project.GameObjects;
-using Project.GameObjects.Miner;
 
 
 namespace Project.Screens
 {
     public class PlayingScreen : GameScreen
     {
+        Miner miner;
+        Level level;
+        public override void LoadContent()
+        {
+            base.LoadContent();
+
+            DataManager<Miner> minerLoader = new DataManager<Miner>();
+            DataManager<Level> levelLoader = new DataManager<Level>();
+            miner = minerLoader.Load("Content/GamePlay/Miner");
+            level = levelLoader.Load("Content/GamePlay/Levels/Level1");
+            miner.LoadContent();
+            level.LoadContent();
+        }
+
+        public override void UnloadContent()
+        {
+            base.UnloadContent();
+            miner.UnloadContent();
+            level.UnloadContent();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            miner.Update(gameTime);
+            level.Update(gameTime, ref miner);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+            level.Draw(spriteBatch, "Underlay");
+            miner.Draw(spriteBatch);
+            level.Draw(spriteBatch, "Overlay");
+        }
+
+        #region Old Code commented out. Click to Expand
+        /*
         Texture2D image;
         public string Path { get; set; }
         public Vector2 Position;
@@ -52,7 +89,7 @@ namespace Project.Screens
         }
         public override void Update(GameTime gameTime)
         {
-            Miner miner = gameState.getMiner1();
+            Miner miner = gameState.GetMiner(0);
             Vector2 startingPosition = new Vector2(210, 250);
 
             // TODO: Add your update logic here
@@ -158,5 +195,8 @@ namespace Project.Screens
                         Color.White);
             }
         }
+        */
+        #endregion
+
     }
 }

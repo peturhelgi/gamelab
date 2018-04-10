@@ -72,3 +72,12 @@
 #begin Load/TitleMenu.json
 /copy:Load/TitleMenu.json
 
+#begin Load/TestMenu.json
+/copy:Load/TestMenu.json
+
+#begin GamePlay/Miner.json
+/copy:GamePlay/Miner.json
+
+#begin GamePlay/Levels/Level1.json
+/copy:GamePlay/Levels/Level1.json
+

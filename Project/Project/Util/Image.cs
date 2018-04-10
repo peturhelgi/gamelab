@@ -15,13 +15,13 @@ namespace Project.Util
     public class Image
     {
         public float Alpha;
-        public string Text, FontName, Path;
+        public string Text, FontName, Path, Effects;
         public Vector2 Position, Scale;
         public Rectangle SourceRect;
-        public string Effects;
         public Texture2D Texture;
         public bool IsActive;
         public FadeEffect FadeEffect;
+        public SpriteSheetEffect SpriteSheetEffect;
 
         Vector2 origin;
         ContentManager content;
@@ -65,6 +65,35 @@ namespace Project.Util
                 (effectList[effect] as ImageEffect).UnloadContent();
             }
             
+        }
+
+        public void StoreEffects()
+        {
+            Effects = String.Empty;
+            foreach(var effect in effectList)
+            {
+                if (effect.Value.IsActive)
+                {
+                    Effects += effect.Key + ":";
+                }
+            }
+            if (Effects != String.Empty)
+            {
+                Effects.Remove(Effects.Length - 1);
+            }
+        }
+
+        public void RestoreEffects()
+        {
+            foreach(var effect in effectList)
+            {
+                DeactivateEffect(effect.Key);
+            }
+            string[] split = Effects.Split(':');
+            foreach(string effect in split)
+            {
+                ActivateEffect(effect);
+            }
         }
 
         public Image() {
@@ -117,6 +146,8 @@ namespace Project.Util
             ScreenManager.Instance.GraphicsDevice.SetRenderTarget(null);
 
             SetEffect<FadeEffect>(ref this.FadeEffect);
+            SetEffect<SpriteSheetEffect>(ref this.SpriteSheetEffect);
+
             if(Effects != String.Empty)
             {
                 string[] effects = Effects.Split(':');
@@ -148,7 +179,6 @@ namespace Project.Util
         public void Draw(SpriteBatch spriteBatch)
         {
             origin = new Vector2(SourceRect.Width / 2, SourceRect.Height/2);
-            //if(Texture != null)
             spriteBatch.Draw(Texture, origin + Position, SourceRect, Color.White * Alpha,
                 0.0f, origin, Scale, SpriteEffects.None, 0.0f);
         }

@@ -6,12 +6,40 @@ using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Project.Util
 {
     public class MenuManager
     {
         Menu menu;
+        bool InTransition;
+
+        void Transition(GameTime gameTime)
+        {
+            if (InTransition)
+            {
+                float first, last;
+                for (int i = 0; i < menu.Items.Count; ++i)
+                { 
+                    menu.Items[i].Image.Update(gameTime);
+                    first = menu.Items[0].Image.Alpha;
+                    last = menu.Items[menu.Items.Count - 1].Image.Alpha;
+                    if(first == 0.0f && last == 0.0f)
+                    {
+                        menu.ID = menu.Items[menu.ItemNumber].LinkId;
+                    }
+                    else if(first == 1.0f && last == 1.0f)
+                    {
+                        InTransition = false;
+                        foreach(MenuItem item in menu.Items)
+                        {
+                            item.Image.RestoreEffects();
+                        }
+                    }
+                }
+            }
+        }
         public MenuManager()
         {
             menu = new Menu();
@@ -22,9 +50,16 @@ namespace Project.Util
         {
             DataManager<Menu> menuManager = new DataManager<Menu>();
             menu.UnloadContent();
-            // Add transitino
             menu = menuManager.Load(menu.ID);
             menu.LoadContent();
+            menu.OnMenuChange += menu_OnMenuChange;
+            menu.Transition(0.0f);
+
+            foreach (MenuItem item in menu.Items)
+            {
+                item.Image.StoreEffects();
+                item.Image.ActivateEffect("FadeEffect");
+            }        
         }
 
         public void LoadContent(string menuPath)
@@ -42,7 +77,26 @@ namespace Project.Util
 
         public void Update(GameTime gameTime)
         {
-            menu.Update(gameTime);
+            if (!InTransition)
+            {
+                menu.Update(gameTime);
+            }
+            if (InputManager.Instance.KeyPressed(Keys.Enter) && !InTransition)
+            {
+                if (menu.Items[menu.ItemNumber].LinkType == "Screen") {
+                    ScreenManager.Instance.ChangeScreen(menu.Items[menu.ItemNumber].LinkId);
+                }
+                else {
+                    InTransition = true;
+                    menu.Transition(1.0f);
+                    foreach(MenuItem item in menu.Items)
+                    {
+                        item.Image.StoreEffects();
+                        item.Image.ActivateEffect("FadeEffect");
+                    }
+                }
+            }
+            Transition(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)

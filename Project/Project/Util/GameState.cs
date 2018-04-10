@@ -1,5 +1,4 @@
 ﻿using Project.GameObjects;
-using Project.GameObjects.Miner;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,27 +9,30 @@ namespace Project.Util
 {
     class GameState
     {
-        private Miner miner1;
-        private List<Rock> rocks;
+        private List<Miner> Miners;
+        private List<Rock> Rocks;
 
         public GameState() {
-            this.rocks = new List<Rock>();
+            this.Rocks = new List<Rock>();
+            this.Miners = new List<Miner>();
         }
 
-        public void addMiner1(Miner miner1) {
-            this.miner1 = miner1;
+        public void AddMiner(Miner miner) {
+            this.Miners.Add(miner);
         }
 
-        public void addRock(Rock rock) {
-            rocks.Add(rock);
+        public void AddRock(Rock rock) {
+            Rocks.Add(rock);
         }
 
-        public Miner getMiner1() {
-            return miner1;
+        public Miner GetMiner(int id) {
+            id = Math.Max(0, id);
+            id = Math.Min(Miners.Count - 1, id);
+            return Miners[id];
         }
 
-        public List<Rock> getRocks() {
-            return rocks;
+        public List<Rock> GetRocks() {
+            return Rocks;
         }
     }
 }

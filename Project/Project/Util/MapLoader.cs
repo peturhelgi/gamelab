@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Project.GameObjects;
-using Project.GameObjects.Miner;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +24,7 @@ namespace Project.Util
 
         public GameState InitMap(string levelName) {
             GameState gameState = new GameState();
-
+           /*
             string text = contentManager.Load<string>(levelName);
 
             Level level = JsonConvert.DeserializeObject<Level>(text);
@@ -36,21 +35,21 @@ namespace Project.Util
                 level.player1Start.m, new BoundingBox());
 
             gameObjects.Add(miner1);
-            gameState.addMiner1(miner1);
+            gameState.AddMiner(miner1);
 
             //TODO: add miner2
-            foreach (Obj obj in level.rocks) {
-                Rock rock = new Rock(new Vector2(obj.x, obj.y), obj.w, obj.h);
-                gameObjects.Add(rock);
-                gameState.addRock(rock);
-            }
+            foreach (Rock obj in level.rocks) {
+                //Rock rock = new Rock(new Vector2(obj.x, obj.y), obj.w, obj.h);
+                //gameObjects.Add(rock);
+                //gameState.AddRock(rock);
+            }*/
 
             return gameState;
         }
 
         public void loadMapContent(GameState gameState) {
-            gameState.getMiner1().Texture = contentManager.Load<Texture2D>("Miner");
-            foreach (Rock rock in gameState.getRocks()) {
+            gameState.GetMiner(0).Texture = contentManager.Load<Texture2D>("Miner");
+            foreach (Rock rock in gameState.GetRocks()) {
                 rock.Texture = contentManager.Load<Texture2D>("Rock");
             }
         }

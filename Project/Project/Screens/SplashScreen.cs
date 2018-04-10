@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Project.GameObjects.Miner;
 using Project.GameObjects;
 using Newtonsoft.Json;
 
@@ -18,7 +17,7 @@ namespace Project.Screens
     public class SplashScreen : GameScreen
     {
         public Image Image;
-        public string Path { get; set; }
+        //public string Path { get; set; }
 
         public SplashScreen() {
             Path = "Content/Load/SplashScreen.json";

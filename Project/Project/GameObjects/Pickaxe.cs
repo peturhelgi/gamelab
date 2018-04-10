@@ -9,7 +9,7 @@ namespace Project.GameObjects
 {
     class Pickaxe : Tool
     {
-        public override void use(Miner.Miner user, List<GameObject> gameObjects)
+        public override void use(Miner user, List<GameObject> gameObjects)
         {
             foreach (GameObject obj in gameObjects) {
                 if (obj is Rock && obj.Visible) { 

@@ -4,37 +4,55 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Project.GameObjects;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+
 namespace Project.Util
 {
-    class Level
+    public class Level
     {
-        public int levelnr;
-        public string levelname;
-        public int prevlvl;
-        public string prevlvlname;
-        public int nextlvl;
-        public string nextlvlname;
-        public string background;
-        public Obj player1Start;
-        public Obj player2Start;
-        public Pos end;
-        public List<Obj> rocks;
-    }
+        public List<Layer> Layer;
+        public Vector2 TileDimensions;
 
-    class Pos
-    {
-        public float x;
-        public float y;
-    }
+        public Level()
+        {
+            Layer = new List<Layer>();
+            TileDimensions = Vector2.Zero;
+        }
 
-    class Obj
-    {
-        public float w;
-        public float h;
-        public float x;
-        public float y;
-        public float vx;
-        public float vy;
-        public float m;
+        public void LoadContent()
+        {
+            foreach(Layer layer in Layer)
+            {
+                layer.LoadContent(TileDimensions);
+            }
+        }
+
+        public void UnloadContent()
+        {
+            foreach (Layer layer in Layer)
+            {
+                layer.UnloadContent();
+            }
+        }
+
+        public void Update(GameTime gameTime, ref Miner miner)
+        {
+            foreach (Layer layer in Layer)
+            {
+                layer.Update(gameTime, ref miner);
+            }
+        }
+
+        public void Draw(SpriteBatch spriteBatch, string drawType)
+        {
+            foreach (Layer layer in Layer)
+            {
+                layer.Draw(spriteBatch, drawType);
+            }
+        }
     }
 }

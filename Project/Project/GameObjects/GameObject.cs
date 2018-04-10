@@ -35,7 +35,7 @@ namespace Project.GameObjects
         }
     }
 
-    abstract class GameObject : IGameObject {
+    public abstract class GameObject : IGameObject {
         
         public bool Destroyable { get; set; }
 

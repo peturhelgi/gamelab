@@ -18,9 +18,23 @@ namespace Project.Util
             Type = typeof(T);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path">The path of a serialized JSON file.</param>
+        /// <returns></returns>
         public T Load(string path) {
-            string data = File.ReadAllText(path);
-            T instance = JsonConvert.DeserializeObject<T>(data, settings);
+            if (!path.EndsWith(".json"))
+            { path += ".json"; }
+            T instance;
+            try
+            {
+                string data = File.ReadAllText(path);
+                instance = JsonConvert.DeserializeObject<T>(data, settings);
+            }
+            catch (FileNotFoundException ex) {
+                instance = default(T);
+            }
             return instance;
         }
 

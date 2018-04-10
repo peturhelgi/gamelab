@@ -23,14 +23,8 @@ namespace Project.Util
             this.image = image;
         }
 
-        public virtual void UnloadContent()
-        {
+        public virtual void UnloadContent() { }
 
-        }
-
-        public virtual void Update(GameTime gametime)
-        {
-
-        }
+        public virtual void Update(GameTime gametime) { }
     }
 }

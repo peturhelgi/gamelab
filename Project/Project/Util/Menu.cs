@@ -22,6 +22,11 @@ namespace Project.Util
         int itemNumber;
         string id;
 
+        public int ItemNumber
+        {
+            get { return itemNumber; }
+        }
+
         public string ID
         {
             get { return id; }
@@ -32,6 +37,16 @@ namespace Project.Util
             }
         }
 
+        public void Transition(float alpha)
+        {
+            foreach(MenuItem item in Items)
+            {
+                item.Image.IsActive = true;
+                item.Image.Alpha = alpha;
+                item.Image.FadeEffect.Increase = (alpha == 0.0f);
+
+            }
+        }
         void AlignMenuItems()
         {
             Vector2 dimensions = Vector2.Zero;
@@ -110,15 +125,18 @@ namespace Project.Util
             else if(Axis == "Y") {
                 if (InputManager.Instance.KeyPressed(Keys.Down))
                 {
-                    itemNumber = (itemNumber + 1)%Items.Count;
+                    ++itemNumber;
                 }
                 else if (InputManager.Instance.KeyPressed(Keys.Up))
                 {
-                    itemNumber = (itemNumber - 1)%Items.Count;
+                    --itemNumber;
                 }
             }
 
-            for(int i = 0; i < Items.Count; ++i)
+            if(itemNumber < 0) { itemNumber = Items.Count - 1; }
+            if(itemNumber >= Items.Count) { itemNumber = 0; }
+
+            for (int i = 0; i < Items.Count; ++i)
             {
                 if(i == itemNumber)
                 {

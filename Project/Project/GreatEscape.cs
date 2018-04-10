@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Project.GameObjects.Miner;
 using Project.GameObjects;
 using System.Collections.Generic;
 using Project.Util;
@@ -14,25 +13,13 @@ namespace Project
     /// </summary>
     public class GreatEscape : Game
     {
-        bool myway = true;
-
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        private Song music;
-        private VideoPlayer player;
-        private List<GameObject> gameObjects;
-        private MapLoader mapLoader;
-        private GameState gameState;
-        Vector2 gravity = new Vector2(0, -1000);
-        Vector2 direction, up, down, left, right;
-        string lvlName = "samplelvl";
 
         public GreatEscape()
         {
             graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-            gameObjects = new List<GameObject>();
-            mapLoader = new MapLoader(gameObjects, Content);            
+            Content.RootDirectory = "Content";         
         }
 
         /// <summary>
@@ -46,8 +33,6 @@ namespace Project
             graphics.PreferredBackBufferWidth = (int)ScreenManager.Instance.Dimensions.X;
             graphics.PreferredBackBufferHeight = (int)ScreenManager.Instance.Dimensions.Y;
             graphics.ApplyChanges();
-            //if(!myway)
-             //   gameState = mapLoader.InitMap(lvlName);
             base.Initialize();
         }
 

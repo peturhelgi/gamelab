@@ -31,13 +31,13 @@
     <AppXManifest Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2018-04-07T04:11:39.530</Modified>
+      <Modified>2018-04-10T03:04:04.516</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Project.exe">
       <PackagePath>entrypoint\Project.exe</PackagePath>
-      <Modified>2018-04-07T04:11:39.249</Modified>
+      <Modified>2018-04-10T02:12:36.670</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\petur\.nuget\packages\microsoft.csharp\4.3.0\lib\netcore50\Microsoft.CSharp.dll">
       <PackagePath>Microsoft.CSharp.dll</PackagePath>
@@ -605,25 +605,33 @@
       <PackagePath>Content\SplashScreen.xml</PackagePath>
       <Modified>2018-04-05T01:58:39.851</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Sprites\Miner.xnb">
-      <PackagePath>Content\Sprites\Miner.xnb</PackagePath>
-      <Modified>2018-04-07T03:45:53.972</Modified>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\mySounds\caveMusic.wma">
+      <PackagePath>Content\mySounds\caveMusic.wma</PackagePath>
+      <Modified>2018-04-06T22:46:13.703</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Sprites\Rock.xnb">
-      <PackagePath>Content\Sprites\Rock.xnb</PackagePath>
-      <Modified>2018-04-07T03:45:53.987</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Sounds\caveMusic.xnb">
-      <PackagePath>Content\Sounds\caveMusic.xnb</PackagePath>
-      <Modified>2018-04-07T03:45:53.859</Modified>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Sounds\caveMusic.wma">
+      <PackagePath>Content\Sounds\caveMusic.wma</PackagePath>
+      <Modified>2018-04-09T21:32:21.147</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\mySounds\caveMusic.xnb">
       <PackagePath>Content\mySounds\caveMusic.xnb</PackagePath>
       <Modified>2018-04-06T22:46:13.825</Modified>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Sprites\Miner.xnb">
+      <PackagePath>Content\Sprites\Miner.xnb</PackagePath>
+      <Modified>2018-04-09T21:32:21.668</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Sprites\Rock.xnb">
+      <PackagePath>Content\Sprites\Rock.xnb</PackagePath>
+      <Modified>2018-04-09T21:32:21.691</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Sounds\caveMusic.xnb">
+      <PackagePath>Content\Sounds\caveMusic.xnb</PackagePath>
+      <Modified>2018-04-09T21:32:21.388</Modified>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\ScreenManager\FadeImage.xnb">
       <PackagePath>Content\ScreenManager\FadeImage.xnb</PackagePath>
-      <Modified>2018-04-07T03:45:54.222</Modified>
+      <Modified>2018-04-09T21:32:21.983</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\mySprites\Miner.xnb">
       <PackagePath>Content\mySprites\Miner.xnb</PackagePath>
@@ -635,15 +643,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Fonts\Orbitron.xnb">
       <PackagePath>Content\Fonts\Orbitron.xnb</PackagePath>
-      <Modified>2018-04-07T03:45:54.219</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Sounds\caveMusic.wma">
-      <PackagePath>Content\Sounds\caveMusic.wma</PackagePath>
-      <Modified>2018-04-07T03:45:53.729</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\mySounds\caveMusic.wma">
-      <PackagePath>Content\mySounds\caveMusic.wma</PackagePath>
-      <Modified>2018-04-06T22:46:13.703</Modified>
+      <Modified>2018-04-09T21:32:21.973</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Load\ScreenManager.json">
       <PackagePath>Content\Load\ScreenManager.json</PackagePath>
@@ -653,9 +653,21 @@
       <PackagePath>Content\Load\SplashScreen.json</PackagePath>
       <Modified>2018-04-07T02:32:07.849</Modified>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Load\TestMenu.json">
+      <PackagePath>Content\Load\TestMenu.json</PackagePath>
+      <Modified>2018-04-07T18:57:52.620</Modified>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\Load\TitleMenu.json">
       <PackagePath>Content\Load\TitleMenu.json</PackagePath>
-      <Modified>2018-04-07T04:04:13.168</Modified>
+      <Modified>2018-04-07T21:30:49.719</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\GamePlay\Levels\Level1.json">
+      <PackagePath>Content\GamePlay\Levels\Level1.json</PackagePath>
+      <Modified>2018-04-10T01:49:47.323</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\GamePlay\Miner.json">
+      <PackagePath>Content\GamePlay\Miner.json</PackagePath>
+      <Modified>2018-04-09T22:42:32.972</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Content\bin\WindowsStoreApp\SplashScreen.json">
       <PackagePath>Content\SplashScreen.json</PackagePath>
@@ -672,11 +684,11 @@
     <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\resources.pri">
       <PackagePath>resources.pri</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2018-04-07T03:46:22.771</Modified>
+      <Modified>2018-04-09T23:44:07.646</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\petur\Documents\ETH\gpl\gamelab-2018-team1\Project\Project\Core\Project.exe">
       <PackagePath>Project.exe</PackagePath>
-      <Modified>2018-04-07T04:11:39.524</Modified>
+      <Modified>2018-04-10T03:04:04.505</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>
