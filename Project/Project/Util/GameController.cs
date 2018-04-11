@@ -71,10 +71,6 @@ namespace Project.Util
             if (state.IsKeyDown(Keys.Space)) GameEngine.HandleInput(0, GameEngine.GameAction.jump, 0);
 
             // END Handle GameAction
-
-
-
-
         }
 
         private void HandleGamePad(GamePadState gs)

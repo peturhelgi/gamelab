@@ -1,24 +1,102 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+
 using Project.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Input;
 
-namespace Project.GameObjects.Miner
+namespace Project.GameObjects
 {
 
     enum Gait { stop, crawl, walk, run, jump};
     enum Stance { stand, jump, crouch, lie };
-    class Miner : GameObject
+    public class Miner : GameObject
     {
+        ///--------------------------------//
+        //NOTE: For merging purposes.
+        public TimeSpan lastUpdated;
+
+        ///--------------------------------//
+        public Image Image;
+        public Vector2 Velocity;
+        public float MoveSpeed;
+        public Miner()
+        {
+            Velocity = Vector2.Zero;
+        }
+        public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
+        {       }
+
+        public override void LoadContent()
+        {
+            Image.LoadContent();
+        }
+
+        public override void UnloadContent()
+        {
+            Image.UnloadContent();
+        }
+        public override void Update(GameTime gameTime)
+        {
+
+            Image.IsActive = true;
+            if (InputManager.Instance.KeyDown(Keys.Down))
+            {
+                Velocity.Y = MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Image.SpriteSheetEffect.CurrentFrame.Y = 0;
+            }
+            else if (InputManager.Instance.KeyDown(Keys.Up))
+            {
+                Velocity.Y = -MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Image.SpriteSheetEffect.CurrentFrame.Y = 3;
+            }
+            else { Velocity.Y = 0; }
+
+            if (InputManager.Instance.KeyDown(Keys.Right))
+            {
+                Velocity.X = MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Image.SpriteSheetEffect.CurrentFrame.Y = 2;
+            }
+            else if (InputManager.Instance.KeyDown(Keys.Left))
+            {
+                Velocity.X = -MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Image.SpriteSheetEffect.CurrentFrame.Y = 1;
+
+            }
+            else { Velocity.X = 0; }
+
+            if(Velocity.X == 0 && Velocity.Y == 0)
+            {
+                Image.IsActive = false;
+            }
+
+            Image.Update(gameTime);
+            Image.Position += Velocity;
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            Image.Draw(spriteBatch);
+        }
+
+
+
+        public void Jump(Vector2 speed)
+        {
+            //TODO: make compatible with current version
+        }
+        #region Old Code commented out
+        /*
         Tool tool;
         Gait Gait;
         Stance Stance;
         public TimeSpan lastUpdated;
         public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
         {
+<<<<<<< HEAD
             Position = position;
             Speed    = speed;
             Mass     = mass;
@@ -31,6 +109,16 @@ namespace Project.GameObjects.Miner
 
             lastUpdated = new TimeSpan();
 
+=======
+            this.Position = position;
+            this.Speed    = speed;
+            this.Mass     = mass;
+            this.Box      = box;
+            this.Visible  = true;
+            this.Gait     = Gait.walk;
+            this.Stance   = Stance.stand;
+            this.tool = new Pickaxe();
+>>>>>>> controls
         }
 
         /// <summary>
@@ -180,5 +268,7 @@ namespace Project.GameObjects.Miner
 
             return true;
         }
+        */
+        #endregion
     }
 }

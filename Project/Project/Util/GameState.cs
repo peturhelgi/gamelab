@@ -1,5 +1,4 @@
 ﻿using Project.GameObjects;
-using Project.GameObjects.Miner;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +25,6 @@ namespace Project.Util
         public List<GameObject> GetAll() {
             return Actors.Concat(Solids).Concat(Collectibles).ToList();
         }
-
 
         public void AddActor(Miner actor)
         {

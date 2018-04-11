@@ -5,18 +5,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.Xna.Framework.Graphics;
 namespace Project.GameObjects
 {
-    class Ground : GameObject
+    public class Ground : GameObject
     {
         public Ground(Vector2 position, Vector2 spriteSize, string TextureString) {
-            Position = position;
-            Speed = new Vector2(0);
-            Mass = 1000;
-            SpriteSize = spriteSize;
-            Visible = true;
+            this.Position = position;
+            this.Velocity = new Vector2(0);
+            this.Mass = 1000;
+            this.SpriteSize = spriteSize;
+            this.Visible = true;
             this.TextureString = TextureString;
+        }
 
+        public override void LoadContent()
+        {
+            //TODO: Implement
+        }
+        public override void UnloadContent()
+        {
+            //TODO: Implement
+        }
+        public virtual void Update(GameTime gameTime)
+        {
+            //TODO: Implement
+        }
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            //TODO: Implement
         }
     }
 }

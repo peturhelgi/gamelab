@@ -1,0 +1,12 @@
+﻿{
+  "$type": "Project.Screens.SplashScreen, Project",
+  "Image": {
+    "Path": "Sprites/Rock",
+    "Effects": "FadeEffect",
+    "IsActive": true,
+    "Alpha": 0.5,
+    "FadeEffect": {
+      "FadeSpeed": 0.5
+    }
+  }
+}

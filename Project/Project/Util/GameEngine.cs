@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using Project.GameObjects.Miner;
+using Project.GameObjects;
 
 namespace Project.Util
 {
@@ -24,9 +24,7 @@ namespace Project.Util
         public GameEngine(GameState gameState) {
             GameState = gameState;
             CollisionDetector = new CollisionDetector();
-        }
-
-       
+        }       
 
 
         public void HandleInput(int player, GameAction action, float value) {
@@ -81,9 +79,9 @@ namespace Project.Util
             // 1. calulate position without any obstacles
             if (actor.Falling)
             {
-                actor.Speed += GRAVITY * (float)(gameTime -actor.lastUpdated).TotalSeconds;
+                actor.Velocity += GRAVITY * (float)(gameTime -actor.lastUpdated).TotalSeconds;
             }
-            direction += actor.Speed * (float)(gameTime - actor.lastUpdated).TotalSeconds;
+            direction += actor.Velocity * (float)(gameTime - actor.lastUpdated).TotalSeconds;
 
 
             // 2. check for collisions in the X-axis, the Y-axis (falling and jumping against something) and the intersection of the movement
@@ -143,12 +141,12 @@ namespace Project.Util
                         lowestPoint = Math.Min(lowestPoint, collision.BBox.Min.Y);
                     }
 
-                    actor.Speed = Vector2.Zero;
+                    actor.Velocity = Vector2.Zero;
                     if (direction.Y > 0) // hitting floor
                     {
                         direction.Y = (lowestPoint - actor.BBox.Max.Y)-0.1f;
                         actor.Falling = false;
-                        actor.Speed = Vector2.Zero;
+                        actor.Velocity = Vector2.Zero;
                     }
 
                 }
@@ -160,11 +158,11 @@ namespace Project.Util
                         Debug.WriteLine("collided with intersection");
 
                         direction = Vector2.Zero;
-                        actor.Speed = Vector2.Zero;
+                        actor.Velocity = Vector2.Zero;
                         if (direction.Y > 0) // hitting floor
                         {
                             actor.Falling = false;
-                            actor.Speed = Vector2.Zero;
+                            actor.Velocity = Vector2.Zero;
                         }
                     }
                 }

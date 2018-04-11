@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Project.GameObjects.Miner;
+using Project.GameObjects;
 
 namespace Project.GameObjects
 {
-    abstract class Tool
+   public  abstract class Tool
     {
-        abstract public void use(Miner.Miner user, List<GameObject> gameObjects);
+        abstract public void Use(Miner user, List<GameObject> gameObjects);
     }
 }

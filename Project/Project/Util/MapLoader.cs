@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Project.GameObjects;
-using Project.GameObjects.Miner;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,19 +28,19 @@ namespace Project.Util
             string text = ContentManager.Load<string>(levelName);
             Level level = JsonConvert.DeserializeObject<Level>(text);
 
-            foreach (Obj obj in level.objects) {
+            foreach (GameObject obj in level.Objects) {
 
                 switch (obj.Type) {
                     case "miner":
-                        Miner miner = new Miner(obj.Position, obj.SpriteSize, obj.Velocity, obj.Mass, obj.Texture);
+                        Miner miner = new Miner(obj.Position, obj.SpriteSize, obj.Velocity, obj.Mass, obj.Texture.Name);
                         gameState.AddActor(miner);
                         break;
                     case "rock":
-                        Rock rock = new Rock(obj.Position, obj.SpriteSize, obj.Texture);
+                        Rock rock = new Rock(obj.Position, obj.SpriteSize, obj.Texture.Name);
                         gameState.AddCollectible(rock);
                         break;
                     case "ground":
-                        Ground ground = new Ground(obj.Position, obj.SpriteSize, obj.Texture);
+                        Ground ground = new Ground(obj.Position, obj.SpriteSize, obj.Texture.Name);
                         gameState.AddSolid(ground);
                         break;
                     case "end":
