@@ -14,11 +14,11 @@ namespace Project.Util
     public class Level
     {
 
-        public int LevelNr;
-        public string LevelName;
         public int PrevLvl;
-        public string PrevLvlName;
+        public int LevelNr;
         public int NextLvl;
+        public string PrevLvlName;
+        public string LevelName;
         public string NextLvlName;
         public string Background;
 

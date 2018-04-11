@@ -33,15 +33,15 @@ namespace Project.Util
                 switch (obj.Type) {
                     case "miner":
                         Miner miner = new Miner(obj.Position, obj.SpriteSize, obj.Velocity, obj.Mass, obj.Texture.Name);
-                        gameState.AddActor(miner);
+                        //gameState.AddActor(miner);
                         break;
                     case "rock":
                         Rock rock = new Rock(obj.Position, obj.SpriteSize, obj.Texture.Name);
-                        gameState.AddCollectible(rock);
+                        ///gameState.AddCollectible(rock);
                         break;
                     case "ground":
                         Ground ground = new Ground(obj.Position, obj.SpriteSize, obj.Texture.Name);
-                        gameState.AddSolid(ground);
+                        //gameState.AddSolid(ground);
                         break;
                     case "end":
                         break;

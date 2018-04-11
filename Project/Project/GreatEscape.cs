@@ -16,9 +16,8 @@ namespace Project
     /// </summary>
     public class GreatEscape : Game
     {
-<<<<<<< HEAD
         private readonly GraphicsDeviceManager graphics;
-        private SpriteBatch sprite_batch;
+        private SpriteBatch spriteBatch;
         
         //private List<GameObject> gameObjects;
         private MapLoader mapLoader;
@@ -26,6 +25,7 @@ namespace Project
         Texture2D background;
         Texture2D exitSign;
         Texture2D DebugBox;
+        DataManager<Level> levelLoader;
 
         private GameController controller;
         string lvlName = "more_platforms";
@@ -41,18 +41,10 @@ namespace Project
             graphics.ApplyChanges();
 
             Content.RootDirectory = "Content";
+            levelLoader = new DataManager<Level>();
+          
 
-            mapLoader = new MapLoader(Content);
-
-=======
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-
-        public GreatEscape()
-        {
-            graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";         
->>>>>>> controls
+            //mapLoader = new MapLoader(Content);
         }
 
 
@@ -64,15 +56,14 @@ namespace Project
         /// </summary>
         protected override void Initialize()
         {
-<<<<<<< HEAD
-            controller = new GameController(new GameEngine(mapLoader.InitMap(lvlName)), new Camera(0.8f, Vector2.Zero));
+            
+            //controller = new GameController(new GameEngine(mapLoader.InitMap(lvlName)), new Camera(0.8f, Vector2.Zero));
 
             IsMouseVisible = true;
-=======
-            graphics.PreferredBackBufferWidth = (int)ScreenManager.Instance.Dimensions.X;
-            graphics.PreferredBackBufferHeight = (int)ScreenManager.Instance.Dimensions.Y;
-            graphics.ApplyChanges();
->>>>>>> controls
+            //graphics.PreferredBackBufferWidth = (int)ScreenManager.Instance.Dimensions.X;
+            //graphics.PreferredBackBufferHeight = (int)ScreenManager.Instance.Dimensions.Y;
+            //graphics.ApplyChanges();
+
             base.Initialize();
 
         }
@@ -83,21 +74,16 @@ namespace Project
         /// </summary>
         protected override void LoadContent()
         {
-<<<<<<< HEAD
-            mapLoader.LoadMapContent(controller.GameEngine.GameState);
+            //mapLoader.LoadMapContent(controller.GameEngine.GameState);
             
-            sprite_batch = new SpriteBatch(GraphicsDevice);
-            background = mapLoader.getBackground();
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+            //background = mapLoader.getBackground();
             exitSign = Content.Load<Texture2D>("Sprites/Backgrounds/ExitSign_2");
             DebugBox = Content.Load<Texture2D>("Sprites/Misc/box");
 
-=======
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
             ScreenManager.Instance.GraphicsDevice = GraphicsDevice;
             ScreenManager.Instance.SpriteBatch = spriteBatch;
-            ScreenManager.Instance.LoadContent(this.Content);  
->>>>>>> controls
+            ScreenManager.Instance.LoadContent(this.Content);
         }
 
         private void RestartGame()
@@ -121,53 +107,49 @@ namespace Project
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
-<<<<<<< HEAD
         {
-            controller.HandleUpdate(gameTime);
-            base.Update(gameTime);
-        }
-
-
-        
-=======
-        {            
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
                 || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
+            //controller.HandleUpdate(gameTime);
             ScreenManager.Instance.Update(gameTime);
-
             base.Update(gameTime);
         }
 
->>>>>>> controls
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-<<<<<<< HEAD
-            GraphicsDevice.Clear(Color.White);
+            GraphicsDevice.Clear(Color.Black);
 
+            spriteBatch.Begin();
+            ScreenManager.Instance.Draw(spriteBatch);
+            //TODO: Cleanup, consider using ScreenManager instead
+
+            /*
             bool DebugView = Keyboard.GetState().IsKeyDown(Keys.P);
             if(DebugView){
                 //To view the bounding boxes
-                sprite_batch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, null, null, null, null, controller.Camera.view);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, null, null, null, null, controller.Camera.view);
             }
             else {
-                sprite_batch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, controller.Camera.view);
+                spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, controller.Camera.view);
             }
-            
-
+            */
+           
+            /*
             // TODO move to the MapLoader/GameState 
-            sprite_batch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
-            sprite_batch.Draw(exitSign, new Rectangle(1100, 300, exitSign.Width/5, exitSign.Height/5), Color.White);
-            sprite_batch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth * 3/2,  graphics.PreferredBackBufferHeight * 3/2), Color.White);
-            sprite_batch.Draw(exitSign, new Rectangle(1430, 300, exitSign.Width/5, exitSign.Height/5), Color.White);
+            spriteBatch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
+            spriteBatch.Draw(exitSign, new Rectangle(1100, 300, exitSign.Width/5, exitSign.Height/5), Color.White);
+            spriteBatch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth * 3/2,  graphics.PreferredBackBufferHeight * 3/2), Color.White);
+            spriteBatch.Draw(exitSign, new Rectangle(1430, 300, exitSign.Width/5, exitSign.Height/5), Color.White);
+
 
             RasterizerState state = new RasterizerState();
             state.FillMode = FillMode.WireFrame;
-            sprite_batch.GraphicsDevice.RasterizerState = state;
+            spriteBatch.GraphicsDevice.RasterizerState = state;
 
             foreach (GameObject obj in controller.GameEngine.GameState.GetAll())
             {
@@ -175,23 +157,19 @@ namespace Project
                 {
                     if (DebugView)
                     {
-                        sprite_batch.Draw(DebugBox, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);
+                        spriteBatch.Draw(DebugBox, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);
                     }
                     else
                     {
-                        sprite_batch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);
+                        spriteBatch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);
                     }
                 }
             }
+            */
 
-            sprite_batch.End();
-=======
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            spriteBatch.Begin();
-            ScreenManager.Instance.Draw(spriteBatch);
             spriteBatch.End();
->>>>>>> controls
+
+
 
             base.Draw(gameTime);
         }

@@ -26,30 +26,30 @@ namespace Project.Util
             return Actors.Concat(Solids).Concat(Collectibles).ToList();
         }
 
-        public void AddActor(Miner actor)
+        public void AddObject(GameObject obj)
         {
-            Actors.Add(actor);
+            if(obj is Miner)
+            {
+                Actors.Add((Miner)obj);
+            } else if(obj is Ground)
+            {
+                Solids.Add(obj);
+            } else
+            {
+                // Console.WriteLine("Trying to add " + obj.Type + ".");
+                Collectibles.Add(obj);
+            }
         }
 
         public List<Miner> GetActors() {
             return Actors;
         }
 
-
-        public void AddSolid(GameObject solid)
-        {
-            Solids.Add(solid);
-        }
         public List<GameObject> GetSolids()
         {
             return Solids;
         }
 
-
-        public void AddCollectible(GameObject collectible)
-        {
-            Collectibles.Add(collectible);
-        }
         public List<GameObject> GetCollectibles()
         {
             return Collectibles;

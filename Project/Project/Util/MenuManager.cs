@@ -27,7 +27,7 @@ namespace Project.Util
                     last = menu.Items[menu.Items.Count - 1].Image.Alpha;
                     if(first == 0.0f && last == 0.0f)
                     {
-                        menu.ID = menu.Items[menu.ItemNumber].LinkId;
+                        menu.ID = menu.Items[menu.ItemNumber].Link;
                     }
                     else if(first == 1.0f && last == 1.0f)
                     {
@@ -40,6 +40,7 @@ namespace Project.Util
                 }
             }
         }
+
         public MenuManager()
         {
             menu = new Menu();
@@ -83,10 +84,13 @@ namespace Project.Util
             }
             if (InputManager.Instance.KeyPressed(Keys.Enter) && !InTransition)
             {
-                if (menu.Items[menu.ItemNumber].LinkType == "Screen") {
-                    ScreenManager.Instance.ChangeScreen(menu.Items[menu.ItemNumber].LinkId);
+                if (menu.Items[menu.ItemNumber].LinkId.ToLower() == "screen") {
+                    ScreenManager.Instance.ChangeScreen(
+                        menu.Items[menu.ItemNumber].LinkType,
+                        menu.Items[menu.ItemNumber].Link);
                 }
                 else {
+                    // it's a menu
                     InTransition = true;
                     menu.Transition(1.0f);
                     foreach(MenuItem item in menu.Items)

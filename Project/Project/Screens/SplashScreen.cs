@@ -17,12 +17,12 @@ namespace Project.Screens
     public class SplashScreen : GameScreen
     {
         public Image Image;
-        //public string Path { get; set; }
+
+        public Vector2 Position;
 
         public SplashScreen() {
             Path = "Content/Load/SplashScreen.json";
         }
-        public Vector2 Position;
         //private ContentManager contentManager;
         public override void LoadContent()
         {
@@ -42,7 +42,7 @@ namespace Project.Screens
 
             if (InputManager.Instance.KeyPressed(Keys.Enter, Keys.Z))
             {
-                ScreenManager.Instance.ChangeScreen("TitleScreen");
+                ScreenManager.Instance.ChangeScreen("TitleScreen", "Content/Load/TitleMenu");
             }
         }
         public override void Draw(SpriteBatch spriteBatch)

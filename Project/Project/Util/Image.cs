@@ -63,8 +63,7 @@ namespace Project.Util
             {
                 effectList[effect].IsActive = false;
                 (effectList[effect] as ImageEffect).UnloadContent();
-            }
-            
+            }            
         }
 
         public void StoreEffects()

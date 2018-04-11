@@ -4,6 +4,9 @@
   "Effects": "FadeEffect",
   "Items": [
     {
+      "Link": "Level1",
+      "LinkType": "PlayingScreen",
+      "LinkId": "Screen",
       "Image": {
         "Text": "New Game"
       }

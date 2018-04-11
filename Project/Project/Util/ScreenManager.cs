@@ -43,9 +43,12 @@ namespace Project.Util
             }
         }
 
-        // TODO: Things
-        public void ChangeScreen(string screenName) {
-            nextScreen = (GameScreen)Activator.CreateInstance(Type.GetType("Project.Screens."+ screenName));
+        // TODO: UPdate level path
+        public void ChangeScreen(string screenType, string path) {
+            
+            nextScreen = (GameScreen)Activator.CreateInstance(Type.GetType(
+                "Project.Screens."+ screenType),
+                path);
             Image.IsActive = true;
             Image.FadeEffect.Increase = true;
             Image.Alpha = 0.0f;

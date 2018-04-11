@@ -295,12 +295,9 @@ __pycache__/
 *.toc
 *.synctex.gz
 
-<<<<<<< HEAD
+
 # Build files
 Project/Project/AppX/
+Project/Project/Core
 *.dll
-=======
-# By us
-*.dll
-Project/Project/AppX/
->>>>>>> controls
+*.xnb

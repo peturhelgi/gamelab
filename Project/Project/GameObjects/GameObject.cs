@@ -62,26 +62,58 @@ namespace Project.GameObjects
 
 
     public abstract class GameObject : IGameObject {
+
+        /// <summary>
+        /// Loads the content of the GameObject, e.g. images, effects etc
+        /// </summary>
         public virtual void LoadContent() {
             /* Override this in all inherited classes */
         }
+
+        /// <summary>
+        /// Unloads the content of the GameObject
+        /// </summary>
         public virtual void UnloadContent() {
             /* Override this in all inherited classes */
         }
+        /// <summary>
+        /// Updates the state of the GameObject (deprecated)
+        /// </summary>
+        /// <param name="gameTime"></param>
         public virtual void Update(GameTime gameTime) {
             /* Override this in all inherited classes */
         }
+
+        /// <summary>
+        /// Draws the GameObject to the canvas
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch) {
             /* Override this in all inherited classes */
         }
 
+        /// <summary>
+        /// True if the gameobject is airborne
+        /// </summary>
         public bool Falling { get; set; }
         
-        public bool Destroyable { get; set; }
+        /// <summary>
+        /// True iff GameObject can be destroyed
+        /// </summary>
+        public bool Destroyable { get; protected set; }
 
-        public bool Movable { get;  set; }
 
+        /// <summary>
+        /// True if the GameObject can be moved
+        /// </summary>
+        public bool Movable { get; protected set; }
+
+
+        /// <summary>
+        /// True iff the GameObject should be drawn
+        /// </summary>
         public bool Visible { get; set; }
+
 
         [JsonProperty("pos")]
         public Vector2 Position { get; set; }
@@ -95,7 +127,6 @@ namespace Project.GameObjects
         [JsonProperty("m")]
         public double Mass { get; set; }
 
-        [JsonProperty("texture")]
         public Texture2D Texture { get; set; }
 
         [JsonProperty("type")]
@@ -107,6 +138,7 @@ namespace Project.GameObjects
             }
         }
 
+        [JsonProperty("texture")]
         public string TextureString { get; set; }
     }
 }

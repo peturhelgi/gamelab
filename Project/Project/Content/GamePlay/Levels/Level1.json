@@ -10,13 +10,7 @@
 
   "Objects": [
     {
-      "pos": {
-        "x": 210,
-        "y": 250
-      },
-      "type": "end"
-    },
-    {
+      "$type": "Project.GameObjects.Miner, Project",
       "dim": {
         "x": 119,
         "y": 370
@@ -30,10 +24,12 @@
         "y": 0
       },
       "m": 80,
-      "type": "miner",
       "texture": "Sprites/Miners/MinerPickaxe"
-    },
+    }
+    /*
+    ,
     {
+      "$type": "Project.GameObjects.Rock, Project",
       "dim": {
         "x": 150,
         "y": 107.5
@@ -47,11 +43,11 @@
         "y": 0
       },
       "m": 50,
-      "type": "rock",
       "texture": "Sprites/Rocks/BareRock5"
 
     },
     {
+      "$type": "Project.GameObjects.Rock, Project",
       "dim": {
         "x": 276,
         "y": 175.3
@@ -65,11 +61,11 @@
         "y": 0
       },
       "m": 20,
-      "type": "rock",
       "texture": "Sprites/Rocks/BareRock1"
 
     },
     {
+      "$type": "Project.GameObjects.Ground, Project",
       "dim": {
         "x": 640,
         "y": 318
@@ -83,10 +79,10 @@
         "y": 0
       },
       "m": 1000,
-      "type": "ground",
       "texture": "Sprites/Rocks/Ground1"
     },
     {
+      "$type": "Project.GameObjects.Ground, Project",
       "dim": {
         "x": 320,
         "y": 109
@@ -100,10 +96,10 @@
         "y": 0
       },
       "m": 1000,
-      "type": "ground",
       "texture": "Sprites/Rocks/Ground2"
     },
     {
+      "$type": "Project.GameObjects.Ground, Project",
       "dim": {
         "x": 640,
         "y": 268
@@ -117,10 +113,10 @@
         "y": 0
       },
       "m": 1000,
-      "type": "ground",
       "texture": "Sprites/Rocks/Ground3"
     },
     {
+      "$type": "Project.GameObjects.Ground, Project",
       "dim": {
         "x": 320,
         "y": 109
@@ -134,10 +130,10 @@
         "y": 0
       },
       "m": 1000,
-      "type": "ground",
       "texture": "Sprites/Rocks/Ground4"
     },
     {
+      "$type": "Project.GameObjects.Ground, Project",
       "dim": {
         "x": 127.3,
         "y": 69.15
@@ -151,8 +147,7 @@
         "y": 0
       },
       "m": 1000,
-      "type": "ground",
       "texture": "Sprites/Rocks/SuspendedRock"
-    }
+    }*/
   ]
 }

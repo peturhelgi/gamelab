@@ -15,123 +15,73 @@ namespace Project.GameObjects
     enum Stance { stand, jump, crouch, lie };
     public class Miner : GameObject
     {
-        ///--------------------------------//
-        //NOTE: For merging purposes.
         public TimeSpan lastUpdated;
-
-        ///--------------------------------//
         public Image Image;
-        public Vector2 Velocity;
         public float MoveSpeed;
+
+        Tool tool;
+        Gait Gait;
+        Stance Stance;
+        /*
+            // Old variables. Make compatible with game engine
+            this.SpriteSize = spriteSize;
+            this.Visible  = true;
+            this.Gait     = Gait.walk;
+            this.Stance   = Stance.stand;
+            this.TextureString = textureString;           
+        */
+        
         public Miner()
         {
-            Velocity = Vector2.Zero;
+            lastUpdated = new TimeSpan();
+            this.tool = new Pickaxe();
         }
         public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
         {       }
 
         public override void LoadContent()
         {
-            Image.LoadContent();
+            if(Image != null)
+                Image.LoadContent();
         }
 
         public override void UnloadContent()
         {
-            Image.UnloadContent();
+            if (Image != null)
+                Image.UnloadContent();
         }
         public override void Update(GameTime gameTime)
         {
-
-            Image.IsActive = true;
-            if (InputManager.Instance.KeyDown(Keys.Down))
+            if (Image != null)
             {
-                Velocity.Y = MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                Image.SpriteSheetEffect.CurrentFrame.Y = 0;
-            }
-            else if (InputManager.Instance.KeyDown(Keys.Up))
-            {
-                Velocity.Y = -MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                Image.SpriteSheetEffect.CurrentFrame.Y = 3;
-            }
-            else { Velocity.Y = 0; }
+                Image.IsActive = true;
+                if (Velocity.X == 0 && Velocity.Y == 0)
+                {
+                    Image.IsActive = false;
+                }
 
-            if (InputManager.Instance.KeyDown(Keys.Right))
-            {
-                Velocity.X = MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                Image.SpriteSheetEffect.CurrentFrame.Y = 2;
+                Image.Update(gameTime);
+                Image.Position += Velocity;
             }
-            else if (InputManager.Instance.KeyDown(Keys.Left))
-            {
-                Velocity.X = -MoveSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                Image.SpriteSheetEffect.CurrentFrame.Y = 1;
-
-            }
-            else { Velocity.X = 0; }
-
-            if(Velocity.X == 0 && Velocity.Y == 0)
-            {
-                Image.IsActive = false;
-            }
-
-            Image.Update(gameTime);
-            Image.Position += Velocity;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Image.Draw(spriteBatch);
+            if (Image != null)
+                Image.Draw(spriteBatch);
         }
 
-
-
-        public void Jump(Vector2 speed)
-        {
-            //TODO: make compatible with current version
-        }
-        #region Old Code commented out
-        /*
-        Tool tool;
-        Gait Gait;
-        Stance Stance;
-        public TimeSpan lastUpdated;
-        public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
-        {
-<<<<<<< HEAD
-            Position = position;
-            Speed    = speed;
-            Mass     = mass;
-            SpriteSize = spriteSize;
-            Visible  = true;
-            Gait     = Gait.walk;
-            Stance   = Stance.jump;
-            tool = new Pickaxe();
-            TextureString = textureString;
-
-            lastUpdated = new TimeSpan();
-
-=======
-            this.Position = position;
-            this.Speed    = speed;
-            this.Mass     = mass;
-            this.Box      = box;
-            this.Visible  = true;
-            this.Gait     = Gait.walk;
-            this.Stance   = Stance.stand;
-            this.tool = new Pickaxe();
->>>>>>> controls
-        }
 
         /// <summary>
         /// Makes the miner jump if possible
         /// </summary>
-        /// <returns>True if 1==1</returns>
-        public bool Jump(Vector2 speed) {
+        public void Jump(Vector2 speed)
+        {
+            //TODO: make compatible with current version
             this.Stance = Stance.jump;
             this.Gait = Gait.jump;
             // TODO: add jump logic
-            this.Speed += speed;
-
-            return true;
+            this.Velocity += speed;
         }
         public bool IsAirborne()
         {
@@ -147,6 +97,15 @@ namespace Project.GameObjects
             this.Stance = Stance.crouch;
             this.Gait = Gait.crawl;
             // TODO: add crouch logic
+
+            return true;
+        }
+
+
+        public bool Run() {
+            this.Stance = Stance.stand;
+            this.Gait = Gait.run;
+            // TODO: Add some running logic
 
             return true;
         }
@@ -205,19 +164,12 @@ namespace Project.GameObjects
         /// Makes the miner run if possible
         /// </summary>
         /// <returns>true iff 1==1</returns>
-        public bool Run() {
-            this.Stance = Stance.stand;
-            this.Gait = Gait.run;
-            // TODO: Add some running logic
-
-            return true;
-        }
 
         public bool IsRunning() {
             return this.Gait == Gait.run;
         }
         public bool Halt() {
-            this.Speed = new Vector2(0, 0);
+            this.Velocity = new Vector2(0, 0);
             this.Gait = Gait.stop;
             this.Stance = Stance.stand;
             return true;
@@ -226,49 +178,41 @@ namespace Project.GameObjects
         public bool IsStill() {
             return this.Gait == Gait.stop;
         }
-
-        /// <summary>
-        /// Updates the speed if the miner if possible.
-        /// </summary>
-        /// <param name="direction">Direction in which to move the miner</param>
-        /// <returns>True iff 1==1</returns>
-        public bool Move(Vector2 dv) {
-            //TODO: add move logic, the one here is just an example
-            switch (this.Gait) {
-                case Gait.crawl:
-                    this.Speed = dv/2; // for example, there could be some more logic here using our physics
-                    break;
-
-                case Gait.walk:
-                    this.Speed = dv;   // for example, there could be some more logic here using our physics
-                    break;
-
-                case Gait.run:
-                    this.Speed = 2*dv; // for example, there could be some more logic here using our physics
-                    break;
-
-                default:
-                    // Nothing happens yet
-                    this.Speed = dv;
-                    break;
-            }
-
-            return true;
-        }
-
-       
-
         /// <summary>
         /// Uses the tool that the miner currenty has
         /// </summary>
         /// <returns>True iff 1==1</returns>
         public bool UseTool(List<GameObject> gameObjects) {
             this.Stance = Stance.stand;
-            tool.use(this, gameObjects);
+            tool.Use(this, gameObjects);
 
             return true;
         }
-        */
+        /// <summary>
+        /// Updates the speed if the miner if possible.
+        /// </summary>
+        /// <param name="direction">Direction in which to move the miner</param>
+        /// <returns>True iff 1==1</returns>
+        public bool Move(Vector2 dv) {
+            //TODO: Make compatible with game engine
+            switch (this.Gait) {
+                case Gait.crawl:
+                    break;
+
+                case Gait.walk:
+                    break;
+
+                case Gait.run:
+                    break;
+
+                default:
+                    
+                    break;
+            }
+
+            return true;
+        }
+        #region Old Code commented out
         #endregion
     }
 }

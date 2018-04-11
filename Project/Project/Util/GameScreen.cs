@@ -19,11 +19,26 @@ namespace Project.Util
 
         public string Path;
 
-        public GameScreen() {
+        public GameScreen()
+        {
             Type = this.GetType();
             Path = "Content/Load/" + Type.ToString().Replace("Project.Screens.", "") + ".json";
         }
-        public virtual void LoadContent() {
+
+        public GameScreen(string path)
+        {
+            Type = this.GetType();
+            Path = path;
+        }
+
+        public virtual void LoadContent()
+        {
+            content = new ContentManager(
+                ScreenManager.Instance.Content.ServiceProvider, "Content");
+        }
+
+        public virtual void LoadContent(string path)
+        {
             content = new ContentManager(
                 ScreenManager.Instance.Content.ServiceProvider, "Content");
         }

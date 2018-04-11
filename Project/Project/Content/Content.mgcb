@@ -357,3 +357,15 @@
 #begin samplelvl.json
 /copy:samplelvl.json
 
+#begin Load/ScreenManager.json
+/copy:Load/ScreenManager.json
+
+#begin Load/SplashScreen.json
+/copy:Load/SplashScreen.json
+
+#begin Load/TitleMenu.json
+/copy:Load/TitleMenu.json
+
+#begin GamePlay/Levels/Level1.json
+/copy:GamePlay/Levels/Level1.json
+

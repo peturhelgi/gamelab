@@ -14,14 +14,16 @@ namespace Project.Screens
     class TitleScreen : GameScreen
     {
         MenuManager menuManager;
-        public TitleScreen()
+        public TitleScreen(string path)
         {
             menuManager = new MenuManager();
+            this.Path = path;
+            //this.Path = "Content/Load/TitleMenu.json";
         }
         public override void LoadContent()
         {
             base.LoadContent();
-            menuManager.LoadContent("Content/Load/TitleMenu.json");
+            menuManager.LoadContent(this.Path);
         }
 
         public override void UnloadContent()
