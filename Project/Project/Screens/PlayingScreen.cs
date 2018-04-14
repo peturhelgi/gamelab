@@ -16,10 +16,17 @@ namespace Project.Screens {
     public class PlayingScreen : GameScreen {
         Miner miner;
         Level level;
-
+        GameEngine engine;
+        GameState state;
 
         public PlayingScreen(string path) {
             this.Path = path;
+        }
+
+        public void Init() {
+            // mapLoader.InitMap(lvlName
+            state = new GameState();
+            engine = new GameEngine(state);
         }
 
         string baseFolder = "Content/GamePlay/Levels/";

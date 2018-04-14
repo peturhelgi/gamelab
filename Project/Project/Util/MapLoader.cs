@@ -60,7 +60,6 @@ namespace Project.Util {
             foreach(GameObject obj in gameState.GetAll()) {
                 obj.Texture = ContentManager.Load<Texture2D>(obj.TextureString);
             }
-
         }
 
         public Texture2D getBackground() {

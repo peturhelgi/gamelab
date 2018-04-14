@@ -25,7 +25,6 @@ namespace Project.Util {
             CollisionDetector = new CollisionDetector();
         }
 
-
         public void HandleInput(int player, GameAction action, float value) {
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
 
@@ -79,7 +78,6 @@ namespace Project.Util {
                 actor.Velocity += GRAVITY * (float)(gameTime - actor.lastUpdated).TotalSeconds;
             }
             direction += actor.Velocity * (float)(gameTime - actor.lastUpdated).TotalSeconds;
-
 
             // 2. check for collisions in the X-axis, the Y-axis (falling and jumping against something) and the intersection of the movement
             BoundingBox xBox = new BoundingBox();

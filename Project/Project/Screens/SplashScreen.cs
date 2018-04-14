@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Media;
 using Project.GameObjects;
 using Newtonsoft.Json;
 
+
 namespace Project.Screens {
     public class SplashScreen : GameScreen {
         public Image Image;
@@ -21,6 +22,7 @@ namespace Project.Screens {
         public SplashScreen() {
             Path = "Content/Load/SplashScreen.json";
         }
+
         //private ContentManager contentManager;
         public override void LoadContent() {
             base.LoadContent();

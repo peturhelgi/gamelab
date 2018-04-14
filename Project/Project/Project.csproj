@@ -153,9 +153,9 @@
     <None Include="Content\Load\ScreenManager.json" />
     <None Include="Content\Load\SplashScreen.json" />
     <None Include="Content\Load\TitleMenu.json" />
-    <None Include="Content\more_platforms.json" />
+    <None Include="Content\GamePlay\Levels\more_platforms.json" />
     <None Include="Content\Fonts\Orbitron.spritefont" />
-    <None Include="Content\samplelvl.json" />
+    <None Include="Content\GamePlay\Levels\samplelvl.json" />
     <None Include="Content\Sprites\VisualAssets_PS\Background.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Ground.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Miner.psd" />

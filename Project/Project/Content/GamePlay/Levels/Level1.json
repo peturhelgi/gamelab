@@ -26,14 +26,45 @@
       "m": 80,
       "Image": {
         "Path": "Sprites/Miners/MinerPickaxe",
-        "Position": {
-          "X": 100,
-          "Y": 100
+        "IsActive": true,
+        "pos": {
+          "X": 50,
+          "Y": 0
         },
         "Scale": {
-          "X": 0.5,
-          "Y": 0.8
+          "X": 1,
+          "Y": 1
+        },
+        "dim": {
+          "x": 119,
+          "y": 370
         }
+      },
+      "texture": "Sprites/Miners/MinerPickaxe"
+    },
+    {
+      "$type": "Project.GameObjects.Miner, Project",
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 80,
+      "Image": {
+        "Alpha": 0.5,
+        "Path": "Sprites/Rocks/BareRock5",
+        "IsActive": true
+        /*,"pos": {
+          "X": 50,
+          "Y": 0
+        }*/,
+        "Scale": {
+          "X": 1,
+          "Y": 1
+        }
+        /*"dim": {
+          "x": 286, //119,
+          "y": 171 //370
+        }*/
       },
       "texture": "Sprites/Miners/MinerPickaxe"
     }

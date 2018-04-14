@@ -14,7 +14,12 @@ namespace Project.Util {
     public class Image {
         public float Alpha;
         public string Text, FontName, Path, Effects;
-        public Vector2 Position, Scale;
+        [JsonProperty("pos")]
+        public Vector2 Position;
+        public Vector2 Scale;
+        [JsonProperty("dim")]
+        public Vector2 SpriteSize;
+
         public Rectangle SourceRect;
         public Texture2D Texture;
         public bool IsActive;
@@ -26,7 +31,6 @@ namespace Project.Util {
         RenderTarget2D renderTarget;
         SpriteFont font;
         Dictionary<string, ImageEffect> effectList;
-
 
         void SetEffect<T>(ref T effect) {
             if(effect == null) {
@@ -84,6 +88,7 @@ namespace Project.Util {
             FontName = "Fonts/Orbitron";
             Position = Vector2.Zero;
             Scale = Vector2.One;
+            SpriteSize = Vector2.Zero;
             Alpha = 1.0f;
             SourceRect = Rectangle.Empty;
             Effects = string.Empty;
@@ -98,25 +103,36 @@ namespace Project.Util {
             font = content.Load<SpriteFont>(FontName);
             Vector2 dim = Vector2.Zero;
             if(Texture != null) {
+                if(SpriteSize.X != 0) {
+                    Scale.X *= (float)(SpriteSize.X / Texture.Width);
+                }
                 dim.X += Texture.Width;
-                dim.Y = Math.Max(Texture.Height, font.MeasureString(Text).Y);
+                if(SpriteSize.Y != 0) {
+                    Scale.Y *= (float)(SpriteSize.Y / Texture.Height);
+                }
+                    dim.Y = Math.Max(Texture.Height, font.MeasureString(Text).Y);
             } else {
                 dim.Y = font.MeasureString(Text).Y;
             }
-
             dim.X += font.MeasureString(Text).X;
+            
             if(SourceRect == Rectangle.Empty) {
-                SourceRect = new Rectangle(0, 0, (int)dim.X, (int)dim.Y);
+                SourceRect = new Rectangle(
+                    (int)Position.X, (int)Position.Y, 
+                    (int)dim.X, (int)dim.Y);
             }
-            renderTarget = new RenderTarget2D(ScreenManager.Instance.GraphicsDevice,
-                (int)dim.X, (int)dim.Y);
+            renderTarget = new RenderTarget2D(
+                ScreenManager.Instance.GraphicsDevice, (int)dim.X, (int)dim.Y);
+
             ScreenManager.Instance.GraphicsDevice.SetRenderTarget(renderTarget);
             ScreenManager.Instance.GraphicsDevice.Clear(Color.Transparent);
             ScreenManager.Instance.SpriteBatch.Begin();
             if(Texture != null) {
-                ScreenManager.Instance.SpriteBatch.Draw(Texture, Vector2.Zero, Color.White);
+                ScreenManager.Instance.SpriteBatch.Draw(Texture, Vector2.Zero, 
+                    Color.White);
             }
-            ScreenManager.Instance.SpriteBatch.DrawString(font, Text, Vector2.Zero, Color.White);
+            ScreenManager.Instance.SpriteBatch.DrawString(font, Text, 
+                Vector2.Zero, Color.White);
             ScreenManager.Instance.SpriteBatch.End();
 
             Texture = renderTarget;
@@ -143,16 +159,19 @@ namespace Project.Util {
 
         public void Update(GameTime gameTime) {
             foreach(var effect in effectList) {
-                if(effect.Value.IsActive)
+                if(effect.Value.IsActive) {
                     effect.Value.Update(gameTime);
+                }
             }
         }
 
         public void Draw(SpriteBatch spriteBatch) {
-            origin = new Vector2(SourceRect.Width / 2, SourceRect.Height / 2);
+            origin = new Vector2(Scale.X * SourceRect.Width / 2, 
+                Scale.Y * SourceRect.Height / 2);
             try {
-                spriteBatch.Draw(Texture, origin + Position, SourceRect, Color.White * Alpha,
-                    0.0f, origin, Scale, SpriteEffects.None, 0.0f);
+                spriteBatch.Draw(Texture, origin + Position, SourceRect, 
+                    Color.White * Alpha, 0.0f, origin, Scale,
+                    SpriteEffects.None, 0.0f);                
             } catch(ArgumentNullException) {
 
             }

@@ -33,6 +33,8 @@ namespace Project.Util {
             foreach(GameObject obj in Objects) {
                 obj.LoadContent();
             }
+            
+            // Probably have to throw this layer loop.
             foreach(Layer layer in Layer) {
                 layer.LoadContent(TileDimensions);
             }
@@ -53,7 +55,7 @@ namespace Project.Util {
                 layer.Update(gameTime, ref miner);
             }
 
-            //TODO: Consider if this is best practice
+            //TODO: Use the GameEngine instead
             foreach(GameObject obj in Objects) {
                 obj.Update(gameTime);
             }
@@ -69,33 +71,5 @@ namespace Project.Util {
                 obj.Draw(spriteBatch);
             }
         }
-    }
-
-    /// <summary>
-    /// This class will be deprecated
-    /// </summary>
-    public class Obj {
-
-        [JsonProperty("dim")]
-        public Vector2 SpriteSize;
-
-        [JsonProperty("pos")]
-        public Vector2 Position;
-
-        [JsonProperty("vel")]
-        public Vector2 Velocity;
-
-        [JsonProperty("m")]
-        public float Mass;
-
-        //Obsolete when using DataManager
-        [JsonProperty("type")]
-        public string Type;
-
-        [JsonProperty("texture")]
-        public string Texture;
-
-        public List<Layer> Layer;
-        public Vector2 TileDimensions;
     }
 }

@@ -79,7 +79,6 @@ namespace Project.GameObjects {
         /// </summary>
         public bool Movable { get; protected set; }
 
-
         /// <summary>
         /// Position of the GameObject
         /// </summary>
