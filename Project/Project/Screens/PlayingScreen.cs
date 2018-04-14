@@ -12,16 +12,13 @@ using Microsoft.Xna.Framework;
 using Project.GameObjects;
 
 
-namespace Project.Screens
-{
-    public class PlayingScreen : GameScreen
-    {
+namespace Project.Screens {
+    public class PlayingScreen : GameScreen {
         Miner miner;
         Level level;
 
 
-        public PlayingScreen(string path)
-        {
+        public PlayingScreen(string path) {
             this.Path = path;
         }
 
@@ -30,40 +27,36 @@ namespace Project.Screens
         /// <summary>
         /// 
         /// </summary>
-        public override void LoadContent()
-        {
+        public override void LoadContent() {
             base.LoadContent();
-            
+
             DataManager<Miner> minerLoader = new DataManager<Miner>();
             DataManager<Level> levelLoader = new DataManager<Level>();
             miner = new Miner();//minerLoader.Load("Content/GamePlay/Miner");
-            
+
             level = levelLoader.Load(baseFolder + this.Path);
             // miner.LoadContent();
             level.LoadContent();
         }
 
-        public override void UnloadContent()
-        {
+        public override void UnloadContent() {
             base.UnloadContent();
             //miner.UnloadContent();
             level.UnloadContent();
         }
 
-        public override void Update(GameTime gameTime)
-        {
+        public override void Update(GameTime gameTime) {
             base.Update(gameTime);
             //miner.Update(gameTime);
             level.Update(gameTime, ref miner);
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
+        public override void Draw(SpriteBatch spriteBatch) {
             base.Draw(spriteBatch);
             level.Draw(spriteBatch, "Underlay");
             //miner.Draw(spriteBatch);
             level.Draw(spriteBatch, "Overlay");
-        }    
+        }
 
     }
 }

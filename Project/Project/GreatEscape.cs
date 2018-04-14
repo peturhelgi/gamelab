@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
@@ -58,14 +59,8 @@ namespace Project
         {
             
             //controller = new GameController(new GameEngine(mapLoader.InitMap(lvlName)), new Camera(0.8f, Vector2.Zero));
-
             IsMouseVisible = true;
-            //graphics.PreferredBackBufferWidth = (int)ScreenManager.Instance.Dimensions.X;
-            //graphics.PreferredBackBufferHeight = (int)ScreenManager.Instance.Dimensions.Y;
-            //graphics.ApplyChanges();
-
             base.Initialize();
-
         }
 
         /// <summary>
@@ -88,6 +83,7 @@ namespace Project
 
         private void RestartGame()
         {
+            UnloadContent();
             Initialize();
             LoadContent();
         }
@@ -97,7 +93,6 @@ namespace Project
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
             ScreenManager.Instance.UnloadContent();
         }
 
@@ -168,9 +163,6 @@ namespace Project
             */
 
             spriteBatch.End();
-
-
-
             base.Draw(gameTime);
         }
     }

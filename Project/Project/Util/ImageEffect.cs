@@ -6,20 +6,16 @@ using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
 
-namespace Project.Util
-{
-    public class ImageEffect
-    {
+namespace Project.Util {
+    public class ImageEffect {
         public bool IsActive;
 
         protected Image image;
-        public ImageEffect()
-        {
+        public ImageEffect() {
             IsActive = false;
         }
 
-        public virtual void LoadContent(ref Image image)
-        {
+        public virtual void LoadContent(ref Image image) {
             this.image = image;
         }
 

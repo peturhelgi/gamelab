@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;
 
-namespace Project.Util
-{
-    public class DataManager<T>
-    {
+namespace Project.Util {
+    public class DataManager<T> {
         [JsonIgnore]
         public Type Type;
         JsonSerializerSettings settings;
@@ -24,15 +22,12 @@ namespace Project.Util
         /// <param name="path">The path of a serialized JSON file.</param>
         /// <returns></returns>
         public T Load(string path) {
-            if (!path.EndsWith(".json"))
-            { path += ".json"; }
+            if(!path.EndsWith(".json")) { path += ".json"; }
             T instance;
-            try
-            {
+            try {
                 string data = File.ReadAllText(path);
                 instance = JsonConvert.DeserializeObject<T>(data, settings);
-            }
-            catch (FileNotFoundException ex) {
+            } catch(FileNotFoundException) {
                 instance = default(T);
             }
             return instance;
@@ -40,13 +35,11 @@ namespace Project.Util
 
         public bool Save(string path, object obj) {
             bool success;
-            try
-            {
+            try {
                 String data = JsonConvert.SerializeObject(obj, Formatting.Indented, settings);
                 File.WriteAllText(path, data);
                 success = true;
-            }
-            catch (Exception e) {
+            } catch(Exception e) {
                 success = false;
             }
 

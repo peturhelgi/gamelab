@@ -6,11 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Project.GameObjects
-{
-    class Rock : GameObject
-    {
-        public Rock(Vector2 position,  Vector2 spriteSize, string textureString, bool destroyable = true, bool movable = false) {
+namespace Project.GameObjects {
+    class Rock : GameObject {
+        public Rock(Vector2 position, Vector2 spriteSize, string textureString, bool destroyable = true, bool movable = false) {
 
             this.Destroyable = destroyable;
             this.Movable = movable;
@@ -24,35 +22,21 @@ namespace Project.GameObjects
 
         void Respawn() {
             // TODO: set variables to initial values
-        
+
         }
 
         void Destroy() {
-            if (!this.Destroyable) return;
+            if(!this.Destroyable) { return; }
 
             // TODO: add destoy logic
         }
 
         void Move() {
-            if (!this.Movable) return;
+            if(!this.Movable) { return; }
 
             //TODO: add move logic
         }
-
-        public override void LoadContent()
-        {
-            //TODO: Implement
-        }
-        public override void UnloadContent()
-        {
-            //TODO: Implement
-        }
-        public virtual void Update(GameTime gameTime)
-        {
-            //TODO: Implement
-        }
-        public virtual void Draw(SpriteBatch spriteBatch)
-        {
+        public override void Draw(SpriteBatch spriteBatch) {
             //TODO: Implement
         }
     }

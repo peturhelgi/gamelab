@@ -24,6 +24,17 @@
         "y": 0
       },
       "m": 80,
+      "Image": {
+        "Path": "Sprites/Miners/MinerPickaxe",
+        "Position": {
+          "X": 100,
+          "Y": 100
+        },
+        "Scale": {
+          "X": 0.5,
+          "Y": 0.8
+        }
+      },
       "texture": "Sprites/Miners/MinerPickaxe"
     }
     /*

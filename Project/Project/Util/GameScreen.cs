@@ -9,36 +9,28 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 
-namespace Project.Util
-{
-    public class GameScreen
-    {
+namespace Project.Util {
+    public class GameScreen {
         protected ContentManager content;
         [JsonIgnore]
         public Type Type;
 
         public string Path;
 
-        public GameScreen()
-        {
+        public GameScreen() {
             Type = this.GetType();
             Path = "Content/Load/" + Type.ToString().Replace("Project.Screens.", "") + ".json";
         }
 
-        public GameScreen(string path)
-        {
+        public GameScreen(string path) {
             Type = this.GetType();
             Path = path;
         }
 
-        public virtual void LoadContent()
-        {
-            content = new ContentManager(
+        public virtual void LoadContent() => content = new ContentManager(
                 ScreenManager.Instance.Content.ServiceProvider, "Content");
-        }
 
-        public virtual void LoadContent(string path)
-        {
+        public virtual void LoadContent(string path) {
             content = new ContentManager(
                 ScreenManager.Instance.Content.ServiceProvider, "Content");
         }

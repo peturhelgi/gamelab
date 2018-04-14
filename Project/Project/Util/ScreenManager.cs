@@ -10,10 +10,12 @@ using System.Threading.Tasks;
 using Project.Screens;
 using Newtonsoft.Json;
 
-namespace Project.Util
-{
-    public class ScreenManager
-    {
+namespace Project.Util {
+    public class ScreenManager {
+        static String Path = "Content/Load/ScreenManager.json";
+        static String ScreenNameSpace = "Project.Screens.";
+        static String SplashScreenPath = "Content/Load/SplashScreen.json";
+
         private static ScreenManager instance;
         [JsonIgnore]
         public Vector2 Dimensions { set; get; }
@@ -31,48 +33,39 @@ namespace Project.Util
         [JsonIgnore]
         public bool InTranstition { get; private set; }
 
-
         public static ScreenManager Instance {
             get {
-                if (instance == null)
-                {
+                if(instance == null) {
                     DataManager<ScreenManager> data = new DataManager<ScreenManager>();
-                    instance = data.Load("Content/Load/ScreenManager.json");
+                    instance = data.Load(Path);
                 }
                 return instance;
             }
         }
 
-        // TODO: UPdate level path
+        // TODO: Update level path
         public void ChangeScreen(string screenType, string path) {
-            
-            nextScreen = (GameScreen)Activator.CreateInstance(Type.GetType(
-                "Project.Screens."+ screenType),
-                path);
+
+            nextScreen = (GameScreen)Activator
+                .CreateInstance(Type.GetType(ScreenNameSpace + screenType), path);
             Image.IsActive = true;
             Image.FadeEffect.Increase = true;
             Image.Alpha = 0.0f;
             InTranstition = true;
         }
 
-        void Transition(GameTime gameTime)
-        {
-            if (InTranstition)
-            {
+        void Transition(GameTime gameTime) {
+            if(InTranstition) {
                 Image.Update(gameTime);
-                if(Image.Alpha == 1.0f)
-                {
+                if(Image.Alpha == 1.0f) {
                     currentScreen.UnloadContent();
                     currentScreen = nextScreen;
                     gameScreenManager.Type = currentScreen.Type;
-                    if (File.Exists(currentScreen.Path))
-                    {
+                    if(File.Exists(currentScreen.Path)) {
                         currentScreen = gameScreenManager.Load(currentScreen.Path);
                     }
                     currentScreen.LoadContent();
-                }
-                else if(Image.Alpha == 0.0f)
-                {
+                } else if(Image.Alpha == 0.0f) {
                     Image.IsActive = false;
                     InTranstition = false;
                 }
@@ -82,11 +75,10 @@ namespace Project.Util
         public ScreenManager() {
             Dimensions = new Vector2(640, 480);
             currentScreen = new SplashScreen();
-            gameScreenManager = new DataManager<GameScreen>
-            {
+            gameScreenManager = new DataManager<GameScreen> {
                 Type = currentScreen.Type
             };
-            currentScreen = gameScreenManager.Load("Content/Load/SplashScreen.json");
+            currentScreen = gameScreenManager.Load(SplashScreenPath);
         }
 
         public void LoadContent(ContentManager Content) {
@@ -95,7 +87,7 @@ namespace Project.Util
             Image.LoadContent();
         }
 
-        public void UnloadContent(){
+        public void UnloadContent() {
             currentScreen.UnloadContent();
             Image.UnloadContent();
         }
@@ -107,8 +99,7 @@ namespace Project.Util
 
         public void Draw(SpriteBatch spriteBatch) {
             currentScreen.Draw(spriteBatch);
-            if (InTranstition)
-            {
+            if(InTranstition) {
                 Image.Draw(spriteBatch);
             }
         }

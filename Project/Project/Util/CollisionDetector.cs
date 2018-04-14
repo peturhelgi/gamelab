@@ -6,19 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.Util
-{
+namespace Project.Util {
 
-    class CollisionDetector
-    {
+    class CollisionDetector {
 
-        public List<GameObject> FindCollisions(BoundingBox box, List<GameObject> objects)
-        {
+        public List<GameObject> FindCollisions(BoundingBox box, List<GameObject> objects) {
             List<GameObject> results = new List<GameObject>();
-            foreach (GameObject obj in objects)
-            {
-                if (box.Intersects(obj.BBox))
-                {
+            foreach(GameObject obj in objects) {
+                if(box.Intersects(obj.BBox)) {
                     results.Add(obj);
                 }
             }

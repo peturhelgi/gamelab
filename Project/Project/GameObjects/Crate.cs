@@ -7,15 +7,12 @@ using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Project.GameObjects
-{
+namespace Project.GameObjects {
     /// <summary>
     /// Inherits from GameObject.
     /// </summary>
-    class Crate : GameObject
-    {
-        public Crate()
-        {
+    public class Crate : GameObject {
+        public Crate() {
             // Default values for crates
             this.Movable = true;
             this.Visible = true;
@@ -24,8 +21,7 @@ namespace Project.GameObjects
         /// <summary>
         /// Respawns the crate.
         /// </summary>
-        void Respawn()
-        {
+        void Respawn() {
             // TODO: set variables to initial values
 
         }
@@ -33,9 +29,8 @@ namespace Project.GameObjects
         /// <summary>
         /// Destroys the crate
         /// </summary>
-        void Destroy()
-        {
-            if (!this.Destroyable) return;
+        void Destroy() {
+            if(!this.Destroyable) { return; }
 
             // TODO: add destoy logic
         }
@@ -43,34 +38,17 @@ namespace Project.GameObjects
         /// <summary>
         /// Moves the crate
         /// </summary>
-        void Move()
-        {
-            if (!this.Movable) return;
+        void Move() {
+            if(!this.Movable) { return; }
 
             //TODO: add move logic
-        }
-
-        /// <summary>
-        /// Loads the contents of the crate, e.g. sprite, effects etc
-        /// </summary>
-        public override void LoadContent()
-        {
-            //TODO: Implement
-        }
-        /// <summary>
-        /// Unloads the contents of the crate
-        /// </summary>
-        public override void UnloadContent()
-        {
-            //TODO: Implement
         }
 
         /// <summary>
         /// Updates the state of the crate (deprecated)
         /// </summary>
         /// <param name="gameTime"></param>
-        public override void Update(GameTime gameTime)
-        {
+        public override void Update(GameTime gameTime) {
             //TODO: Implement
         }
 
@@ -78,8 +56,7 @@ namespace Project.GameObjects
         /// Draws the crate to the canvas
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public override void Draw(SpriteBatch spriteBatch)
-        {
+        public override void Draw(SpriteBatch spriteBatch) {
             //TODO: Implement
         }
     }

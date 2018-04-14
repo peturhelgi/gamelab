@@ -5,10 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.Util
-{
-    class GameState : Level
-    {
+namespace Project.Util {
+    class GameState : Level {
         public List<Miner> Actors;
         public List<GameObject> Solids;
         public List<GameObject> Collectibles;
@@ -26,16 +24,12 @@ namespace Project.Util
             return Actors.Concat(Solids).Concat(Collectibles).ToList();
         }
 
-        public void AddObject(GameObject obj)
-        {
-            if(obj is Miner)
-            {
+        public void AddObject(GameObject obj) {
+            if(obj is Miner) {
                 Actors.Add((Miner)obj);
-            } else if(obj is Ground)
-            {
+            } else if(obj is Ground) {
                 Solids.Add(obj);
-            } else
-            {
+            } else {
                 // Console.WriteLine("Trying to add " + obj.Type + ".");
                 Collectibles.Add(obj);
             }
@@ -45,13 +39,11 @@ namespace Project.Util
             return Actors;
         }
 
-        public List<GameObject> GetSolids()
-        {
+        public List<GameObject> GetSolids() {
             return Solids;
         }
 
-        public List<GameObject> GetCollectibles()
-        {
+        public List<GameObject> GetCollectibles() {
             return Collectibles;
         }
 

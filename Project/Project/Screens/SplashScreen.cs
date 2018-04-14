@@ -12,10 +12,8 @@ using Microsoft.Xna.Framework.Media;
 using Project.GameObjects;
 using Newtonsoft.Json;
 
-namespace Project.Screens
-{
-    public class SplashScreen : GameScreen
-    {
+namespace Project.Screens {
+    public class SplashScreen : GameScreen {
         public Image Image;
 
         public Vector2 Position;
@@ -24,29 +22,24 @@ namespace Project.Screens
             Path = "Content/Load/SplashScreen.json";
         }
         //private ContentManager contentManager;
-        public override void LoadContent()
-        {
+        public override void LoadContent() {
             base.LoadContent();
             Image.LoadContent();
         }
 
-        public override void UnloadContent()
-        {
+        public override void UnloadContent() {
             base.UnloadContent();
             Image.UnloadContent();
         }
-        public override void Update(GameTime gameTime)
-        {
+        public override void Update(GameTime gameTime) {
             base.Update(gameTime);
             Image.Update(gameTime);
 
-            if (InputManager.Instance.KeyPressed(Keys.Enter, Keys.Z))
-            {
+            if(InputManager.Instance.KeyPressed(Keys.Enter, Keys.Z)) {
                 ScreenManager.Instance.ChangeScreen("TitleScreen", "Content/Load/TitleMenu");
             }
         }
-        public override void Draw(SpriteBatch spriteBatch)
-        {
+        public override void Draw(SpriteBatch spriteBatch) {
             Image.Draw(spriteBatch);
         }
     }

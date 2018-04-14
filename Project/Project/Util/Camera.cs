@@ -5,10 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.Util
-{
-    class Camera
-    {
+namespace Project.Util {
+    class Camera {
         public Matrix view;
         private float _Zoom;
         private Vector2 _Position;
@@ -26,8 +24,7 @@ namespace Project.Util
         }
 
         public void HandleAction(CameraAction action) {
-            switch (action)
-            {
+            switch(action) {
                 case (CameraAction.right):
                     Translate(new Vector2(2, 0));
                     break;
@@ -66,13 +63,12 @@ namespace Project.Util
         }
 
         public void Translate(Vector2 t) {
-            _Position += (t*_Zoom);
+            _Position += (t * _Zoom);
             Refresh();
         }
-        
 
-        private void Refresh()
-        {
+
+        private void Refresh() {
             view = Matrix.CreateTranslation(new Vector3(-_Position.X, -_Position.Y, 0)) * Matrix.CreateScale(_Zoom);
         }
 

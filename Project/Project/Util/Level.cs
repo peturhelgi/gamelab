@@ -9,10 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 
-namespace Project.Util
-{
-    public class Level
-    {
+namespace Project.Util {
+    public class Level {
 
         public int PrevLvl;
         public int LevelNr;
@@ -26,61 +24,48 @@ namespace Project.Util
         public List<Layer> Layer;
         public Vector2 TileDimensions;
 
-        public Level()
-        {
+        public Level() {
             Layer = new List<Layer>();
             TileDimensions = Vector2.Zero;
         }
 
-        public void LoadContent()
-        {
-            foreach(GameObject obj in Objects)
-            {
+        public void LoadContent() {
+            foreach(GameObject obj in Objects) {
                 obj.LoadContent();
             }
-            foreach (Layer layer in Layer)
-            {
+            foreach(Layer layer in Layer) {
                 layer.LoadContent(TileDimensions);
             }
         }
 
-        public void UnloadContent()
-        {
-            foreach(GameObject obj in Objects)
-            {
+        public void UnloadContent() {
+            foreach(GameObject obj in Objects) {
                 obj.UnloadContent();
             }
-            foreach (Layer layer in Layer)
-            {
+            foreach(Layer layer in Layer) {
                 layer.UnloadContent();
             }
         }
 
-        public void Update(GameTime gameTime, ref Miner miner)
-        {
+        public void Update(GameTime gameTime, ref Miner miner) {
 
-            foreach (Layer layer in Layer)
-            {
+            foreach(Layer layer in Layer) {
                 layer.Update(gameTime, ref miner);
             }
 
             //TODO: Consider if this is best practice
-            foreach(GameObject obj in Objects)
-            {
+            foreach(GameObject obj in Objects) {
                 obj.Update(gameTime);
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, string drawType)
-        {
-            foreach (Layer layer in Layer)
-            {
+        public void Draw(SpriteBatch spriteBatch, string drawType) {
+            foreach(Layer layer in Layer) {
                 layer.Draw(spriteBatch, drawType);
             }
 
             //TODO: Consider if this is best practice
-            foreach (GameObject obj in Objects)
-            {
+            foreach(GameObject obj in Objects) {
                 obj.Draw(spriteBatch);
             }
         }
@@ -89,8 +74,7 @@ namespace Project.Util
     /// <summary>
     /// This class will be deprecated
     /// </summary>
-    public class Obj
-    {
+    public class Obj {
 
         [JsonProperty("dim")]
         public Vector2 SpriteSize;
@@ -112,6 +96,6 @@ namespace Project.Util
         public string Texture;
 
         public List<Layer> Layer;
-        public Vector2 TileDimensions;        
+        public Vector2 TileDimensions;
     }
 }

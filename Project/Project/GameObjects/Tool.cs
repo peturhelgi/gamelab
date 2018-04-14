@@ -6,10 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Project.GameObjects;
 
-namespace Project.GameObjects
-{
-   public  abstract class Tool
-    {
+namespace Project.GameObjects {
+    public abstract class Tool {
         abstract public void Use(Miner user, List<GameObject> gameObjects);
     }
 }

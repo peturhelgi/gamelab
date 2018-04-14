@@ -148,6 +148,7 @@
     <MonoGameContentReference Include="Content\Content.mgcb">
       <SubType>Designer</SubType>
     </MonoGameContentReference>
+    <None Include="ClassDiagram.cd" />
     <None Include="Content\GamePlay\Levels\Level1.json" />
     <None Include="Content\Load\ScreenManager.json" />
     <None Include="Content\Load\SplashScreen.json" />
