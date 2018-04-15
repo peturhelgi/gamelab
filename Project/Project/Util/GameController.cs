@@ -29,8 +29,9 @@ namespace Project.Util {
 
                 // There can only be a second player, if there is a first one
                 GamePadState PlayerTwoState = GamePad.GetState(PlayerIndex.Two);
-                if(PlayerTwoState.IsConnected)
+                if(PlayerTwoState.IsConnected) {
                     HandleGamePad(PlayerTwoState);
+                }
             }
 
 

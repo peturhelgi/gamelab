@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Content.Pipeline;
-// TODO: replace these with the processor input and output types.
+// TO DO: replace these with the processor input and output types.
 using TInput = System.String;
 using TOutput = System.String;
 
@@ -14,7 +14,7 @@ namespace Level_Importer
     ///
     /// This should be part of a Content Pipeline Extension Library project.
     ///
-    /// TODO: change the ContentProcessor attribute to specify the correct
+    /// TO DO: change the ContentProcessor attribute to specify the correct
     /// display name for this processor.
     /// </summary>
     [ContentProcessor(DisplayName = "Level_Importer.LevelProcessor")]

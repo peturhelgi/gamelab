@@ -48,9 +48,9 @@ namespace Project.GameObjects {
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch) {
-            Image?.Draw(spriteBatch);
-        }
+        //public override void Draw(SpriteBatch spriteBatch) {
+         //   Image?.Draw(spriteBatch);
+        //}
 
 
         /// <summary>

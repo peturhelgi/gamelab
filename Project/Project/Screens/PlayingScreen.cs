@@ -18,6 +18,7 @@ namespace Project.Screens {
         Level level;
         GameEngine engine;
         GameState state;
+        string baseFolder = "Content/GamePlay/Levels/";
 
         public PlayingScreen(string path) {
             this.Path = path;
@@ -29,11 +30,6 @@ namespace Project.Screens {
             engine = new GameEngine(state);
         }
 
-        string baseFolder = "Content/GamePlay/Levels/";
-
-        /// <summary>
-        /// 
-        /// </summary>
         public override void LoadContent() {
             base.LoadContent();
 
@@ -44,6 +40,7 @@ namespace Project.Screens {
             level = levelLoader.Load(baseFolder + this.Path);
             // miner.LoadContent();
             level.LoadContent();
+            //state.LoadContent(ref level);
         }
 
         public override void UnloadContent() {

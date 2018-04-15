@@ -19,7 +19,7 @@ namespace Project.Util {
         public Vector2 Scale;
         [JsonProperty("dim")]
         public Vector2 SpriteSize;
-
+        public bool FullScreen;
         public Rectangle SourceRect;
         public Texture2D Texture;
         public bool IsActive;
@@ -84,15 +84,16 @@ namespace Project.Util {
         }
 
         public Image() {
-            Path = Text = String.Empty;
+            Alpha = 1.0f;
+            effectList = new Dictionary<string, ImageEffect>();
+            Effects = string.Empty;
             FontName = "Fonts/Orbitron";
+            FullScreen = false;
+            Path = Text = String.Empty;
             Position = Vector2.Zero;
             Scale = Vector2.One;
             SpriteSize = Vector2.Zero;
-            Alpha = 1.0f;
             SourceRect = Rectangle.Empty;
-            Effects = string.Empty;
-            effectList = new Dictionary<string, ImageEffect>();
         }
 
         public void LoadContent() {
@@ -110,17 +111,24 @@ namespace Project.Util {
                 if(SpriteSize.Y != 0) {
                     Scale.Y *= (float)(SpriteSize.Y / Texture.Height);
                 }
-                    dim.Y = Math.Max(Texture.Height, font.MeasureString(Text).Y);
+                dim.Y = Math.Max(Texture.Height, font.MeasureString(Text).Y);
             } else {
                 dim.Y = font.MeasureString(Text).Y;
             }
             dim.X += font.MeasureString(Text).X;
-            
+
             if(SourceRect == Rectangle.Empty) {
                 SourceRect = new Rectangle(
-                    (int)Position.X, (int)Position.Y, 
+                    0, 0,
                     (int)dim.X, (int)dim.Y);
             }
+
+            if(FullScreen) {
+                dim.X = 800;
+                dim.Y = 600;
+                //spriteBatch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
+            }
+
             renderTarget = new RenderTarget2D(
                 ScreenManager.Instance.GraphicsDevice, (int)dim.X, (int)dim.Y);
 
@@ -128,10 +136,10 @@ namespace Project.Util {
             ScreenManager.Instance.GraphicsDevice.Clear(Color.Transparent);
             ScreenManager.Instance.SpriteBatch.Begin();
             if(Texture != null) {
-                ScreenManager.Instance.SpriteBatch.Draw(Texture, Vector2.Zero, 
+                ScreenManager.Instance.SpriteBatch.Draw(Texture, Vector2.Zero,
                     Color.White);
             }
-            ScreenManager.Instance.SpriteBatch.DrawString(font, Text, 
+            ScreenManager.Instance.SpriteBatch.DrawString(font, Text,
                 Vector2.Zero, Color.White);
             ScreenManager.Instance.SpriteBatch.End();
 
@@ -166,15 +174,14 @@ namespace Project.Util {
         }
 
         public void Draw(SpriteBatch spriteBatch) {
-            origin = new Vector2(Scale.X * SourceRect.Width / 2, 
+            origin = new Vector2(
+                Scale.X * SourceRect.Width / 2,
                 Scale.Y * SourceRect.Height / 2);
             try {
-                spriteBatch.Draw(Texture, origin + Position, SourceRect, 
+                spriteBatch.Draw(Texture, origin + Position, SourceRect,
                     Color.White * Alpha, 0.0f, origin, Scale,
-                    SpriteEffects.None, 0.0f);                
-            } catch(ArgumentNullException) {
-
-            }
+                    SpriteEffects.None, 0.0f);
+            } catch(ArgumentNullException) { }
         }
     }
 }

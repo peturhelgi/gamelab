@@ -16,9 +16,5 @@ namespace Project.GameObjects {
             this.Visible = true;
             this.TextureString = TextureString;
         }
-
-        public override void Draw(SpriteBatch spriteBatch) {
-            //TODO: Implement
-        }
     }
 }

@@ -8,16 +8,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Project.GameObjects {
     class Rock : GameObject {
-        public Rock(Vector2 position, Vector2 spriteSize, string textureString, bool destroyable = true, bool movable = false) {
-
-            this.Destroyable = destroyable;
-            this.Movable = movable;
+        public Rock() {
             this.Mass = 10;
-            this.Position = position;
-            this.Velocity = new Vector2(0);
-            this.SpriteSize = spriteSize;
-            this.TextureString = textureString;
-            this.Visible = true;
+            this.Visible = true;            
         }
 
         void Respawn() {
@@ -36,8 +29,9 @@ namespace Project.GameObjects {
 
             //TODO: add move logic
         }
-        public override void Draw(SpriteBatch spriteBatch) {
-            //TODO: Implement
+        public override void Update(GameTime gameTime) {
+            Image.Update(gameTime);
         }
+
     }
 }

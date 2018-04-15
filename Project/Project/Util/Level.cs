@@ -18,7 +18,7 @@ namespace Project.Util {
         public string PrevLvlName;
         public string LevelName;
         public string NextLvlName;
-        public string Background;
+        public Image Background;
 
         public List<GameObject> Objects;
         public List<Layer> Layer;
@@ -62,6 +62,8 @@ namespace Project.Util {
         }
 
         public void Draw(SpriteBatch spriteBatch, string drawType) {
+
+            Background.Draw(spriteBatch);
             foreach(Layer layer in Layer) {
                 layer.Draw(spriteBatch, drawType);
             }

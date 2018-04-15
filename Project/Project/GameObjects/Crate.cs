@@ -51,13 +51,5 @@ namespace Project.GameObjects {
         public override void Update(GameTime gameTime) {
             //TODO: Implement
         }
-
-        /// <summary>
-        /// Draws the crate to the canvas
-        /// </summary>
-        /// <param name="spriteBatch"></param>
-        public override void Draw(SpriteBatch spriteBatch) {
-            //TODO: Implement
-        }
     }
 }

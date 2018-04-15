@@ -6,18 +6,27 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Project.Util {
-    class GameState : Level {
+    class GameState {
         public List<Miner> Actors;
         public List<GameObject> Solids;
         public List<GameObject> Collectibles;
-        CollisionDetector CollisionDetector;
-
 
         public GameState() {
             Actors = new List<Miner>();
             Solids = new List<GameObject>();
             Collectibles = new List<GameObject>();
-            CollisionDetector = new CollisionDetector();
+        }
+
+        public void LoadContent(ref Level level) {
+            foreach(GameObject obj in level.Objects) {
+                AddObject(obj);
+            }
+        }
+
+        public void UnloadContent() {
+            Actors.Clear();
+            Solids.Clear();
+            Collectibles.Clear();            
         }
 
         public List<GameObject> GetAll() {
@@ -46,8 +55,5 @@ namespace Project.Util {
         public List<GameObject> GetCollectibles() {
             return Collectibles;
         }
-
-
-
     }
 }
