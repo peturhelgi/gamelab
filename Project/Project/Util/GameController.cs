@@ -10,18 +10,15 @@ using System.Threading.Tasks;
 
 namespace Project.Util {
     class GameController {
-        public GameEngine GameEngine;
-
+        //public GameEngine GameEngine;
         public Camera Camera;
 
-        public GameController(GameEngine gameEngine, Camera camera) {
-            GameEngine = gameEngine;
+        public GameController(Camera camera) {
             Camera = camera;
         }
 
-
         internal void HandleUpdate(GameTime gameTime) {
-            GameEngine.gameTime = gameTime.TotalGameTime;
+            GameEngine.Instance.gameTimeSpan = gameTime.TotalGameTime;
             HandleMouse(Mouse.GetState());
             GamePadState PlayerOneState = GamePad.GetState(PlayerIndex.One);
             if(PlayerOneState.IsConnected) {
@@ -34,20 +31,17 @@ namespace Project.Util {
                 }
             }
 
-
-            HandleKeyboard(Keyboard.GetState());
-
-            GameEngine.Update();
+            HandleKeyboard(Keyboard.GetState(), gameTime);
         }
 
         private void HandleMouse(MouseState ms) {
             if(ms.LeftButton == ButtonState.Pressed) {
-                Debug.WriteLine(ms.Position.X);
+                Debug.Write(ms.Position.X + ", " );
                 Debug.WriteLine(ms.Position.Y);
             }
         }
 
-        private void HandleKeyboard(KeyboardState state) {
+        private void HandleKeyboard(KeyboardState state, GameTime gameTime) {
             // START Handle camera
             if(state.IsKeyDown(Keys.A)) Camera.HandleAction(Camera.CameraAction.left);
             if(state.IsKeyDown(Keys.D)) Camera.HandleAction(Camera.CameraAction.right);
@@ -58,10 +52,19 @@ namespace Project.Util {
             // END Handle camera
 
             // START Handle GameAction
-            if(state.IsKeyDown(Keys.Right)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_right, 0);
-            if(state.IsKeyDown(Keys.Left)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_left, 0);
-            if(state.IsKeyDown(Keys.I)) GameEngine.HandleInput(0, GameEngine.GameAction.interact, 0);
-            if(state.IsKeyDown(Keys.Space)) GameEngine.HandleInput(0, GameEngine.GameAction.jump, 0);
+            if(state.IsKeyDown(Keys.Right)) {
+                GameEngine.Instance.HandleInput(
+                    0, GameEngine.GameAction.walk_right, 0, gameTime);
+            }
+            if(state.IsKeyDown(Keys.Left)) {
+                GameEngine.Instance.HandleInput(0, GameEngine.GameAction.walk_left, 0, gameTime);
+            }
+            if(state.IsKeyDown(Keys.I)) {
+                GameEngine.Instance.HandleInput(0, GameEngine.GameAction.interact, 0, gameTime);
+            }
+            if(state.IsKeyDown(Keys.Space)) {
+                GameEngine.Instance.HandleInput(0, GameEngine.GameAction.jump, 0, gameTime);
+            }
 
             // END Handle GameAction
         }

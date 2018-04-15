@@ -19,33 +19,26 @@ namespace Project
     {
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        
-        //private List<GameObject> gameObjects;
-        private MapLoader mapLoader;
 
-        Texture2D background;
         Texture2D exitSign;
         Texture2D DebugBox;
         DataManager<Level> levelLoader;
 
         private GameController controller;
-        string lvlName = "more_platforms";
 
         public GreatEscape()
         {
             graphics = new GraphicsDeviceManager(this) {
-
+                //TODO: Get the size of the window.
+                //HACK: Have the screen fullscreen and use the monitor's dimensions
                 PreferredBackBufferWidth = 800,
                 PreferredBackBufferHeight = 600,
                 IsFullScreen = false
             };
             graphics.ApplyChanges();
-
+            
             Content.RootDirectory = "Content";
             levelLoader = new DataManager<Level>();
-          
-
-            //mapLoader = new MapLoader(Content);
         }
 
 
@@ -69,14 +62,14 @@ namespace Project
         /// </summary>
         protected override void LoadContent()
         {
-            //mapLoader.LoadMapContent(controller.GameEngine.GameState);
-            
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            //background = mapLoader.getBackground();
             exitSign = Content.Load<Texture2D>("Sprites/Backgrounds/ExitSign_2");
             DebugBox = Content.Load<Texture2D>("Sprites/Misc/box");
 
             ScreenManager.Instance.GraphicsDevice = GraphicsDevice;
+            ScreenManager.Instance.Dimensions = new Vector2(
+                graphics.PreferredBackBufferWidth,
+                graphics.PreferredBackBufferHeight);
             ScreenManager.Instance.SpriteBatch = spriteBatch;
             ScreenManager.Instance.LoadContent(this.Content);
         }
@@ -118,7 +111,6 @@ namespace Project
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.TransparentBlack);
-
             spriteBatch.Begin();
             ScreenManager.Instance.Draw(spriteBatch);
             //TODO: Cleanup, consider using ScreenManager instead

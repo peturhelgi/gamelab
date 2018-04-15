@@ -1,13 +1,12 @@
 ﻿{
   "$type": "Project.Util.Level, Project",
   "LevelNr": 0,
-  "LevelName": "sample",
   "PrevLvl": -1,
-  "PrevLvlName": "0",
   "NextLvl": 1,
-  "NextLvlName": "tbd",
+  "LevelName": "sample",
   "Background": {
-    "Path": "Sprites/Backgrounds/Background1"
+    "Path": "Sprites/Backgrounds/Background1",
+    "FullScreen": true
   },
 
   "Objects": [
@@ -16,7 +15,7 @@
       "Image": {
         "Path": "Sprites/Miners/MinerPickaxe",
         "pos": {
-          "x": 100,
+          "x": 500,
           "y": 0
         },
         "dim": {
@@ -55,8 +54,7 @@
         "x": 0,
         "y": 0
       },
-      "m": 50,
-      "texture": "Sprites/Rocks/BareRock5"
+      "m": 50
     },
     {
       "$type": "Project.GameObjects.Rock, Project",
@@ -75,8 +73,7 @@
         "x": 0,
         "y": 0
       },
-      "m": 20,
-      "texture": "Sprites/Rocks/BareRock1"
+      "m": 20
     },
     {
       "$type": "Project.GameObjects.Ground, Project",
@@ -95,10 +92,8 @@
         "x": 0,
         "y": 0
       },
-      "m": 1000,
-      "texture": "Sprites/Rocks/Ground1"
+      "m": 1000
     },
-    /////////////
     {
       "$type": "Project.GameObjects.Ground, Project",
       "Image": {
@@ -117,8 +112,7 @@
         }
       },
 
-      "m": 1000,
-      "texture": "Sprites/Rocks/Ground2"
+      "m": 1000
     },
     {
       "$type": "Project.GameObjects.Ground, Project",
@@ -137,8 +131,7 @@
         "x": 0,
         "y": 0
       },
-      "m": 1000,
-      "texture": "Sprites/Rocks/Ground3"
+      "m": 1000
     },
     {
       "$type": "Project.GameObjects.Ground, Project",
@@ -154,14 +147,13 @@
         }
       },
       "m": 1000,
-      "texture": "Sprites/Rocks/Ground4",
       "vel": {
         "x": 0,
         "y": 0
       }
     },
     {
-      "$type": "Project.GameObjects.Miner, Project",
+      "$type": "Project.GameObjects.Rock, Project",
       "Image": {
         "Path": "Sprites/Rocks/SuspendedRock",
         "dim": {
@@ -177,8 +169,7 @@
         "x": 0,
         "y": 0
       },
-      "m": 1000,
-      "texture": "Sprites/Rocks/SuspendedRock"
+      "m": 1000
     }
   ]
 }

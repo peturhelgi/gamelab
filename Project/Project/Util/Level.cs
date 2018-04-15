@@ -30,6 +30,8 @@ namespace Project.Util {
         }
 
         public void LoadContent() {
+
+            Background.LoadContent();
             foreach(GameObject obj in Objects) {
                 obj.LoadContent();
             }
@@ -46,18 +48,6 @@ namespace Project.Util {
             }
             foreach(Layer layer in Layer) {
                 layer.UnloadContent();
-            }
-        }
-
-        public void Update(GameTime gameTime, ref Miner miner) {
-
-            foreach(Layer layer in Layer) {
-                layer.Update(gameTime, ref miner);
-            }
-
-            //TODO: Use the GameEngine instead
-            foreach(GameObject obj in Objects) {
-                obj.Update(gameTime);
             }
         }
 

@@ -13,13 +13,7 @@ namespace Project.GameObjects {
 
         Vector2 Position { get; set; }
 
-        Vector2 SpriteSize { get; set; }
-
         Vector2 Velocity { get; set; }
-
-        string TextureString { get; set; }
-
-        Texture2D Texture { get; set; }
 
         bool Falling { get; }
 
@@ -37,28 +31,34 @@ namespace Project.GameObjects {
         /// <summary>
         /// Loads the content of the GameObject, e.g. images, effects etc
         /// </summary>
-        public void LoadContent() => this.Image?.LoadContent();
+        public void LoadContent() {
+            if(this.Image != null) {
+                this.Image.LoadContent();
+                this.Position = Image.Position;
+            }
+        }
 
         /// <summary>
         /// Unloads the content of the GameObject
         /// </summary>
-        public virtual void UnloadContent() => Image.UnloadContent();
+        public virtual void UnloadContent() => this.Image?.UnloadContent();
 
         /// <summary>
         /// Updates the state of the GameObject (deprecated)
         /// </summary>
         /// <param name="gameTime"></param>
         public virtual void Update(GameTime gameTime) {
-            // Let GameEngine handle the update
+            if(this.Image != null) {
+                this.Image.Position = this.Position;
+            }
         }
 
         /// <summary>
         /// Draws the GameObject to the canvas
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public virtual void Draw(SpriteBatch spriteBatch) {
+        public virtual void Draw(SpriteBatch spriteBatch) => 
             this.Image?.Draw(spriteBatch);
-        }
 
         /// <summary>
         /// True if the gameobject is airborne
@@ -82,14 +82,8 @@ namespace Project.GameObjects {
         /// <summary>
         /// Position of the GameObject
         /// </summary>
-        [JsonProperty("pos")]
+        [JsonIgnore]
         public Vector2 Position { get; set; }
-
-        /// <summary>
-        /// Size of the GameObject's sprite
-        /// </summary>
-        [JsonProperty("dim")]
-        public Vector2 SpriteSize { get; set; }
 
         /// <summary>
         /// Velocity of the gameobject
@@ -104,30 +98,14 @@ namespace Project.GameObjects {
         public double Mass { get; set; }
 
         /// <summary>
-        /// The name of the texture to be used as a sprite
-        /// </summary>
-        [JsonProperty("texture")]
-        public string TextureString { get; set; }
-
-        /// <summary>
-        /// The loaded texture for the sprite
-        /// </summary>
-        public Texture2D Texture { get; set; }
-
-        /// <summary>
-        /// type of the GameObject (to be deprecated, use $type instead)
-        /// </summary>
-        [JsonProperty("type")]
-        public string Type { get; set; }
-
-        /// <summary>
         /// The GameObject's bounding box
         /// </summary>
         public BoundingBox BBox {
             get {
-                return new BoundingBox(new Vector3(Position, 0), new Vector3(Position + SpriteSize, 0));
+                Vector3 min = new Vector3(Position, 0),
+                    max = new Vector3(Position + Image.SpriteSize, 0);
+                return new BoundingBox(min, max);
             }
         }
-
     }
 }

@@ -69,11 +69,9 @@ namespace Project.Util {
                     Image.IsActive = false;
                     InTranstition = false;
                 }
-
             }
         }
         public ScreenManager() {
-            Dimensions = new Vector2(640, 480);
             currentScreen = new SplashScreen();
             gameScreenManager = new DataManager<GameScreen> {
                 Type = currentScreen.Type

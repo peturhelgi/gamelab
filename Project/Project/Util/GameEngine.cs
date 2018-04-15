@@ -15,26 +15,45 @@ namespace Project.Util {
         public GameState GameState;
         public enum GameAction { walk_right, walk_left, jump, interact, collect };
         private CollisionDetector CollisionDetector;
-
+        private static GameEngine instance;
         int[] CurrentMiner = { 0, 1 };
-        public static Vector2 GRAVITY = new Vector2(0, 1000);
-        public TimeSpan gameTime;
+        public static Vector2 GRAVITY = new Vector2(0, 10);
+        public TimeSpan gameTimeSpan;
+
+        public static GameEngine Instance {
+            get {
+                if(instance == null) {
+                    instance = new GameEngine();
+                }
+                return instance;
+            }
+        }
 
         public GameEngine(GameState gameState) {
             GameState = gameState;
             CollisionDetector = new CollisionDetector();
         }
 
-        public void HandleInput(int player, GameAction action, float value) {
+        public GameEngine() {
+
+        }
+
+        public void Initialize(GameState gameState) {
+            GameState = gameState;
+            CollisionDetector = new CollisionDetector();
+        }
+
+        public void HandleInput(int player, GameAction action, float value,
+                GameTime gameTime) {
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
 
             switch(action) {
                 case (GameAction.walk_right):
-                    CalculateAndSetNewPosition(miner, new Vector2(5, 0));
+                    CalculateAndSetNewPosition(miner, new Vector2(5, 0), gameTime);
                     break;
 
                 case (GameAction.walk_left):
-                    CalculateAndSetNewPosition(miner, new Vector2(-5, 0));
+                    CalculateAndSetNewPosition(miner, new Vector2(-5, 0), gameTime);
                     break;
                 case (GameAction.jump):
                     TryToJump(miner, new Vector2(0, -800));
@@ -49,15 +68,15 @@ namespace Project.Util {
             }
         }
 
-        public void Update() {
+        public void Update(GameTime gameTime) {
 
             // TODO make this with all miners
 
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[0]);
 
             // we only need to update this, if some time has passed since the last update
-            if(miner.lastUpdated != gameTime) {
-                CalculateAndSetNewPosition(miner, Vector2.Zero);
+            if(miner.lastUpdated != gameTimeSpan) {
+                CalculateAndSetNewPosition(miner, Vector2.Zero, gameTime);
             }
         }
 
@@ -65,19 +84,21 @@ namespace Project.Util {
             List<GameObject> collisions = CollisionDetector.FindCollisions(obj.BBox, GameState.Collectibles);
             foreach(GameObject c in collisions) {
                 c.Visible = false;
-                Debug.WriteLine(c.TextureString);
+                Debug.WriteLine(c.Image.Path);
                 Debug.WriteLine(c.Position);
             }
         }
 
+        void CalculateAndSetNewPosition(Miner actor, Vector2 direction,
+            GameTime gameTime) {
 
-        void CalculateAndSetNewPosition(Miner actor, Vector2 direction) {
+            gameTimeSpan = gameTime.TotalGameTime;
 
             // 1. calulate position without any obstacles
             if(actor.Falling) {
-                actor.Velocity += GRAVITY * (float)(gameTime - actor.lastUpdated).TotalSeconds;
+                actor.Velocity += GRAVITY * (float)(gameTimeSpan - actor.lastUpdated).TotalSeconds;
             }
-            direction += actor.Velocity * (float)(gameTime - actor.lastUpdated).TotalSeconds;
+            direction += actor.Velocity * (float)(gameTimeSpan - actor.lastUpdated).TotalSeconds;
 
             // 2. check for collisions in the X-axis, the Y-axis (falling and jumping against something) and the intersection of the movement
             BoundingBox xBox = new BoundingBox();
@@ -108,7 +129,6 @@ namespace Project.Util {
             iBox.Max += new Vector3(direction, 0);
             iBox = BoundingBox.CreateMerged(iBox, actor.BBox);
 
-
             // 3. check, if there are any collisions in the X-axis and correct position
 
             List<GameObject> collisions = CollisionDetector.FindCollisions(xBox, GameState.Solids);
@@ -120,7 +140,7 @@ namespace Project.Util {
 
             // We only need to check things in y-axis (including intersection), if we are actually moving in it
             if(actor.Falling) {
-                collisions = CollisionDetector.FindCollisions(yBox, GameState.Solids);
+                    collisions = CollisionDetector.FindCollisions(yBox, GameState.Solids);
                 if(collisions.Count > 0) {
                     Debug.WriteLine("collided with y-axis");
 
@@ -154,7 +174,6 @@ namespace Project.Util {
             }
             actor.Position += direction;
 
-
             if(!actor.Falling) {
                 // Next, we need to check if we are falling, i.e. walking over an edge to store it to the character, to calculate the difference in height for the next iteration
                 BoundingBox tempBox = actor.BBox;
@@ -165,7 +184,8 @@ namespace Project.Util {
                 if(collisions.Count == 0)
                     actor.Falling = true;
             }
-            actor.lastUpdated = gameTime;
+            actor.lastUpdated = gameTimeSpan;
+            actor.Update(gameTime);
         }
 
         void TryToJump(Miner miner, Vector2 speed) {

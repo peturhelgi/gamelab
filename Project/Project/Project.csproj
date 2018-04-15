@@ -136,7 +136,6 @@
     <Compile Include="Util\InputManager.cs" />
     <Compile Include="Util\Layer.cs" />
     <Compile Include="Util\Level.cs" />
-    <Compile Include="Util\MapLoader.cs" />
     <Compile Include="Util\Menu.cs" />
     <Compile Include="Util\MenuItem.cs" />
     <Compile Include="Util\MenuManager.cs" />

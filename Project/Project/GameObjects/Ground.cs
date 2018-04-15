@@ -8,13 +8,10 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 namespace Project.GameObjects {
     public class Ground : GameObject {
-        public Ground(Vector2 position, Vector2 spriteSize, string TextureString) {
-            this.Position = position;
+        public Ground() {
             this.Velocity = new Vector2(0);
             this.Mass = 1000;
-            this.SpriteSize = spriteSize;
             this.Visible = true;
-            this.TextureString = TextureString;
         }
     }
 }

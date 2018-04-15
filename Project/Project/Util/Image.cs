@@ -26,11 +26,17 @@ namespace Project.Util {
         public FadeEffect FadeEffect;
         public SpriteSheetEffect SpriteSheetEffect;
 
-        Vector2 origin;
+        public Vector2 Origin;
         ContentManager content;
         RenderTarget2D renderTarget;
         SpriteFont font;
         Dictionary<string, ImageEffect> effectList;
+
+        public Vector2 BBox {
+            get {
+                return new Vector2(0, 0);
+            }
+        }
 
         void SetEffect<T>(ref T effect) {
             if(effect == null) {
@@ -117,16 +123,14 @@ namespace Project.Util {
             }
             dim.X += font.MeasureString(Text).X;
 
+            if(FullScreen) {
+                dim = ScreenManager.Instance.Dimensions;
+            }
+
             if(SourceRect == Rectangle.Empty) {
                 SourceRect = new Rectangle(
                     0, 0,
                     (int)dim.X, (int)dim.Y);
-            }
-
-            if(FullScreen) {
-                dim.X = 800;
-                dim.Y = 600;
-                //spriteBatch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
             }
 
             renderTarget = new RenderTarget2D(
@@ -174,12 +178,11 @@ namespace Project.Util {
         }
 
         public void Draw(SpriteBatch spriteBatch) {
-            origin = new Vector2(
-                Scale.X * SourceRect.Width / 2,
-                Scale.Y * SourceRect.Height / 2);
+            Origin.X = SpriteSize.X / 2;
+            Origin.Y = SpriteSize.Y / 2;
             try {
-                spriteBatch.Draw(Texture, origin + Position, SourceRect,
-                    Color.White * Alpha, 0.0f, origin, Scale,
+                spriteBatch.Draw(Texture, Origin + Position, SourceRect,
+                    Color.White * Alpha, 0.0f, Origin, Scale,
                     SpriteEffects.None, 0.0f);
             } catch(ArgumentNullException) { }
         }

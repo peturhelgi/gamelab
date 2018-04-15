@@ -143,7 +143,7 @@ namespace Project.GameObjects {
             return true;
         }
         /// <summary>
-        /// Updates the speed if the miner if possible.
+        /// Updates the speed of the miner.
         /// </summary>
         /// <param name="direction">Direction in which to move the miner</param>
         /// <returns>True iff 1==1</returns>
