@@ -121,11 +121,12 @@ namespace Project.Util
 
 
             // 3. check, if there are any collisions in the X-axis and correct position
-            
+            bool colidedWithSide = false;
             List<GameObject> collisions = CollisionDetector.FindCollisions(xBox, GameState.Solids);
             if (collisions.Count > 0) {
                 Debug.WriteLine("collided with x-axis");
                 direction.X = 0;
+                colidedWithSide = true;
             }
 
 
@@ -152,7 +153,7 @@ namespace Project.Util
                     }
 
                 }
-                else
+                else if (!colidedWithSide)
                 {
                     collisions = CollisionDetector.FindCollisions(iBox, GameState.Solids);
                     if (collisions.Count > 0)
@@ -175,7 +176,7 @@ namespace Project.Util
             if (!actor.Falling) { 
                 // Next, we need to check if we are falling, i.e. walking over an edge to store it to the character, to calculate the difference in height for the next iteration
                 BoundingBox tempBox = actor.BBox;
-                tempBox.Min = new Vector3(tempBox.Max.X, tempBox.Min.Y, 0);
+                tempBox.Min = new Vector3(tempBox.Min.X, tempBox.Max.Y, 0);
                 tempBox.Max += new Vector3(0, 0.5f, 0);
                 
                 collisions = CollisionDetector.FindCollisions(tempBox, GameState.Solids);

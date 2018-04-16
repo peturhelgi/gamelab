@@ -41,7 +41,7 @@ namespace Project.GameObjects.Miner
             this.Stance = Stance.jump;
             this.Gait = Gait.jump;
             // TODO: add jump logic
-            this.Speed += speed;
+            this.Speed = speed;
 
             return true;
         }
