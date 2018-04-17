@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project", "Project\Project.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Level Importer", "Level Importer\Level Importer.csproj", "{E3F3DC6E-9334-4707-B952-C288A4BFF1A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unit Tests", "UnitTestProject2\Unit Tests.csproj", "{9F90DD42-292A-420E-A7E4-18C2D05D5973}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,26 @@ Global
 		{E3F3DC6E-9334-4707-B952-C288A4BFF1A6}.Release|x64.Build.0 = Release|Any CPU
 		{E3F3DC6E-9334-4707-B952-C288A4BFF1A6}.Release|x86.ActiveCfg = Release|Any CPU
 		{E3F3DC6E-9334-4707-B952-C288A4BFF1A6}.Release|x86.Build.0 = Release|Any CPU
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Debug|ARM.ActiveCfg = Debug|ARM
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Debug|ARM.Build.0 = Debug|ARM
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Debug|ARM.Deploy.0 = Debug|ARM
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Debug|x64.ActiveCfg = Debug|x64
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Debug|x64.Build.0 = Debug|x64
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Debug|x64.Deploy.0 = Debug|x64
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Debug|x86.ActiveCfg = Debug|x86
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Debug|x86.Build.0 = Debug|x86
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Debug|x86.Deploy.0 = Debug|x86
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Release|Any CPU.ActiveCfg = Release|x86
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Release|ARM.ActiveCfg = Release|ARM
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Release|ARM.Build.0 = Release|ARM
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Release|ARM.Deploy.0 = Release|ARM
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Release|x64.ActiveCfg = Release|x64
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Release|x64.Build.0 = Release|x64
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Release|x64.Deploy.0 = Release|x64
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Release|x86.ActiveCfg = Release|x86
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Release|x86.Build.0 = Release|x86
+		{9F90DD42-292A-420E-A7E4-18C2D05D5973}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
