@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Project.Screens;
+
 using Microsoft.Xna.Framework.Input;
 namespace Project.Util {
     public class InputManager {

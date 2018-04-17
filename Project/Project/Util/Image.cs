@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Project.Screens;
 
 namespace Project.Util {
     public class Image {

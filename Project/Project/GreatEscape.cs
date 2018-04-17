@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Project.GameObjects;
+using Project.Screens;
 using System.Collections.Generic;
 using Project.Util;
 using System;

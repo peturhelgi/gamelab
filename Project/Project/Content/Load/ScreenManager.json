@@ -1,5 +1,5 @@
 ﻿{
-  "$type": "Project.Util.ScreenManager, Project",
+  "$type": "Project.Screens.ScreenManager, Project",
   "Image": {
     "Effects": "FadeEffect",
     "Path": "ScreenManager/FadeImage",

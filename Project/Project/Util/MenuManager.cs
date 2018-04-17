@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using Project.Screens;
+
 namespace Project.Util {
     public class MenuManager {
         Menu menu;

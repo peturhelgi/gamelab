@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Project.Screens;
 using Newtonsoft.Json;
+using Project.Util;
 
-namespace Project.Util {
+namespace Project.Screens {
     public class ScreenManager {
         static String Path = "Content/Load/ScreenManager.json";
         static String ScreenNameSpace = "Project.Screens.";

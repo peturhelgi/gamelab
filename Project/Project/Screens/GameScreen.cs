@@ -7,9 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Project.Util;
 
 
-namespace Project.Util {
+namespace Project.Screens {
     public class GameScreen {
         protected ContentManager content;
         [JsonIgnore]

@@ -301,3 +301,12 @@ Project/Project/AppX/
 Project/Project/Core
 *.dll
 *.xnb
+
+Project/*/SharpDX*.xml
+Project/Project/*.xbf
+Project/Project/AppxManifest.xml
+Project/Project/resources.pri
+*.exe
+*xr.xml
+*Monogame.Framework.xml
+*.build.appxrecipe

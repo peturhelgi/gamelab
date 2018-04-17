@@ -130,18 +130,16 @@
     <Compile Include="Screens\SplashScreen.cs" />
     <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Util\ImageEffect.cs" />
-    <Compile Include="Util\GameScreen.cs" />
+    <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Util\GameState.cs" />
     <Compile Include="Util\Image.cs" />
     <Compile Include="Util\InputManager.cs" />
-    <Compile Include="Util\Layer.cs" />
     <Compile Include="Util\Level.cs" />
     <Compile Include="Util\Menu.cs" />
     <Compile Include="Util\MenuItem.cs" />
     <Compile Include="Util\MenuManager.cs" />
-    <Compile Include="Util\ScreenManager.cs" />
+    <Compile Include="Screens\ScreenManager.cs" />
     <Compile Include="Util\DataManager.cs" />
-    <Compile Include="Util\Tile.cs" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb">
