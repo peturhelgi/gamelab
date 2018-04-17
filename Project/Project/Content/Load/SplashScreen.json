@@ -1,7 +1,11 @@
 ﻿{
   "$type": "Project.Screens.SplashScreen, Project",
   "Image": {
-    "Path": "Sprites/Rocks/BareRock5",
+    "pos": {
+      "x": 500,
+      "y": 450
+    },
+    "Path": "Sprites/Tools/Pickaxe",
     "Effects": "FadeEffect",
     "IsActive": true,
     "Alpha": 0.5,

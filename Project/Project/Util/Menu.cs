@@ -122,9 +122,11 @@ namespace Project.Util {
         }
 
         public void Draw(SpriteBatch spriteBatch) {
+            //spriteBatch.Begin();
             foreach(MenuItem item in Items) {
                 item.Image.Draw(spriteBatch);
             }
+            //spriteBatch.End();
         }
     }
 }

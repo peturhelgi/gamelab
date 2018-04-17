@@ -16,12 +16,12 @@ namespace Project.Util {
         public string Text, FontName, Path, Effects;
         [JsonProperty("pos")]
         public Vector2 Position;
-        public Vector2 Scale;
         [JsonProperty("dim")]
         public Vector2 SpriteSize;
-        public bool FullScreen;
+        public Vector2 Scale;
         public Rectangle SourceRect;
         public Texture2D Texture;
+        public bool FullScreen;
         public bool IsActive;
         public FadeEffect FadeEffect;
         public SpriteSheetEffect SpriteSheetEffect;

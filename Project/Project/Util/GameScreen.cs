@@ -31,6 +31,7 @@ namespace Project.Util {
                 ScreenManager.Instance.Content.ServiceProvider, "Content");
 
         public virtual void LoadContent(string path) {
+        //TODO: Delete this method
             content = new ContentManager(
                 ScreenManager.Instance.Content.ServiceProvider, "Content");
         }

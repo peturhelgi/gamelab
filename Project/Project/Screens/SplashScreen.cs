@@ -15,6 +15,8 @@ using Newtonsoft.Json;
 
 namespace Project.Screens {
     public class SplashScreen : GameScreen {
+
+        //TODO: Have a possibility for more Images
         public Image Image;
 
         public Vector2 Position;
@@ -37,12 +39,14 @@ namespace Project.Screens {
             base.Update(gameTime);
             Image.Update(gameTime);
 
-            if(InputManager.Instance.KeyPressed(Keys.Enter, Keys.Z)) {
-                ScreenManager.Instance.ChangeScreen("TitleScreen", "Content/Load/TitleMenu");
+            if(InputManager.Instance.KeyPressed(Keys.Enter, Keys.Z, Keys.Space)) {
+                ScreenManager.Instance.ChangeScreen("MenuScreen", "Content/Load/TitleMenu");
             }
         }
         public override void Draw(SpriteBatch spriteBatch) {
+            spriteBatch.Begin();
             Image.Draw(spriteBatch);
+            spriteBatch.End();
         }
     }
 }

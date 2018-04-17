@@ -43,13 +43,5 @@ namespace Project.GameObjects {
 
             //TODO: add move logic
         }
-
-        /// <summary>
-        /// Updates the state of the crate (deprecated)
-        /// </summary>
-        /// <param name="gameTime"></param>
-        public override void Update(GameTime gameTime) {
-            //TODO: Implement
-        }
     }
 }

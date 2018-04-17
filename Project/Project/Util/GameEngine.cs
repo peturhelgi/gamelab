@@ -29,11 +29,6 @@ namespace Project.Util {
             }
         }
 
-        public GameEngine(GameState gameState) {
-            GameState = gameState;
-            CollisionDetector = new CollisionDetector();
-        }
-
         public GameEngine() {
 
         }
@@ -73,7 +68,8 @@ namespace Project.Util {
             // TODO make this with all miners
 
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[0]);
-
+            // what simon calls gameTime, I call gameTimeSpan 
+            // He implemented it using the TimeSpan gameTime
             // we only need to update this, if some time has passed since the last update
             if(miner.lastUpdated != gameTimeSpan) {
                 CalculateAndSetNewPosition(miner, Vector2.Zero, gameTime);
@@ -105,6 +101,8 @@ namespace Project.Util {
             BoundingBox yBox = new BoundingBox();
             BoundingBox iBox = new BoundingBox();
 
+
+            // What if direction.X == 0?
             if(direction.X > 0) // we are moving right
             {
                 xBox.Min = new Vector3(actor.BBox.Max.X, actor.BBox.Min.Y, 0);
@@ -115,6 +113,7 @@ namespace Project.Util {
             }
 
 
+            // What if direction.Y == 0?
             if(direction.Y > 0) // we are moving downwards
             {
                 yBox.Min = new Vector3(actor.BBox.Min.X, actor.BBox.Max.Y, 0);
@@ -138,6 +137,8 @@ namespace Project.Util {
             }
 
 
+            
+            // the thing is, I don't really trust the bounding boxes ibox, xbox, ybox
             // We only need to check things in y-axis (including intersection), if we are actually moving in it
             if(actor.Falling) {
                     collisions = CollisionDetector.FindCollisions(yBox, GameState.Solids);
@@ -181,10 +182,12 @@ namespace Project.Util {
                 tempBox.Max += new Vector3(0, 0.5f, 0);
 
                 collisions = CollisionDetector.FindCollisions(tempBox, GameState.Solids);
-                if(collisions.Count == 0)
+                if(collisions.Count == 0) {
                     actor.Falling = true;
+                }
             }
             actor.lastUpdated = gameTimeSpan;
+
             actor.Update(gameTime);
         }
 

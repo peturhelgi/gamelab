@@ -14,7 +14,6 @@ using Project.GameObjects;
 
 namespace Project.Screens {
     public class PlayingScreen : GameScreen {
-        Miner miner;
         Level level;
         GameState state;
         GameController controller;
@@ -27,7 +26,7 @@ namespace Project.Screens {
 
         public override void LoadContent() {
             base.LoadContent();
-
+            
             state = new GameState();
             DataManager<Miner> minerLoader = new DataManager<Miner>();
             DataManager<Level> levelLoader = new DataManager<Level>();
@@ -35,7 +34,7 @@ namespace Project.Screens {
             level = levelLoader.Load(baseFolder + this.Path);
             level.LoadContent();
             state.LoadContent(ref level);
-            GameEngine.Instance.Initialize(state);            
+            GameEngine.Instance.Initialize(state);       
         }
 
         public override void UnloadContent() {
@@ -50,8 +49,11 @@ namespace Project.Screens {
         }
 
         public override void Draw(SpriteBatch spriteBatch) {
+            //spriteBatch.Begin(); // Add camera to the playing screen
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, controller.Camera.view);
             base.Draw(spriteBatch);
             level.Draw(spriteBatch, "Underlay");
+            spriteBatch.End();
         }
 
     }

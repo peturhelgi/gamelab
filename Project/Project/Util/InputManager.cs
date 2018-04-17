@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 namespace Project.Util {
     public class InputManager {
         KeyboardState currenKeyState, prevKeyState;
+        GamePadState currentPadState, prevPadState;
 
         private static InputManager instance;
         public static InputManager Instance {
@@ -23,8 +24,19 @@ namespace Project.Util {
             prevKeyState = currenKeyState;
             if(!ScreenManager.Instance.InTranstition) {
                 currenKeyState = Keyboard.GetState();
+                currentPadState = GamePad.GetState(0);
             }
         }
+
+       /*public bool KeyPressed(Buttons buttons) {
+            foreach(ButtonState button in buttons) {
+                if(button == ButtonState.Pressed
+                    && prevPadState.IsButtonUp(button)) {
+                    return true;
+                }
+            }
+            return false;
+        }*/
 
         public bool KeyPressed(params Keys[] keys) {
             foreach(Keys key in keys) {

@@ -128,7 +128,7 @@
     <Compile Include="Screens\EditorScreen.cs" />
     <Compile Include="Screens\PlayingScreen.cs" />
     <Compile Include="Screens\SplashScreen.cs" />
-    <Compile Include="Screens\TitleScreen.cs" />
+    <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Util\ImageEffect.cs" />
     <Compile Include="Util\GameScreen.cs" />
     <Compile Include="Util\GameState.cs" />

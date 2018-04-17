@@ -10,35 +10,30 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Project
-{
+namespace Project {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class GreatEscape : Game
-    {
+    public class GreatEscape : Game {
         private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        Texture2D exitSign;
-        Texture2D DebugBox;
-        DataManager<Level> levelLoader;
+        //Texture2D exitSign;
+        //Texture2D DebugBox;
+        //DataManager<Level> levelLoader;
 
-        private GameController controller;
-
-        public GreatEscape()
-        {
+        public GreatEscape() {
             graphics = new GraphicsDeviceManager(this) {
-                //TODO: Get the size of the window.
+                //TODO: How to get the size of the window?
                 //HACK: Have the screen fullscreen and use the monitor's dimensions
-                PreferredBackBufferWidth = 800,
-                PreferredBackBufferHeight = 600,
-                IsFullScreen = false
+                IsFullScreen = !true,
+                PreferredBackBufferWidth = 1024,
+                PreferredBackBufferHeight = 768
             };
             graphics.ApplyChanges();
-            
+
             Content.RootDirectory = "Content";
-            levelLoader = new DataManager<Level>();
+            //levelLoader = new DataManager<Level>();
         }
 
 
@@ -48,10 +43,7 @@ namespace Project
         /// related content.  Calling base.Initialize will enumerate through any components
         /// and initialize them as well.
         /// </summary>
-        protected override void Initialize()
-        {
-            
-            //controller = new GameController(new GameEngine(mapLoader.InitMap(lvlName)), new Camera(0.8f, Vector2.Zero));
+        protected override void Initialize() {
             IsMouseVisible = true;
             base.Initialize();
         }
@@ -60,11 +52,10 @@ namespace Project
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
-        protected override void LoadContent()
-        {
+        protected override void LoadContent() {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            exitSign = Content.Load<Texture2D>("Sprites/Backgrounds/ExitSign_2");
-            DebugBox = Content.Load<Texture2D>("Sprites/Misc/box");
+            //exitSign = Content.Load<Texture2D>("Sprites/Backgrounds/ExitSign_2");
+            //DebugBox = Content.Load<Texture2D>("Sprites/Misc/box");
 
             ScreenManager.Instance.GraphicsDevice = GraphicsDevice;
             ScreenManager.Instance.Dimensions = new Vector2(
@@ -74,8 +65,7 @@ namespace Project
             ScreenManager.Instance.LoadContent(this.Content);
         }
 
-        private void RestartGame()
-        {
+        private void RestartGame() {
             UnloadContent();
             Initialize();
             LoadContent();
@@ -84,8 +74,7 @@ namespace Project
         /// UnloadContent will be called once per game and is the place to unload
         /// game-specific content.
         /// </summary>
-        protected override void UnloadContent()
-        {
+        protected override void UnloadContent() {
             ScreenManager.Instance.UnloadContent();
         }
 
@@ -94,12 +83,11 @@ namespace Project
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
-        {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
+        protected override void Update(GameTime gameTime) {
+            if(GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed
                 || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
-            //controller.HandleUpdate(gameTime);
+
             ScreenManager.Instance.Update(gameTime);
             base.Update(gameTime);
         }
@@ -108,11 +96,14 @@ namespace Project
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
-        {
+        protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.TransparentBlack);
-            spriteBatch.Begin();
+            //spriteBatch.Begin();
+
+            //Camera camera = new Camera(0.8f, Vector2.Zero);
+            //            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, camera.view);
             ScreenManager.Instance.Draw(spriteBatch);
+
             //TODO: Cleanup, consider using ScreenManager instead
 
             /*
@@ -125,7 +116,7 @@ namespace Project
                 spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, controller.Camera.view);
             }
             */
-           
+
             /*
             // TODO move to the MapLoader/GameState 
             spriteBatch.Draw(background, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), Color.White);
@@ -154,7 +145,7 @@ namespace Project
             }
             */
 
-            spriteBatch.End();
+            // spriteBatch.End();
             base.Draw(gameTime);
         }
     }

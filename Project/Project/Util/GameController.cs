@@ -14,7 +14,7 @@ namespace Project.Util {
         public Camera Camera;
 
         public GameController(Camera camera) {
-            Camera = camera;
+            this.Camera = camera;
         }
 
         internal void HandleUpdate(GameTime gameTime) {

@@ -31,7 +31,7 @@ namespace Project.GameObjects {
         /// <summary>
         /// Loads the content of the GameObject, e.g. images, effects etc
         /// </summary>
-        public void LoadContent() {
+        public void LoadContent() {            
             if(this.Image != null) {
                 this.Image.LoadContent();
                 this.Position = Image.Position;
@@ -103,7 +103,7 @@ namespace Project.GameObjects {
         public BoundingBox BBox {
             get {
                 Vector3 min = new Vector3(Position, 0),
-                    max = new Vector3(Position + Image.SpriteSize, 0);
+                    max = new Vector3(Position + this.Image.SpriteSize, 0);
                 return new BoundingBox(min, max);
             }
         }

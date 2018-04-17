@@ -43,7 +43,6 @@ namespace Project.Util {
             }
         }
 
-        // TODO: Update level path
         public void ChangeScreen(string screenType, string path) {
 
             nextScreen = (GameScreen)Activator
@@ -97,9 +96,11 @@ namespace Project.Util {
 
         public void Draw(SpriteBatch spriteBatch) {
             currentScreen.Draw(spriteBatch);
+            spriteBatch.Begin();
             if(InTranstition) {
                 Image.Draw(spriteBatch);
             }
+            spriteBatch.End();
         }
     }
 }

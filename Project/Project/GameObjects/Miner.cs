@@ -36,7 +36,7 @@ namespace Project.GameObjects {
         /// Depracated, use GameEngine instead
         /// </summary>
         /// <param name="gameTime"></param>
-        public override void Update(GameTime gameTime) {
+        /*public override void Update(GameTime gameTime) {
             if(Image != null) {
                 Image.IsActive = true;
                 if(Velocity.X == 0 && Velocity.Y == 0) {
@@ -46,7 +46,7 @@ namespace Project.GameObjects {
                 Image.Update(gameTime);
                 Image.Position += Velocity;
             }
-        }
+        }*/
 
         //public override void Draw(SpriteBatch spriteBatch) {
          //   Image?.Draw(spriteBatch);
