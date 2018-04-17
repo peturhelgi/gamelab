@@ -58,7 +58,7 @@ namespace Project.Util
 
         public void LoadMapContent(GameState gameState) {
            
-            background = ContentManager.Load<Texture2D>("Sprites/Backgrounds/Background1");
+            background = ContentManager.Load<Texture2D>("Sprites/Level1/Level1Background");
             // TODO possibly add a hashed Map to only load every Texture once
             foreach (GameObject obj in gameState.GetAll()) {
                 obj.Texture = ContentManager.Load<Texture2D>(obj.TextureString);

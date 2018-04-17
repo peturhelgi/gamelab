@@ -28,7 +28,7 @@ namespace Project
         Texture2D DebugBox;
 
         private GameController controller;
-        string lvlName = "more_platforms";
+        string lvlName = "Level_1";
 
         public GreatEscape()
         {
@@ -74,6 +74,12 @@ namespace Project
             background = mapLoader.getBackground();
             exitSign = Content.Load<Texture2D>("Sprites/Backgrounds/ExitSign_2");
             DebugBox = Content.Load<Texture2D>("Sprites/Misc/box");
+
+            var ScreenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            var ScreenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+
+            Debug.WriteLine(ScreenWidth);
+            Debug.WriteLine(ScreenHeight);
 
         }
 
