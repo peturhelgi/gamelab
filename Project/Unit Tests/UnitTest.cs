@@ -1,7 +1,9 @@
-﻿using System;
+﻿
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Project.Util.Collision;
 
-namespace Tests
+namespace Unit_Tests
 {
     [TestClass]
     public class UnitTest1
@@ -9,6 +11,7 @@ namespace Tests
         [TestMethod]
         public void TestMethod1()
         {
+            AxisAllignedBoundingBox b;
         }
     }
 }
