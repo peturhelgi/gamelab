@@ -10,6 +10,6 @@ namespace Project.GameObjects
 {
     abstract class Tool
     {
-        abstract public void use(Miner.Miner user, List<GameObject> gameObjects);
+        abstract public void Use(Miner.Miner user, List<GameObject> gameObjects);
     }
 }

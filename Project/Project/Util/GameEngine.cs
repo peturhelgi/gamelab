@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Project.GameObjects.Miner;
+using Project.Util.Collision;
 
 namespace Project.Util
 {
@@ -87,46 +88,45 @@ namespace Project.Util
 
 
             // 2. check for collisions in the X-axis, the Y-axis (falling and jumping against something) and the intersection of the movement
-            BoundingBox xBox = new BoundingBox();
-            BoundingBox yBox = new BoundingBox();
-            BoundingBox iBox = new BoundingBox();
+            AxisAllignedBoundingBox xBox, yBox;
 
             if (direction.X > 0) // we are moving right
             {
-                xBox.Min = new Vector3(actor.BBox.Max.X, actor.BBox.Min.Y, 0);
-                xBox.Max = new Vector3(actor.BBox.Max.X + direction.X, actor.BBox.Max.Y, 0);
+                xBox = new AxisAllignedBoundingBox(
+                    new Vector2(actor.BBox.Max.X, actor.BBox.Min.Y), 
+                    new Vector2(actor.BBox.Max.X + direction.X, actor.BBox.Max.Y)
+                    );
             }
             else
             {
-                xBox.Min = new Vector3(actor.BBox.Min.X + direction.X, actor.BBox.Min.Y, 0);
-                xBox.Max = new Vector3(actor.BBox.Min.X, actor.BBox.Max.Y, 0);
+                xBox = new AxisAllignedBoundingBox(
+                    new Vector2(actor.BBox.Min.X + direction.X, actor.BBox.Min.Y),
+                    new Vector2(actor.BBox.Min.X, actor.BBox.Max.Y)
+                    );
             }
 
             
             if (direction.Y > 0) // we are moving downwards
             {
-                yBox.Min = new Vector3(actor.BBox.Min.X, actor.BBox.Max.Y, 0);
-                yBox.Max = new Vector3(actor.BBox.Max.X, actor.BBox.Max.Y + direction.Y, 0);
+                yBox = new AxisAllignedBoundingBox(
+                    new Vector2(actor.BBox.Min.X, actor.BBox.Max.Y),
+                    new Vector2(actor.BBox.Max.X, actor.BBox.Max.Y + direction.Y)
+                    );
             }
             else
             {
-                yBox.Min = new Vector3(actor.BBox.Min.X, actor.BBox.Min.Y + direction.Y, 0);
-                yBox.Max = new Vector3(actor.BBox.Max.X, actor.BBox.Min.Y, 0);
+                yBox = new AxisAllignedBoundingBox(
+                   new Vector2(actor.BBox.Min.X, actor.BBox.Min.Y + direction.Y),
+                   new Vector2(actor.BBox.Max.X, actor.BBox.Min.Y)
+                   );
             }
 
-            iBox = actor.BBox;
-            iBox.Min += new Vector3(direction, 0);
-            iBox.Max += new Vector3(direction, 0);
-            iBox = BoundingBox.CreateMerged(iBox, actor.BBox);
-
-
+            
             // 3. check, if there are any collisions in the X-axis and correct position
-            bool colidedWithSide = false;
             List<GameObject> collisions = CollisionDetector.FindCollisions(xBox, GameState.Solids);
             if (collisions.Count > 0) {
                 Debug.WriteLine("collided with x-axis");
                 direction.X = 0;
-                colidedWithSide = true;
             }
 
 
@@ -149,35 +149,22 @@ namespace Project.Util
                     {
                         direction.Y = (lowestPoint - actor.BBox.Max.Y)-0.1f;
                         actor.Falling = false;
-                        actor.Speed = Vector2.Zero;
                     }
 
                 }
-                else if (!colidedWithSide)
-                {
-                    collisions = CollisionDetector.FindCollisions(iBox, GameState.Solids);
-                    if (collisions.Count > 0)
-                    {
-                        Debug.WriteLine("collided with intersection");
-
-                        direction = Vector2.Zero;
-                        actor.Speed = Vector2.Zero;
-                        if (direction.Y > 0) // hitting floor
-                        {
-                            actor.Falling = false;
-                            actor.Speed = Vector2.Zero;
-                        }
-                    }
-                }
+                
             }
             actor.Position += direction;
 
 
-            if (!actor.Falling) { 
+            if (!actor.Falling) {
                 // Next, we need to check if we are falling, i.e. walking over an edge to store it to the character, to calculate the difference in height for the next iteration
-                BoundingBox tempBox = actor.BBox;
-                tempBox.Min = new Vector3(tempBox.Min.X, tempBox.Max.Y, 0);
-                tempBox.Max += new Vector3(0, 0.5f, 0);
+                AxisAllignedBoundingBox tempBox = new AxisAllignedBoundingBox(
+                    new Vector2(actor.BBox.Min.X, actor.BBox.Max.Y), 
+                    new Vector2(actor.BBox.Max.X, actor.BBox.Max.Y + 0.5f)
+                    );
+
+                
                 
                 collisions = CollisionDetector.FindCollisions(tempBox, GameState.Solids);
                 if (collisions.Count == 0)

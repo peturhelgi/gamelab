@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Project.GameObjects;
+using Project.Util.Collision;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,12 @@ namespace Project.Util
     class CollisionDetector
     {
 
-        public List<GameObject> FindCollisions(BoundingBox box, List<GameObject> objects)
+        public List<GameObject> FindCollisions(PolygonalCollisionObject collidable, List<GameObject> objects)
         {
             List<GameObject> results = new List<GameObject>();
             foreach (GameObject obj in objects)
             {
-                if (box.Intersects(obj.BBox))
+                if (collidable.Intersects(obj.BBox))
                 {
                     results.Add(obj);
                 }

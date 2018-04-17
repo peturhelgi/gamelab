@@ -113,7 +113,10 @@
     <Compile Include="GreatEscape.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\Camera.cs" />
+    <Compile Include="Util\Collision\AxisAllignedBoundingBox.cs" />
+    <Compile Include="Util\Collision\Axis.cs" />
     <Compile Include="Util\Collision\CollisionDetector.cs" />
+    <Compile Include="Util\Collision\PolygonalCollisionObject.cs" />
     <Compile Include="Util\GameController.cs" />
     <Compile Include="Util\GameEngine.cs" />
     <Compile Include="Util\GameState.cs" />

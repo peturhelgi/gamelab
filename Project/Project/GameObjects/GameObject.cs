@@ -1,12 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Project.Util.Collision;
 
 namespace Project.GameObjects
 {
     interface IGameObject
     {
-        BoundingBox BBox {
+        AxisAllignedBoundingBox BBox {
             get;
         }
 
@@ -69,8 +70,8 @@ namespace Project.GameObjects
 
         public double Mass { get; set; }
 
-        public BoundingBox BBox { get {
-                return new BoundingBox(new Vector3(Position,0), new Vector3(Position + SpriteSize, 0));
+        public AxisAllignedBoundingBox BBox { get {
+                return new AxisAllignedBoundingBox(Position, Position + SpriteSize);
             } }
 
         public Texture2D Texture { get; set; }

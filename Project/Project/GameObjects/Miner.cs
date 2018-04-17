@@ -176,7 +176,7 @@ namespace Project.GameObjects.Miner
         /// <returns>True iff 1==1</returns>
         public bool UseTool(List<GameObject> gameObjects) {
             this.Stance = Stance.stand;
-            tool.use(this, gameObjects);
+            tool.Use(this, gameObjects);
 
             return true;
         }
