@@ -145,7 +145,6 @@
     <MonoGameContentReference Include="Content\Content.mgcb">
       <SubType>Designer</SubType>
     </MonoGameContentReference>
-    <None Include="ClassDiagram.cd" />
     <None Include="Content\GamePlay\Levels\Level1.json" />
     <None Include="Content\Load\ScreenManager.json" />
     <None Include="Content\Load\SplashScreen.json" />
@@ -159,7 +158,6 @@
     <None Include="Content\Sprites\VisualAssets_PS\Pickaxe.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Rock.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Rope.psd" />
-    <None Include="Graph1.dgml" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
