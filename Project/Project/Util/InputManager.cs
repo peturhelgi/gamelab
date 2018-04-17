@@ -62,7 +62,8 @@ namespace Project.Util {
 
         public bool KeyReleased(params Keys[] keys) {
             foreach(Keys key in keys) {
-                if(currenKeyState.IsKeyUp(key)) {
+                if(currenKeyState.IsKeyUp(key)
+                    && prevKeyState.IsKeyDown(key)) {
                     return true;
                 }
             }

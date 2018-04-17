@@ -107,6 +107,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\EditingControls.cs" />
+    <Compile Include="Controls\MenuControls.cs" />
+    <Compile Include="Controls\PlayingControls.cs" />
     <Compile Include="GameObjects\Crate.cs" />
     <Compile Include="GameObjects\Pickaxe.cs" />
     <Compile Include="GameObjects\Ground.cs" />
@@ -128,7 +131,6 @@
     <Compile Include="Screens\EditorScreen.cs" />
     <Compile Include="Screens\PlayingScreen.cs" />
     <Compile Include="Screens\SplashScreen.cs" />
-    <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Util\ImageEffect.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Util\GameState.cs" />

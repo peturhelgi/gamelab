@@ -15,12 +15,13 @@ namespace Project.Screens {
         protected ContentManager content;
         [JsonIgnore]
         public Type Type;
-
         public string Path;
+        protected GameController controller;
 
         public GameScreen() {
             Type = this.GetType();
-            Path = "Content/Load/" + Type.ToString().Replace("Project.Screens.", "") + ".json";
+            Path = "Content/Load/"
+                + Type.ToString().Replace("Project.Screens.", "") + ".json";
         }
 
         public GameScreen(string path) {
@@ -41,6 +42,7 @@ namespace Project.Screens {
         }
 
         public virtual void Update(GameTime gameTime) {
+            controller.HandleUpdate(gameTime);
             InputManager.Instance.Update();
         }
 

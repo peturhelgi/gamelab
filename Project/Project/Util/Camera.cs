@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Project.Util {
-    class Camera {
+    public class Camera {
         public Matrix view;
         private float _Zoom;
         private Vector2 _Position;

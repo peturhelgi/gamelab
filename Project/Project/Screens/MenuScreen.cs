@@ -13,6 +13,7 @@ namespace Project.Screens {
     class MenuScreen : GameScreen {
         MenuManager menuManager;
         public MenuScreen(string path) {
+            controller = new MenuController();
             menuManager = new MenuManager();
             this.Path = path;
         }

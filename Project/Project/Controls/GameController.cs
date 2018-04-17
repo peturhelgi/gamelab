@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 
 namespace Project.Util {
-    class GameController {
+    public class GameController {
         //public GameEngine GameEngine;
         public Camera Camera;
 
@@ -22,12 +22,12 @@ namespace Project.Util {
             HandleMouse(Mouse.GetState());
             GamePadState PlayerOneState = GamePad.GetState(PlayerIndex.One);
             if(PlayerOneState.IsConnected) {
-                HandleGamePad(PlayerOneState);
+                HandleGamePad(PlayerOneState, gameTime);
 
                 // There can only be a second player, if there is a first one
                 GamePadState PlayerTwoState = GamePad.GetState(PlayerIndex.Two);
                 if(PlayerTwoState.IsConnected) {
-                    HandleGamePad(PlayerTwoState);
+                    HandleGamePad(PlayerTwoState, gameTime);
                 }
             }
 
@@ -36,7 +36,7 @@ namespace Project.Util {
 
         private void HandleMouse(MouseState ms) {
             if(ms.LeftButton == ButtonState.Pressed) {
-                Debug.Write(ms.Position.X + ", " );
+                Debug.Write(ms.Position.X + ", ");
                 Debug.WriteLine(ms.Position.Y);
             }
         }
@@ -69,12 +69,26 @@ namespace Project.Util {
             // END Handle GameAction
         }
 
-        private void HandleGamePad(GamePadState gs) {
+        private void HandleGamePad(GamePadState gs, GameTime gameTime) {
             if(gs.Buttons.Back == ButtonState.Pressed) {
                 // TODO: Add a changed GameState, to escape the game
                 //Exit();
                 return;
             }
+
+            // pressing A makes the character jump
+            if(gs.IsButtonDown(Buttons.A))
+                GameEngine.Instance.HandleInput(0, GameEngine.GameAction.jump, 0, gameTime);
+
+            if(gs.IsButtonDown(Buttons.RightTrigger))
+                GameEngine.Instance.HandleInput(0, GameEngine.GameAction.interact, 0, gameTime);
+
+            // Left thumbstick controls
+            if(gs.ThumbSticks.Left.X < -0.5f)
+                GameEngine.Instance.HandleInput(0, GameEngine.GameAction.walk_left, 0, gameTime);
+            if(gs.ThumbSticks.Left.X > 0.5f)
+                GameEngine.Instance.HandleInput(0, GameEngine.GameAction.walk_right, 0, gameTime);
+
         }
 
     }
