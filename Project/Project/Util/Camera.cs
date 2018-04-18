@@ -4,67 +4,77 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Project.Util {
     public class Camera {
         public Matrix view;
         private float _Zoom;
-        private Vector2 _Position;
+        private Vector3 _Position, translation;
 
-        public enum CameraAction { right, left, up, down, zoom_in, zoom_out };
+        int panSpeed = 2;
+        float zoomSpeed = 0.03f;
+
+        public enum Action { right, left, up, down, zoom_in, zoom_out };
 
         public Camera(float zoom, Vector2 position) {
             view = Matrix.Identity;
             _Zoom = zoom;
-            _Position = position;
+            //_Position = position;
+            _Position.X = position.X;
+            _Position.Y = position.Y;
+            _Position.Z = translation.Z = 0;
             Refresh();
         }
 
-        public void HandleAction(CameraAction action) {
+        public void HandleAction(Action action) {
+            translation.X = translation.Y = 0;
             switch(action) {
-                case (CameraAction.right):
-                    Translate(new Vector2(2, 0));
+                case (Action.right):
+                    translation.X = panSpeed;
+                    Translate(translation);
                     break;
 
-                case (CameraAction.left):
-                    Translate(new Vector2(-2, 0));
+                case (Action.left):
+                    translation.X = -panSpeed;
+                    Translate(translation);
                     break;
 
-                case (CameraAction.up):
-                    Translate(new Vector2(0, -2));
+                case (Action.up):
+                    translation.Y = -panSpeed;
+                    Translate(translation);
                     break;
 
-                case (CameraAction.down):
-                    Translate(new Vector2(0, 2));
+                case (Action.down):
+                    translation.Y = panSpeed;
+                    Translate(translation);
                     break;
 
-                case (CameraAction.zoom_in):
-                    Zoom(1.03f);
+                case (Action.zoom_in):
+                    Zoom(1.0f + zoomSpeed);
                     break;
 
-                case (CameraAction.zoom_out):
-                    Zoom(0.97f);
+                case (Action.zoom_out):
+                    Zoom(1.0f - zoomSpeed);
                     break;
 
                 default:
-                    break;
+                    return;
             }
-
+            Refresh();
         }
-
 
         public void Zoom(float factor) {
             _Zoom *= factor;
-            Refresh();
         }
 
-        public void Translate(Vector2 t) {
+        public void Translate(Vector3 t) {
             _Position += (t * _Zoom);
-            Refresh();
         }
 
         private void Refresh() {
-            view = Matrix.CreateTranslation(new Vector3(-_Position.X, -_Position.Y, 0)) * Matrix.CreateScale(_Zoom);
+            view = Matrix.CreateTranslation(_Position)
+                * Matrix.CreateScale(_Zoom);
         }
 
     }

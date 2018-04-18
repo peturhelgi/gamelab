@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Project.GameObjects;
 using Newtonsoft.Json;
+using Project.Controls;
 
 
 namespace Project.Screens {
@@ -18,17 +19,17 @@ namespace Project.Screens {
 
         //TODO: Have a possibility for more Images
         public Image Image;
-
         public Vector2 Position;
+        public Tuple<string, string> NextScreen;
 
         public SplashScreen() {
             Path = "Content/Load/SplashScreen.json";
         }
 
-        //private ContentManager contentManager;
         public override void LoadContent() {
             base.LoadContent();
             Image.LoadContent();
+            this.controller = new GameController();
         }
 
         public override void UnloadContent() {
@@ -39,9 +40,13 @@ namespace Project.Screens {
             base.Update(gameTime);
             Image.Update(gameTime);
 
-            if(InputManager.Instance.KeyPressed(Keys.Enter, Keys.Z, Keys.Space)) {
-                ScreenManager.Instance.ChangeScreen("MenuScreen", "Content/Load/TitleMenu");
+            // TODO: couple with default game controller
+            if(InputManager.Instance.KeyPressed(Keys.Enter, Keys.Space)) {
+                ScreenManager.Instance.ChangeScreen(
+                    NextScreen.Item1, 
+                    NextScreen.Item2);
             }
+
         }
         public override void Draw(SpriteBatch spriteBatch) {
             spriteBatch.Begin();

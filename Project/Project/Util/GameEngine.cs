@@ -12,8 +12,8 @@ using Project.GameObjects;
 namespace Project.Util {
 
     class GameEngine {
-        public GameState GameState;
         public enum GameAction { walk_right, walk_left, jump, interact, collect };
+        public GameState GameState;
         private CollisionDetector CollisionDetector;
         private static GameEngine instance;
         int[] CurrentMiner = { 0, 1 };
@@ -44,11 +44,13 @@ namespace Project.Util {
 
             switch(action) {
                 case (GameAction.walk_right):
-                    CalculateAndSetNewPosition(miner, new Vector2(5, 0), gameTime);
+                    CalculateAndSetNewPosition(miner, new Vector2(5, 0), 
+                        gameTime);
                     break;
 
                 case (GameAction.walk_left):
-                    CalculateAndSetNewPosition(miner, new Vector2(-5, 0), gameTime);
+                    CalculateAndSetNewPosition(miner, new Vector2(-5, 0), 
+                        gameTime);
                     break;
                 case (GameAction.jump):
                     TryToJump(miner, new Vector2(0, -700));
@@ -68,9 +70,10 @@ namespace Project.Util {
             // TODO make this with all miners
 
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[0]);
-            // what simon calls gameTime, I call gameTimeSpan 
+            // What simon calls gameTime, I call gameTimeSpan.
             // He implemented it using the TimeSpan gameTime
-            // we only need to update this, if some time has passed since the last update
+            // we only need to update this, if some time has passed since the 
+            // last update.
             if(miner.lastUpdated != gameTimeSpan) {
                 CalculateAndSetNewPosition(miner, Vector2.Zero, gameTime);
             }

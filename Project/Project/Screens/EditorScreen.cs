@@ -12,7 +12,7 @@ namespace Project.Screens {
         //TODO: Level  editor
 
         public EditorScreen() {
-            this.controller = new GameController();
+            
         }
 
 

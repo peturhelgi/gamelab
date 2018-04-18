@@ -24,7 +24,6 @@ namespace Project.GameObjects {
         Image Image { get; set; }
     }
 
-
     public abstract class GameObject : IGameObject {
 
         public Image Image { get; set; }
@@ -48,8 +47,8 @@ namespace Project.GameObjects {
         /// </summary>
         /// <param name="gameTime"></param>
         public virtual void Update(GameTime gameTime) {
-            if(this.Image != null) {
-                this.Image.Position = this.Position;
+            if(Image != null) {
+                Image.Position = Position;
             }
         }
 
@@ -58,7 +57,7 @@ namespace Project.GameObjects {
         /// </summary>
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch) => 
-            this.Image?.Draw(spriteBatch);
+            Image?.Draw(spriteBatch);
 
         /// <summary>
         /// True if the gameobject is airborne
@@ -103,7 +102,7 @@ namespace Project.GameObjects {
         public BoundingBox BBox {
             get {
                 Vector3 min = new Vector3(Position, 0),
-                    max = new Vector3(Position + this.Image.SpriteSize, 0);
+                    max = new Vector3(Position + Image.SpriteSize, 0);
                 return new BoundingBox(min, max);
             }
         }

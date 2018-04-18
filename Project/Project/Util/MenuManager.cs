@@ -8,11 +8,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-<<<<<<< HEAD
 using Project.Screens;
-=======
 using Project.Controls;
->>>>>>> controlsBjarni
 
 namespace Project.Util {
     public class MenuManager {

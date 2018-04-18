@@ -6,7 +6,11 @@
     "IsActive": true,
     "Alpha": 0.5,
     "FadeEffect": {
-      "FadeSpeed": 0.5
+      "FadeSpeed": 1.0
     }
+  },
+  "NextScreen": {
+    "Item1": "MenuScreen",
+    "Item2": "Content/Load/TitleMenu"
   }
 }

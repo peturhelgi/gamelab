@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework;
 using Project.GameObjects;
+using Project.Controls;
 
 
 namespace Project.Screens {
@@ -20,7 +21,7 @@ namespace Project.Screens {
 
         public PlayingScreen(string path) {
             this.Path = path;
-            controller = new GameController(new Camera(0.8f, Vector2.Zero));
+            controller = new PlayingControls(new Camera(0.8f, Vector2.Zero));
         }
 
         public override void LoadContent() {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Project.Util;
-
+using Project.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,7 +13,7 @@ namespace Project.Screens {
     class MenuScreen : GameScreen {
         MenuManager menuManager;
         public MenuScreen(string path) {
-            controller = new MenuController();
+            controller = new MenuControls();
             menuManager = new MenuManager();
             this.Path = path;
         }

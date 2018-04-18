@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Project.Util;
+using Project.Controls;
 
 
 namespace Project.Screens {
@@ -32,11 +33,6 @@ namespace Project.Screens {
         public virtual void LoadContent() => content = new ContentManager(
                 ScreenManager.Instance.Content.ServiceProvider, "Content");
 
-        public virtual void LoadContent(string path) {
-        //TODO: Delete this method
-            content = new ContentManager(
-                ScreenManager.Instance.Content.ServiceProvider, "Content");
-        }
         public virtual void UnloadContent() {
             content.Unload();
         }
