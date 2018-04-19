@@ -17,6 +17,7 @@ namespace Project.Screens {
     public class PlayingScreen : GameScreen {
         Level level;
         GameState state;
+
         public static string baseFolder = "Content/GamePlay/Levels/";
 
         public PlayingScreen(string path) {

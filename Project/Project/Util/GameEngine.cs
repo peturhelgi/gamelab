@@ -53,7 +53,8 @@ namespace Project.Util {
                         gameTime);
                     break;
                 case (GameAction.jump):
-                    TryToJump(miner, new Vector2(0, -700));
+                    TryToJump(miner, new Vector2(0, -400));
+
                     break;
 
                 case (GameAction.interact):

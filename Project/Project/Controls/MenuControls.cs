@@ -32,12 +32,12 @@ namespace Project.Controls {
             base.HandleUpdate(gameTime);
 
             if(CurrentState.IsConnected) {
-                 HandleGamePad(gameTime);
+                 HandleGamePad(CurrentState, gameTime);
             }
             HandleKeyboard(Keyboard.GetState(), gameTime);
         }
 
-        private void HandleKeyboard(KeyboardState state, GameTime gameTime) {
+        protected override void HandleKeyboard(KeyboardState state, GameTime gameTime) {
             // START Handle GameAction
             if(state.IsKeyDown(Keys.Right)) {
                 GameEngine.Instance.HandleInput(
@@ -57,7 +57,7 @@ namespace Project.Controls {
         }
 
 
-        private void HandleGamePad(GameTime gameTime) {
+        protected override void HandleGamePad(GamePadState gs,GameTime gameTime) {
             
             if(CurrentState.IsButtonDown((Buttons)Instructions.Select)) {
                 // TODO: Add a changed GameState, to escape the game

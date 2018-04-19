@@ -13,7 +13,7 @@ namespace Project.Controls {
         public Camera Camera;
         protected GamePadState CurrentState, PrevState;
         
-        public GameController() => this.Camera = null;
+        public GameController(Camera camera = null) => this.Camera = camera;
 
         internal virtual void HandleUpdate(GameTime gameTime) {
             HandleMouse(Mouse.GetState());
@@ -27,6 +27,10 @@ namespace Project.Controls {
                 Debug.WriteLine(ms.Position.Y);
             }
         }
+
+
+        protected virtual void HandleKeyboard(KeyboardState state, GameTime gameTime) { }
+        protected virtual void HandleGamePad(GamePadState gs, GameTime gameTime) { }
 
         public bool ButtonPressed(params Buttons[] buttons)
         {
