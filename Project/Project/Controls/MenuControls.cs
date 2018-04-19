@@ -11,31 +11,29 @@ using Project.Util;
 namespace Project.Controls {
     public class MenuControls : GameController {
 
-        enum things {
+        public int PlayerIndex;
+        public enum Instructions {
             Select = Buttons.A,
             Back = Buttons.B,
             Up = Buttons.DPadUp,
             UpStick = Buttons.LeftThumbstickUp,
-            Down = Buttons.LeftThumbstickUp,
-            DownStick = Buttons.LeftThumbstickDown
+            Down = Buttons.DPadDown,
+            DownStick = Buttons.LeftThumbstickDown,
+            RightStick = Buttons.LeftThumbstickRight,
+            Right = Buttons.DPadRight,
+            Left = Buttons.DPadLeft,
+            LeftStick = Buttons.LeftThumbstickLeft
         };
         public MenuControls() {
-
+            PlayerIndex = 0;
         }
 
         internal override void HandleUpdate(GameTime gameTime) {
-            GameEngine.Instance.gameTimeSpan = gameTime.TotalGameTime;
-            GamePadState PlayerOneState = GamePad.GetState(PlayerIndex.One);
-            if(PlayerOneState.IsConnected) {
-                HandleGamePad(PlayerOneState, gameTime);
+            base.HandleUpdate(gameTime);
 
-                // There can only be a second player, if there is a first one
-                GamePadState PlayerTwoState = GamePad.GetState(PlayerIndex.Two);
-                if(PlayerTwoState.IsConnected) {
-                    HandleGamePad(PlayerTwoState, gameTime);
-                }
+            if(CurrentState.IsConnected) {
+                 HandleGamePad(gameTime);
             }
-
             HandleKeyboard(Keyboard.GetState(), gameTime);
         }
 
@@ -58,29 +56,14 @@ namespace Project.Controls {
             // END Handle GameAction
         }
 
-        private void HandleGamePad(GamePadState gs, GameTime gameTime) {
-            var i = Buttons.LeftThumbstickUp;
-            gs.IsButtonDown((Buttons)things.Up);
-            if(gs.Buttons.Back == ButtonState.Pressed) {
+
+        private void HandleGamePad(GameTime gameTime) {
+            
+            if(CurrentState.IsButtonDown((Buttons)Instructions.Select)) {
                 // TODO: Add a changed GameState, to escape the game
                 //Exit();
                 return;
             }
-
-            // pressing A makes the character jump
-            if(gs.IsButtonDown(Buttons.A)) {
-                GameEngine.Instance.HandleInput(0, GameEngine.GameAction.jump, 0, gameTime);
-            }
-
-            if(gs.IsButtonDown(Buttons.RightTrigger)) {
-                GameEngine.Instance.HandleInput(0, GameEngine.GameAction.interact, 0, gameTime);
-            }
-
-            // Left thumbstick controls
-            if(gs.ThumbSticks.Left.X < -0.5f)
-                GameEngine.Instance.HandleInput(0, GameEngine.GameAction.walk_left, 0, gameTime);
-            if(gs.ThumbSticks.Left.X > 0.5f)
-                GameEngine.Instance.HandleInput(0, GameEngine.GameAction.walk_right, 0, gameTime);
         }
     }
 }

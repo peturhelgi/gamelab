@@ -14,7 +14,7 @@ namespace Project.Screens {
         MenuManager menuManager;
         public MenuScreen(string path) {
             controller = new MenuControls();
-            menuManager = new MenuManager();
+            menuManager = new MenuManager(new MenuControls());
             this.Path = path;
         }
 

@@ -20,9 +20,7 @@ namespace Project.Util {
         int itemNumber;
         string id;
 
-        public int ItemNumber {
-            get { return itemNumber; }
-        }
+        public int ItemNumber => itemNumber;
 
         public string ID {
             get { return id; }
@@ -37,9 +35,20 @@ namespace Project.Util {
                 item.Image.IsActive = true;
                 item.Image.Alpha = alpha;
                 item.Image.FadeEffect.Increase = (alpha == 0.0f);
-
             }
         }
+
+        /// <summary>
+        /// Gives information about the alignment of the menu items
+        /// </summary>
+        /// <returns>True if elements stack vertically</returns>
+        public bool IsVertical() => Axis == "Y";
+        /// <summary>
+        /// Gives information about the alignment of the menu items
+        /// </summary>
+        /// <returns>True if elements stack horizontally</returns>
+        public bool IsHorizontal() => Axis == "X";
+
         void AlignMenuItems() {
             Vector2 dimensions = Vector2.Zero;
             foreach(MenuItem item in Items) {
@@ -67,6 +76,16 @@ namespace Project.Util {
             }
         }
 
+        /// <summary>
+        /// Increases ItemNumber by one, in a circular fashin
+        /// </summary>
+        public void NextItem() => itemNumber = (++itemNumber) % Items.Count;
+
+        /// <summary>
+        /// Decreases ItemNumber by one, in a circular fashin
+        /// </summary>
+        public void PreviousItem() => itemNumber = (--itemNumber) % Items.Count;
+
         public Menu() {
             id = String.Empty;
             itemNumber = 0;
@@ -93,13 +112,13 @@ namespace Project.Util {
         }
 
         public void Update(GameTime gameTime) {
-            if(Axis == "X") {
+            if(IsHorizontal()) {
                 if(InputManager.Instance.KeyPressed(Keys.Right)) {
                     ++itemNumber;
                 } else if(InputManager.Instance.KeyPressed(Keys.Left)) {
                     --itemNumber;
                 }
-            } else if(Axis == "Y") {
+            } else if(IsVertical()) {
                 if(InputManager.Instance.KeyPressed(Keys.Down)) {
                     ++itemNumber;
                 } else if(InputManager.Instance.KeyPressed(Keys.Up)) {
@@ -118,15 +137,12 @@ namespace Project.Util {
                 }
                 Items[i].Image.Update(gameTime);
             }
-
         }
 
         public void Draw(SpriteBatch spriteBatch) {
-            //spriteBatch.Begin();
             foreach(MenuItem item in Items) {
                 item.Image.Draw(spriteBatch);
             }
-            //spriteBatch.End();
         }
     }
 }

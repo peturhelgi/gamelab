@@ -102,7 +102,9 @@ namespace Project.GameObjects {
         public BoundingBox BBox {
             get {
                 Vector3 min = new Vector3(Position, 0),
-                    max = new Vector3(Position + Image.SpriteSize, 0);
+                    max = new Vector3(Image.Position, 0);
+                max.X += Image.SpriteSize.X;// / Image.Scale.X;
+                max.Y += Image.SpriteSize.Y;// / Image.Scale.Y;
                 return new BoundingBox(min, max);
             }
         }

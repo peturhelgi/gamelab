@@ -28,7 +28,6 @@ namespace Project.Screens {
             base.LoadContent();
             
             state = new GameState();
-            DataManager<Miner> minerLoader = new DataManager<Miner>();
             DataManager<Level> levelLoader = new DataManager<Level>();
 
             level = levelLoader.Load(baseFolder + this.Path);
@@ -48,6 +47,8 @@ namespace Project.Screens {
         }
 
         public override void Draw(SpriteBatch spriteBatch) {
+
+            // TODO: move to the renderer
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, 
                 null, controller.Camera.view);
             base.Draw(spriteBatch);

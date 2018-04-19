@@ -179,9 +179,13 @@ namespace Project.Util {
         }
 
         public void Draw(SpriteBatch spriteBatch) {
-            Origin.X = SpriteSize.X / 2;
-            Origin.Y = SpriteSize.Y / 2;
+
             try {
+                Origin.X = SpriteSize.X / 2;
+                Origin.Y = SpriteSize.Y / 2;
+
+                //Origin.X = SourceRect.Width / 2 / Scale.X;
+                //Origin.Y = SourceRect.Height / 2 / Scale.Y;
                 spriteBatch.Draw(Texture, Origin + Position, SourceRect,
                     Color.White * Alpha, 0.0f, Origin, Scale,
                     SpriteEffects.None, 0.0f);
