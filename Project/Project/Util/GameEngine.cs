@@ -17,7 +17,7 @@ namespace Project.Util {
         private CollisionDetector CollisionDetector;
         private static GameEngine instance;
         int[] CurrentMiner = { 0, 1 };
-        public static Vector2 GRAVITY = new Vector2(0, 10);
+        public static Vector2 GRAVITY = new Vector2(0, 1000);
         public TimeSpan gameTimeSpan;
 
         public static GameEngine Instance {
@@ -51,7 +51,7 @@ namespace Project.Util {
                     CalculateAndSetNewPosition(miner, new Vector2(-5, 0), gameTime);
                     break;
                 case (GameAction.jump):
-                    TryToJump(miner, new Vector2(0, -800));
+                    TryToJump(miner, new Vector2(0, -400));
                     break;
 
                 case (GameAction.interact):

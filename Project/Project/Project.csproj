@@ -124,6 +124,7 @@
     <Compile Include="ImageEffects\FadeEffect.cs" />
     <Compile Include="ImageEffects\SpriteSheetEffect.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Util\Camera.cs" />
     <Compile Include="Util\CollisionDetector.cs" />
     <Compile Include="Util\GameController.cs" />

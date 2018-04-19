@@ -13,7 +13,7 @@ namespace Project.Controls
     class MenuControls
     {
 
-        public MenuControls()
+        public MenuControls() 
         {
         }
 

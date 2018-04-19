@@ -17,7 +17,7 @@ namespace Project.Util {
             this.Camera = camera;
         }
 
-        internal void HandleUpdate(GameTime gameTime) {
+        internal virtual void HandleUpdate(GameTime gameTime) {
             GameEngine.Instance.gameTimeSpan = gameTime.TotalGameTime;
             HandleMouse(Mouse.GetState());
             GamePadState PlayerOneState = GamePad.GetState(PlayerIndex.One);
@@ -34,14 +34,14 @@ namespace Project.Util {
             HandleKeyboard(Keyboard.GetState(), gameTime);
         }
 
-        private void HandleMouse(MouseState ms) {
+        public virtual void HandleMouse(MouseState ms) {
             if(ms.LeftButton == ButtonState.Pressed) {
                 Debug.Write(ms.Position.X + ", " );
                 Debug.WriteLine(ms.Position.Y);
             }
         }
 
-        private void HandleKeyboard(KeyboardState state, GameTime gameTime) {
+        public virtual void HandleKeyboard(KeyboardState state, GameTime gameTime) {
             // START Handle camera
             if(state.IsKeyDown(Keys.A)) Camera.HandleAction(Camera.CameraAction.left);
             if(state.IsKeyDown(Keys.D)) Camera.HandleAction(Camera.CameraAction.right);
@@ -69,7 +69,7 @@ namespace Project.Util {
             // END Handle GameAction
         }
 
-        private void HandleGamePad(GamePadState gs, GameTime gameTime) {
+        public virtual void HandleGamePad(GamePadState gs, GameTime gameTime) {
             if(gs.Buttons.Back == ButtonState.Pressed) {
                 // TODO: Add a changed GameState, to escape the game
                 //Exit();

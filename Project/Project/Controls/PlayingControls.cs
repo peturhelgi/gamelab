@@ -10,33 +10,14 @@ using Project.Util;
 
 namespace Project.Controls
 {
-    class PlayingControls
+    class PlayingControls : GameController
     {
-        public Camera Camera;
 
-        public PlayingControls(Camera camera)
+        public PlayingControls(Camera camera) : base(camera)
         {
-            this.Camera = camera;
         }
 
-        internal void HandleUpdate(GameTime gameTime) {
-            GameEngine.Instance.gameTimeSpan = gameTime.TotalGameTime;
-            HandleMouse(Mouse.GetState());
-            GamePadState PlayerOneState = GamePad.GetState(PlayerIndex.One);
-            if(PlayerOneState.IsConnected) {
-                HandleGamePad(PlayerOneState, gameTime);
-
-                // There can only be a second player, if there is a first one
-                GamePadState PlayerTwoState = GamePad.GetState(PlayerIndex.Two);
-                if(PlayerTwoState.IsConnected) {
-                    HandleGamePad(PlayerTwoState, gameTime);
-                }
-            }
-
-            HandleKeyboard(Keyboard.GetState(), gameTime);
-        }
-
-        private void HandleMouse(MouseState ms)
+        public override void HandleMouse(MouseState ms)
         {
             if (ms.LeftButton == ButtonState.Pressed)
             {
@@ -45,7 +26,7 @@ namespace Project.Controls
             }
         }
 
-        private void HandleKeyboard(KeyboardState state, GameTime gameTime)
+        public override void HandleKeyboard(KeyboardState state, GameTime gameTime)
         {
             // START Handle camera
             if (state.IsKeyDown(Keys.A)) Camera.HandleAction(Camera.CameraAction.left);
@@ -78,7 +59,7 @@ namespace Project.Controls
             // END Handle GameAction
         }
 
-        private void HandleGamePad(GamePadState gs, GameTime gameTime)
+        public override void HandleGamePad(GamePadState gs, GameTime gameTime)
         {
             if (gs.Buttons.Back == ButtonState.Pressed)
             {
