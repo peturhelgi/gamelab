@@ -28,7 +28,7 @@ namespace Project.Controls {
             }
         }
 
-
+        public virtual void Initialize(ref Object obj) { }
         protected virtual void HandleKeyboard(KeyboardState state, GameTime gameTime) { }
         protected virtual void HandleGamePad(GamePadState gs, GameTime gameTime) { }
 
