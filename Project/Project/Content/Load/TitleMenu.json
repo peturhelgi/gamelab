@@ -5,8 +5,8 @@
   "Items": [
     {
       "Link": "Level1",
-      "LinkType": "PlayingScreen",
-      "LinkId": "Screen",
+      "ClassName": "PlayingScreen",
+      "LinkType": "Screen",
       "Image": {
         "Text": "New Game"
       }

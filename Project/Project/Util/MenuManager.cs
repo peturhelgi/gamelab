@@ -141,11 +141,11 @@ namespace Project.Util
                 (Buttons)MenuControls.Instructions.Select)
                 && !InTransition)
             {
-                switch(menu.Items[menu.ItemNumber].LinkId.ToLower())
+                switch(menu.Items[menu.ItemNumber].LinkType?.ToLower())
                 {
                     case "screen":
                         ScreenManager.ChangeScreen(
-                            menu.Items[menu.ItemNumber].LinkType,
+                            menu.Items[menu.ItemNumber].ClassName,
                             menu.Items[menu.ItemNumber].Link);
                         break;
                     case "menu":
