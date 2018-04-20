@@ -10,13 +10,16 @@ using Project.Util;
 
 namespace Project.Controls {
     public class PlayingControls : GameController {
-
+        GameEngine _gameEngine;
         public PlayingControls() { }
-        public PlayingControls(Camera camera) : base(camera) { }        
+        public PlayingControls(Camera camera) : base(camera) { }
+        public override void Initialize(params Object[] gameEngines) {
+            _gameEngine = (GameEngine)gameEngines[0];
+        }
 
         internal override void HandleUpdate(GameTime gameTime) {
             base.HandleUpdate(gameTime);
-            GameEngine.Instance.gameTimeSpan = gameTime.TotalGameTime;
+            _gameEngine.gameTimeSpan = gameTime.TotalGameTime;
             GamePadState PlayerOneState = GamePad.GetState(PlayerIndex.One);
             if(PlayerOneState.IsConnected) {
                 HandleGamePad(PlayerOneState, gameTime);
@@ -44,17 +47,17 @@ namespace Project.Controls {
 
             // START Handle GameAction
             if(state.IsKeyDown(Keys.Right)) {
-                GameEngine.Instance.HandleInput(
+                _gameEngine.HandleInput(
                     0, GameEngine.Action.walk_right, 0, gameTime);
             }
             if(state.IsKeyDown(Keys.Left)) {
-                GameEngine.Instance.HandleInput(0, GameEngine.Action.walk_left, 0, gameTime);
+                _gameEngine.HandleInput(0, GameEngine.Action.walk_left, 0, gameTime);
             }
             if(state.IsKeyDown(Keys.I)) {
-                GameEngine.Instance.HandleInput(0, GameEngine.Action.interact, 0, gameTime);
+                _gameEngine.HandleInput(0, GameEngine.Action.interact, 0, gameTime);
             }
             if(state.IsKeyDown(Keys.Space)) {
-                GameEngine.Instance.HandleInput(0, GameEngine.Action.jump, 0, gameTime);
+                _gameEngine.HandleInput(0, GameEngine.Action.jump, 0, gameTime);
             }
 
             // END Handle GameAction
@@ -70,16 +73,16 @@ namespace Project.Controls {
 
             // pressing A makes the character jump
             if(gs.IsButtonDown(Buttons.A))
-                GameEngine.Instance.HandleInput(0, GameEngine.Action.jump, 0, gameTime);
+                _gameEngine.HandleInput(0, GameEngine.Action.jump, 0, gameTime);
 
             if(gs.IsButtonDown(Buttons.RightTrigger))
-                GameEngine.Instance.HandleInput(0, GameEngine.Action.interact, 0, gameTime);
+                _gameEngine.HandleInput(0, GameEngine.Action.interact, 0, gameTime);
 
             // Left thumbstick controls
             if(gs.ThumbSticks.Left.X < -0.5f)
-                GameEngine.Instance.HandleInput(0, GameEngine.Action.walk_left, 0, gameTime);
+                _gameEngine.HandleInput(0, GameEngine.Action.walk_left, 0, gameTime);
             if(gs.ThumbSticks.Left.X > 0.5f)
-                GameEngine.Instance.HandleInput(0, GameEngine.Action.walk_right, 0, gameTime);
+                _gameEngine.HandleInput(0, GameEngine.Action.walk_right, 0, gameTime);
         }
     }
 }

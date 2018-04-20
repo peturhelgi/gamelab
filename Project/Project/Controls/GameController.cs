@@ -14,7 +14,10 @@ namespace Project.Controls {
         protected GamePadState CurrentState, PrevState;
         
         public GameController(Camera camera = null) => this.Camera = camera;
+        public virtual void Initialize(params Object[] objects)
+        {
 
+        }
         internal virtual void HandleUpdate(GameTime gameTime) {
             HandleMouse(Mouse.GetState());
             PrevState = CurrentState;

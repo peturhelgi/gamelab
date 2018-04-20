@@ -37,26 +37,6 @@ namespace Project.Controls {
             HandleKeyboard(Keyboard.GetState(), gameTime);
         }
 
-        protected override void HandleKeyboard(KeyboardState state, GameTime gameTime) {
-            // START Handle GameAction
-            if(state.IsKeyDown(Keys.Right)) {
-                GameEngine.Instance.HandleInput(
-                    0, GameEngine.Action.walk_right, 0, gameTime);
-            }
-            if(state.IsKeyDown(Keys.Left)) {
-                GameEngine.Instance.HandleInput(0, GameEngine.Action.walk_left, 0, gameTime);
-            }
-            if(state.IsKeyDown(Keys.I)) {
-                GameEngine.Instance.HandleInput(0, GameEngine.Action.interact, 0, gameTime);
-            }
-            if(state.IsKeyDown(Keys.Space)) {
-                GameEngine.Instance.HandleInput(0, GameEngine.Action.jump, 0, gameTime);
-            }
-
-            // END Handle GameAction
-        }
-
-
         protected override void HandleGamePad(GamePadState gs,GameTime gameTime) {
             
             if(CurrentState.IsButtonDown((Buttons)Instructions.Select)) {

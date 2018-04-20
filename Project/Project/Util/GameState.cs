@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Project.Util
 {
-    class GameState
+    public class GameState
     {
         public List<Miner> Actors;
         public List<GameObject> Solids;

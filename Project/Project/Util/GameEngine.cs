@@ -13,34 +13,18 @@ using Microsoft.Xna.Framework;
 namespace Project.Util
 {
 
-    class GameEngine
+    public class GameEngine
     {
         public enum Action { walk_right, walk_left, jump, interact, collect };
 
         public GameState GameState;
         private CollisionDetector CollisionDetector;
-        private static GameEngine instance;
 
         int[] CurrentMiner = { 0, 1 };
         public static Vector2 GRAVITY = new Vector2(0, 1000);
         public TimeSpan gameTimeSpan;
 
-        public static GameEngine Instance
-        {
-            get
-            {
-                if(instance == null)
-                {
-                    instance = new GameEngine();
-                }
-                return instance;
-            }
-        }
-
-        public GameEngine()
-        {
-
-        }
+        public GameEngine() { }
 
         public void Initialize(GameState gameState)
         {
@@ -119,7 +103,7 @@ namespace Project.Util
                 actor.Velocity += GRAVITY
                     * (float)(gameTimeSpan - actor.lastUpdated).TotalSeconds;
             }
-            direction += actor.Velocity 
+            direction += actor.Velocity
                 * (float)(gameTimeSpan - actor.lastUpdated).TotalSeconds;
 
             // 2. check for collisions in the X-axis, the Y-axis (falling and jumping against something) and the intersection of the movement

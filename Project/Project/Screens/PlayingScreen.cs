@@ -17,6 +17,7 @@ namespace Project.Screens {
     public class PlayingScreen : GameScreen {
         Level level;
         GameState state;
+        public GameEngine GameEngine;
 
         public static string baseFolder = "Content/GamePlay/Levels/";
 
@@ -35,7 +36,9 @@ namespace Project.Screens {
             level.Initialize(ScreenManager);
             level.LoadContent();
             state.LoadContent(ref level);
-            GameEngine.Instance.Initialize(state);       
+            GameEngine = new GameEngine();
+            GameEngine.Initialize(state);
+            controller.Initialize(GameEngine);
         }
 
         public override void UnloadContent() {
@@ -45,7 +48,7 @@ namespace Project.Screens {
 
         public override void Update(GameTime gameTime) {
             base.Update(gameTime);
-            GameEngine.Instance.Update(gameTime);
+            GameEngine.Update(gameTime);
         }
 
         public override void Draw(SpriteBatch spriteBatch) {

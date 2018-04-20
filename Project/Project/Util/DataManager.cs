@@ -39,7 +39,7 @@ namespace Project.Util {
                 String data = JsonConvert.SerializeObject(obj, Formatting.Indented, settings);
                 File.WriteAllText(path, data);
                 success = true;
-            } catch(Exception e) {
+            } catch(Exception) {
                 success = false;
             }
 
