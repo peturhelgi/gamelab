@@ -294,11 +294,3 @@ __pycache__/
 *.aux
 *.toc
 *.synctex.gz
-
-*.dll
-*.xnb
-Project/Project/AppX
-*/*/SharpDX*.xml
-*.exe
-*.pri
-*xr.xml
