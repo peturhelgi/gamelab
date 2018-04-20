@@ -1,8 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Project.GameObjects;
-using Project.Util;
 using Project.Manager;
 
 namespace Project
@@ -20,9 +16,8 @@ namespace Project
         {
             _graphics = new GraphicsDeviceManager(this)
             {
-
-                PreferredBackBufferWidth = 800,
-                PreferredBackBufferHeight = 600,
+                PreferredBackBufferWidth = 1920,
+                PreferredBackBufferHeight = 1080,
                 IsFullScreen = false
             };
             _graphics.ApplyChanges();
