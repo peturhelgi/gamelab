@@ -139,7 +139,6 @@
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Util\GameState.cs" />
     <Compile Include="Util\Image.cs" />
-    <Compile Include="Util\InputManager.cs" />
     <Compile Include="Util\Level.cs" />
     <Compile Include="Util\Menu.cs" />
     <Compile Include="Util\MenuItem.cs" />

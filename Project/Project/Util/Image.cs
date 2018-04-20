@@ -26,6 +26,7 @@ namespace Project.Util {
         public bool IsActive;
         public FadeEffect FadeEffect;
         public SpriteSheetEffect SpriteSheetEffect;
+        public ScreenManager ScreenManager;
 
         public Vector2 Origin;
         ContentManager content;
@@ -103,9 +104,10 @@ namespace Project.Util {
             SourceRect = Rectangle.Empty;
         }
 
-        public void LoadContent() {
+        public void LoadContent(ScreenManager screenManager) {
+            if(screenManager != null) { ScreenManager = screenManager; }
             content = new ContentManager(
-                ScreenManager.Instance.Content.ServiceProvider, "Content");
+                ScreenManager.Content.ServiceProvider, "Content");
             if(Path != String.Empty) { Texture = content.Load<Texture2D>(Path); }
 
             font = content.Load<SpriteFont>(FontName);
@@ -125,7 +127,7 @@ namespace Project.Util {
             dim.X += font.MeasureString(Text).X;
 
             if(FullScreen) {
-                dim = ScreenManager.Instance.Dimensions;
+                dim = ScreenManager.Dimensions;
             }
 
             if(SourceRect == Rectangle.Empty) {
@@ -135,22 +137,22 @@ namespace Project.Util {
             }
 
             renderTarget = new RenderTarget2D(
-                ScreenManager.Instance.GraphicsDevice, (int)dim.X, (int)dim.Y);
+                ScreenManager.GraphicsDevice, (int)dim.X, (int)dim.Y);
 
-            ScreenManager.Instance.GraphicsDevice.SetRenderTarget(renderTarget);
-            ScreenManager.Instance.GraphicsDevice.Clear(Color.Transparent);
-            ScreenManager.Instance.SpriteBatch.Begin();
+            ScreenManager.GraphicsDevice.SetRenderTarget(renderTarget);
+            ScreenManager.GraphicsDevice.Clear(Color.Transparent);
+            ScreenManager.SpriteBatch.Begin();
             if(Texture != null) {
-                ScreenManager.Instance.SpriteBatch.Draw(Texture, Vector2.Zero,
+                ScreenManager.SpriteBatch.Draw(Texture, Vector2.Zero,
                     Color.White);
             }
-            ScreenManager.Instance.SpriteBatch.DrawString(font, Text,
+            ScreenManager.SpriteBatch.DrawString(font, Text,
                 Vector2.Zero, Color.White);
-            ScreenManager.Instance.SpriteBatch.End();
+            ScreenManager.SpriteBatch.End();
 
             Texture = renderTarget;
 
-            ScreenManager.Instance.GraphicsDevice.SetRenderTarget(null);
+            ScreenManager.GraphicsDevice.SetRenderTarget(null);
 
             SetEffect<FadeEffect>(ref this.FadeEffect);
             SetEffect<SpriteSheetEffect>(ref this.SpriteSheetEffect);

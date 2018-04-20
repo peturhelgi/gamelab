@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Project.Util.Collision;
 using Project.Util;
+using Project.Screens;
 using Newtonsoft.Json;
 
 namespace Project.GameObjects
@@ -31,6 +32,7 @@ namespace Project.GameObjects
 
     public abstract class GameObject : IGameObject
     {
+        protected ScreenManager ScreenManager;
         public GameObject() {
             Velocity = Vector2.Zero;
             Position = Vector2.Zero;
@@ -39,6 +41,10 @@ namespace Project.GameObjects
             Falling = false;
         }
 
+        public void Initialize(ScreenManager screenManager)
+        {
+            ScreenManager = screenManager;
+        }
         public Image Image { get; set; }
 
         /// <summary>
@@ -48,7 +54,7 @@ namespace Project.GameObjects
         {
             if(this.Image != null)
             {
-                this.Image.LoadContent();
+                this.Image.LoadContent(ScreenManager);
                 this.Position = Image.Position;
             }
         }

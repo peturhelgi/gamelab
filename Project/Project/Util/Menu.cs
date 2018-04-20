@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Input;
 namespace Project.Util {
     public class Menu {
         public event EventHandler OnMenuChange;
-
+        protected ScreenManager ScreenManager;
         public string Axis, Effects;
         public List<MenuItem> Items;
 
@@ -49,6 +49,12 @@ namespace Project.Util {
         /// <returns>True if elements stack horizontally</returns>
         public bool IsHorizontal() => Axis == "X";
 
+
+        /// <summary>
+        /// Use: AlignMenuItems()
+        /// Pre: Initialize() has been called for this instance
+        /// Post: The menu items have been aligned according to Axis
+        /// </summary>
         void AlignMenuItems() {
             Vector2 dimensions = Vector2.Zero;
             foreach(MenuItem item in Items) {
@@ -57,17 +63,17 @@ namespace Project.Util {
             }
 
             dimensions = new Vector2(
-                (ScreenManager.Instance.Dimensions.X - dimensions.X) / 2,
-                (ScreenManager.Instance.Dimensions.Y - dimensions.Y) / 2);
+                (ScreenManager.Dimensions.X - dimensions.X) / 2,
+                (ScreenManager.Dimensions.Y - dimensions.Y) / 2);
 
             foreach(MenuItem item in Items) {
                 if(Axis == "X") {
                     item.Image.Position = new Vector2(
                         dimensions.X,
-                        (ScreenManager.Instance.Dimensions.Y - item.Image.SourceRect.Height) / 2);
+                        (ScreenManager.Dimensions.Y - item.Image.SourceRect.Height) / 2);
                 } else if(Axis == "Y") {
                     item.Image.Position = new Vector2(
-                        (ScreenManager.Instance.Dimensions.X - item.Image.SourceRect.Width) / 2,
+                        (ScreenManager.Dimensions.X - item.Image.SourceRect.Width) / 2,
                         dimensions.Y);
                 }
 
@@ -94,10 +100,20 @@ namespace Project.Util {
             Items = new List<MenuItem>();
         }
 
+        public void Initialize(ScreenManager screenManager)
+        {
+            ScreenManager = screenManager;
+        }
+
+        /// <summary>
+        /// Use: LoadContent();
+        /// Pre: Inititalize has been called for this instance
+        /// Post: All menu items have been loaded and aligned
+        /// </summary>
         public void LoadContent() {
             string[] split = Effects.Split(':');
             foreach(MenuItem item in Items) {
-                item.Image.LoadContent();
+                item.Image.LoadContent(ScreenManager);
                 foreach(string effect in split) {
                     item.Image.ActivateEffect(effect);
                 }
@@ -112,6 +128,7 @@ namespace Project.Util {
         }
 
         public void Update(GameTime gameTime) {
+            /*KeyboardState state = Keyboard.GetState();
             if(IsHorizontal()) {
                 if(InputManager.Instance.KeyPressed(Keys.Right)) {
                     ++itemNumber;
@@ -124,7 +141,7 @@ namespace Project.Util {
                 } else if(InputManager.Instance.KeyPressed(Keys.Up)) {
                     --itemNumber;
                 }
-            }
+            }*/
 
             if(itemNumber < 0) { itemNumber = Items.Count - 1; }
             if(itemNumber >= Items.Count) { itemNumber = 0; }

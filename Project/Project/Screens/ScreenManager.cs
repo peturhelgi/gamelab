@@ -33,20 +33,12 @@ namespace Project.Screens {
         [JsonIgnore]
         public bool InTranstition { get; private set; }
 
-        public static ScreenManager Instance {
-            get {
-                if(instance == null) {
-                    DataManager<ScreenManager> data = new DataManager<ScreenManager>();
-                    instance = data.Load(Path);
-                }
-                return instance;
-            }
-        }
-
         public void ChangeScreen(string screenType, string path) {
 
             nextScreen = (GameScreen)Activator
                 .CreateInstance(Type.GetType(ScreenNameSpace + screenType), path);
+            nextScreen.Initialize(this);
+
             Image.IsActive = true;
             Image.FadeEffect.Increase = true;
             Image.Alpha = 0.0f;
@@ -63,6 +55,7 @@ namespace Project.Screens {
                     if(File.Exists(currentScreen.Path)) {
                         currentScreen = gameScreenManager.Load(currentScreen.Path);
                     }
+                    currentScreen.Initialize(this);
                     currentScreen.LoadContent();
                 } else if(Image.Alpha == 0.0f) {
                     Image.IsActive = false;
@@ -76,12 +69,13 @@ namespace Project.Screens {
                 Type = currentScreen.Type
             };
             currentScreen = gameScreenManager.Load(SplashScreenPath);
+            currentScreen.Initialize(this);
         }
 
         public void LoadContent(ContentManager Content) {
             this.Content = new ContentManager(Content.ServiceProvider, "Content");
             currentScreen.LoadContent();
-            Image.LoadContent();
+            Image.LoadContent(this);
         }
 
         public void UnloadContent() {

@@ -32,7 +32,7 @@ namespace Project.Screens
         public override void LoadContent()
         {
             base.LoadContent();
-            Image.LoadContent();
+            Image.LoadContent(ScreenManager);
             this.controller = new GameController();
         }
 
@@ -46,12 +46,14 @@ namespace Project.Screens
             base.Update(gameTime);
             Image.Update(gameTime);
 
+            KeyboardState state = Keyboard.GetState();
             // TODO: couple with default game controller
             if(controller.ButtonPressed(
                 Buttons.A, Buttons.Start)
-                || InputManager.Instance.KeyPressed(Keys.Enter, Keys.Space))
+                || state.IsKeyDown(Keys.Space)
+                || state.IsKeyDown(Keys.Enter))
             {
-                ScreenManager.Instance.ChangeScreen(
+                ScreenManager.ChangeScreen(
                     NextScreen.Item1,
                     NextScreen.Item2);
             }

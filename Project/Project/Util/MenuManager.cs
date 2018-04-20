@@ -17,6 +17,7 @@ namespace Project.Util
     {
         Menu menu;
         bool InTransition;
+        protected ScreenManager ScreenManager;
 
         GameController Controller;
 
@@ -49,8 +50,14 @@ namespace Project.Util
         public MenuManager(MenuControls controller)
         {
             menu = new Menu();
-            menu.OnMenuChange += menu_OnMenuChange;
             Controller = controller;
+        }
+
+        public void Initialize(ScreenManager screenManager)
+        {
+            ScreenManager = screenManager;
+            menu.Initialize(ScreenManager);
+            menu.OnMenuChange += menu_OnMenuChange;
         }
 
         void menu_OnMenuChange(object sender, EventArgs e)
@@ -58,6 +65,7 @@ namespace Project.Util
             DataManager<Menu> menuManager = new DataManager<Menu>();
             menu.UnloadContent();
             menu = menuManager.Load(menu.ID);
+            menu.Initialize(ScreenManager);
             menu.LoadContent();
             menu.OnMenuChange += menu_OnMenuChange;
             menu.Transition(0.0f);
@@ -82,8 +90,15 @@ namespace Project.Util
             menu.UnloadContent();
         }
 
+        /// <summary>
+        /// Use: Update(gameTime)
+        /// Pre: gameTime is GameTime
+        ///      The Initialize() method has been called for this instance
+        /// Post: This instance has been updated.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
-        {
+        {            
             // Updates the states of the controller.
             Controller.HandleUpdate(gameTime);
             if(!InTransition)
@@ -129,7 +144,7 @@ namespace Project.Util
                 switch(menu.Items[menu.ItemNumber].LinkId.ToLower())
                 {
                     case "screen":
-                        ScreenManager.Instance.ChangeScreen(
+                        ScreenManager.ChangeScreen(
                             menu.Items[menu.ItemNumber].LinkType,
                             menu.Items[menu.ItemNumber].Link);
                         break;

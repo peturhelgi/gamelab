@@ -19,6 +19,7 @@ namespace Project.Screens {
         }
 
         public override void LoadContent() {
+            menuManager.Initialize(ScreenManager);
             base.LoadContent();
             menuManager.LoadContent(this.Path);
         }

@@ -18,6 +18,7 @@ namespace Project.Screens {
         public Type Type;
         public string Path;
         protected GameController controller;
+        protected ScreenManager ScreenManager;
 
         public GameScreen() {
             Type = this.GetType();
@@ -25,13 +26,18 @@ namespace Project.Screens {
                 + Type.ToString().Replace("Project.Screens.", "") + ".json";
         }
 
-        public GameScreen(string path) {
-            Type = this.GetType();
-            Path = path;
+        public void Initialize(ScreenManager screenManager)
+        {
+            ScreenManager = screenManager;
         }
 
+        /// <summary>
+        /// Use: LoadContent
+        /// Pre: ScreenManager is not null
+        /// Post: The GameScreen has an initialized ContentManager in content
+        /// </summary>
         public virtual void LoadContent() => content = new ContentManager(
-                ScreenManager.Instance.Content.ServiceProvider, "Content");
+                ScreenManager.Content.ServiceProvider, "Content");
 
         public virtual void UnloadContent() {
             content.Unload();
@@ -39,7 +45,6 @@ namespace Project.Screens {
 
         public virtual void Update(GameTime gameTime) {
             controller.HandleUpdate(gameTime);
-            InputManager.Instance.Update();
         }
 
         public virtual void Draw(SpriteBatch spriteBatch) { }

@@ -32,6 +32,7 @@ namespace Project.Screens {
             DataManager<Level> levelLoader = new DataManager<Level>();
 
             level = levelLoader.Load(baseFolder + this.Path);
+            level.Initialize(ScreenManager);
             level.LoadContent();
             state.LoadContent(ref level);
             GameEngine.Instance.Initialize(state);       
