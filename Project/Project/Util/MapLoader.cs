@@ -56,7 +56,12 @@ namespace Project.Util
             return gameState;
         }
 
-        public void LoadMapContent(GameState gameState) {
+        public void UnloadMapContent(GameState gameState)
+        {
+                ContentManager.Unload();
+        }
+
+            public void LoadMapContent(GameState gameState) {
            
             background = ContentManager.Load<Texture2D>("Sprites/Backgrounds/Background1");
             // TODO possibly add a hashed Map to only load every Texture once
