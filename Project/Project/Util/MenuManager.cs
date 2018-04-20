@@ -57,17 +57,17 @@ namespace Project.Util
         {
             ScreenManager = screenManager;
             menu.Initialize(ScreenManager);
-            menu.OnMenuChange += menu_OnMenuChange;
+            menu.OnMenuChange += Menu_OnMenuChange;
         }
 
-        void menu_OnMenuChange(object sender, EventArgs e)
+        void Menu_OnMenuChange(object sender, EventArgs e)
         {
             DataManager<Menu> menuManager = new DataManager<Menu>();
             menu.UnloadContent();
             menu = menuManager.Load(menu.ID);
             menu.Initialize(ScreenManager);
             menu.LoadContent();
-            menu.OnMenuChange += menu_OnMenuChange;
+            menu.OnMenuChange += Menu_OnMenuChange;
             menu.Transition(0.0f);
 
             foreach(MenuItem item in menu.Items)
@@ -98,22 +98,28 @@ namespace Project.Util
         /// </summary>
         /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
-        {            
+        {
             // Updates the states of the controller.
+            // TODO: Move to menucontrols
             Controller.HandleUpdate(gameTime);
+            KeyboardState ks = Keyboard.GetState();
             if(!InTransition)
             {
                 if(menu.IsVertical())
                 {
                     if(Controller.ButtonPressed(
                        (Buttons)MenuControls.Instructions.Down,
-                       (Buttons)MenuControls.Instructions.DownStick))
+                       (Buttons)MenuControls.Instructions.DownStick)
+                       || ks.IsKeyDown(Keys.Down)
+                       )
                     {
                         menu.NextItem();
                     }
                     else if(Controller.ButtonPressed(
                         (Buttons)MenuControls.Instructions.Up,
-                        (Buttons)MenuControls.Instructions.UpStick))
+                        (Buttons)MenuControls.Instructions.UpStick)
+                       || ks.IsKeyDown(Keys.Up)
+                       )
                     {
                         menu.PreviousItem();
                     }
@@ -123,45 +129,51 @@ namespace Project.Util
                 {
                     if(Controller.ButtonPressed(
                        (Buttons)MenuControls.Instructions.Right,
-                       (Buttons)MenuControls.Instructions.RightStick))
+                       (Buttons)MenuControls.Instructions.RightStick)
+                       || ks.IsKeyDown(Keys.Right)
+                       )
                     {
                         menu.NextItem();
                     }
                     else if(Controller.ButtonPressed(
                         (Buttons)MenuControls.Instructions.Left,
-                        (Buttons)MenuControls.Instructions.LeftStick))
+                        (Buttons)MenuControls.Instructions.LeftStick)
+                         || ks.IsKeyDown(Keys.Left)
+                       )
                     {
                         menu.PreviousItem();
                     }
                 }
                 menu.Update(gameTime);
+
+                if(Controller.ButtonPressed(
+                    (Buttons)MenuControls.Instructions.Select)
+                    || ks.IsKeyDown(Keys.Space)
+                    || ks.IsKeyDown(Keys.Enter))
+                {
+                    switch(menu.Items[menu.ItemNumber].LinkType?.ToLower())
+                    {
+                        case "screen":
+                            ScreenManager.ChangeScreen(
+                                menu.Items[menu.ItemNumber].ClassName,
+                                menu.Items[menu.ItemNumber].Link);
+                            break;
+                        case "menu":
+                            InTransition = true;
+                            menu.Transition(1.0f);
+                            foreach(MenuItem item in menu.Items)
+                            {
+                                item.Image.StoreEffects();
+                                item.Image.ActivateEffect("FadeEffect");
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                Transition(gameTime);
             }
 
-            if(Controller.ButtonPressed(
-                (Buttons)MenuControls.Instructions.Select)
-                && !InTransition)
-            {
-                switch(menu.Items[menu.ItemNumber].LinkType?.ToLower())
-                {
-                    case "screen":
-                        ScreenManager.ChangeScreen(
-                            menu.Items[menu.ItemNumber].ClassName,
-                            menu.Items[menu.ItemNumber].Link);
-                        break;
-                    case "menu":
-                        InTransition = true;
-                        menu.Transition(1.0f);
-                        foreach(MenuItem item in menu.Items)
-                        {
-                            item.Image.StoreEffects();
-                            item.Image.ActivateEffect("FadeEffect");
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-            Transition(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
