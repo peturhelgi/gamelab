@@ -5,18 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.GameObjects
-{
-    class Ground : GameObject
-    {
-        public Ground(Vector2 position, Vector2 spriteSize, string TextureString) {
-            Position = position;
-            Speed = new Vector2(0);
-            Mass = 1000;
-            SpriteSize = spriteSize;
-            Visible = true;
-            this.TextureString = TextureString;
-
+using Microsoft.Xna.Framework.Graphics;
+namespace Project.GameObjects {
+    public class Ground : GameObject {
+        public Ground() : base() {
+            this.Velocity = Vector2.Zero;
+            this.Mass = 1000;
+            this.Visible = true;
         }
     }
 }

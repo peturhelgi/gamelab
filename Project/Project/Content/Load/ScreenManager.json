@@ -1,0 +1,11 @@
+﻿{
+  "$type": "Project.Screens.ScreenManager, Project",
+  "Image": {
+    "Effects": "FadeEffect",
+    "Path": "ScreenManager/FadeImage",
+    "Scale": {
+      "X": 640,
+      "Y": 480
+    }
+  }
+}

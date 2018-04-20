@@ -14,11 +14,30 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin caveMusic.mp3
+#begin Sounds/caveMusic.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:caveMusic.mp3
+/build:Sounds/caveMusic.mp3
+
+#begin Fonts/Orbitron.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Orbitron.spritefont
+
+#begin ScreenManager/FadeImage.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:ScreenManager/FadeImage.png
 
 #begin Sprites/Backgrounds/Background1.jpg
 /importer:TextureImporter
@@ -44,6 +63,30 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Backgrounds/Background2.jpg
 
+#begin Sprites/Backgrounds/ExitSign.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Backgrounds/ExitSign.png
+
+#begin Sprites/Backgrounds/ExitSign_2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Backgrounds/ExitSign_2.png
+
 #begin Sprites/Miners/MinerHandsInPants.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -56,7 +99,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Miners/MinerHandsInPants.png
 
-#begin Sprites/Miners/MinerHandsOut.png
+#begin Sprites/Miners/MinerPickaxe.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -66,7 +109,31 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Miners/MinerHandsOut.png
+/build:Sprites/Miners/MinerPickaxe.png
+
+#begin Sprites/Miners/MinerRope.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Miners/MinerRope.png
+
+#begin Sprites/Misc/box.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Misc/box.png
 
 #begin Sprites/Rocks/BareRock1.png
 /importer:TextureImporter
@@ -212,12 +279,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Tools/Rope.png
 
-#begin samplelvl.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:samplelvl.json
-
-#begin Sprites/Backgrounds/ExitSign_2.png
+#begin Sprites/VisualAssets_PS/Background.psd
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -227,9 +289,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Backgrounds/ExitSign_2.png
+/build:Sprites/VisualAssets_PS/Background.psd
 
-#begin Sprites/Misc/box.png
+#begin Sprites/VisualAssets_PS/Ground.psd
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -239,9 +301,83 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Misc/box.png
+/build:Sprites/VisualAssets_PS/Ground.psd
+
+#begin Sprites/VisualAssets_PS/Miner.psd
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/VisualAssets_PS/Miner.psd
+
+#begin Sprites/VisualAssets_PS/Pickaxe.psd
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/VisualAssets_PS/Pickaxe.psd
+
+#begin Sprites/VisualAssets_PS/Rock.psd
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/VisualAssets_PS/Rock.psd
+
+#begin Sprites/VisualAssets_PS/Rope.psd
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/VisualAssets_PS/Rope.psd
+
 #begin more_platforms.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:more_platforms.json
+/copy:more_platforms.json
+
+#begin samplelvl.json
+/copy:samplelvl.json
+
+#begin Load/ScreenManager.json
+/copy:Load/ScreenManager.json
+
+#begin Load/SplashScreen.json
+/copy:Load/SplashScreen.json
+
+#begin Load/TitleMenu.json
+/copy:Load/TitleMenu.json
+
+#begin GamePlay/Levels/Level1.json
+/copy:GamePlay/Levels/Level1.json
+
+#begin Sprites/Screens/SplashScreen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Screens/SplashScreen.png
 

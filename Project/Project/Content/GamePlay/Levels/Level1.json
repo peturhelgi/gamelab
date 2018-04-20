@@ -1,0 +1,175 @@
+﻿{
+  "$type": "Project.Util.Level, Project",
+  "LevelNr": 0,
+  "PrevLvl": -1,
+  "NextLvl": 1,
+  "LevelName": "sample",
+  "Background": {
+    "Path": "Sprites/Backgrounds/Background1",
+    "FullScreen": true
+  },
+
+  "Objects": [
+    {
+      "$type": "Project.GameObjects.Miner, Project",
+      "Image": {
+        "Path": "Sprites/Miners/MinerPickaxe",
+        "pos": {
+          "x": 500,
+          "y": 0
+        },
+        "dim": {
+          "x": 119,
+          "y": 370
+        },
+        "Scale": {
+          "x": 1,
+          "y": 1
+        }
+      },
+      "m": 80,
+      "vel": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "$type": "Project.GameObjects.Rock, Project",
+      "Image": {
+        "Path": "Sprites/Rocks/BareRock5",
+        "dim": {
+          "x": 150,
+          "y": 107
+        },
+        "pos": {
+          "x": 881,
+          "y": 720
+        },
+        "Scale": {
+          "x": 1,
+          "y": 1
+        }
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 50
+    },
+    {
+      "$type": "Project.GameObjects.Rock, Project",
+      "Image": {
+        "Path": "Sprites/Rocks/BareRock1",
+        "dim": {
+          "x": 276,
+          "y": 175
+        },
+        "pos": {
+          "x": 1046,
+          "y": 650
+        }
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 20
+    },
+    {
+      "$type": "Project.GameObjects.Ground, Project",
+      "Image": {
+        "Path": "Sprites/Rocks/Ground1",
+        "dim": {
+          "x": 640,
+          "y": 318
+        },
+        "pos": {
+          "x": 900,
+          "y": 800
+        }
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000
+    },
+    {
+      "$type": "Project.GameObjects.Ground, Project",
+      "Image": {
+        "Path": "Sprites/Rocks/Ground2",
+        "dim": {
+          "x": 320,
+          "y": 109
+        },
+        "pos": {
+          "x": 450,
+          "y": 600
+        },
+        "vel": {
+          "x": 0,
+          "y": 0
+        }
+      },
+
+      "m": 1000
+    },
+    {
+      "$type": "Project.GameObjects.Ground, Project",
+      "Image": {
+        "Path": "Sprites/Rocks/Ground3",
+        "dim": {
+          "x": 640,
+          "y": 268
+        },
+        "pos": {
+          "x": -300,
+          "y": 800
+        }
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000
+    },
+    {
+      "$type": "Project.GameObjects.Ground, Project",
+      "Image": {
+        "Path": "Sprites/Rocks/Ground4",
+        "dim": {
+          "x": 320,
+          "y": 109
+        },
+        "pos": {
+          "x": 900,
+          "y": 450
+        }
+      },
+      "m": 1000,
+      "vel": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "$type": "Project.GameObjects.Rock, Project",
+      "Image": {
+        "Path": "Sprites/Rocks/SuspendedRock",
+        "dim": {
+          "x": 127.3,
+          "y": 69.15
+        },
+        "pos": {
+          "x": 250,
+          "y": 700
+        }
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000
+    }
+  ]
+}

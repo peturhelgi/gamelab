@@ -15,16 +15,6 @@ namespace Project.Util.Collision
             this.direction = direction;
         }
 
-        public bool Equals(Axis other)
-        {
-            if (this.direction == other.direction)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        public bool Equals(Axis other) => this.direction == other.direction;
     }
 }

@@ -1,0 +1,30 @@
+﻿{
+  "$type": "Project.Util.Menu, Project",
+  "Axis": "Y",
+  "Effects": "FadeEffect",
+  "Items": [
+    {
+      "Link": "Level1",
+      "LinkType": "PlayingScreen",
+      "LinkId": "Screen",
+      "Image": {
+        "Text": "New Game"
+      }
+    },
+    {
+      "Image": {
+        "Text": "Load Game"
+      }
+    },
+    {
+      "Image": {
+        "Text": "Options"
+      }
+    },
+    {
+      "Image": {
+        "Text": "Credits"
+      }
+    }
+  ]
+}

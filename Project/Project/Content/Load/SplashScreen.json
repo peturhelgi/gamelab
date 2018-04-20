@@ -1,0 +1,16 @@
+﻿{
+  "$type": "Project.Screens.SplashScreen, Project",
+  "Image": {
+    "Path": "Sprites/Screens/SplashScreen",
+    "Effects": "FadeEffect",
+    "IsActive": true,
+    "Alpha": 0.5,
+    "FadeEffect": {
+      "FadeSpeed": 1.0
+    }
+  },
+  "NextScreen": {
+    "Item1": "MenuScreen",
+    "Item2": "Content/Load/TitleMenu"
+  }
+}

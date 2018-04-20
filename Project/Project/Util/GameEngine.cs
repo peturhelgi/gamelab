@@ -1,51 +1,74 @@
-﻿using Project.GameObjects;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
-using System.Diagnostics;
-using Project.GameObjects.Miner;
+
+using Project.GameObjects;
 using Project.Util.Collision;
+
+using Microsoft.Xna.Framework;
 
 namespace Project.Util
 {
 
     class GameEngine
     {
+        public enum Action { walk_right, walk_left, jump, interact, collect };
+
         public GameState GameState;
-        public enum GameAction { walk_right, walk_left, jump, interact, collect };
         private CollisionDetector CollisionDetector;
+        private static GameEngine instance;
 
-        int[] CurrentMiner = {0,1};
+        int[] CurrentMiner = { 0, 1 };
         public static Vector2 GRAVITY = new Vector2(0, 1000);
-        public TimeSpan gameTime;
+        public TimeSpan gameTimeSpan;
 
-        public GameEngine(GameState gameState) {
+        public static GameEngine Instance
+        {
+            get
+            {
+                if(instance == null)
+                {
+                    instance = new GameEngine();
+                }
+                return instance;
+            }
+        }
+
+        public GameEngine()
+        {
+
+        }
+
+        public void Initialize(GameState gameState)
+        {
             GameState = gameState;
             CollisionDetector = new CollisionDetector();
         }
 
-       
-
-
-        public void HandleInput(int player, GameAction action, float value) {
+        public void HandleInput(int player, Action action, float value,
+                GameTime gameTime)
+        {
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
 
-            switch (action) {
-                case (GameAction.walk_right):
-                    CalculateAndSetNewPosition(miner, new Vector2(5, 0));
+            switch(action)
+            {
+                case (Action.walk_right):
+                    CalculateAndSetNewPosition(miner, new Vector2(5, 0),
+                        gameTime);
                     break;
 
-                case (GameAction.walk_left):
-                    CalculateAndSetNewPosition(miner, new Vector2(-5, 0));
+                case (Action.walk_left):
+                    CalculateAndSetNewPosition(miner, new Vector2(-5, 0),
+                        gameTime);
                     break;
-                case (GameAction.jump):
-                    TryToJump(miner, new Vector2(0,-800));
+                case (Action.jump):
+                    TryToJump(miner, new Vector2(0, -800));
                     break;
 
-                case (GameAction.interact):
+                case (Action.interact):
                     TryToInteract(miner);
                     break;
 
@@ -54,128 +77,150 @@ namespace Project.Util
             }
         }
 
-        public void Update() {
+        public void Update(GameTime gameTime)
+        {
 
             // TODO make this with all miners
 
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[0]);
-
-            // we only need to update this, if some time has passed since the last update
-            if (miner.lastUpdated != gameTime) {
-                CalculateAndSetNewPosition(miner, Vector2.Zero);
+            // What simon calls gameTime, I call gameTimeSpan.
+            // He implemented it using the TimeSpan gameTime
+            // we only need to update this, if some time has passed since the 
+            // last update.
+            if(miner.lastUpdated != gameTimeSpan)
+            {
+                CalculateAndSetNewPosition(miner, Vector2.Zero, gameTime);
             }
         }
 
-        void TryToInteract(GameObject obj) {
-            List<GameObject> collisions = CollisionDetector.FindCollisions(obj.BBox, GameState.Collectibles);
-            foreach (GameObject c in collisions) {
+        void TryToInteract(GameObject obj)
+        {
+            List<GameObject> collisions = CollisionDetector.FindCollisions(
+                obj.BBox, GameState.Collectibles);
+            foreach(GameObject c in collisions)
+            {
+                // TODO: interaction is not just a magic trick.
+                // Things don't *only* disappear
                 c.Visible = false;
-                Debug.WriteLine(c.TextureString);
+                Debug.WriteLine(c.Image.Path);
                 Debug.WriteLine(c.Position);
             }
         }
-        
 
-        void CalculateAndSetNewPosition(Miner actor, Vector2 direction)
+        void CalculateAndSetNewPosition(Miner actor, Vector2 direction,
+            GameTime gameTime)
         {
 
-            // 1. calulate position without any obstacles
-            if (actor.Falling)
-            {
-                actor.Speed += GRAVITY * (float)(gameTime -actor.lastUpdated).TotalSeconds;
-            }
-            direction += actor.Speed * (float)(gameTime - actor.lastUpdated).TotalSeconds;
+            gameTimeSpan = gameTime.TotalGameTime;
 
+            // 1. calulate position without any obstacles
+            if(actor.Falling)
+            {
+                actor.Velocity += GRAVITY
+                    * (float)(gameTimeSpan - actor.lastUpdated).TotalSeconds;
+            }
+            direction += actor.Velocity 
+                * (float)(gameTimeSpan - actor.lastUpdated).TotalSeconds;
 
             // 2. check for collisions in the X-axis, the Y-axis (falling and jumping against something) and the intersection of the movement
-            AxisAllignedBoundingBox xBox, yBox;
+            AxisAlignedBoundingBox xBox, yBox;
 
-            if (direction.X > 0) // we are moving right
+
+            // What if direction.X == 0?
+            if(direction.X > 0) // we are moving right
             {
-                xBox = new AxisAllignedBoundingBox(
-                    new Vector2(actor.BBox.Max.X, actor.BBox.Min.Y), 
+                xBox = new AxisAlignedBoundingBox(
+                    new Vector2(actor.BBox.Max.X, actor.BBox.Min.Y),
                     new Vector2(actor.BBox.Max.X + direction.X, actor.BBox.Max.Y)
                     );
             }
             else
             {
-                xBox = new AxisAllignedBoundingBox(
+                xBox = new AxisAlignedBoundingBox(
                     new Vector2(actor.BBox.Min.X + direction.X, actor.BBox.Min.Y),
                     new Vector2(actor.BBox.Min.X, actor.BBox.Max.Y)
                     );
             }
 
-            
-            if (direction.Y > 0) // we are moving downwards
+
+            // What if direction.Y == 0?
+            if(direction.Y > 0) // we are moving downwards
             {
-                yBox = new AxisAllignedBoundingBox(
+                yBox = new AxisAlignedBoundingBox(
                     new Vector2(actor.BBox.Min.X, actor.BBox.Max.Y),
                     new Vector2(actor.BBox.Max.X, actor.BBox.Max.Y + direction.Y)
                     );
             }
             else
             {
-                yBox = new AxisAllignedBoundingBox(
+                yBox = new AxisAlignedBoundingBox(
                    new Vector2(actor.BBox.Min.X, actor.BBox.Min.Y + direction.Y),
                    new Vector2(actor.BBox.Max.X, actor.BBox.Min.Y)
                    );
             }
 
-            
+
             // 3. check, if there are any collisions in the X-axis and correct position
             List<GameObject> collisions = CollisionDetector.FindCollisions(xBox, GameState.Solids);
-            if (collisions.Count > 0) {
+            if(collisions.Count > 0)
+            {
                 Debug.WriteLine("collided with x-axis");
                 direction.X = 0;
             }
 
 
             // We only need to check things in y-axis (including intersection), if we are actually moving in it
-            if (actor.Falling)
+            if(actor.Falling)
             {
                 collisions = CollisionDetector.FindCollisions(yBox, GameState.Solids);
-                if (collisions.Count > 0)
+                if(collisions.Count > 0)
                 {
                     Debug.WriteLine("collided with y-axis");
 
                     float lowestPoint = float.MaxValue;
-                    foreach (GameObject collision in collisions)
+                    foreach(GameObject collision in collisions)
                     {
+                        // Shouldn't this be the max of those values since the
+                        // y-axis points downwards?
                         lowestPoint = Math.Min(lowestPoint, collision.BBox.Min.Y);
                     }
 
-                    actor.Speed = Vector2.Zero;
-                    if (direction.Y > 0) // hitting floor
+                    actor.Velocity = Vector2.Zero;
+                    if(direction.Y > 0) // hitting floor
                     {
-                        direction.Y = (lowestPoint - actor.BBox.Max.Y)-0.1f;
+                        direction.Y = (lowestPoint - actor.BBox.Max.Y) - 0.1f;
                         actor.Falling = false;
                     }
 
                 }
-                
+
             }
             actor.Position += direction;
 
 
-            if (!actor.Falling) {
+            if(!actor.Falling)
+            {
                 // Next, we need to check if we are falling, i.e. walking over an edge to store it to the character, to calculate the difference in height for the next iteration
-                AxisAllignedBoundingBox tempBox = new AxisAllignedBoundingBox(
-                    new Vector2(actor.BBox.Min.X, actor.BBox.Max.Y), 
+                AxisAlignedBoundingBox tempBox = new AxisAlignedBoundingBox(
+                    new Vector2(actor.BBox.Min.X, actor.BBox.Max.Y),
                     new Vector2(actor.BBox.Max.X, actor.BBox.Max.Y + 0.5f)
                     );
 
-                
-                
                 collisions = CollisionDetector.FindCollisions(tempBox, GameState.Solids);
-                if (collisions.Count == 0)
+                if(collisions.Count == 0)
+                {
                     actor.Falling = true;
+                }
             }
-            actor.lastUpdated = gameTime;
+            actor.lastUpdated = gameTimeSpan;
+
+            actor.Update(gameTime);
         }
 
-        void TryToJump(Miner miner, Vector2 speed) 
+        void TryToJump(Miner miner, Vector2 speed)
         {
-            if (!miner.Falling) {
+            if(!miner.Falling)
+            {
                 miner.Jump(speed);
                 miner.Falling = true;
             }

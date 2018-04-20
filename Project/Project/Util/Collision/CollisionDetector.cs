@@ -9,16 +9,15 @@ using System.Threading.Tasks;
 
 namespace Project.Util
 {
-
-    class CollisionDetector
+    public class CollisionDetector
     {
-
-        public List<GameObject> FindCollisions(PolygonalCollisionObject collidable, List<GameObject> objects)
+        public List<GameObject> FindCollisions(
+            PolygonalCollisionObject collidable, List<GameObject> objects)
         {
             List<GameObject> results = new List<GameObject>();
-            foreach (GameObject obj in objects)
+            foreach(GameObject obj in objects)
             {
-                if (collidable.Intersects(obj.BBox))
+                if(collidable.Intersects(obj.BBox))
                 {
                     results.Add(obj);
                 }

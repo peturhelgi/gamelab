@@ -1,55 +1,51 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+
 using Project.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Input;
 
-namespace Project.GameObjects.Miner
-{
+namespace Project.GameObjects {
 
-    enum Gait { stop, crawl, walk, run, jump};
+    enum Gait { stop, crawl, walk, run, jump };
     enum Stance { stand, jump, crouch, lie };
-    class Miner : GameObject
+    public class Miner : GameObject
     {
+        public TimeSpan lastUpdated;
+
         Tool tool;
         Gait Gait;
         Stance Stance;
-        public TimeSpan lastUpdated;
-        public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
-        {
-            Position = position;
-            Speed    = speed;
-            Mass     = mass;
-            SpriteSize = spriteSize;
-            Visible  = true;
-            Gait     = Gait.walk;
-            Stance   = Stance.jump;
-            tool = new Pickaxe();
-            TextureString = textureString;
 
+        public Miner() : base() {
+        /*
+            // Old variables. Make compatible with game engine
+            this.SpriteSize = spriteSize;
+            this.Visible  = true;
+            this.TextureString = textureString;           
+        */
+            this.Gait     = Gait.walk;
+            this.Stance   = Stance.stand;
             lastUpdated = new TimeSpan();
-
+            this.tool = new Pickaxe();
         }
 
         /// <summary>
         /// Makes the miner jump if possible
         /// </summary>
-        /// <returns>True if 1==1</returns>
         public bool Jump(Vector2 speed) {
+            //TODO: make compatible with current version
             this.Stance = Stance.jump;
             this.Gait = Gait.jump;
             // TODO: add jump logic
-            this.Speed = speed;
+
+            this.Velocity = speed;
 
             return true;
         }
-        public bool IsAirborne()
-        {
-            return this.Stance == Stance.jump;
-        }
-
 
         /// <summary>
         /// Makes the miner crouch if possible
@@ -63,14 +59,18 @@ namespace Project.GameObjects.Miner
             return true;
         }
 
-        public bool IsCrouching()
-        {
-            return this.Stance == Stance.crouch;
+        /// <summary>
+        /// Makes the miner run if possible
+        /// </summary>
+        /// <returns>true iff 1==1</returns>
+        public bool Run() {
+            this.Stance = Stance.stand;
+            this.Gait = Gait.run;
+            // TODO: Add some running logic
+
+            return true;
         }
 
-        public bool IsCrawling() {
-            return this.Gait == Gait.crawl;
-        }
         /// <summary>
         /// Makes the miner walk if possible
         /// </summary>
@@ -87,18 +87,9 @@ namespace Project.GameObjects.Miner
         /// Makes the miner stand up if possible
         /// </summary>
         /// <returns>true iff 1==1</returns>
-        public bool StandUp()
-        {
+        public bool StandUp() {
             this.Stance = Stance.stand;
             return true;
-        }
-
-        public bool IsStanding()
-        {
-            return this.Stance == Stance.stand;
-        }
-        public bool IsWalking() {
-            return this.Gait == Gait.walk;
         }
 
         public bool LieDown() {
@@ -106,70 +97,23 @@ namespace Project.GameObjects.Miner
             this.Gait = Gait.stop;
 
             return true;
-        }              
-
-        public bool IsLying()
-        {
-            return this.Stance == Stance.lie;
         }
 
-        /// <summary>
-        /// Makes the miner run if possible
-        /// </summary>
-        /// <returns>true iff 1==1</returns>
-        public bool Run() {
-            this.Stance = Stance.stand;
-            this.Gait = Gait.run;
-            // TODO: Add some running logic
-
-            return true;
-        }
-
-        public bool IsRunning() {
-            return this.Gait == Gait.run;
-        }
         public bool Halt() {
-            this.Speed = new Vector2(0, 0);
+            this.Velocity = Vector2.Zero;
             this.Gait = Gait.stop;
             this.Stance = Stance.stand;
             return true;
         }
 
-        public bool IsStill() {
-            return this.Gait == Gait.stop;
-        }
-
-        /// <summary>
-        /// Updates the speed if the miner if possible.
-        /// </summary>
-        /// <param name="direction">Direction in which to move the miner</param>
-        /// <returns>True iff 1==1</returns>
-        public bool Move(Vector2 dv) {
-            //TODO: add move logic, the one here is just an example
-            switch (this.Gait) {
-                case Gait.crawl:
-                    this.Speed = dv/2; // for example, there could be some more logic here using our physics
-                    break;
-
-                case Gait.walk:
-                    this.Speed = dv;   // for example, there could be some more logic here using our physics
-                    break;
-
-                case Gait.run:
-                    this.Speed = 2*dv; // for example, there could be some more logic here using our physics
-                    break;
-
-                default:
-                    // Nothing happens yet
-                    this.Speed = dv;
-                    break;
-            }
-
-            return true;
-        }
-
-       
-
+        public bool IsAirborne() => this.Stance == Stance.jump;
+        public bool IsStanding() => this.Stance == Stance.stand;
+        public bool IsCrouching() => this.Stance == Stance.crouch;
+        public bool IsLying() => this.Stance == Stance.lie;
+        public bool IsStill() => this.Gait == Gait.stop;
+        public bool IsCrawling() => this.Gait == Gait.crawl;
+        public bool IsWalking() => this.Gait == Gait.walk;
+        public bool IsRunning() => this.Gait == Gait.run;
         /// <summary>
         /// Uses the tool that the miner currenty has
         /// </summary>
@@ -177,6 +121,30 @@ namespace Project.GameObjects.Miner
         public bool UseTool(List<GameObject> gameObjects) {
             this.Stance = Stance.stand;
             tool.Use(this, gameObjects);
+
+            return true;
+        }
+        /// <summary>
+        /// Updates the speed of the miner.
+        /// </summary>
+        /// <param name="direction">Direction in which to move the miner</param>
+        /// <returns>True iff 1==1</returns>
+        public bool Move(Vector2 dv) {
+            //TODO: Make compatible with game engine
+            switch(this.Gait) {
+                case Gait.crawl:
+                    break;
+
+                case Gait.walk:
+                    break;
+
+                case Gait.run:
+                    break;
+
+                default:
+
+                    break;
+            }
 
             return true;
         }

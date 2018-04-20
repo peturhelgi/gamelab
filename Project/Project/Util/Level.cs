@@ -1,47 +1,49 @@
-﻿using Microsoft.Xna.Framework;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
-namespace Project.Util
-{
-    class Level
-    {
-        public int levelnr;
-        public string levelname;
-        public int prevlvl;
-        public string prevlvlname;
-        public int nextlvl;
-        public string nextlvlname;
-        public string background;
+using Project.GameObjects;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 
-        public List<Obj> objects;
-    }
+namespace Project.Util {
+    public class Level {
 
+        public int PrevLvl;
+        public int LevelNr;
+        public int NextLvl;
+        public string PrevLvlName;
+        public string LevelName;
+        public string NextLvlName;
+        public Image Background;
+        public List<GameObject> Objects;
 
+        public Level() { }
 
-    class Obj
-    {
+        public void LoadContent() {
 
-        [JsonProperty("dim")]
-        public Vector2 SpriteSize;
+            Background.LoadContent();
+            foreach(GameObject obj in Objects) {
+                obj.LoadContent();
+            }            
+        }
 
-        [JsonProperty("pos")]
-        public Vector2 Position;
+        public void UnloadContent() {
+            Background.UnloadContent();
+            foreach(GameObject obj in Objects) {
+                obj.UnloadContent();
+            }
+        }
 
-        [JsonProperty("vel")]
-        public Vector2 Velocity;
-
-        [JsonProperty("m")]
-        public float Mass;
-
-        [JsonProperty("type")]
-        public string Type;
-
-        [JsonProperty("texture")]
-        public string Texture;
+        public void Draw(SpriteBatch spriteBatch, string drawType) {
+            Background.Draw(spriteBatch);
+            //TODO: Consider if this is best practice
+            foreach(GameObject obj in Objects) {
+                obj.Draw(spriteBatch);
+            }
+        }
     }
 }
