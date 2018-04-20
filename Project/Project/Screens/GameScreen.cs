@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Project.Util;
 using Project.Controls;
+using Project.Render;
 
 
 namespace Project.Screens {
@@ -19,11 +20,13 @@ namespace Project.Screens {
         public string Path;
         protected GameController controller;
         protected ScreenManager ScreenManager;
+        protected Renderer Renderer;
 
         public GameScreen() {
             Type = this.GetType();
             Path = "Content/Load/"
                 + Type.ToString().Replace("Project.Screens.", "") + ".json";
+            Renderer = new Renderer();
         }
 
         public void Initialize(ScreenManager screenManager)
@@ -47,6 +50,7 @@ namespace Project.Screens {
             controller.HandleUpdate(gameTime);
         }
 
+        //TODO: Refactor
         public virtual void Draw(SpriteBatch spriteBatch) { }
     }
 }

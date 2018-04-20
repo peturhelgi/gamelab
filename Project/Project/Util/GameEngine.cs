@@ -83,8 +83,7 @@ namespace Project.Util
                 obj.BBox, GameState.Collectibles);
             foreach(GameObject c in collisions)
             {
-                // TODO: interaction is not just a magic trick.
-                // Things don't *only* disappear
+                // TODO: interaction should probably be more then changing the visiblity
                 c.Visible = false;
                 Debug.WriteLine(c.Image.Path);
                 Debug.WriteLine(c.Position);

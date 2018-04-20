@@ -22,9 +22,11 @@ namespace Project.Util {
 
         public int ItemNumber => itemNumber;
 
-        public string ID {
-            get { return id; }
-            set {
+        public string ID
+        {
+            get => id;
+            set
+            {
                 id = value;
                 OnMenuChange(this, null);
             }

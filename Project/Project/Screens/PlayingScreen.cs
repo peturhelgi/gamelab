@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework;
 using Project.GameObjects;
 using Project.Controls;
+using Project.Render;
 
 
 namespace Project.Screens {
@@ -24,6 +25,7 @@ namespace Project.Screens {
         public PlayingScreen(string path) {
             this.Path = path;
             controller = new PlayingControls(new Camera(0.8f, Vector2.Zero));
+            Renderer = new GameRenderer();
         }
 
         public override void LoadContent() {
@@ -39,6 +41,7 @@ namespace Project.Screens {
             GameEngine = new GameEngine();
             GameEngine.Initialize(state);
             controller.Initialize(GameEngine);
+            Renderer.Initialize(ref GameEngine.GameState, ref controller.Camera);
         }
 
         public override void UnloadContent() {
