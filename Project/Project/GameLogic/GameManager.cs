@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Project.GameLogic.GameObjects;
+using Project.GameLogic.Renderer;
 using Project.LevelManager;
 using System;
 
@@ -16,22 +17,14 @@ namespace Project.GameLogic
         GraphicsDeviceManager _graphics;
         GraphicsDevice _graphicsDevice;
         ContentManager _content;
-
-
-        // TODO remove these
-        Texture2D _background;
-        Texture2D _exitSign;
-        Texture2D _debugBox;
-
-
+        GameRenderer _renderer;
+        
         public GameManager(ContentManager content, GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics) {
             _content = content;
             _graphicsDevice = graphicsDevice;
             _graphics = graphics;
             _mapLoader = new MapLoader(content);
-
         }
-      
 
         public void LoadLevel(String path) {
             if (_controller != null)
@@ -44,15 +37,9 @@ namespace Project.GameLogic
 
         void LoadContent()
         {
-
-
             _mapLoader.LoadMapContent(_controller.GameEngine.GameState);
-
-            // TODO remove these
-            _background = _mapLoader.getBackground();
-            _exitSign = _content.Load<Texture2D>("Sprites/Backgrounds/ExitSign_2");
-            _debugBox = _content.Load<Texture2D>("Sprites/Misc/box");
-
+            // The render instance is create per level: Like this we don't need to worry about resetting global variables in the renderer (e.g. lightning)
+            _renderer = new GameRenderer(_graphicsDevice, _controller.GameEngine.GameState, _content);
         }
 
         //TODO remove public
@@ -70,52 +57,7 @@ namespace Project.GameLogic
 
         public void Draw(GameTime gameTime, int width, int height)
         {
-            _graphicsDevice.Clear(Color.White);
-
-            // TODO: integrate the Debug-View into the Renderer and the GameController
-            bool DebugView = Keyboard.GetState().IsKeyDown(Keys.P);
-            if (DebugView)
-            {
-                //To view the bounding boxes
-                _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, null, null, null, null, _controller.Camera.view);
-            }
-            else
-            {
-                _spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, _controller.Camera.view);
-            }
-
-
-            // TODO move to the MapLoader/GameState 
-            _spriteBatch.Draw(_background, new Rectangle(0, 0, width, height), Color.White);
-            _spriteBatch.Draw(_background, new Rectangle(0, 0, width * 3 / 2, height * 3 / 2), Color.White);
-            _spriteBatch.Draw(_exitSign, new Rectangle(1430, 300, _exitSign.Width / 5, _exitSign.Height / 5), Color.White);
-
-
-            // TODO move to Renderer
-            RasterizerState state = new RasterizerState
-            {
-                FillMode = FillMode.WireFrame
-            };
-
-            _spriteBatch.GraphicsDevice.RasterizerState = state;
-
-            foreach (GameObject obj in _controller.GameEngine.GameState.GetAll())
-            {
-                if (obj.Visible)
-                {
-                    if (DebugView)
-                    {
-                        _spriteBatch.Draw(_debugBox, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);
-                    }
-                    else
-                    {
-                        _spriteBatch.Draw(obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);
-                    }
-                }
-            }
-
-            _spriteBatch.End();
-
+            _renderer.Draw(gameTime, width, height, Keyboard.GetState().IsKeyDown(Keys.P) ? GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, _controller.Camera.view); 
         }
 
     }
