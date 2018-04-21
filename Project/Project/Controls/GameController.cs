@@ -21,14 +21,14 @@ namespace Project.Controls {
             CurrentState = GamePad.GetState(0);
         }
 
+        internal virtual void Initialize(ref Menu menu) { }
+
         private void HandleMouse(MouseState ms) {
             if(ms.LeftButton == ButtonState.Pressed) {
                 Debug.Write(ms.Position.X + ", ");
                 Debug.WriteLine(ms.Position.Y);
             }
         }
-
-        internal virtual void Initialize(ref Menu menu) { }
         protected virtual void HandleKeyboard(KeyboardState state, GameTime gameTime) { }
         protected virtual void HandleGamePad(GamePadState gs, GameTime gameTime) { }
 
