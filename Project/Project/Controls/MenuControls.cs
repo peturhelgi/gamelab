@@ -49,38 +49,13 @@ namespace Project.Controls
 
         protected override void HandleKeyboard(KeyboardState state, GameTime gameTime)
         {
-            // START Handle GameAction
-            if(state.IsKeyDown(Keys.Right))
-            {
-                GameEngine.Instance.HandleInput(
-                    0, GameEngine.GameAction.walk_right, 0, gameTime);
-            }
-            if(state.IsKeyDown(Keys.Left))
-            {
-                GameEngine.Instance.HandleInput(0, GameEngine.GameAction.walk_left, 0, gameTime);
-            }
-            if(state.IsKeyDown(Keys.I))
-            {
-                GameEngine.Instance.HandleInput(0, GameEngine.GameAction.interact, 0, gameTime);
-            }
-            if(state.IsKeyDown(Keys.Space))
-            {
-                GameEngine.Instance.HandleInput(0, GameEngine.GameAction.jump, 0, gameTime);
-            }
 
-            // END Handle GameAction
         }
 
 
         protected override void HandleGamePad(GamePadState gs, GameTime gameTime)
         {
 
-            if(CurrentState.IsButtonDown((Buttons)Instructions.Select))
-            {
-                // TODO: Add a changed GameState, to escape the game
-                //Exit();
-                return;
-            }
         }
     }
 }
