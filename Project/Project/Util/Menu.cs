@@ -84,7 +84,11 @@ namespace Project.Util {
         /// <summary>
         /// Decreases ItemNumber by one, in a circular fashin
         /// </summary>
-        public void PreviousItem() => itemNumber = (--itemNumber) % Items.Count;
+        public void PreviousItem()
+        {
+            itemNumber = --itemNumber;
+            if (itemNumber < 0) itemNumber = Items.Count-1;
+        }
 
         public Menu() {
             id = String.Empty;
@@ -111,24 +115,8 @@ namespace Project.Util {
             }
         }
 
-        public void Update(GameTime gameTime) {
-            if(IsHorizontal()) {
-                if(InputManager.Instance.KeyPressed(Keys.Right)) {
-                    ++itemNumber;
-                } else if(InputManager.Instance.KeyPressed(Keys.Left)) {
-                    --itemNumber;
-                }
-            } else if(IsVertical()) {
-                if(InputManager.Instance.KeyPressed(Keys.Down)) {
-                    ++itemNumber;
-                } else if(InputManager.Instance.KeyPressed(Keys.Up)) {
-                    --itemNumber;
-                }
-            }
-
-            if(itemNumber < 0) { itemNumber = Items.Count - 1; }
-            if(itemNumber >= Items.Count) { itemNumber = 0; }
-
+        public void Update(GameTime gameTime)
+        {
             for(int i = 0; i < Items.Count; ++i) {
                 if(i == itemNumber) {
                     Items[i].Image.IsActive = true;

@@ -43,7 +43,9 @@ namespace Project.Util {
         public bool KeyPressed(params Keys[] keys) {
             foreach(Keys key in keys) {
                 if(currenKeyState.IsKeyDown(key)
-                    && prevKeyState.IsKeyUp(key)) {
+                    && prevKeyState.IsKeyUp(key))
+                {
+                    prevKeyState = currenKeyState;
                     return true;
                 }
             }

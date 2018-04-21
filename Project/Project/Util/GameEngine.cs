@@ -136,7 +136,7 @@ namespace Project.Util {
 
             List<GameObject> collisions = CollisionDetector.FindCollisions(xBox, GameState.Solids);
             if(collisions.Count > 0) {
-                Debug.WriteLine("collided with x-axis");
+                // Debug.WriteLine("collided with x-axis");
                 direction.X = 0;
             }
 
@@ -147,7 +147,7 @@ namespace Project.Util {
             if(actor.Falling) {
                     collisions = CollisionDetector.FindCollisions(yBox, GameState.Solids);
                 if(collisions.Count > 0) {
-                    Debug.WriteLine("collided with y-axis");
+                    // Debug.WriteLine("collided with y-axis");
 
                     float lowestPoint = float.MaxValue;
                     foreach(GameObject collision in collisions) {
@@ -165,7 +165,7 @@ namespace Project.Util {
                 } else {
                     collisions = CollisionDetector.FindCollisions(iBox, GameState.Solids);
                     if(collisions.Count > 0) {
-                        Debug.WriteLine("collided with intersection");
+                        // Debug.WriteLine("collided with intersection");
 
                         direction = Vector2.Zero;
                         actor.Velocity = Vector2.Zero;
