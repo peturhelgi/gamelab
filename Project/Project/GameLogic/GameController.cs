@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Project.Util
+namespace Project.GameLogic
 {
     class GameController
     {

@@ -1,13 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using Project.GameObjects;
-using Project.Util.Collision;
-using System;
+﻿using Project.GameLogic.Collision;
+using Project.GameLogic.GameObjects;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Project.Util
+namespace Project.GameLogic
 {
 
     class CollisionDetector

@@ -1,9 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Project.Util.Collision;
+using Project.GameLogic.Collision;
 
-namespace Project.GameObjects
+namespace Project.GameLogic.GameObjects
 {
     interface IGameObject
     {

@@ -1,17 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Project.GameObjects;
-using Project.GameObjects.Miner;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Project.GameLogic;
+using Project.GameLogic.GameObjects;
+using Project.GameLogic.GameObjects.Miner;
 
-namespace Project.Util
+namespace Project.LevelManager
 {
     class MapLoader
     {

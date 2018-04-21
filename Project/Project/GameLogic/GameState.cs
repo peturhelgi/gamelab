@@ -1,12 +1,14 @@
-﻿using Project.GameObjects;
-using Project.GameObjects.Miner;
+﻿
+using Project.GameLogic.GameObjects;
+using Project.GameLogic.GameObjects.Miner;
+using Project.LevelManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.Util
+namespace Project.GameLogic
 {
     class GameState : Level
     {

@@ -1,15 +1,13 @@
-﻿using Project.GameObjects;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using System.Text;
-using System.Threading.Tasks;
 using System.Diagnostics;
-using Project.GameObjects.Miner;
-using Project.Util.Collision;
+using Project.GameLogic.GameObjects.Miner;
+using Project.GameLogic.GameObjects;
+using Project.GameLogic.Collision;
 
-namespace Project.Util
+namespace Project.GameLogic
 {
 
     class GameEngine

@@ -1,12 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Project.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Project.GameObjects.Miner
+namespace Project.GameLogic.GameObjects.Miner
 {
 
     enum Gait { stop, crawl, walk, run, jump};

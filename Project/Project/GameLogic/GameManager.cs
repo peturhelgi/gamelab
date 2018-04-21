@@ -2,11 +2,11 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Project.GameObjects;
-using Project.Util;
+using Project.GameLogic.GameObjects;
+using Project.LevelManager;
 using System;
 
-namespace Project.Manager
+namespace Project.GameLogic
 {
     class GameManager
     {
@@ -24,12 +24,8 @@ namespace Project.Manager
         Texture2D _debugBox;
 
 
-        //TODO move to Renderer
-        SpriteBatch _spriteBatch;
-
         public GameManager(ContentManager content, GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics) {
             _content = content;
-
             _graphicsDevice = graphicsDevice;
             _graphics = graphics;
             _mapLoader = new MapLoader(content);
@@ -48,7 +44,6 @@ namespace Project.Manager
 
         void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(_graphicsDevice);
 
 
             _mapLoader.LoadMapContent(_controller.GameEngine.GameState);

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.Util.Collision
+namespace Project.GameLogic.Collision
 {
     public abstract class PolygonalCollisionObject
     {

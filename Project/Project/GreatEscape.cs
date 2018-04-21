@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Project.Manager;
+using Project.GameLogic;
 using Project.Menu;
 
 namespace Project
