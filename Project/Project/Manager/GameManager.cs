@@ -10,17 +10,19 @@ namespace Project.Manager
 {
     class GameManager
     {
-        GraphicsDeviceManager _graphics;
         GameController _controller;
         MapLoader _mapLoader;
+
+        GraphicsDeviceManager _graphics;
         GraphicsDevice _graphicsDevice;
+        ContentManager _content;
 
 
         // TODO remove these
         Texture2D _background;
         Texture2D _exitSign;
         Texture2D _debugBox;
-        ContentManager _content;
+
 
         //TODO move to Renderer
         SpriteBatch _spriteBatch;
@@ -33,14 +35,19 @@ namespace Project.Manager
             _mapLoader = new MapLoader(content);
 
         }
+      
 
-        public bool LoadLevel(String path) {
+        public void LoadLevel(String path) {
+            if (_controller != null)
+            {
+                UnloadContent();
+            }
             _controller = new GameController(new GameEngine(_mapLoader.InitMap(path)), new Camera(0.8f, Vector2.Zero));
-
-            return false;
+            LoadContent();
         }
 
-        public void LoadContent() {
+        void LoadContent()
+        {
             _spriteBatch = new SpriteBatch(_graphicsDevice);
 
 
@@ -52,14 +59,21 @@ namespace Project.Manager
             _debugBox = _content.Load<Texture2D>("Sprites/Misc/box");
 
         }
-        public void UnloadContent() {
-            _mapLoader.UnloadMapContent(_controller.GameEngine.GameState);
+
+        //TODO remove public
+        public void UnloadContent()
+        {
+            //If we run into memory problems at some time, we will need to Dispose the textures loaded when unloading the game. But this will unlikely happen, as the content loader uses a dictionary to only load textures once. Remark: Dispose per texture doesn't work! One would have to use a seperate ContentManager (as there is global content which will never be unloaded) and unload the complete ContentManager
+            //_mapLoader.UnloadMapContent(_controller.GameEngine.GameState);
+            _controller = null;
         }
+
         public void Update(GameTime gameTime)
         {
             _controller.HandleUpdate(gameTime);
         }
-        public void Draw(GameTime gameTime)
+
+        public void Draw(GameTime gameTime, int width, int height)
         {
             _graphicsDevice.Clear(Color.White);
 
@@ -77,8 +91,8 @@ namespace Project.Manager
 
 
             // TODO move to the MapLoader/GameState 
-            _spriteBatch.Draw(_background, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight), Color.White);
-            _spriteBatch.Draw(_background, new Rectangle(0, 0, _graphics.PreferredBackBufferWidth * 3 / 2, _graphics.PreferredBackBufferHeight * 3 / 2), Color.White);
+            _spriteBatch.Draw(_background, new Rectangle(0, 0, width, height), Color.White);
+            _spriteBatch.Draw(_background, new Rectangle(0, 0, width * 3 / 2, height * 3 / 2), Color.White);
             _spriteBatch.Draw(_exitSign, new Rectangle(1430, 300, _exitSign.Width / 5, _exitSign.Height / 5), Color.White);
 
 

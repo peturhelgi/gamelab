@@ -19,19 +19,23 @@ namespace Project.Util
         public ContentManager ContentManager;
 
 
-        public MapLoader(ContentManager contentManager) {
+        public MapLoader(ContentManager contentManager)
+        {
             ContentManager = contentManager;
         }
 
-        public GameState InitMap(string levelName) {
+        public GameState InitMap(string levelName)
+        {
             GameState gameState = new GameState();
 
             string text = ContentManager.Load<string>(levelName);
             Level level = JsonConvert.DeserializeObject<Level>(text);
 
-            foreach (Obj obj in level.objects) {
+            foreach (Obj obj in level.objects)
+            {
 
-                switch (obj.Type) {
+                switch (obj.Type)
+                {
                     case "miner":
                         Miner miner = new Miner(obj.Position, obj.SpriteSize, obj.Velocity, obj.Mass, obj.Texture);
                         gameState.AddActor(miner);
@@ -48,7 +52,7 @@ namespace Project.Util
                         break;
 
                     default:
-                        Console.WriteLine("Object of Type "+obj.Type+" not implemented.");
+                        Console.WriteLine("Object of Type " + obj.Type + " not implemented.");
                         break;
                 }
             }
@@ -56,22 +60,19 @@ namespace Project.Util
             return gameState;
         }
 
-        public void UnloadMapContent(GameState gameState)
+        public void LoadMapContent(GameState gameState)
         {
-                ContentManager.Unload();
-        }
 
-            public void LoadMapContent(GameState gameState) {
-           
             background = ContentManager.Load<Texture2D>("Sprites/Backgrounds/Background1");
             // TODO possibly add a hashed Map to only load every Texture once
-            foreach (GameObject obj in gameState.GetAll()) {
+            foreach (GameObject obj in gameState.GetAll())
+            {
                 obj.Texture = ContentManager.Load<Texture2D>(obj.TextureString);
             }
-
         }
 
-        public Texture2D getBackground() {
+        public Texture2D getBackground()
+        {
             return background;
         }
     }

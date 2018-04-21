@@ -212,11 +212,6 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Tools/Rope.png
 
-#begin samplelvl.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:samplelvl.json
-
 #begin Sprites/Backgrounds/ExitSign_2.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -240,6 +235,19 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Misc/box.png
+
+#begin Fonts/Orbitron.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Orbitron.spritefont
+
+#begin samplelvl.json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:samplelvl.json
+
 #begin more_platforms.json
 /importer:ContentImporter1
 /processor:ContentProcessor1

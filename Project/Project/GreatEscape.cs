@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Project.Manager;
+using Project.Menu;
 
 namespace Project
 {
@@ -8,7 +9,8 @@ namespace Project
     /// </summary>
     public class GreatEscape : Game
     {
-        GameManager _manager;
+        GameManager _gameManager;
+        MenuManager _menu;
         GraphicsDeviceManager _graphics;
 
 
@@ -27,8 +29,8 @@ namespace Project
         {
             Content.RootDirectory = "Content";
 
-            _manager = new GameManager(Content, GraphicsDevice, _graphics);
-            _manager.LoadLevel("more_platforms");
+            _gameManager = new GameManager(Content, GraphicsDevice, _graphics);
+            _menu = new MenuManager(Content, GraphicsDevice, _graphics, _gameManager);
             
             IsMouseVisible = true;
             base.Initialize();
@@ -36,23 +38,23 @@ namespace Project
 
         protected override void LoadContent()
         {
-            _manager.LoadContent();
+            _menu.LoadContent();
         }
 
         protected override void UnloadContent()
         {
-            _manager.UnloadContent();
+            Content.Unload();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            _manager.Update(gameTime);
+            _menu.Update(gameTime);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            _manager.Draw(gameTime);
+            _menu.Draw(gameTime, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
             base.Draw(gameTime);
         }
     }

@@ -112,6 +112,7 @@
     </Compile>
     <Compile Include="GreatEscape.cs" />
     <Compile Include="Manager\GameManager.cs" />
+    <Compile Include="Menu\MenuManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\Camera.cs" />
     <Compile Include="Util\Collision\AxisAllignedBoundingBox.cs" />
@@ -125,7 +126,10 @@
     <Compile Include="Util\MapLoader.cs" />
   </ItemGroup>
   <ItemGroup>
-    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <MonoGameContentReference Include="Content\Content.mgcb">
+      <SubType>Designer</SubType>
+    </MonoGameContentReference>
+    <None Include="Content\Fonts\Orbitron.spritefont" />
     <None Include="Content\more_platforms.json" />
     <None Include="Content\samplelvl.json" />
   </ItemGroup>
@@ -133,10 +137,35 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include="Content\Sprites\VisualAssets_PS\Background.psd" />
+    <None Include="Content\Sprites\VisualAssets_PS\Ground.psd" />
+    <None Include="Content\Sprites\VisualAssets_PS\Miner.psd" />
+    <None Include="Content\Sprites\VisualAssets_PS\Pickaxe.psd" />
+    <None Include="Content\Sprites\VisualAssets_PS\Rock.psd" />
+    <None Include="Content\Sprites\VisualAssets_PS\Rope.psd" />
     <None Include="Project_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\caveMusic.mp3" />
+    <Content Include="Content\Sprites\Backgrounds\Background1.jpg" />
+    <Content Include="Content\Sprites\Backgrounds\Background2.jpg" />
+    <Content Include="Content\Sprites\Backgrounds\ExitSign.png" />
+    <Content Include="Content\Sprites\Backgrounds\ExitSign_2.png" />
+    <Content Include="Content\Sprites\Miners\MinerHandsInPants.png" />
+    <Content Include="Content\Sprites\Miners\MinerHandsOut.png" />
+    <Content Include="Content\Sprites\Misc\box.png" />
+    <Content Include="Content\Sprites\Rocks\BareRock1.png" />
+    <Content Include="Content\Sprites\Rocks\BareRock2.png" />
+    <Content Include="Content\Sprites\Rocks\BareRock3.png" />
+    <Content Include="Content\Sprites\Rocks\BareRock4.png" />
+    <Content Include="Content\Sprites\Rocks\BareRock5.png" />
+    <Content Include="Content\Sprites\Rocks\Ground1.png" />
+    <Content Include="Content\Sprites\Rocks\Ground2.png" />
+    <Content Include="Content\Sprites\Rocks\Ground3.png" />
+    <Content Include="Content\Sprites\Rocks\Ground4.png" />
+    <Content Include="Content\Sprites\Rocks\SuspendedRock.png" />
+    <Content Include="Content\Sprites\Tools\Pickaxe.png" />
+    <Content Include="Content\Sprites\Tools\Rope.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
