@@ -9,7 +9,7 @@ using Project.GameObjects;
 
 namespace Project.GameStates
 {
-    public class PlayState : GameState<GameObject, Level>
+    public class GamePlayState : GameState
     {
 
         public Image Background;
@@ -17,16 +17,16 @@ namespace Project.GameStates
         protected List<GameObject> Solids;
         protected List<GameObject> Collectibles;
 
-        public PlayState() : base()
+        public GamePlayState() : base()
         {
             Actors = new List<Miner>();
             Solids = new List<GameObject>();
             Collectibles = new List<GameObject>();
         }
 
-        public override void LoadContent(ref Level level)
+        public override void LoadContent(Object level)
         {
-            foreach(GameObject obj in level.Objects)
+            foreach(GameObject obj in (level as Level).Objects)
             {
                 AddObject(obj);
             }
@@ -40,14 +40,11 @@ namespace Project.GameStates
             Collectibles.Clear();
         }
 
-        public override List<GameObject> GetAll()
-        {
-            return base.GetAll();
-        }
+        public override List<GameObject> GetAll() => base.GetAll();
 
         public override void AddObject(GameObject obj)
         {
-            Objects.Add(obj);
+            base.AddObject(obj);
 
             if(obj is Miner)
             {
@@ -63,22 +60,21 @@ namespace Project.GameStates
             }
         }
 
-        public override List<GameObject> GetComponents(Type Type)
+        public override List<GameObject> GetComponents(Type type)
         {
-            List<GameObject> list = new List<GameObject>();
-            switch(Type.Name)
+            if(type == typeof(Miner))
             {
-                case "Miner":
-                    // HACK: Concatenating Actors with list allows
-                    //       converting to list<GameObject>
-                    return Actors.Concat(list).ToList();
-
-                case "Ground":
-                    return Solids;
-
-                default:
-                    return Collectibles;
-            }            
+                List<GameObject> list = new List<GameObject>();
+                return Actors.Concat(list).ToList();
+            }
+            else if(type == typeof(Ground))
+            {
+                return Solids;
+            }
+            else
+            {
+                return Collectibles;
+            }
         }
     }
 }

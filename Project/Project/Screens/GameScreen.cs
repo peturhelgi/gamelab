@@ -6,10 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Newtonsoft.Json;
+
 using Project.Util;
 using Project.Controls;
 using Project.Render;
+using Project.GameStates;
 
 
 namespace Project.Screens {
@@ -18,9 +21,11 @@ namespace Project.Screens {
         [JsonIgnore]
         public Type Type;
         public string Path;
+
+        protected GameState GameState;
         protected GameController controller;
         protected ScreenManager ScreenManager;
-        protected Renderer Renderer;
+        public Renderer Renderer;
 
         public GameScreen() {
             Type = this.GetType();
@@ -29,10 +34,8 @@ namespace Project.Screens {
             Renderer = new Renderer();
         }
 
-        public void Initialize(ScreenManager screenManager)
-        {
-            ScreenManager = screenManager;
-        }
+        public void Initialize(ScreenManager screenManager) 
+            => ScreenManager = screenManager;
 
         /// <summary>
         /// Use: LoadContent
@@ -42,15 +45,12 @@ namespace Project.Screens {
         public virtual void LoadContent() => content = new ContentManager(
                 ScreenManager.Content.ServiceProvider, "Content");
 
-        public virtual void UnloadContent() {
-            content.Unload();
-        }
+        public virtual void UnloadContent() => content?.Unload();
 
-        public virtual void Update(GameTime gameTime) {
-            controller.HandleUpdate(gameTime);
-        }
+        public virtual void Update(GameTime gameTime) 
+            => controller?.HandleUpdate(gameTime);
 
-        //TODO: Refactor
-        public virtual void Draw(SpriteBatch spriteBatch) { }
+        public virtual void Draw(SpriteBatch spriteBatch) 
+            => Renderer?.Draw(spriteBatch);
     }
 }

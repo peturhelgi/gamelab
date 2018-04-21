@@ -121,7 +121,7 @@
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GameStates\PlayState.cs" />
+    <Compile Include="GameStates\GamePlayState.cs" />
     <Compile Include="GreatEscape.cs" />
     <Compile Include="ImageEffects\FadeEffect.cs" />
     <Compile Include="ImageEffects\SpriteSheetEffect.cs" />

@@ -14,19 +14,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Project.Render
 {
-    public class GameRenderer : Renderer<GameObject, Level>
+    public class GameRenderer : Renderer
     {
-
-        PlayState _gameState;
-        Camera _camera;
         public GameRenderer() : base()
         {
         }
 
         public override void Initialize(
-            ref GameState<GameObject, Level> gameState, ref Camera camera)
+            ref GameState gameState, ref Camera camera)
         {
-            _gameState = (PlayState)gameState;
+            _gameState = gameState as GamePlayState;
             _camera = camera;
         }
 
@@ -34,7 +31,9 @@ namespace Project.Render
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null,
                 null, _camera.view);
-            _gameState.Background.Draw(spriteBatch);
+            (_gameState as GamePlayState).Background?.Draw(spriteBatch);
+            
+            //TODO: Remove Image.Draw()
             foreach(var obj in _gameState.GetAll())
             {
                 obj.Image.Draw(spriteBatch);

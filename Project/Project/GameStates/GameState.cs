@@ -9,18 +9,23 @@ using Project.Util;
 namespace Project.GameStates
 {
 
-    public class GameState<T1, T2>
+    /// <summary>
+    /// Constructor for a GameState, storing a list of T objects
+    /// </summary>
+    /// <typeparam name="T">Type of objects to be stored in the 
+    /// GameState</typeparam>
+    public class GameState
     {
 
-        protected List<T1> Objects;
-        public GameState()
+        protected List<GameObject> Objects;
+        public GameState(List<GameObject> objects = null)
         {
-            Objects = new List<T1>();
+            Objects = objects == null ? new List<GameObject>() : objects;
         }
 
-        public virtual void LoadContent(ref T2 obj) { }
+        public virtual void LoadContent(Object obj) { }
 
-        public virtual void UnloadContent() { Objects.Clear(); }
+        public virtual void UnloadContent() => Objects.Clear();
 
         /// <summary>
         /// Use: List<T> list = GetAll();
@@ -28,23 +33,19 @@ namespace Project.GameStates
         /// Post: list is a List<T> with all components of the GameState
         /// </summary>
         /// <returns></returns>
-        public virtual List<T1> GetAll() => Objects;
-       /// <summary>
-       /// TODO: Add summary
-       /// </summary>
-       /// <param name="obj"></param>
-        public virtual void AddObject(T1 obj) {
-            Objects.Add(obj);
-        }
+        public virtual List<GameObject> GetAll() => Objects;
+        /// <summary>
+        /// TODO: Add summary
+        /// </summary>
+        /// <param name="obj"></param>
+        public virtual void AddObject(GameObject obj) => Objects.Add(obj);
 
         /// <summary>
         /// TODO: Add summary
         /// </summary>
         /// <param name="Type"></param>
         /// <returns></returns>
-        public virtual List<T1> GetComponents(Type Type)
-        {
-            return new List<T1>();
-        }
+        public virtual List<GameObject> GetComponents(Type Type) 
+            => new List<GameObject>();
     }
 }

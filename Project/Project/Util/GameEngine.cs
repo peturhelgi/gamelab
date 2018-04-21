@@ -6,18 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Project.GameObjects;
+using Project.GameStates;
 using Project.Util.Collision;
 
 using Microsoft.Xna.Framework;
 
+
 namespace Project.Util
 {
-
     public class GameEngine
     {
         public enum Action { walk_right, walk_left, jump, interact, collect };
 
-        public GameState GameState;
+        public GamePlayState GameState;
         private CollisionDetector CollisionDetector;
 
         int[] CurrentMiner = { 0, 1 };
@@ -28,15 +29,15 @@ namespace Project.Util
 
         public void Initialize(GameState gameState)
         {
-            GameState = gameState;
+            GameState = gameState as GamePlayState;
             CollisionDetector = new CollisionDetector();
         }
 
         public void HandleInput(int player, Action action, float value,
                 GameTime gameTime)
         {
-            Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
-
+            Miner miner;// = GameState.Actors.ElementAt(CurrentMiner[player]);
+            miner = GameState.GetComponents(typeof(Miner))[player] as Miner;
             switch(action)
             {
                 case (Action.walk_right):
@@ -66,7 +67,8 @@ namespace Project.Util
 
             // TODO make this with all miners
 
-            Miner miner = GameState.Actors.ElementAt(CurrentMiner[0]);
+            Miner miner;// = GameState.Actors.ElementAt(CurrentMiner[0]);
+            miner = GameState.GetComponents(typeof(Miner))[0] as Miner;
             // What simon calls gameTime, I call gameTimeSpan.
             // He implemented it using the TimeSpan gameTime
             // we only need to update this, if some time has passed since the 
@@ -80,7 +82,10 @@ namespace Project.Util
         void TryToInteract(GameObject obj)
         {
             List<GameObject> collisions = CollisionDetector.FindCollisions(
-                obj.BBox, GameState.Collectibles);
+                obj.BBox, 
+                //GameState.Collectibles);
+                GameState.GetComponents(typeof(Rock)));
+
             foreach(GameObject c in collisions)
             {
                 // TODO: interaction should probably be more then changing the visiblity
@@ -144,18 +149,23 @@ namespace Project.Util
 
 
             // 3. check, if there are any collisions in the X-axis and correct position
-            List<GameObject> collisions = CollisionDetector.FindCollisions(xBox, GameState.Solids);
+            List<GameObject> collisions = CollisionDetector.FindCollisions(
+                xBox,
+                GameState.GetComponents(typeof(Ground)));
+                //GameState.Solids);
             if(collisions.Count > 0)
             {
                 Debug.WriteLine("collided with x-axis");
                 direction.X = 0;
             }
 
-
             // We only need to check things in y-axis (including intersection), if we are actually moving in it
             if(actor.Falling)
             {
-                collisions = CollisionDetector.FindCollisions(yBox, GameState.Solids);
+                collisions = CollisionDetector.FindCollisions(
+                    yBox, 
+                    GameState.GetComponents(typeof(Ground)));
+                    //GameState.Solids);
                 if(collisions.Count > 0)
                 {
                     Debug.WriteLine("collided with y-axis");
@@ -174,9 +184,7 @@ namespace Project.Util
                         direction.Y = (lowestPoint - actor.BBox.Max.Y) - 0.1f;
                         actor.Falling = false;
                     }
-
                 }
-
             }
             actor.Position += direction;
 
@@ -189,7 +197,10 @@ namespace Project.Util
                     new Vector2(actor.BBox.Max.X, actor.BBox.Max.Y + 0.5f)
                     );
 
-                collisions = CollisionDetector.FindCollisions(tempBox, GameState.Solids);
+                collisions = CollisionDetector.FindCollisions(
+                    tempBox, 
+                    GameState.GetComponents(typeof(Ground)));
+                    //GameState.Solids);
                 if(collisions.Count == 0)
                 {
                     actor.Falling = true;

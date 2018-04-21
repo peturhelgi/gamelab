@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Project.GameObjects;
+using Project.GameStates;
 using Newtonsoft.Json;
 using Project.Controls;
 
@@ -21,18 +22,26 @@ namespace Project.Screens
 
         //TODO: Have a possibility for more Images
         public Image Image;
+        public List<GameObject> Objects;
         public Vector2 Position;
         public Tuple<string, string> NextScreen;
 
         public SplashScreen()
         {
             Path = "Content/Load/SplashScreen.json";
+            GameState = new GameState();
+            Objects = new List<GameObject>();
         }
 
         public override void LoadContent()
         {
             base.LoadContent();
             Image.LoadContent(ScreenManager);
+            foreach(var obj in Objects)
+            {
+                obj.LoadContent();
+            }
+            //TODO: init gameastate and add  to json
             this.controller = new GameController();
         }
 
@@ -40,11 +49,19 @@ namespace Project.Screens
         {
             base.UnloadContent();
             Image.UnloadContent();
+            foreach(var obj in Objects)
+            {
+                obj.UnloadContent();
+            }
         }
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
             Image.Update(gameTime);
+            
+            foreach(var obj in Objects){
+                obj.Image.Update(gameTime);
+            }
 
             KeyboardState state = Keyboard.GetState();
             // TODO: couple with default game controller

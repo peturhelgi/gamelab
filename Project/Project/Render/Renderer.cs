@@ -11,20 +11,37 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Project.Render
 {
-    public class Renderer<T1, T2>
+    public class Renderer
     {
-        
+        protected GameState _gameState;
+        protected Camera _camera;
         public Renderer()
         {
 
         }
 
-        public virtual void Initialize(ref GameState<T1, T2> gameState,
+        public virtual void Initialize(ref GameState gameState,
             ref Camera camera)
         {
-
+            _gameState = gameState;
+            _camera = camera;
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch) { }
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null,
+                null, _camera?.view);
+
+            //TODO: Remove Image.Draw()
+            if(_gameState != null)
+            {
+                foreach(var obj in _gameState.GetAll())
+                {
+                    obj.Image.Draw(spriteBatch);
+                }
+            }
+
+            spriteBatch.End();
+        }
     }
 }
