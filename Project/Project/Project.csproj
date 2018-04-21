@@ -110,6 +110,7 @@
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameLogic\Renderer\GameRenderer.cs" />
     <Compile Include="GreatEscape.cs" />
     <Compile Include="Manager\GameManager.cs" />
     <Compile Include="Menu\MenuManager.cs" />
