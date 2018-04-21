@@ -47,13 +47,5 @@ namespace Project.Util {
                 obj.UnloadContent();
             }
         }
-
-        public void Draw(SpriteBatch spriteBatch, string drawType) {
-            Background.Draw(spriteBatch);
-            //TODO: Consider if this is best practice
-            foreach(GameObject obj in Objects) {
-                obj.Draw(spriteBatch);
-            }
-        }
     }
 }

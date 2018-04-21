@@ -7,6 +7,7 @@ using Project.GameObjects;
 using Project.Screens;
 using Project.Util;
 using Project.GameStates;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Project.Render
@@ -32,12 +33,14 @@ namespace Project.Render
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null,
                 null, _camera?.view);
 
-            //TODO: Remove Image.Draw()
             if(_gameState != null)
             {
                 foreach(var obj in _gameState.GetAll())
                 {
-                    obj.Image.Draw(spriteBatch);
+                    spriteBatch.Draw(obj.Image.Texture, obj.Image.Position,
+                        obj.Image.SourceRect,
+                        Color.White * obj.Image.Alpha, 0.0f, Vector2.Zero,
+                        obj.Image.Scale, SpriteEffects.None, 0.0f);
                 }
             }
 

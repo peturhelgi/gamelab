@@ -31,12 +31,22 @@ namespace Project.Render
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null,
                 null, _camera.view);
-            (_gameState as GamePlayState).Background?.Draw(spriteBatch);
+
+            var background = (_gameState as GamePlayState)?.Background;
+            if(!(background is null))
+            {
+                spriteBatch.Draw(background.Texture, background.Position,
+                    background.SourceRect,
+                    Color.White * background.Alpha, 0.0f, Vector2.Zero,
+                    background.Scale, SpriteEffects.None, 0.0f);
+            }
             
-            //TODO: Remove Image.Draw()
             foreach(var obj in _gameState.GetAll())
             {
-                obj.Image.Draw(spriteBatch);
+                spriteBatch.Draw(obj.Image.Texture, obj.Image.Position, 
+                    obj.Image.SourceRect,
+                    Color.White * obj.Image.Alpha, 0.0f, Vector2.Zero, 
+                    obj.Image.Scale,  SpriteEffects.None, 0.0f);
             }
 
             spriteBatch.End();

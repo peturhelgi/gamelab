@@ -76,11 +76,5 @@ namespace Project.Screens
             }
 
         }
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Begin();
-            Image.Draw(spriteBatch);
-            spriteBatch.End();
-        }
     }
 }

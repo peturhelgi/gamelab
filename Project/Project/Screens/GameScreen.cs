@@ -15,8 +15,10 @@ using Project.Render;
 using Project.GameStates;
 
 
-namespace Project.Screens {
-    public class GameScreen {
+namespace Project.Screens
+{
+    public class GameScreen
+    {
         protected ContentManager content;
         [JsonIgnore]
         public Type Type;
@@ -27,14 +29,15 @@ namespace Project.Screens {
         protected ScreenManager ScreenManager;
         public Renderer Renderer;
 
-        public GameScreen() {
+        public GameScreen()
+        {
             Type = this.GetType();
             Path = "Content/Load/"
                 + Type.ToString().Replace("Project.Screens.", "") + ".json";
             Renderer = new Renderer();
         }
 
-        public void Initialize(ScreenManager screenManager) 
+        public void Initialize(ScreenManager screenManager)
             => ScreenManager = screenManager;
 
         /// <summary>
@@ -47,10 +50,9 @@ namespace Project.Screens {
 
         public virtual void UnloadContent() => content?.Unload();
 
-        public virtual void Update(GameTime gameTime) 
+        public virtual void Update(GameTime gameTime)
             => controller?.HandleUpdate(gameTime);
 
-        public virtual void Draw(SpriteBatch spriteBatch) 
-            => Renderer?.Draw(spriteBatch);
+        public virtual void Draw(SpriteBatch spriteBatch) { }
     }
 }

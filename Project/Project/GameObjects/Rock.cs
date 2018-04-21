@@ -29,9 +29,5 @@ namespace Project.GameObjects {
 
             //TODO: add move logic
         }
-        //public override void Update(GameTime gameTime) {
-        //    Image.Update(gameTime);
-       // }
-
     }
 }

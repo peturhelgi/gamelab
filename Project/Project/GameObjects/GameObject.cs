@@ -78,14 +78,6 @@ namespace Project.GameObjects
         }
 
         /// <summary>
-        /// Draws the GameObject to the canvas
-        /// TODO: Reconsider
-        /// </summary>
-        /// <param name="spriteBatch"></param>
-        public virtual void Draw(SpriteBatch spriteBatch) =>
-            Image?.Draw(spriteBatch);
-
-        /// <summary>
         /// True if the gameobject is airborne
         /// </summary>
         public bool Falling { get; set; }

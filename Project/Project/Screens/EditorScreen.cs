@@ -27,9 +27,5 @@ namespace Project.Screens {
         public override void Update(GameTime gameTime) {
 
         }
-
-        public override void Draw(SpriteBatch spriteBatch) {
-
-        }
     }
 }

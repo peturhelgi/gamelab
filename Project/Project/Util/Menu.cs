@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace Project.Util {
+    //TODO: Make compatible with a Renderer class
     public class Menu {
         public event EventHandler OnMenuChange;
         protected ScreenManager ScreenManager;
