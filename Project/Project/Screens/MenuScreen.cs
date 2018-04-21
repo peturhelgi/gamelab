@@ -11,10 +11,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Project.Screens {
     class MenuScreen : GameScreen {
+
         MenuManager menuManager;
+
         public MenuScreen(string path) {
             controller = new MenuControls();
-            menuManager = new MenuManager(new MenuControls());
+            menuManager = new MenuManager((MenuControls)controller);
             this.Path = path;
         }
 

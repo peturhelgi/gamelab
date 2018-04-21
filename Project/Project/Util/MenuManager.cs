@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -51,6 +52,7 @@ namespace Project.Util
             menu = new Menu();
             menu.OnMenuChange += menu_OnMenuChange;
             Controller = controller;
+            
         }
 
         void menu_OnMenuChange(object sender, EventArgs e)
@@ -59,6 +61,7 @@ namespace Project.Util
             menu.UnloadContent();
             menu = menuManager.Load(menu.ID);
             menu.LoadContent();
+            Controller.Initialize(ref menu);        // send menu instance to controller
             menu.OnMenuChange += menu_OnMenuChange;
             menu.Transition(0.0f);
 
@@ -84,41 +87,45 @@ namespace Project.Util
 
         public void Update(GameTime gameTime)
         {
-            // Updates the states of the controller.
-            Controller.HandleUpdate(gameTime);
+            
+            
             if(!InTransition)
             {
-                if(menu.IsVertical())
-                {
-                    if(Controller.ButtonPressed(
-                       (Buttons)MenuControls.Instructions.Down,
-                       (Buttons)MenuControls.Instructions.DownStick))
-                    {
-                        menu.NextItem();
-                    }
-                    else if(Controller.ButtonPressed(
-                        (Buttons)MenuControls.Instructions.Up,
-                        (Buttons)MenuControls.Instructions.UpStick))
-                    {
-                        menu.PreviousItem();
-                    }
-                }
+                // Updates the states of the controller.
+                Controller.HandleUpdate(gameTime);
 
-                else if(menu.IsHorizontal())
-                {
-                    if(Controller.ButtonPressed(
-                       (Buttons)MenuControls.Instructions.Right,
-                       (Buttons)MenuControls.Instructions.RightStick))
-                    {
-                        menu.NextItem();
-                    }
-                    else if(Controller.ButtonPressed(
-                        (Buttons)MenuControls.Instructions.Left,
-                        (Buttons)MenuControls.Instructions.LeftStick))
-                    {
-                        menu.PreviousItem();
-                    }
-                }
+
+                //if(menu.IsVertical())
+                //{
+                //    if(Controller.ButtonPressed(
+                //       (Buttons)MenuControls.Instructions.Down,
+                //       (Buttons)MenuControls.Instructions.DownStick))
+                //    {
+                //        menu.NextItem();
+                //    }
+                //    else if(Controller.ButtonPressed(
+                //        (Buttons)MenuControls.Instructions.Up,
+                //        (Buttons)MenuControls.Instructions.UpStick))
+                //    {
+                //        menu.PreviousItem();
+                //    }
+                //}
+
+                //else if(menu.IsHorizontal())
+                //{
+                //    if(Controller.ButtonPressed(
+                //       (Buttons)MenuControls.Instructions.Right,
+                //       (Buttons)MenuControls.Instructions.RightStick))
+                //    {
+                //        menu.NextItem();
+                //    }
+                //    else if(Controller.ButtonPressed(
+                //        (Buttons)MenuControls.Instructions.Left,
+                //        (Buttons)MenuControls.Instructions.LeftStick))
+                //    {
+                //        menu.PreviousItem();
+                //    }
+                //}
                 menu.Update(gameTime);
             }
 

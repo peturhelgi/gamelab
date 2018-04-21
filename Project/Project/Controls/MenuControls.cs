@@ -13,6 +13,7 @@ namespace Project.Controls
     public class MenuControls : GameController
     {
         Menu _menu;
+
         public int PlayerIndex;
         public enum Instructions
         {
@@ -30,12 +31,14 @@ namespace Project.Controls
         public MenuControls()
         {
             PlayerIndex = 0;
+            
         }
 
-        public override void Initialize(ref Object obj)
+        internal override void Initialize(ref Menu menu)
         {
-            _menu = (Menu)obj;
+            _menu = menu;
         }
+
         internal override void HandleUpdate(GameTime gameTime)
         {
             base.HandleUpdate(gameTime);
@@ -47,26 +50,11 @@ namespace Project.Controls
             HandleKeyboard(Keyboard.GetState(), gameTime);
         }
 
+
         protected override void HandleKeyboard(KeyboardState state, GameTime gameTime)
         {
             // START Handle GameAction
-            if(state.IsKeyDown(Keys.Right))
-            {
-                GameEngine.Instance.HandleInput(
-                    0, GameEngine.GameAction.walk_right, 0, gameTime);
-            }
-            if(state.IsKeyDown(Keys.Left))
-            {
-                GameEngine.Instance.HandleInput(0, GameEngine.GameAction.walk_left, 0, gameTime);
-            }
-            if(state.IsKeyDown(Keys.I))
-            {
-                GameEngine.Instance.HandleInput(0, GameEngine.GameAction.interact, 0, gameTime);
-            }
-            if(state.IsKeyDown(Keys.Space))
-            {
-                GameEngine.Instance.HandleInput(0, GameEngine.GameAction.jump, 0, gameTime);
-            }
+  
 
             // END Handle GameAction
         }
@@ -75,12 +63,52 @@ namespace Project.Controls
         protected override void HandleGamePad(GamePadState gs, GameTime gameTime)
         {
 
-            if(CurrentState.IsButtonDown((Buttons)Instructions.Select))
+            if (_menu.IsVertical())
             {
-                // TODO: Add a changed GameState, to escape the game
-                //Exit();
-                return;
+                // Go down one menu item
+                if (gs.IsButtonDown((Buttons)Instructions.Down) & !PrevState.IsButtonDown((Buttons)Instructions.Down))
+                {
+                    _menu.NextItem();
+                    Debug.WriteLine(_menu.ItemNumber.ToString() + " Controls");
+                }
+                if (gs.IsButtonDown((Buttons)Instructions.DownStick) & !PrevState.IsButtonDown((Buttons)Instructions.DownStick))
+                {
+                    _menu.NextItem();
+                    Debug.WriteLine(_menu.ItemNumber.ToString() + " Controls");
+                }
+
+                // Go up one menu item
+                if (gs.IsButtonDown((Buttons)Instructions.Up) & !PrevState.IsButtonDown((Buttons)Instructions.Up))
+                {
+                    _menu.PreviousItem();
+                }
+                if (gs.IsButtonDown((Buttons)Instructions.UpStick) & !PrevState.IsButtonDown((Buttons)Instructions.UpStick))
+                {
+                    _menu.PreviousItem();
+                }
             }
+            else if(_menu.IsHorizontal())
+            {
+                // Go right one menu item
+                if (gs.IsButtonDown((Buttons)Instructions.Right) & !PrevState.IsButtonDown((Buttons)Instructions.Right))
+                {
+                    _menu.NextItem();
+                }
+                if (gs.IsButtonDown((Buttons)Instructions.RightStick) & !PrevState.IsButtonDown((Buttons)Instructions.RightStick))
+                {
+                    _menu.NextItem();
+                }
+
+                if (gs.IsButtonDown((Buttons)Instructions.Left) & !PrevState.IsButtonDown((Buttons)Instructions.Left))
+                {
+                    _menu.PreviousItem();
+                }
+                if (gs.IsButtonDown((Buttons)Instructions.LeftStick) & !PrevState.IsButtonDown((Buttons)Instructions.LeftStick))
+                {
+                    _menu.PreviousItem();
+                }
+            }
+
         }
     }
 }

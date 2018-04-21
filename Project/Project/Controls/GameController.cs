@@ -28,7 +28,7 @@ namespace Project.Controls {
             }
         }
 
-        public virtual void Initialize(ref Object obj) { }
+        internal virtual void Initialize(ref Menu menu) { }
         protected virtual void HandleKeyboard(KeyboardState state, GameTime gameTime) { }
         protected virtual void HandleGamePad(GamePadState gs, GameTime gameTime) { }
 

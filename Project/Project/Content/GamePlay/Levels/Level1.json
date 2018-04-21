@@ -34,6 +34,29 @@
       }
     },
     {
+      "$type": "Project.GameObjects.Miner, Project",
+      "Image": {
+        "Path": "Sprites/Miners/MinerPickaxe",
+        "pos": {
+          "x": 700,
+          "y": 0
+        },
+        "dim": {
+          "x": 119,
+          "y": 370
+        },
+        "Scale": {
+          "x": 1,
+          "y": 1
+        }
+      },
+      "m": 80,
+      "vel": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
       "$type": "Project.GameObjects.Rock, Project",
       "Image": {
         "Path": "Sprites/Rocks/BareRock5",
