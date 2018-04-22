@@ -40,10 +40,11 @@ namespace Project.Menu
 
             // create the screens
             _currentScreen = _mainMenu = new SelectionMenu("Main Menu", _graphicsDevice, this);
-            _mainMenu.AddSelection("play", Action.StartGame, "more_platforms");
+            _mainMenu.AddSelection("play", Action.StartGame, "wide_level");
             _mainMenu.AddSelection("choose level", Action.ShowLevelSelector, null);
 
             _levelSelector = new SelectionMenu("Select a Level", _graphicsDevice, this);
+            _levelSelector.AddSelection("wide_level", Action.StartGame, "wide_level");
             _levelSelector.AddSelection("more_platforms", Action.StartGame, "more_platforms");
             _levelSelector.AddSelection("samplelvl", Action.StartGame, "samplelvl");
 

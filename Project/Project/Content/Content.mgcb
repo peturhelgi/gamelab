@@ -319,3 +319,8 @@
 /processor:ContentProcessor1
 /build:samplelvl.json
 
+#begin wide_level.json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:wide_level.json
+

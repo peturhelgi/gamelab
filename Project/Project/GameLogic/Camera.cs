@@ -10,19 +10,31 @@ namespace Project.GameLogic
     class Camera
     {
         public Matrix view;
-        private float _Zoom;
-        private Vector2 _Position;
+        float _zoom;
+        Vector2 _position;
+        Vector2 _dimensions;
 
         public enum CameraAction { right, left, up, down, zoom_in, zoom_out };
 
 
 
-        public Camera(float zoom, Vector2 position) {
+        public Camera(float zoom, Vector2 position, Vector2 dimensions) {
             view = Matrix.Identity;
-            _Zoom = zoom;
-            _Position = position;
+            _zoom = zoom;
+            _position = position;
+            _dimensions = dimensions;
             Refresh();
 
+        }
+
+        public void SetCameraToRectangle(Rectangle r) {
+            int offset = 500;
+            _position = new Vector2(r.X-offset, r.Y- offset);
+
+            Vector2 dims = r.Size.ToVector2()+new Vector2(2*offset);
+            Vector2 scales =    _dimensions/ dims;
+            _zoom = Math.Min(scales.X, scales.Y);
+            Refresh();
         }
 
         public void HandleAction(CameraAction action) {
@@ -61,19 +73,19 @@ namespace Project.GameLogic
 
 
         public void Zoom(float factor) {
-            _Zoom *= factor;
+            _zoom *= factor;
             Refresh();
         }
 
         public void Translate(Vector2 t) {
-            _Position += (t*_Zoom);
+            _position += (t*_zoom);
             Refresh();
         }
         
 
         private void Refresh()
         {
-            view = Matrix.CreateTranslation(new Vector3(-_Position.X, -_Position.Y, 0)) * Matrix.CreateScale(_Zoom);
+            view = Matrix.CreateTranslation(new Vector3(-_position.X, -_position.Y, 0)) * Matrix.CreateScale(_zoom);
         }
 
     }

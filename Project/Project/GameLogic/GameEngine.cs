@@ -15,6 +15,7 @@ namespace Project.GameLogic
         public GameState GameState;
         public enum GameAction { walk_right, walk_left, jump, interact, collect };
         private CollisionDetector CollisionDetector;
+        List<AxisAllignedBoundingBox> _attentions;
 
         int[] CurrentMiner = {0,1};
         public static Vector2 GRAVITY = new Vector2(0, 1000);
@@ -23,9 +24,16 @@ namespace Project.GameLogic
         public GameEngine(GameState gameState) {
             GameState = gameState;
             CollisionDetector = new CollisionDetector();
+            _attentions = new List<AxisAllignedBoundingBox>();
+
+            for (var i = 0; i < GameState.Actors.Count; i++) {
+                _attentions.Add(new AxisAllignedBoundingBox(Vector2.Zero, Vector2.Zero));
+            }
         }
 
-       
+        public List<AxisAllignedBoundingBox> GetAttentions() {
+            return _attentions;
+        }
 
 
         public void HandleInput(int player, GameAction action, float value) {
@@ -54,14 +62,26 @@ namespace Project.GameLogic
 
         public void Update() {
 
-            // TODO make this with all miners
 
-            Miner miner = GameState.Actors.ElementAt(CurrentMiner[0]);
-
+            Miner miner0 = GameState.Actors.ElementAt(CurrentMiner[0]);
             // we only need to update this, if some time has passed since the last update
-            if (miner.lastUpdated != gameTime) {
-                CalculateAndSetNewPosition(miner, Vector2.Zero);
+            if (miner0.lastUpdated != gameTime)
+            {
+                CalculateAndSetNewPosition(miner0, Vector2.Zero);
             }
+
+            if (GameState.Actors.Count > 1) {
+                Miner miner1 = GameState.Actors.ElementAt(CurrentMiner[1]);
+                if (miner1.lastUpdated != gameTime)
+                {
+                    CalculateAndSetNewPosition(miner1, Vector2.Zero);
+                }
+            }
+
+            for (var i = 0; i < _attentions.Count; i++) {
+                _attentions[i] = GameState.Actors.ElementAt(CurrentMiner[i]).BBox;
+            }
+
         }
 
         void TryToInteract(GameObject obj) {

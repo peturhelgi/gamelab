@@ -132,6 +132,7 @@
       <SubType>Designer</SubType>
     </MonoGameContentReference>
     <None Include="Content\Fonts\Orbitron.spritefont" />
+    <None Include="Content\wide_level.json" />
     <None Include="Content\more_platforms.json" />
     <None Include="Content\samplelvl.json" />
     <None Include="Content\Lights\circular_light.psd" />

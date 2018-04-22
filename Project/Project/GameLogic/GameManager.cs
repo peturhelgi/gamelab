@@ -31,7 +31,7 @@ namespace Project.GameLogic
             {
                 UnloadContent();
             }
-            _controller = new GameController(new GameEngine(_mapLoader.InitMap(path)), new Camera(0.8f, Vector2.Zero));
+            _controller = new GameController(new GameEngine(_mapLoader.InitMap(path)), new Camera(0.8f, Vector2.Zero, new Vector2(_graphicsDevice.PresentationParameters.BackBufferWidth, _graphicsDevice.PresentationParameters.BackBufferHeight)));
             LoadContent();
         }
 
