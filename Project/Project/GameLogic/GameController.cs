@@ -31,12 +31,12 @@ namespace Project.GameLogic
             GamePadState PlayerOneState = GamePad.GetState(PlayerIndex.One);
             if (PlayerOneState.IsConnected)
             {
-                HandleGamePad(PlayerOneState);
+                HandleGamePad(PlayerOneState,0);
                 
                 // There can only be a second player, if there is a first one
                 GamePadState PlayerTwoState = GamePad.GetState(PlayerIndex.Two);
                 if (PlayerTwoState.IsConnected)
-                    HandleGamePad(PlayerTwoState);
+                    HandleGamePad(PlayerTwoState,1);
             }
 
 
@@ -95,9 +95,18 @@ namespace Project.GameLogic
 
         }
 
-        private void HandleGamePad(GamePadState gs)
+        private void HandleGamePad(GamePadState gs, int player)
         {
-            if (gs.Buttons.Back == ButtonState.Pressed)
+            Debug.Assert(player == 0 || player == 1, "Only support two players indexed 0 or 1");
+
+            // START Handle GameAction
+            if (gs.ThumbSticks.Left.X > 0.5f) GameEngine.HandleInput(player, GameEngine.GameAction.walk_right, 0);
+            if (gs.ThumbSticks.Left.X < -0.5) GameEngine.HandleInput(player, GameEngine.GameAction.walk_left, 0);
+            if (gs.IsButtonDown(Buttons.RightTrigger)) GameEngine.HandleInput(player, GameEngine.GameAction.interact, 0);
+            if (gs.IsButtonDown(Buttons.A)) GameEngine.HandleInput(player, GameEngine.GameAction.jump, 0);
+            // END Handle GameAction
+
+            if (gs.IsButtonDown(Buttons.Back)) 
                 // TODO: Add a changed GameState, to escape the game
                 //Exit();
                 return;

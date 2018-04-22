@@ -26,6 +26,8 @@ namespace Project.Menu
         ContentManager _content;
 
         public KeyboardState OldKeyboardState;
+        public GamePadState OldPlayerOneState;
+        public GamePadState OldPlayerTwoState;
         // TODO: move to renderer
         // Assets for the Menu
         public SpriteFont MenuFont;
@@ -53,6 +55,8 @@ namespace Project.Menu
             _game = new GameScreen(_gameManager, _graphicsDevice, this);
 
             OldKeyboardState = Keyboard.GetState();
+            OldPlayerOneState = GamePad.GetState(PlayerIndex.One);
+            OldPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
         }
 
         public void CallAction(Action action, object value) {
@@ -90,6 +94,8 @@ namespace Project.Menu
         {
             _currentScreen.Update(gameTime);
             OldKeyboardState = Keyboard.GetState();
+            OldPlayerOneState = GamePad.GetState(PlayerIndex.One);
+            OldPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
         }
 
         public void Draw(GameTime gameTime, int width, int height)
@@ -146,6 +152,14 @@ namespace Project.Menu
             {
                 _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
             }
+            else if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start) && _manager.OldPlayerOneState.IsButtonUp(Buttons.Start))
+            {
+                _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
+            }
+            else if (GamePad.GetState(PlayerIndex.Two).IsButtonDown(Buttons.Start) && _manager.OldPlayerTwoState.IsButtonUp(Buttons.Start))
+            {
+                _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
+            }
             else
             {
                 _gameManager.Update(gameTime);
@@ -195,6 +209,7 @@ namespace Project.Menu
 
         public override void Update(GameTime gameTime) {
             // TODO add support for (multiple) Controllers
+            // Keyboard controls
             if (Keyboard.GetState().IsKeyDown(Keys.Down) && _manager.OldKeyboardState.IsKeyUp(Keys.Down))
             {
                 _currentPosition += 1;
@@ -203,6 +218,27 @@ namespace Project.Menu
 
             if (Keyboard.GetState().IsKeyDown(Keys.Enter) && _manager.OldKeyboardState.IsKeyUp(Keys.Enter)||
                 Keyboard.GetState().IsKeyDown(Keys.Space) && _manager.OldKeyboardState.IsKeyUp(Keys.Space))
+            {
+                _manager.CallAction(_selections[_currentPosition].Action, _selections[_currentPosition].Value);
+                _currentPosition = 0;
+            }
+
+            // Xbox controls for player one for the thumbstick
+            if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickDown) 
+                && _manager.OldPlayerOneState.IsButtonUp(Buttons.LeftThumbstickDown))
+            {
+                _currentPosition += 1;
+                _currentPosition %= _selections.Count;
+            }
+            if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickUp)
+                && _manager.OldPlayerOneState.IsButtonUp(Buttons.LeftThumbstickUp))
+            {
+                _currentPosition -= 1;
+                if(_currentPosition < 0) _currentPosition = _selections.Count - 1;
+            }
+
+            if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A)
+                && _manager.OldPlayerOneState.IsButtonUp(Buttons.A))
             {
                 _manager.CallAction(_selections[_currentPosition].Action, _selections[_currentPosition].Value);
                 _currentPosition = 0;
