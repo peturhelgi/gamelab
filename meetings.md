@@ -10,8 +10,11 @@
 ### Tasks:
 
 Bjarni: Adding the controlls for the XBox
+
 Pétur: Write a draft for the report, compile it and hand it in, test the game on the XBox and hand it in
+
 Andreea: Create a bigger level to show durring the presentation
+
 Simon: Merge collision_detection into master, add the proposed rules to the README, Make Lighting 'fancier'/more flexible
 
 Everybody: collaborate on the report
