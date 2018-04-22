@@ -107,6 +107,7 @@
     <Compile Include="GameLogic\GameObjects\Tool.cs" />
     <Compile Include="GameLogic\GameObjects\GameObject.cs" />
     <Compile Include="GameLogic\GameObjects\Miner.cs" />
+    <Compile Include="GameLogic\Renderer\LightRenderer.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
@@ -133,6 +134,8 @@
     <None Include="Content\Fonts\Orbitron.spritefont" />
     <None Include="Content\more_platforms.json" />
     <None Include="Content\samplelvl.json" />
+    <None Include="Content\Lights\circular_light.psd" />
+    <None Include="Content\Lights\directional_light.psd" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -148,12 +151,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\caveMusic.mp3" />
+    <Content Include="Content\Lights\circular_light.png" />
+    <Content Include="Content\Lights\directional_light.png" />
     <Content Include="Content\Sprites\Backgrounds\Background1.jpg" />
     <Content Include="Content\Sprites\Backgrounds\Background2.jpg" />
     <Content Include="Content\Sprites\Backgrounds\ExitSign.png" />
     <Content Include="Content\Sprites\Backgrounds\ExitSign_2.png" />
     <Content Include="Content\Sprites\Miners\MinerHandsInPants.png" />
     <Content Include="Content\Sprites\Miners\MinerHandsOut.png" />
+    <Content Include="Content\Sprites\Miners\MinerPickaxe.png" />
+    <Content Include="Content\Sprites\Miners\MinerRope.png" />
     <Content Include="Content\Sprites\Misc\box.png" />
     <Content Include="Content\Sprites\Rocks\BareRock1.png" />
     <Content Include="Content\Sprites\Rocks\BareRock2.png" />
@@ -167,6 +174,7 @@
     <Content Include="Content\Sprites\Rocks\SuspendedRock.png" />
     <Content Include="Content\Sprites\Tools\Pickaxe.png" />
     <Content Include="Content\Sprites\Tools\Rope.png" />
+    <Content Include="Content\Lights\Lighting.fx" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

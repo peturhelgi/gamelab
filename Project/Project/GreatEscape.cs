@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Project.GameLogic;
 using Project.Menu;
 
@@ -54,7 +55,7 @@ namespace Project
 
         protected override void Draw(GameTime gameTime)
         {
-            _menu.Draw(gameTime, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+            _menu.Draw(gameTime, GraphicsDevice.PresentationParameters.BackBufferWidth, GraphicsDevice.PresentationParameters.BackBufferHeight);
             base.Draw(gameTime);
         }
     }
