@@ -1,5 +1,7 @@
 # Meetings
 
+Next meetings: Friday, 27.04.2018, 12:00 - Tuesday, 1.05.2018
+
 ## 22.04.2018
 
 ### Decisions:
