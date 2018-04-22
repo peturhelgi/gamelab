@@ -1,10 +1,12 @@
 # Meetings
 
 ## 22.04.2018
+
 ### Decisions:
 - The structure used in the collsion_detection branch will from now on be used for the Game.
 - The report will be written in LaTeX
 - The rules will be discussed and decided on in the next meeting
+- 
 ### Tasks:
 
 Bjarni: Adding the controlls for the XBox
