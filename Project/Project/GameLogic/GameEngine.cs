@@ -18,7 +18,7 @@ namespace Project.GameLogic
         List<AxisAllignedBoundingBox> _attentions;
 
         int[] CurrentMiner = {0,1};
-        public static Vector2 GRAVITY = new Vector2(0, 1000);
+        public static Vector2 GRAVITY = new Vector2(0, 2000);
         public TimeSpan gameTime;
 
         public GameEngine(GameState gameState) {
@@ -41,11 +41,11 @@ namespace Project.GameLogic
 
             switch (action) {
                 case (GameAction.walk_right):
-                    CalculateAndSetNewPosition(miner, new Vector2(5, 0));
+                    CalculateAndSetNewPosition(miner, new Vector2(8, 0));
                     break;
 
                 case (GameAction.walk_left):
-                    CalculateAndSetNewPosition(miner, new Vector2(-5, 0));
+                    CalculateAndSetNewPosition(miner, new Vector2(-8, 0));
                     break;
                 case (GameAction.jump):
                     TryToJump(miner, new Vector2(0,-800));
