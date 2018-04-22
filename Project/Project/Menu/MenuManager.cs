@@ -223,7 +223,7 @@ namespace Project.Menu
                 _currentPosition = 0;
             }
 
-            // Xbox controls for player one for the thumbstick
+            // Xbox controls for player one
             if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickDown) 
                 && _manager.OldPlayerOneState.IsButtonUp(Buttons.LeftThumbstickDown))
             {
@@ -235,6 +235,18 @@ namespace Project.Menu
             {
                 _currentPosition -= 1;
                 if(_currentPosition < 0) _currentPosition = _selections.Count - 1;
+            }
+            if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.DPadDown)
+                && _manager.OldPlayerOneState.IsButtonUp(Buttons.DPadDown))
+            {
+                _currentPosition += 1;
+                _currentPosition %= _selections.Count;
+            }
+            if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.DPadUp)
+                && _manager.OldPlayerOneState.IsButtonUp(Buttons.DPadUp))
+            {
+                _currentPosition -= 1;
+                if (_currentPosition < 0) _currentPosition = _selections.Count - 1;
             }
 
             if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A)
