@@ -38,12 +38,7 @@ namespace Project.Controls {
         }
 
         protected override void HandleGamePad(GamePadState gs,GameTime gameTime) {
-            
-            if(CurrentState.IsButtonDown((Buttons)Instructions.Select)) {
-                // TODO: Add a changed GameState, to escape the game
-                //Exit();
-                return;
-            }
+           
         }
     }
 }

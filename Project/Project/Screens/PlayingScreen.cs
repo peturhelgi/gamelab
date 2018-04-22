@@ -16,11 +16,11 @@ using Project.GameStates;
 
 namespace Project.Screens {
     public class PlayingScreen : GameScreen {
-        Level level;
         public GameEngine GameEngine;
-
         public static string baseFolder = "Content/GamePlay/Levels/";
-        Type type1 = typeof(int);
+
+        Level level;
+
         public PlayingScreen(string path) {
             this.Path = path;
             controller = new PlayingControls(new Camera(0.8f, Vector2.Zero));

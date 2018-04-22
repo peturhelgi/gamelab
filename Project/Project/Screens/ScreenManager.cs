@@ -103,14 +103,7 @@ namespace Project.Screens
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if(currentScreen.Renderer == null)
-            {
-                currentScreen.Draw(spriteBatch);
-            }
-            else
-            {
-                currentScreen.Renderer.Draw(spriteBatch);
-            }
+            currentScreen.Renderer?.Draw(spriteBatch);
             spriteBatch.Begin();
             if(InTranstition)
             {

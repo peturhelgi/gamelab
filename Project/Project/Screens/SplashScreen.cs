@@ -13,6 +13,7 @@ using Project.GameObjects;
 using Project.GameStates;
 using Newtonsoft.Json;
 using Project.Controls;
+using Project.Render;
 
 
 namespace Project.Screens
@@ -31,18 +32,25 @@ namespace Project.Screens
             Path = "Content/Load/SplashScreen.json";
             GameState = new GameState();
             Objects = new List<GameObject>();
+            Renderer = new Renderer();
         }
 
         public override void LoadContent()
         {
             base.LoadContent();
             Image.LoadContent(ScreenManager);
+            GameState state = new GameState();
+
             foreach(var obj in Objects)
             {
                 obj.LoadContent();
+                state.AddObject(obj);
             }
-            //TODO: init gameastate and add  to json
-            this.controller = new GameController();
+            //GameObject obj = new GameObject();
+            //TODO: init gameastate and add to json
+            this.controller = new GameController(
+                new Camera(0.0f, Vector2.Zero));
+            Renderer.Initialize(ref state, ref controller.Camera);
         }
 
         public override void UnloadContent()

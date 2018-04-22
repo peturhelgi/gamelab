@@ -63,13 +63,7 @@ namespace Project.Controls {
             // END Handle GameAction
         }
         protected override void HandleGamePad(GamePadState gs, GameTime gameTime)
-        {
-            if (gs.Buttons.Back == ButtonState.Pressed)
-            {
-                // TODO: Add a changed GameState, to escape the game
-                //Exit();
-                return;
-            }
+        {           
 
             // pressing A makes the character jump
             if(gs.IsButtonDown(Buttons.A))
