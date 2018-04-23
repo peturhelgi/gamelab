@@ -1,9 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Project.GameLogic.Renderer;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Project.Libs;
+
 
 namespace Project.GameLogic.GameObjects.Miner
 {
@@ -27,7 +30,12 @@ namespace Project.GameLogic.GameObjects.Miner
             Stance   = Stance.jump;
             tool = new Pickaxe();
             TextureString = textureString;
-
+            Lights = new List<Light>
+            {
+                new Light((SpriteSize * new Vector2(0.5f, 0.15f)), Vector2.Zero, LightRenderer.Lighttype.Circular, this),
+                new Light((SpriteSize * new Vector2(0.5f, 0.15f)), Vector2.Zero, LightRenderer.Lighttype.Directional, this)
+            };
+            Seed = SingleRandom.Instance.Next();
             lastUpdated = new TimeSpan();
 
         }

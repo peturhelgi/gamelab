@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Project.GameLogic.Collision;
+using Project.GameLogic.Renderer;
+using System.Collections.Generic;
 
 namespace Project.GameLogic.GameObjects
 {
@@ -54,9 +56,22 @@ namespace Project.GameLogic.GameObjects
             set;
         }
 
+        List<Light> Lights
+        {
+            get;
+            set;
+        }
+
+         int Seed
+        {
+            get;
+            set;
+        }
+
+
     }
 
-    abstract class GameObject : IGameObject {
+    public abstract class GameObject : IGameObject {
 
 
         public bool Falling { get; set; }
@@ -78,5 +93,9 @@ namespace Project.GameLogic.GameObjects
         public bool Visible { get; set; }
 
         public string TextureString { get; set; }
+
+        public List<Light> Lights { get; set; }
+
+        public int Seed { get; set; }
     }
 }
