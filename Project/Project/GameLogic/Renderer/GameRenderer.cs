@@ -59,20 +59,22 @@ namespace Project.GameLogic.Renderer
                 {
                         _spriteBatch.Draw(mode == Mode.DebugView ? _debugBox: obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);  
                 }
-                if (obj is Miner) {
-                    lights.Add(new Light(obj.Position+(obj.SpriteSize * new Vector2(0.5f, 0.15f)), Vector2.Zero, LightRenderer.Lighttype.Circular));
-                    lights.Add(new Light(obj.Position+(obj.SpriteSize * new Vector2(0.5f, 0.15f)), Vector2.Zero, LightRenderer.Lighttype.Directional));
+                if (obj is Miner) {                    
+                    lights.Add(new Light(
+                        obj.Position+(obj.SpriteSize * new Vector2(0.5f, 0.15f)),
+                        Vector2.Zero, 
+                        LightRenderer.Lighttype.Circular));
+                    lights.Add(new Light(
+                        obj.Position + (obj.SpriteSize * new Vector2(0.5f, 0.15f)),
+                        new Vector2(1, 0),
+                        LightRenderer.Lighttype.Directional));
+                    lights[lights.Count - 1].Rotation = (obj as Miner).LookingAngle;
                 }
             }
             _spriteBatch.End();
 
             // Render the Lights
             _renderTargetLights = _lightRenderer.Draw(width, height, lights, camera);
-
-
-
-
-
 
             _graphicsDevice.SetRenderTarget(null);
 

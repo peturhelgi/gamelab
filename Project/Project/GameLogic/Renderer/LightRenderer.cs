@@ -25,7 +25,10 @@ namespace Project.GameLogic.Renderer
             _circularLight = content.Load<Texture2D>("Lights/circular_light");
             _directionalLight = content.Load<Texture2D>("Lights/directional_light");
             _graphicsDevice = graphicsDevice;
-            _renderTarget = new RenderTarget2D(_graphicsDevice, _graphicsDevice.PresentationParameters.BackBufferWidth, _graphicsDevice.PresentationParameters.BackBufferHeight);
+            _renderTarget = new RenderTarget2D(
+                _graphicsDevice, 
+                _graphicsDevice.PresentationParameters.BackBufferWidth, 
+                _graphicsDevice.PresentationParameters.BackBufferHeight);
             _spriteBatch = new SpriteBatch(_graphicsDevice);
         }
 
@@ -43,7 +46,7 @@ namespace Project.GameLogic.Renderer
                         break;
 
                     case Lighttype.Directional:
-                        _spriteBatch.Draw(_directionalLight, light.Center - (_circularLight.Bounds.Size.ToVector2() * new Vector2(0.8f, 1.5f)), null, Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, 0);
+                        _spriteBatch.Draw(_directionalLight, light.Center - (_circularLight.Bounds.Size.ToVector2() * new Vector2(0.8f, 1.5f)), null, Color.White, light.Rotation, Vector2.Zero, 3f, SpriteEffects.None, 0);
                         break;
                 }
             }
@@ -58,12 +61,14 @@ namespace Project.GameLogic.Renderer
         public Vector2 Center;
         public Vector2 Direction;
         public LightRenderer.Lighttype Type;
+        public float Rotation;
 
         public Light(Vector2 center, Vector2 direction, LightRenderer.Lighttype type)
         {
             Center = center;
             Direction = direction;
             Type = type;
+            Rotation = (float)Math.Atan2(Direction.Y, Direction.X);
         }
         
 

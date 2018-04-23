@@ -93,15 +93,22 @@ namespace Project.GameLogic
 
             // START Handle GameAction
             // Player 1
-            var a = Keys.Right;
-            var b = new List<Keys>();
             if(_numPlayers > 0)
             {
                 if(state.IsKeyDown(Keys.Right)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_right, 0);
                 if(state.IsKeyDown(Keys.Left)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_left, 0);
                 if(state.IsKeyDown(Keys.Down)) GameEngine.HandleInput(0, GameEngine.GameAction.interact, 0);
                 if(state.IsKeyDown(Keys.Up)) GameEngine.HandleInput(0, GameEngine.GameAction.jump, 0);
+                if(state.IsKeyDown(Keys.OemComma))
+                {
+                    GameEngine.HandleInput(0, GameEngine.GameAction.look, 0.05f);
+                }
+                if(state.IsKeyDown(Keys.OemPeriod))
+                {
+                    GameEngine.HandleInput(0, GameEngine.GameAction.look, -0.05f);
+                }
             }
+
 
             // Player 2
             if(_numPlayers > 1)
@@ -110,6 +117,15 @@ namespace Project.GameLogic
                 if(state.IsKeyDown(Keys.A)) GameEngine.HandleInput(1, GameEngine.GameAction.walk_left, 0);
                 if(state.IsKeyDown(Keys.S)) GameEngine.HandleInput(1, GameEngine.GameAction.interact, 0);
                 if(state.IsKeyDown(Keys.W)) GameEngine.HandleInput(1, GameEngine.GameAction.jump, 0);
+
+                if(state.IsKeyDown(Keys.Z))
+                {
+                    GameEngine.HandleInput(1, GameEngine.GameAction.look, 0.05f);
+                }
+                if(state.IsKeyDown(Keys.X))
+                {
+                    GameEngine.HandleInput(1, GameEngine.GameAction.look, -0.05f);
+                }
             }
             // END Handle GameAction            
         }
@@ -122,6 +138,8 @@ namespace Project.GameLogic
             // START Handle GameAction
             if (gs.ThumbSticks.Left.X > 0.5f) GameEngine.HandleInput(player, GameEngine.GameAction.walk_right, 0);
             if (gs.ThumbSticks.Left.X < -0.5) GameEngine.HandleInput(player, GameEngine.GameAction.walk_left, 0);
+
+            GameEngine.HandleInput(player, GameEngine.GameAction.look, (float)Math.Atan2(gs.ThumbSticks.Right.Y, gs.ThumbSticks.Right.X));
             if (gs.IsButtonDown(Buttons.RightTrigger)) GameEngine.HandleInput(player, GameEngine.GameAction.interact, 0);
             if (gs.IsButtonDown(Buttons.A)) GameEngine.HandleInput(player, GameEngine.GameAction.jump, 0);
             // END Handle GameAction

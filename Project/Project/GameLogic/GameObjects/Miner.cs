@@ -16,6 +16,7 @@ namespace Project.GameLogic.GameObjects.Miner
         Gait Gait;
         Stance Stance;
         public TimeSpan lastUpdated;
+        public float LookingAngle;
         public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
         {
             Position = position;
@@ -27,7 +28,7 @@ namespace Project.GameLogic.GameObjects.Miner
             Stance   = Stance.jump;
             tool = new Pickaxe();
             TextureString = textureString;
-
+            LookingAngle = 0.0f;
             lastUpdated = new TimeSpan();
 
         }
