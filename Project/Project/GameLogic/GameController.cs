@@ -17,28 +17,45 @@ namespace Project.GameLogic
 
         public Camera Camera;
 
+        List<GamePadState> _padStates;
+        int _numPlayers;
+
 
         public GameController(GameEngine gameEngine, Camera camera) {
             GameEngine = gameEngine;
             Camera = camera;
+            _padStates = new List<GamePadState>();
         }
 
+        /// <summary>
+        /// Pre: GameEngine has loaded its map.
+        /// </summary>
+        public void Initialize()
+        { 
+            _numPlayers = GameEngine.GameState.GetActors().Count;
+            for(int i = 0; i < _numPlayers; ++i)
+            {
+                _padStates.Add(GamePad.GetState(i));
+            }
+        }
 
+        /// <summary>
+        /// Pre: Initialize() has been called.
+        /// </summary>
+        /// <param name="gameTime"></param>
         internal void HandleUpdate(GameTime gameTime)
         {
             GameEngine.gameTime = gameTime.TotalGameTime;
             HandleMouse( Mouse.GetState());
-            GamePadState PlayerOneState = GamePad.GetState(PlayerIndex.One);
-            if (PlayerOneState.IsConnected)
+            for(int i = 0; i < _numPlayers; ++i)
             {
-                HandleGamePad(PlayerOneState,0);
-                
-                // There can only be a second player, if there is a first one
-                GamePadState PlayerTwoState = GamePad.GetState(PlayerIndex.Two);
-                if (PlayerTwoState.IsConnected)
-                    HandleGamePad(PlayerTwoState,1);
+                _padStates[i] = GamePad.GetState(i);
+                if(!_padStates[i].IsConnected)
+                {
+                    break;
+                }
+                HandleGamePad(_padStates[i], i);
             }
-
 
             HandleKeyboard(Keyboard.GetState());
 
@@ -53,8 +70,6 @@ namespace Project.GameLogic
                 frame.Max = Vector2.Max(frame.Max, a.Max);
             }
             Camera.SetCameraToRectangle(new Rectangle((int)frame.Min.X, (int)frame.Min.Y, (int)(frame.Max.X - frame.Min.X), (int)(frame.Max.Y - frame.Min.Y)));
-
-
         }
 
         private void HandleMouse(MouseState ms) {
@@ -78,25 +93,30 @@ namespace Project.GameLogic
 
             // START Handle GameAction
             // Player 1
-            if (state.IsKeyDown(Keys.Right)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_right, 0);
-            if (state.IsKeyDown(Keys.Left)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_left, 0);
-            if (state.IsKeyDown(Keys.Down)) GameEngine.HandleInput(0, GameEngine.GameAction.interact, 0);
-            if (state.IsKeyDown(Keys.Up)) GameEngine.HandleInput(0, GameEngine.GameAction.jump, 0);
+            var a = Keys.Right;
+            var b = new List<Keys>();
+            if(_numPlayers > 0)
+            {
+                if(state.IsKeyDown(Keys.Right)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_right, 0);
+                if(state.IsKeyDown(Keys.Left)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_left, 0);
+                if(state.IsKeyDown(Keys.Down)) GameEngine.HandleInput(0, GameEngine.GameAction.interact, 0);
+                if(state.IsKeyDown(Keys.Up)) GameEngine.HandleInput(0, GameEngine.GameAction.jump, 0);
+            }
 
             // Player 2
-            if (state.IsKeyDown(Keys.L)) GameEngine.HandleInput(1, GameEngine.GameAction.walk_right, 0);
-            if (state.IsKeyDown(Keys.J)) GameEngine.HandleInput(1, GameEngine.GameAction.walk_left, 0);
-            if (state.IsKeyDown(Keys.K)) GameEngine.HandleInput(1, GameEngine.GameAction.interact, 0);
-            if (state.IsKeyDown(Keys.I)) GameEngine.HandleInput(1, GameEngine.GameAction.jump, 0);
-            // END Handle GameAction
-
-
-
-
+            if(_numPlayers > 1)
+            {
+                if(state.IsKeyDown(Keys.D)) GameEngine.HandleInput(1, GameEngine.GameAction.walk_right, 0);
+                if(state.IsKeyDown(Keys.A)) GameEngine.HandleInput(1, GameEngine.GameAction.walk_left, 0);
+                if(state.IsKeyDown(Keys.S)) GameEngine.HandleInput(1, GameEngine.GameAction.interact, 0);
+                if(state.IsKeyDown(Keys.W)) GameEngine.HandleInput(1, GameEngine.GameAction.jump, 0);
+            }
+            // END Handle GameAction            
         }
 
         private void HandleGamePad(GamePadState gs, int player)
         {
+            player %= _numPlayers;
             Debug.Assert(player == 0 || player == 1, "Only support two players indexed 0 or 1");
 
             // START Handle GameAction
