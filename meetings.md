@@ -23,12 +23,16 @@ None for this Meeting
 
 **Bjarni**:
 [] Adding seperate BBox for the Miner to indicate the area, in which he can interact with things.
+
 [] Changing the seperation of collectibles, solids and miners ( see GameState lines 22ff)
+
 [] Create some interactibles: Crates & Rocks
 
 **Pétur**:
 [] change debug function (right now when pressing `P`) for the collisions (i.e. drawing a polygon, where the BBoxes are, switching of lighting , ...)
+
 [] Pause-Menu (a Menu overlaying the Game Screen, i.e. render both on top of each other)
+
 [] GameOver / "You Won" Screens (not connected to interactibles yet, but show then on a certain button-press, i.e. `F1` and `F2`
 
 **Nicolas and Simon**:
