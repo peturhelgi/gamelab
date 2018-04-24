@@ -41,19 +41,19 @@ namespace Project.GameLogic
             switch (action)
             {
                 case (CameraAction.right):
-                    Translate(new Vector2(2, 0));
+                    Translate(new Vector2(20, 0) / _zoom);
                     break;
 
                 case (CameraAction.left):
-                    Translate(new Vector2(-2, 0));
+                    Translate(new Vector2(-20, 0) / _zoom);
                     break;
 
                 case (CameraAction.up):
-                    Translate(new Vector2(0, -2));
+                    Translate(new Vector2(0, -20) / _zoom);
                     break;
 
                 case (CameraAction.down):
-                    Translate(new Vector2(0, 2));
+                    Translate(new Vector2(0, 20) / _zoom);
                     break;
 
                 case (CameraAction.zoom_in):
