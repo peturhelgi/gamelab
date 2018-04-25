@@ -294,3 +294,7 @@ __pycache__/
 *.aux
 *.toc
 *.synctex.gz
+
+# Monogame build output and others
+*.xnb
+*.dll
