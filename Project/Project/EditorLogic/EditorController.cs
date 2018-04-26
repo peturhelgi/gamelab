@@ -91,12 +91,14 @@ namespace EditorLogic
             if (gamePadState.IsButtonDown(Buttons.DPadDown)) Camera.HandleAction(Camera.CameraAction.down);
 
             // START Handle GameAction
-            _manager.CursorPosition += (new Vector2(100, 0) * gamePadState.ThumbSticks.Left.X);
-            _manager.CursorPosition += (new Vector2(0, -100) * gamePadState.ThumbSticks.Left.Y);
+            _manager.CursorPosition += (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
+            _manager.CursorPosition += (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
 
             // END Handle GameAction
 
-
+            if (_manager.CurrentObject != null) {
+                _manager.CurrentObject.SpriteSize +=  gamePadState.ThumbSticks.Right*new Vector2(5,-5);
+            }
 
             if (gamePadState.IsButtonDown(Buttons.Y) && _oldGamePadState.IsButtonUp(Buttons.Y))
             {
