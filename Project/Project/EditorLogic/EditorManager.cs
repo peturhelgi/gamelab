@@ -12,7 +12,8 @@ namespace EditorLogic
 {
     class EditorManager
     {
-        EditorController _controller;
+        EditorController _editorController;
+        GameController _gameController;
         MapLoader _mapLoader;
 
         GraphicsDeviceManager _graphics;
@@ -20,9 +21,17 @@ namespace EditorLogic
         ContentManager _content;
         GameRenderer _gameRenderer;
         EditorRenderer _editorRenderer;
+        GameEngine _engine;
+        Camera _camera;
+
+         GamePadState _oldGamePadState;
+        KeyboardState _oldKeyboardState;
 
         // Editor State
         public Vector2 CursorPosition;
+        bool Editing = true;
+
+
 
 
 
@@ -33,37 +42,66 @@ namespace EditorLogic
             _graphics = graphics;
             _mapLoader = new MapLoader(content);
             CursorPosition = Vector2.Zero;
+
+            _oldKeyboardState = Keyboard.GetState();
+            _oldGamePadState = GamePad.GetState(PlayerIndex.One);
         }
 
         public void LoadLevel(String path)
         {
-            _controller = new EditorController(
-                new GameEngine(_mapLoader.InitMap(path)), 
-                new Camera(0.2f, Vector2.Zero, new Vector2(_graphicsDevice.PresentationParameters.BackBufferWidth, _graphicsDevice.PresentationParameters.BackBufferHeight)),
-                this);
+            _engine = new GameEngine(_mapLoader.InitMap(path));
+            _camera = new Camera(0.2f, Vector2.Zero, new Vector2(_graphicsDevice.PresentationParameters.BackBufferWidth, _graphicsDevice.PresentationParameters.BackBufferHeight));
+            _editorController = new EditorController(_engine, _camera, this);
+            _gameController = new GameController(_engine, _camera);
             LoadContent();
         }
 
         void LoadContent()
         {
-            _mapLoader.LoadMapContent(_controller.GameEngine.GameState);
+            _mapLoader.LoadMapContent(_engine.GameState);
             // The render instance is create per level: Like this we don't need to worry about resetting global variables in the renderer (e.g. lightning)
-            _gameRenderer = new GameRenderer(_graphicsDevice, _controller.GameEngine.GameState, _content);
-            _editorRenderer = new EditorRenderer(_graphicsDevice, _controller.GameEngine.GameState, _content, this);
+            _gameRenderer = new GameRenderer(_graphicsDevice, _engine.GameState, _content);
+            _editorRenderer = new EditorRenderer(_graphicsDevice, _engine.GameState, _content, this);
         }
 
 
         public void Update(GameTime gameTime)
         {
-            _controller.HandleUpdate(gameTime);
+            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            GamePad.GetState(PlayerIndex.One);
+            if ((gamePadState.IsButtonDown(Buttons.B) && _oldGamePadState.IsButtonUp(Buttons.B))
+                || (keyboardState.IsKeyDown(Keys.Tab) && keyboardState.IsKeyUp(Keys.Tab)))
+            {
+                Editing = !Editing;
+                if (Editing)
+                {
+                    _camera.Zoom(0.2f);
+                }
+            }
+            if (Editing)
+            {
+                _editorController.HandleUpdate(gameTime);
+            }
+            else
+            {
+                _gameController.HandleUpdate(gameTime);
+            }
+
+            _oldKeyboardState = Keyboard.GetState();
+            _oldGamePadState = GamePad.GetState(PlayerIndex.One);
         }
 
         public void Draw(GameTime gameTime, int width, int height)
         {
-            _gameRenderer.Draw(gameTime, width, height, Keyboard.GetState().IsKeyDown(Keys.P) ? GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, _controller.Camera.view);
-            _editorRenderer.Draw(gameTime, width, height, _controller.Camera.view);
-            
+            _gameRenderer.Draw(gameTime, width, height, Keyboard.GetState().IsKeyDown(Keys.P) ? GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, _editorController.Camera.view);
 
+            if (Editing)
+            {
+                _editorRenderer.Draw(gameTime, width, height, _editorController.Camera.view);
+            }
+            
         }
 
     }
