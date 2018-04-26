@@ -38,6 +38,18 @@ namespace EditorLogic
             SpriteBatch spriteBatch = new SpriteBatch(_graphicsDevice);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, null, null, null, null, camera);
             spriteBatch.Draw(_debugBox, new Rectangle((int)_manager.CursorPosition.X, (int)_manager.CursorPosition.Y, 10, 10), Color.White);
+            if (_manager.CurrentObject != null)
+            {
+                spriteBatch.Draw(
+                    _manager.CurrentObject.Texture,
+                    new Rectangle(
+                        (int)_manager.CursorPosition.X,
+                        (int)_manager.CursorPosition.Y,
+                        (int)_manager.CurrentObject.SpriteSize.X,
+                        (int)_manager.CurrentObject.SpriteSize.Y),
+                    Color.White);
+            }
+            
             spriteBatch.End();
 
         }

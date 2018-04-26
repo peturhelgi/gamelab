@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Project.GameLogic;
 using Project.GameLogic.GameObjects;
+using Project.GameLogic.GameObjects.Miner;
 using Project.GameLogic.Renderer;
 using Project.LevelManager;
 using System;
@@ -24,16 +25,16 @@ namespace EditorLogic
         GameEngine _engine;
         Camera _camera;
 
-         GamePadState _oldGamePadState;
+        GamePadState _oldGamePadState;
         KeyboardState _oldKeyboardState;
 
         // Editor State
         public Vector2 CursorPosition;
-        bool Editing = true;
+        public bool Editing = true;
+        public GameObject CurrentObject;
 
 
-
-
+       
 
         public EditorManager(ContentManager content, GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics)
         {
@@ -45,6 +46,21 @@ namespace EditorLogic
 
             _oldKeyboardState = Keyboard.GetState();
             _oldGamePadState = GamePad.GetState(PlayerIndex.One);
+        }
+
+
+        public void ExchangeCurrentObject(Object newObject)
+        {
+            CurrentObject = new Ground(Vector2.Zero, new Vector2(640, 318), "Sprites/Rocks/Ground1");
+            CurrentObject.Texture = _content.Load<Texture2D>(CurrentObject.TextureString);
+        }
+
+        public void PlaceCurrentObject() {
+            if (CurrentObject != null) {
+                CurrentObject.Position = CursorPosition;
+                _engine.GameState.AddSolid(CurrentObject);
+                CurrentObject = null;
+            }
         }
 
         public void LoadLevel(String path)

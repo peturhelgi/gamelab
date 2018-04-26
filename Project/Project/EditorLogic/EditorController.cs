@@ -20,12 +20,17 @@ namespace EditorLogic
 
         EditorManager _manager;
 
+        GamePadState _oldGamePadState;
+        KeyboardState _oldKeyboardState;
 
         public EditorController(GameEngine gameEngine, Camera camera, EditorManager manager)
         {
             GameEngine = gameEngine;
             Camera = camera;
             _manager = manager;
+
+            _oldKeyboardState = Keyboard.GetState();
+            _oldGamePadState = GamePad.GetState(PlayerIndex.One);
         }
 
 
@@ -33,20 +38,17 @@ namespace EditorLogic
         {
             GameEngine.gameTime = gameTime.TotalGameTime;
             HandleMouse(Mouse.GetState());
-            GamePadState PlayerOneState = GamePad.GetState(PlayerIndex.One);
+            
 
-            HandleGamePad(PlayerOneState, 0);
-
-              
-
+            HandleGamePad(GamePad.GetState(PlayerIndex.One));
 
             HandleKeyboard(Keyboard.GetState());
 
+            _oldKeyboardState = Keyboard.GetState();
+            _oldGamePadState = GamePad.GetState(PlayerIndex.One);
+
             GameEngine.Update();
-
             
-
-
         }
 
         private void HandleMouse(MouseState ms)
@@ -80,13 +82,8 @@ namespace EditorLogic
 
         }
 
-        private void HandleGamePad(GamePadState gamePadState, int player)
+        private void HandleGamePad(GamePadState gamePadState)
         {
-            if(player != 0 )
-            {
-                return;
-            }
-
            
             if (gamePadState.IsButtonDown(Buttons.DPadLeft)) Camera.HandleAction(Camera.CameraAction.left);
             if (gamePadState.IsButtonDown(Buttons.DPadRight)) Camera.HandleAction(Camera.CameraAction.right);
@@ -96,8 +93,21 @@ namespace EditorLogic
             // START Handle GameAction
             _manager.CursorPosition += (new Vector2(100, 0) * gamePadState.ThumbSticks.Left.X);
             _manager.CursorPosition += (new Vector2(0, -100) * gamePadState.ThumbSticks.Left.Y);
-            
+
             // END Handle GameAction
+
+
+
+            if (gamePadState.IsButtonDown(Buttons.Y) && _oldGamePadState.IsButtonUp(Buttons.Y))
+            {
+                _manager.ExchangeCurrentObject(null);
+            }
+
+
+            if (gamePadState.IsButtonDown(Buttons.A) && _oldGamePadState.IsButtonUp(Buttons.A))
+            {
+                _manager.PlaceCurrentObject();
+            }
 
             if (gamePadState.IsButtonDown(Buttons.Back))
                 // TODO: Add a changed GameState, to escape the game
