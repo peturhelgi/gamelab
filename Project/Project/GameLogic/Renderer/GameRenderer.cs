@@ -68,11 +68,6 @@ namespace Project.GameLogic.Renderer
             // Render the Lights
             _renderTargetLights = _lightRenderer.Draw(gameTime, width, height, lights, camera);
 
-
-
-
-
-
             _graphicsDevice.SetRenderTarget(null);
 
             _graphicsDevice.Clear(Color.Black);
