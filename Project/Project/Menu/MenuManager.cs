@@ -88,7 +88,8 @@ namespace Project.Menu
             _pauseGame = new PopOverMenu(
                 "Game Paused", _graphicsDevice, this);
             _pauseGame.AddSelection("Resume Game", Action.ResumeGame, "");
-            _pauseGame.AddSelection("Quit Game", Action.ShowMainMenu, "");
+            _pauseGame.AddSelection("Restart Level", Action.StartGame, "");
+            _pauseGame.AddSelection("Main Menu", Action.ShowMainMenu, "");
             
             _loading = new LoadingScreen(_graphicsDevice, this);
 
@@ -149,7 +150,15 @@ namespace Project.Menu
                 case Action.ShowPauseMenu:
                     _prevScreen = _currentScreen;
                     _popOver = _pauseGame;
-                    // possibility to do something else.
+
+                    retry = _popOver.GetSelection(1);
+                    retry.Value = _levelSelector?.GetLastSelection()?.Value;
+                    if(retry.Value == null)
+                    {
+                        retry.Value = _mainMenu.GetSelection(0).Value;
+                    }
+                    _popOver.SetSelection(1, retry);
+
                     _currentScreen = _popOver;
                     break;
 
@@ -297,11 +306,11 @@ namespace Project.Menu
     class SelectionMenu : Screen
     {
 
-        List<Selection> _selections;
-        int _currentPosition = 0;
+        protected List<Selection> _selections;
+        protected int _currentPosition = 0;
         int _lastSelection = -1;
         protected SpriteBatch _spriteBatch;
-        String _title;
+        protected String _title;
 
 
         public SelectionMenu(string title, GraphicsDevice graphicsDevice,
