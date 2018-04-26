@@ -67,6 +67,8 @@ namespace EditorLogic
         {
             _engine = new GameEngine(_mapLoader.InitMap(path));
             _camera = new Camera(0.2f, Vector2.Zero, new Vector2(_graphicsDevice.PresentationParameters.BackBufferWidth, _graphicsDevice.PresentationParameters.BackBufferHeight));
+            _camera.SetCameraToRectangle(new Rectangle(0, 0, 2000, 2000));
+
             _editorController = new EditorController(_engine, _camera, this);
             _gameController = new GameController(_engine, _camera);
             LoadContent();
@@ -93,7 +95,7 @@ namespace EditorLogic
                 Editing = !Editing;
                 if (Editing)
                 {
-                    _camera.Zoom(0.2f);
+                    _camera.SetCameraToRectangle(new Rectangle(0, 0, 2000, 2000));
                 }
             }
             if (Editing)
