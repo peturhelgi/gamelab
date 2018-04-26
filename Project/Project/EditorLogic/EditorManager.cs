@@ -3,11 +3,13 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Project.GameLogic;
+using Project.GameLogic.Collision;
 using Project.GameLogic.GameObjects;
 using Project.GameLogic.GameObjects.Miner;
 using Project.GameLogic.Renderer;
 using Project.LevelManager;
 using System;
+using System.Collections.Generic;
 
 namespace EditorLogic
 {
@@ -60,6 +62,14 @@ namespace EditorLogic
                 CurrentObject.Position = CursorPosition;
                 _engine.GameState.AddSolid(CurrentObject);
                 CurrentObject = null;
+            }
+        }
+
+        public void PickObjectUnderCursor() {
+            List<GameObject> collisions = _engine.CollisionDetector.FindCollisions(new AxisAllignedBoundingBox(CursorPosition, CursorPosition+new Vector2(10)), _engine.GameState.Solids);
+            if (collisions.Count > 0) {
+                CurrentObject = collisions[0];
+                CursorPosition = CurrentObject.Position;
             }
         }
 

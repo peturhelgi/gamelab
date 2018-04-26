@@ -111,6 +111,11 @@ namespace EditorLogic
                 _manager.PlaceCurrentObject();
             }
 
+            if (gamePadState.IsButtonDown(Buttons.X) && _oldGamePadState.IsButtonUp(Buttons.X))
+            {
+                _manager.PickObjectUnderCursor();
+            }
+
             if (gamePadState.IsButtonDown(Buttons.Back))
                 // TODO: Add a changed GameState, to escape the game
                 //Exit();
