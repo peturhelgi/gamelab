@@ -19,11 +19,13 @@ We'll use a Factory pattern to init the GameObjects
 
 ### Tasks
 **Andreea**: 
+
 [] Adds more sprites to the **Miner** and starts with showing the animations
 
 [] Look at Sprite Mesh Rendering possibilities
 
 **Bjarni**:
+
 [] Adding seperate BBox for the Miner to indicate the area, in which he can interact with things.
 
 [] Changing the seperation of collectibles, solids and miners ( see GameState lines 22ff)
@@ -31,6 +33,7 @@ We'll use a Factory pattern to init the GameObjects
 [] Create some interactibles: Crates & Rocks, Ropes and Ladders
 
 **Pétur**:
+
 [] change debug function (right now when pressing `P`) for the collisions (i.e. drawing a polygon, where the BBoxes are, switching of lighting , ...)
 
 [] GameOver / "You Won" / Pause-Menu Merge
@@ -39,9 +42,11 @@ We'll use a Factory pattern to init the GameObjects
 
 
 **Nicolas**:
+
 [] Fix his Laptop (or set it on fire)
 
 **Simon**:
+
 [] Level Editor (& Merge)
 
 [] Look at Sprite Mesh Rendering possibilities
@@ -64,9 +69,11 @@ None for this Meeting
 
 ### Task to complete until the next meeting
 **Andreea**: 
+
 [] Adds more sprites to the **Miner** and starts with showing the animations
 
 **Bjarni**:
+
 [] Adding seperate BBox for the Miner to indicate the area, in which he can interact with things.
 
 [] Changing the seperation of collectibles, solids and miners ( see GameState lines 22ff)
@@ -74,6 +81,7 @@ None for this Meeting
 [] Create some interactibles: Crates & Rocks
 
 **Pétur**:
+
 [] change debug function (right now when pressing `P`) for the collisions (i.e. drawing a polygon, where the BBoxes are, switching of lighting , ...)
 
 [] Pause-Menu (a Menu overlaying the Game Screen, i.e. render both on top of each other)
@@ -81,6 +89,7 @@ None for this Meeting
 [] GameOver / "You Won" Screens (not connected to interactibles yet, but show then on a certain button-press, i.e. `F1` and `F2`
 
 **Nicolas and Simon**:
+
 [] Level Editor
 
 ---
