@@ -57,7 +57,7 @@ namespace Project.GameLogic
 
         public void Draw(GameTime gameTime, int width, int height)
         {
-            _renderer.Draw(gameTime, width, height, Keyboard.GetState().IsKeyDown(Keys.P) ? GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, _controller.Camera.view); 
+            _renderer.Draw(gameTime, width, height, Keyboard.GetState().IsKeyDown(Keys.P) ? GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, _controller.Camera); 
         }
 
     }

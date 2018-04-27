@@ -6,18 +6,19 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Project.Libs;
-
+//using TheGreatEscape.GameLogic.Util;
 
 namespace Project.GameLogic.GameObjects.Miner
 {
 
-    enum Gait { stop, crawl, walk, run, jump};
-    enum Stance { stand, jump, crouch, lie };
+    public enum Gait { stop, crawl, walk, run, jump};
+    public enum Stance { stand, jump, crouch, lie };
     class Miner : GameObject
     {
         Tool tool;
         Gait Gait;
         Stance Stance;
+        //MotionSpriteSheet motion;
         public TimeSpan lastUpdated;
         public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
         {

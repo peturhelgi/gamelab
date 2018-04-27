@@ -25,7 +25,8 @@ namespace Project.LevelManager
 
             string text = ContentManager.Load<string>(levelName);
             Level level = JsonConvert.DeserializeObject<Level>(text);
-
+            gameState.background = level.background;
+            
             foreach (Obj obj in level.objects)
             {
 
@@ -58,7 +59,9 @@ namespace Project.LevelManager
         public void LoadMapContent(GameState gameState)
         {
 
-            background = ContentManager.Load<Texture2D>("Sprites/Backgrounds/Background1");
+            Texture2D background = ContentManager.Load<Texture2D>(gameState.background);
+            gameState.SetBackground(background);
+
             // TODO possibly add a hashed Map to only load every Texture once
             foreach (GameObject obj in gameState.GetAll())
             {
@@ -66,9 +69,5 @@ namespace Project.LevelManager
             }
         }
 
-        public Texture2D getBackground()
-        {
-            return background;
-        }
     }
 }

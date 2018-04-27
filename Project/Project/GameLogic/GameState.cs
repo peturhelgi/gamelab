@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Xna.Framework.Graphics;
 using Project.GameLogic.GameObjects;
 using Project.GameLogic.GameObjects.Miner;
 using Project.LevelManager;
@@ -15,6 +16,7 @@ namespace Project.GameLogic
         public List<Miner> Actors;
         public List<GameObject> Solids;
         public List<GameObject> Collectibles;
+        private Texture2D Background;
         CollisionDetector CollisionDetector;
 
 
@@ -59,7 +61,13 @@ namespace Project.GameLogic
             return Collectibles;
         }
 
-
+        public void SetBackground(Texture2D background) {
+            Background = background;
+        }
+        
+        public Texture2D GetBackground() {
+            return Background;
+        }
 
     }
 }

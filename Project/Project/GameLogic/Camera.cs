@@ -13,6 +13,7 @@ namespace Project.GameLogic
         float _zoom;
         Vector2 _position;
         Vector2 _dimensions;
+        Rectangle _rectangle;
 
         public enum CameraAction { right, left, up, down, zoom_in, zoom_out };
 
@@ -34,9 +35,14 @@ namespace Project.GameLogic
             Vector2 dims = r.Size.ToVector2()+new Vector2(2*offset);
             Vector2 scales =    _dimensions/ dims;
             _zoom = Math.Min(scales.X, scales.Y);
+            int width = Math.Max(2560, (int)dims.X);
+            _rectangle = new Rectangle(r.X - offset, r.Y - offset , width, 1600);
             Refresh();
         }
 
+        public Rectangle GetCameraRectangle() {
+            return _rectangle;
+        }
         public void HandleAction(CameraAction action) {
             switch (action)
             {
