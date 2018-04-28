@@ -376,11 +376,16 @@ namespace Project.Menu
             // Keyboard controls
             if(Keyboard.GetState().IsKeyDown(Keys.Down) && _manager.OldKeyboardState.IsKeyUp(Keys.Down))
             {
-                _currentPosition += 1;
-                _currentPosition %= _selections.Count;
+                _currentPosition = (++_currentPosition) %_selections.Count;
             }
 
-            if(Keyboard.GetState().IsKeyDown(Keys.Enter) && _manager.OldKeyboardState.IsKeyUp(Keys.Enter) ||
+            if (Keyboard.GetState().IsKeyDown(Keys.Up) && _manager.OldKeyboardState.IsKeyUp(Keys.Up))
+            {
+                _currentPosition = --_currentPosition < 0 ? _selections.Count - 1 : _currentPosition;
+            }
+
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter) && _manager.OldKeyboardState.IsKeyUp(Keys.Enter) ||
                 Keyboard.GetState().IsKeyDown(Keys.Space) && _manager.OldKeyboardState.IsKeyUp(Keys.Space))
             {
                 _manager.CallAction(_selections[_currentPosition].Action, _selections[_currentPosition].Value);
@@ -392,26 +397,22 @@ namespace Project.Menu
             if(GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickDown)
                 && _manager.OldPlayerOneState.IsButtonUp(Buttons.LeftThumbstickDown))
             {
-                _currentPosition += 1;
-                _currentPosition %= _selections.Count;
+                _currentPosition = (++_currentPosition) % _selections.Count;
             }
             if(GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickUp)
                 && _manager.OldPlayerOneState.IsButtonUp(Buttons.LeftThumbstickUp))
             {
-                _currentPosition -= 1;
-                if(_currentPosition < 0) _currentPosition = _selections.Count - 1;
+                _currentPosition = --_currentPosition < 0 ? _selections.Count - 1 : _currentPosition;
             }
             if(GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.DPadDown)
                 && _manager.OldPlayerOneState.IsButtonUp(Buttons.DPadDown))
             {
-                _currentPosition += 1;
-                _currentPosition %= _selections.Count;
+                _currentPosition = (++_currentPosition) % _selections.Count;
             }
             if(GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.DPadUp)
                 && _manager.OldPlayerOneState.IsButtonUp(Buttons.DPadUp))
             {
-                _currentPosition -= 1;
-                if(_currentPosition < 0) _currentPosition = _selections.Count - 1;
+                _currentPosition = --_currentPosition < 0 ? _selections.Count - 1 : _currentPosition;
             }
 
             if(GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A)
