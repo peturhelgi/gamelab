@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Project.GameLogic.GameObjects;
@@ -36,24 +37,28 @@ namespace Project.GameLogic.Renderer
             _graphicsDevice.Clear(Color.Black);
 
             _spriteBatch.Begin(transformMatrix: camera);
+            float offset = 0.8f;
             foreach (Light light in lights)
             {
                 Simplex.Noise.Seed = light.Owner.Seed;
                 float flicker = Simplex.Noise.CalcPixel1D(gametime.TotalGameTime.Milliseconds / 25, 0.1f);
+                flicker *= offset;
+                offset += 0.2f;
                 float pulse = 1 / (flicker / 5000 + 1.0f);
                 float brightness = 1 / (flicker / 1000 + 1.0f);
 
-                switch (light.Type) {
+                switch (light.Type)
+                {
                     case Lighttype.Circular:
-                        _spriteBatch.Draw(_circularLight, light.Center - (_circularLight.Bounds.Size.ToVector2() * 1.5f*pulse) + light.Owner.Position, null, Color.White*brightness, 0f, Vector2.Zero, 3f* pulse, SpriteEffects.None, 0);
+                        _spriteBatch.Draw(_circularLight, light.Center - (_circularLight.Bounds.Size.ToVector2() * 1.5f * pulse) + light.Owner.Position, null, Color.White * brightness, 0f, Vector2.Zero, 3f * pulse, SpriteEffects.None, 0);
                         break;
 
                     case Lighttype.Directional:
-                        _spriteBatch.Draw(_directionalLight, light.Center - (_circularLight.Bounds.Size.ToVector2() * new Vector2(0.8f, 1.5f)*pulse) + light.Owner.Position, null, Color.White*brightness, 0f, Vector2.Zero, 3f*pulse, SpriteEffects.None, 0);
+                        _spriteBatch.Draw(_directionalLight, light.Center - (_circularLight.Bounds.Size.ToVector2() * new Vector2(0.8f, 1.5f) * pulse) + light.Owner.Position, null, Color.White * brightness, 0f, Vector2.Zero, 3f * pulse, SpriteEffects.None, 0);
                         break;
                 }
             }
-            
+
             _spriteBatch.End();
             return _renderTarget;
         }
@@ -73,7 +78,7 @@ namespace Project.GameLogic.Renderer
             Type = type;
             Owner = owner;
         }
-        
+
 
     }
 }

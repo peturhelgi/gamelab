@@ -8,8 +8,8 @@
     <ProjectGuid>{439CD82A-F559-427D-8B17-62E43CAE7C8A}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Project</RootNamespace>
-    <AssemblyName>Project</AssemblyName>
+    <RootNamespace>TheGreatEscape</RootNamespace>
+    <AssemblyName>TheGreatEscape</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.16299.0</TargetPlatformVersion>
@@ -21,6 +21,9 @@
     <PackageCertificateKeyFile>Project_TemporaryKey.pfx</PackageCertificateKeyFile>
     <MonoGamePlatform>WindowsStoreApp</MonoGamePlatform>
     <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x64</AppxBundlePlatforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -156,6 +159,23 @@
     <None Include="Project_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\AppIcon.altform-unplated_targetsize-16.png" />
+    <Content Include="Assets\AppIcon.altform-unplated_targetsize-256.png" />
+    <Content Include="Assets\AppIcon.altform-unplated_targetsize-48.png" />
+    <Content Include="Assets\AppIcon.scale-100.png" />
+    <Content Include="Assets\AppIcon.scale-200.png" />
+    <Content Include="Assets\AppIcon.scale-400.png" />
+    <Content Include="Assets\AppIcon.targetsize-16.png" />
+    <Content Include="Assets\AppIcon.targetsize-256.png" />
+    <Content Include="Assets\AppIcon.targetsize-48.png" />
+    <Content Include="Assets\MediumTile.scale-100.png" />
+    <Content Include="Assets\MediumTile.scale-200.png" />
+    <Content Include="Assets\PackageLogo.scale-100.png" />
+    <Content Include="Assets\PackageLogo.scale-200.png" />
+    <Content Include="Assets\PackageLogo.scale-400.png" />
+    <Content Include="Assets\SplashScreen.scale-100.png" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\SplashScreen.scale-400.png" />
     <Content Include="Content\caveMusic.mp3" />
     <Content Include="Content\Lights\circular_light.png" />
     <Content Include="Content\Lights\directional_light.png" />
@@ -182,13 +202,6 @@
     <Content Include="Content\Sprites\Tools\Rope.png" />
     <Content Include="Content\Lights\Lighting.fx" />
     <Content Include="Properties\Default.rd.xml" />
-    <Content Include="Assets\LockScreenLogo.scale-200.png" />
-    <Content Include="Assets\SplashScreen.scale-200.png" />
-    <Content Include="Assets\Square150x150Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="Assets\StoreLogo.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
