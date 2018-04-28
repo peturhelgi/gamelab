@@ -201,7 +201,7 @@ namespace Project.GameLogic.GameObjects.Miner
         public void InteractWithCrate(GameState gs)
         {
             // picking up crate
-            if(holdingThisObject == null)
+            if(!isHolding())
             {
                 List<GameObject> collisions = CollisionDetector.FindCollisions(InteractionBox(), gs.GetSolids());
                 foreach (GameObject c in collisions)
@@ -216,17 +216,20 @@ namespace Project.GameLogic.GameObjects.Miner
                     }
                 }
             }
-            // Dropping crate
             else
             {
-                holdingThisObject.Position = new Vector2(holdingThisObject.Position.X, 
+                holdingThisObject.Position = new Vector2(holdingThisObject.Position.X,
                     holdingThisObject.Position.Y + SpriteSize.Y - holdingThisObject.SpriteSize.Y);
                 gs.AddSolid(holdingThisObject);
                 gs.RemoveCollectible(holdingThisObject);
 
                 holdingThisObject = null;
             }
+        }
 
+        public bool isHolding()
+        {
+            return (holdingThisObject != null);
         }
 
     }

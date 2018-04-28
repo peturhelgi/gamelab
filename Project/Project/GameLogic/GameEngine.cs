@@ -123,7 +123,7 @@ namespace Project.GameLogic
 
 
             // 2. check for collisions in the X-axis, the Y-axis (falling and jumping against something) and the intersection of the movement
-            AxisAllignedBoundingBox xBox, yBox;
+            AxisAllignedBoundingBox xBox, yBox, xCrate, yCrate;
 
             if (direction.X > 0) // we are moving right
             {
@@ -131,6 +131,15 @@ namespace Project.GameLogic
                     new Vector2(actor.BBox.Max.X, actor.BBox.Min.Y), 
                     new Vector2(actor.BBox.Max.X + direction.X, actor.BBox.Max.Y)
                     );
+                if (actor.isHolding())
+                {
+                    xCrate = new AxisAllignedBoundingBox(
+                         new Vector2(actor.holdingThisObject.BBox.Max.X, actor.holdingThisObject.BBox.Min.Y),
+                         new Vector2(actor.holdingThisObject.BBox.Max.X + direction.X, actor.holdingThisObject.BBox.Max.Y)
+                         );
+                }
+                else xCrate = new AxisAllignedBoundingBox(new Vector2(0), new Vector2(0));
+ 
             }
             else
             {
@@ -138,6 +147,15 @@ namespace Project.GameLogic
                     new Vector2(actor.BBox.Min.X + direction.X, actor.BBox.Min.Y),
                     new Vector2(actor.BBox.Min.X, actor.BBox.Max.Y)
                     );
+                if (actor.isHolding())
+                {
+                    xCrate = new AxisAllignedBoundingBox(
+                        new Vector2(actor.holdingThisObject.BBox.Min.X + direction.X, actor.holdingThisObject.BBox.Min.Y),
+                        new Vector2(actor.holdingThisObject.BBox.Min.X, actor.holdingThisObject.BBox.Max.Y)
+                        );
+                }
+                else xCrate = new AxisAllignedBoundingBox(new Vector2(0), new Vector2(0));
+
             }
 
             
@@ -147,6 +165,14 @@ namespace Project.GameLogic
                     new Vector2(actor.BBox.Min.X, actor.BBox.Max.Y),
                     new Vector2(actor.BBox.Max.X, actor.BBox.Max.Y + direction.Y)
                     );
+                if (actor.isHolding())
+                {
+                    yCrate = new AxisAllignedBoundingBox(
+                    new Vector2(actor.holdingThisObject.BBox.Min.X, actor.holdingThisObject.BBox.Max.Y),
+                    new Vector2(actor.holdingThisObject.BBox.Max.X, actor.holdingThisObject.BBox.Max.Y + direction.Y)
+                    );
+                }
+                else yCrate = new AxisAllignedBoundingBox(new Vector2(0), new Vector2(0));
             }
             else
             {
@@ -154,12 +180,21 @@ namespace Project.GameLogic
                    new Vector2(actor.BBox.Min.X, actor.BBox.Min.Y + direction.Y),
                    new Vector2(actor.BBox.Max.X, actor.BBox.Min.Y)
                    );
+                if (actor.isHolding())
+                {
+                    yCrate = new AxisAllignedBoundingBox(
+                    new Vector2(actor.holdingThisObject.BBox.Min.X, actor.holdingThisObject.BBox.Min.Y + direction.Y),
+                    new Vector2(actor.holdingThisObject.BBox.Max.X, actor.holdingThisObject.BBox.Min.Y)
+                    );
+                }
+                else yCrate = new AxisAllignedBoundingBox(new Vector2(0), new Vector2(0));
             }
 
             
             // 3. check, if there are any collisions in the X-axis and correct position
             List<GameObject> collisions = CollisionDetector.FindCollisions(xBox, GameState.Solids);
-            if (collisions.Count > 0) {
+            List<GameObject> boxCollisions = CollisionDetector.FindCollisions(xCrate, GameState.Solids);
+            if (collisions.Count > 0 || boxCollisions.Count > 0) {
                 // Debug.WriteLine("collided with x-axis");
                 direction.X = 0;
             }
@@ -189,6 +224,19 @@ namespace Project.GameLogic
                 }
                 
             }
+            // dropping crate
+            boxCollisions = CollisionDetector.FindCollisions(yCrate, GameState.Solids);
+            if (boxCollisions.Count > 0)
+            {
+                // actor.holdingThisObject.Position = new Vector2(actor.holdingThisObject.Position.X,
+                   //  actor.holdingThisObject.Position.Y + actor.SpriteSize.Y - actor.holdingThisObject.SpriteSize.Y);
+                GameState.AddSolid(actor.holdingThisObject);
+                GameState.RemoveCollectible(actor.holdingThisObject);
+
+                actor.holdingThisObject = null;
+
+            }
+
             actor.Position += direction;
 
 
