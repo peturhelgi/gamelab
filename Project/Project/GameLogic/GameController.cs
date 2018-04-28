@@ -16,21 +16,15 @@ namespace Project.GameLogic
     class GameController
     {
         public GameEngine GameEngine;
-
         public Camera Camera;
         public bool DebugView { private set; get; }
-        List<GamePadState> _padStates;
+        
         int _maxNumPlayers;
 
         public GameController(GameEngine gameEngine, Camera camera) {
             GameEngine = gameEngine;
             Camera = camera;
             _maxNumPlayers = 2;
-            _padStates = new List<GamePadState>();
-            for(int i = 0; i < _maxNumPlayers; ++i)
-            {
-                _padStates.Add( GamePad.GetState(i));
-            }
 
             DebugView = false;
         }
@@ -39,6 +33,7 @@ namespace Project.GameLogic
         {
             GameEngine.gameTime = gameTime.TotalGameTime;
             HandleMouse( Mouse.GetState());
+
             for(int i = 0; i < _maxNumPlayers; ++i)
             {
                 HandleGamePad(GamePad.GetState(i), i);
@@ -82,7 +77,6 @@ namespace Project.GameLogic
 
             MyDebugger.IsActive = state.IsKeyDown(Keys.P);
             GameManager.RenderDark = state.IsKeyUp(Keys.L);
-
             if(_maxNumPlayers > 0)
             {
                 if(state.IsKeyDown(Keys.Right)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_right, 0);
@@ -105,7 +99,10 @@ namespace Project.GameLogic
 
         private void HandleGamePad(GamePadState gs, int player)
         {
-            player %= _maxNumPlayers;
+            if(!gs.IsConnected)
+            {
+                return;
+            }
 
             // START Handle GameAction
             if (gs.ThumbSticks.Left.X > 0.5f) GameEngine.HandleInput(player, GameEngine.GameAction.walk_right, 0);

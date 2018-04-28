@@ -16,6 +16,7 @@ namespace Project.GameLogic
     {
         public GameState GameState;
         public enum GameAction { walk_right, walk_left, jump, interact, collect };
+
         private CollisionDetector CollisionDetector;
         List<AxisAllignedBoundingBox> _attentions;
 
@@ -38,7 +39,9 @@ namespace Project.GameLogic
         }
 
         public void HandleInput(int player, GameAction action, float value) {
-            if(player < 0 || player > 1) {
+
+            if(player < 0 || player > 1)
+            {
                 return;
             }
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
