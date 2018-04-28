@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using TheGreatEscape.GameLogic.Util;
+
 
 namespace Project.GameLogic
 {
@@ -16,7 +18,7 @@ namespace Project.GameLogic
         public GameEngine GameEngine;
 
         public Camera Camera;
-
+        public bool DebugView { private set; get; }
         List<GamePadState> _padStates;
         int _numPlayers;
 
@@ -25,6 +27,7 @@ namespace Project.GameLogic
             GameEngine = gameEngine;
             Camera = camera;
             _padStates = new List<GamePadState>();
+            DebugView = false;
         }
 
         /// <summary>
@@ -75,8 +78,8 @@ namespace Project.GameLogic
         private void HandleMouse(MouseState ms) {
             if (ms.LeftButton == ButtonState.Pressed)
             {
-                Debug.WriteLine(ms.Position.X);
-                Debug.WriteLine(ms.Position.Y);
+                MyDebugger.WriteLine(ms.Position.X);
+                MyDebugger.WriteLine(ms.Position.Y);
             }
         }
 
@@ -93,6 +96,8 @@ namespace Project.GameLogic
 
             // START Handle GameAction
             // Player 1
+
+            MyDebugger.IsActive = state.IsKeyDown(Keys.P);
             if(_numPlayers > 0)
             {
                 if(state.IsKeyDown(Keys.Right)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_right, 0);

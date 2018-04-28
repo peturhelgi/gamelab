@@ -7,6 +7,8 @@ using Project.GameLogic.Renderer;
 using Project.LevelManager;
 using System;
 
+using TheGreatEscape.GameLogic.Util;
+
 namespace Project.GameLogic
 {
     class GameManager
@@ -19,7 +21,8 @@ namespace Project.GameLogic
         ContentManager _content;
         GameRenderer _renderer;
         
-        public GameManager(ContentManager content, GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics) {
+        public GameManager(ContentManager content, GraphicsDevice graphicsDevice, 
+                GraphicsDeviceManager graphics) {
             _content = content;
             _graphicsDevice = graphicsDevice;
             _graphics = graphics;
@@ -66,7 +69,10 @@ namespace Project.GameLogic
 
         public void Draw(GameTime gameTime, int width, int height)
         {
-            _renderer.Draw(gameTime, width, height, Keyboard.GetState().IsKeyDown(Keys.P) ? GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, _controller.Camera.view); 
+            _renderer.Draw(gameTime, width, height,
+                MyDebugger.IsActive ? 
+                GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, 
+                _controller.Camera.view); 
         }
 
     }
