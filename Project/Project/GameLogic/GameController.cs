@@ -83,11 +83,19 @@ namespace Project.GameLogic
             if (state.IsKeyDown(Keys.Down)) GameEngine.HandleInput(0, GameEngine.GameAction.interact, 0);
             if (state.IsKeyDown(Keys.Up)) GameEngine.HandleInput(0, GameEngine.GameAction.jump, 0);
 
+            if (state.IsKeyUp(Keys.Right) && state.IsKeyUp(Keys.Left) 
+                    && state.IsKeyUp(Keys.Down) && state.IsKeyUp(Keys.Up))
+                GameEngine.HandleInput(0, GameEngine.GameAction.sit_still, 0);
+
             // Player 2
             if (state.IsKeyDown(Keys.L)) GameEngine.HandleInput(1, GameEngine.GameAction.walk_right, 0);
             if (state.IsKeyDown(Keys.J)) GameEngine.HandleInput(1, GameEngine.GameAction.walk_left, 0);
             if (state.IsKeyDown(Keys.K)) GameEngine.HandleInput(1, GameEngine.GameAction.interact, 0);
             if (state.IsKeyDown(Keys.I)) GameEngine.HandleInput(1, GameEngine.GameAction.jump, 0);
+
+            if (state.IsKeyUp(Keys.L) && state.IsKeyUp(Keys.J)
+                    && state.IsKeyUp(Keys.K) && state.IsKeyUp(Keys.I))
+                GameEngine.HandleInput(1, GameEngine.GameAction.sit_still, 0);
             // END Handle GameAction
 
 

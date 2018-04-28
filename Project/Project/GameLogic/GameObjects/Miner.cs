@@ -22,6 +22,7 @@ namespace Project.GameLogic.GameObjects.Miner
         Stance Stance;
         public Dictionary<MotionType, MotionSpriteSheet> Motion;
         public MotionSpriteSheet CurrMotion;
+        public SpriteEffects orientation;
 
         public TimeSpan lastUpdated;
         public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
@@ -43,6 +44,7 @@ namespace Project.GameLogic.GameObjects.Miner
             Seed = SingleRandom.Instance.Next();
             lastUpdated = new TimeSpan();
 
+            orientation = SpriteEffects.FlipHorizontally;
             InstantiateMotionSheets();
             //TODO: add a case when it fails to get that type of motion
             Motion.TryGetValue(MotionType.idle, out CurrMotion);
@@ -57,16 +59,17 @@ namespace Project.GameLogic.GameObjects.Miner
                 switch (m)
                 {
                     case MotionType.idle:
-                        mss = new MotionSpriteSheet(24, 42);
+                        mss = new MotionSpriteSheet(24, 42, MotionType.idle);
                         break;
                     case MotionType.walk:
-                        mss = new MotionSpriteSheet(11, 100);
+                        mss = new MotionSpriteSheet(11, 100, MotionType.walk);
                         break;
                     case MotionType.run:
-                        mss = new MotionSpriteSheet(12, 88);
+                        mss = new MotionSpriteSheet(12, 88, MotionType.run);
                         break;
+                    //TODO: fix the jump sprite, has a small artefact
                     case MotionType.jump:
-                        mss = new MotionSpriteSheet(12, 88);
+                        mss = new MotionSpriteSheet(12, 60, MotionType.jump);
                         break;
                     default:
                         mss = null;
@@ -85,9 +88,14 @@ namespace Project.GameLogic.GameObjects.Miner
         }
 
         public void ChangeCurrentMotion(MotionType m) {
+
+            //TODO: Improve fix for corner case when miner is walking while in air
+            if (m == MotionType.walk && CurrMotion.SheetType == MotionType.jump)
+                return;
             //TODO: add check when this TryGetValue fails
             Motion.TryGetValue(m,out CurrMotion);
-            CurrMotion.ResetCurrentFrame();
+            if (CurrMotion.DifferentMotionType(m))
+                CurrMotion.ResetCurrentFrame();
 
         }
         /// <summary>

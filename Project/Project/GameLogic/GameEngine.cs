@@ -13,7 +13,7 @@ namespace Project.GameLogic
     class GameEngine
     {
         public GameState GameState;
-        public enum GameAction { walk_right, walk_left, jump, interact, collect };
+        public enum GameAction { walk_right, walk_left, jump, interact, collect, sit_still };
         private CollisionDetector CollisionDetector;
         List<AxisAllignedBoundingBox> _attentions;
 
@@ -42,10 +42,14 @@ namespace Project.GameLogic
             switch (action) {
                 case (GameAction.walk_right):
                     CalculateAndSetNewPosition(miner, new Vector2(8, 0));
+                    miner.ChangeCurrentMotion(MotionType.walk);
+                    miner.orientation = Microsoft.Xna.Framework.Graphics.SpriteEffects.FlipHorizontally;
                     break;
 
                 case (GameAction.walk_left):
                     CalculateAndSetNewPosition(miner, new Vector2(-8, 0));
+                    miner.ChangeCurrentMotion(MotionType.walk);
+                    miner.orientation = Microsoft.Xna.Framework.Graphics.SpriteEffects.None;
                     break;
                 case (GameAction.jump):
                     TryToJump(miner, new Vector2(0,-800));
@@ -56,6 +60,7 @@ namespace Project.GameLogic
                     break;
 
                 default:
+                    miner.ChangeCurrentMotion(MotionType.idle);
                     break;
             }
         }
@@ -114,6 +119,7 @@ namespace Project.GameLogic
                     new Vector2(actor.BBox.Max.X, actor.BBox.Min.Y), 
                     new Vector2(actor.BBox.Max.X + direction.X, actor.BBox.Max.Y)
                     );
+                //actor.ChangeCurrentMotion(MotionType.walk);
             }
             else
             {
@@ -121,6 +127,7 @@ namespace Project.GameLogic
                     new Vector2(actor.BBox.Min.X + direction.X, actor.BBox.Min.Y),
                     new Vector2(actor.BBox.Min.X, actor.BBox.Max.Y)
                     );
+                //actor.ChangeCurrentMotion(MotionType.walk);
             }
 
             
@@ -165,13 +172,13 @@ namespace Project.GameLogic
                     actor.Speed = Vector2.Zero;
                     if (direction.Y > 0) // hitting floor
                     {
-                        direction.Y = (lowestPoint - actor.BBox.Max.Y)-0.1f;
+                        direction.Y = (lowestPoint - actor.BBox.Max.Y) - 0.1f;
                         actor.Falling = false;
                         actor.ChangeCurrentMotion(MotionType.idle);
                     }
 
                 }
-                
+
             }
             actor.Position += direction;
 
@@ -189,6 +196,9 @@ namespace Project.GameLogic
                 if (collisions.Count == 0)
                     actor.Falling = true;
             }
+
+            //if (!actor.Falling)
+            //    actor.ChangeCurrentMotion(MotionType.walk);
             actor.lastUpdated = gameTime;
         }
 
