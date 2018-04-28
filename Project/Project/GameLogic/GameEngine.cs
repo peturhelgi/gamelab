@@ -38,6 +38,9 @@ namespace Project.GameLogic
         }
 
         public void HandleInput(int player, GameAction action, float value) {
+            if(player < 0 || player > 1) {
+                return;
+            }
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
 
             switch (action) {

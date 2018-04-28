@@ -41,12 +41,7 @@ namespace Project.GameLogic
             HandleMouse( Mouse.GetState());
             for(int i = 0; i < _maxNumPlayers; ++i)
             {
-                _padStates[i] = GamePad.GetState(i);
-                if(!_padStates[i].IsConnected)
-                {
-                    break;
-                }
-                HandleGamePad(_padStates[i], i);
+                HandleGamePad(GamePad.GetState(i), i);
             }
 
             HandleKeyboard(Keyboard.GetState());
