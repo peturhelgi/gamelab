@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Project.GameLogic;
 using Project.GameLogic.GameObjects;
 using Project.GameLogic.GameObjects.Miner;
+using System.Collections.Generic;
 
 namespace Project.LevelManager
 {
@@ -64,11 +65,30 @@ namespace Project.LevelManager
             {
                 obj.Texture = ContentManager.Load<Texture2D>(obj.TextureString);
             }
+
+            LoadMotionSheets(gameState);
         }
 
+        public void LoadMotionSheets(GameState gameState) {
+
+            List<Miner> miners = gameState.GetActors();
+
+            foreach (Miner miner in miners)
+            {
+                // TODO: add a generic way of loading the motion sheets, when more assets are made
+                Texture2D motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/idle_sheet_24");
+                miner.SetMotionSprite(motionSprite, MotionType.idle);
+                motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/walk_sheet_11");
+                miner.SetMotionSprite(motionSprite, MotionType.walk);
+                motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/run_sheet_12");
+                miner.SetMotionSprite(motionSprite, MotionType.run);
+                motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/jump_sheet_12");
+                miner.SetMotionSprite(motionSprite, MotionType.jump);
+            }
+        }
         public Texture2D getBackground()
         {
             return background;
         }
-    }
+    }                                      
 }

@@ -17,8 +17,8 @@
     },
     {
       "dim": {
-        "x": 102,
-        "y": 370
+        "x": 48,
+        "y": 185
       },
       "pos": {
         "x": -200,
@@ -30,12 +30,12 @@
       },
       "m": 80,
       "type": "miner",
-      "texture": "Sprites/Miners/MinerHandsInPants"
+      "texture": "Sprites/Miners/MinerStatic"
     },
     {
       "dim": {
-        "x": 123,
-        "y": 370
+        "x": 61.5,
+        "y": 185
       },
       "pos": {
         "x": -100,

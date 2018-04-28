@@ -167,6 +167,7 @@ namespace Project.GameLogic
                     {
                         direction.Y = (lowestPoint - actor.BBox.Max.Y)-0.1f;
                         actor.Falling = false;
+                        actor.ChangeCurrentMotion(MotionType.idle);
                     }
 
                 }

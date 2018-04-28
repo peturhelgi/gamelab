@@ -57,7 +57,17 @@ namespace Project.GameLogic.Renderer
             {
                 if (obj.Visible)
                 {
-                        _spriteBatch.Draw(mode == Mode.DebugView ? _debugBox: obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);  
+                    if (obj is Miner) {
+                        Rectangle source = ((Miner)obj).CurrMotion.SourceRectangle;
+                        Vector2 motionSize = new Vector2(source.Width, source.Height);
+                        Vector2 scale = new Vector2(obj.SpriteSize.X, obj.SpriteSize.Y) / motionSize;
+                        motionSize *= scale;
+                        _spriteBatch.Draw(((Miner)obj).CurrMotion.Image, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)motionSize.X, 
+                            (int)motionSize.Y), source, Color.White, 0f, Vector2.Zero, SpriteEffects.FlipHorizontally, 0f);
+                    }
+                    else {
+                        _spriteBatch.Draw(mode == Mode.DebugView ? _debugBox : obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);
+                    }
                 }
                 if (obj.Lights is List<Light>) {
                     lights.AddRange(obj.Lights);
@@ -65,13 +75,13 @@ namespace Project.GameLogic.Renderer
             }
             _spriteBatch.End();
 
+            foreach (Miner miner in _gameState.GetActors())
+            {
+                miner.CurrMotion.Update(gameTime);
+            }
+
             // Render the Lights
             _renderTargetLights = _lightRenderer.Draw(gameTime, width, height, lights, camera);
-
-
-
-
-
 
             _graphicsDevice.SetRenderTarget(null);
 

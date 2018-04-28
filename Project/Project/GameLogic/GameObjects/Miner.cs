@@ -6,18 +6,23 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Project.Libs;
-
+using TheGreatEscape.GameLogic.Util;
 
 namespace Project.GameLogic.GameObjects.Miner
 {
 
     enum Gait { stop, crawl, walk, run, jump};
     enum Stance { stand, jump, crouch, lie };
+
+    public enum MotionType { idle, walk, run, jump };
     class Miner : GameObject
     {
         Tool tool;
         Gait Gait;
         Stance Stance;
+        public Dictionary<MotionType, MotionSpriteSheet> Motion;
+        public MotionSpriteSheet CurrMotion;
+
         public TimeSpan lastUpdated;
         public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
         {
@@ -38,8 +43,53 @@ namespace Project.GameLogic.GameObjects.Miner
             Seed = SingleRandom.Instance.Next();
             lastUpdated = new TimeSpan();
 
+            InstantiateMotionSheets();
+            //TODO: add a case when it fails to get that type of motion
+            Motion.TryGetValue(MotionType.idle, out CurrMotion);
         }
 
+        private void InstantiateMotionSheets() {
+            MotionSpriteSheet mss;
+            Motion = new Dictionary<MotionType, MotionSpriteSheet>();
+
+            foreach (MotionType m in Enum.GetValues(typeof(MotionType)))
+            {
+                switch (m)
+                {
+                    case MotionType.idle:
+                        mss = new MotionSpriteSheet(24, 42);
+                        break;
+                    case MotionType.walk:
+                        mss = new MotionSpriteSheet(11, 100);
+                        break;
+                    case MotionType.run:
+                        mss = new MotionSpriteSheet(12, 88);
+                        break;
+                    case MotionType.jump:
+                        mss = new MotionSpriteSheet(12, 88);
+                        break;
+                    default:
+                        mss = null;
+                        break;
+                }
+                Motion.Add(m, mss);
+            }
+        }
+
+        public void SetMotionSprite(Texture2D sprite, MotionType m) 
+        {
+            if (Motion.TryGetValue(m, out MotionSpriteSheet mss))
+            {
+                mss.Image = sprite;
+            }
+        }
+
+        public void ChangeCurrentMotion(MotionType m) {
+            //TODO: add check when this TryGetValue fails
+            Motion.TryGetValue(m,out CurrMotion);
+            CurrMotion.ResetCurrentFrame();
+
+        }
         /// <summary>
         /// Makes the miner jump if possible
         /// </summary>
@@ -50,6 +100,7 @@ namespace Project.GameLogic.GameObjects.Miner
             // TODO: add jump logic
             this.Speed = speed;
 
+            ChangeCurrentMotion(MotionType.jump);
             return true;
         }
         public bool IsAirborne()
