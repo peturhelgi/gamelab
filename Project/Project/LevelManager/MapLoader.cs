@@ -6,6 +6,7 @@ using Project.GameLogic;
 using Project.GameLogic.GameObjects;
 using Project.GameLogic.GameObjects.Miner;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Project.LevelManager
 {
@@ -72,19 +73,30 @@ namespace Project.LevelManager
         public void LoadMotionSheets(GameState gameState) {
 
             List<Miner> miners = gameState.GetActors();
+            Miner miner = miners.ElementAt(0);
+            // TODO: add a generic way of loading the motion sheets, when more assets are made
+            Texture2D motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/idle_sheet_24");
+            miner.SetMotionSprite(motionSprite, MotionType.idle);
+            motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/walk_sheet_11");
+            miner.SetMotionSprite(motionSprite, MotionType.walk);
+            motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/run_sheet_12");
+            miner.SetMotionSprite(motionSprite, MotionType.run);
+            motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/jump_sheet_12");
+            miner.SetMotionSprite(motionSprite, MotionType.jump);
 
-            foreach (Miner miner in miners)
+            if (miners.Last() != miner)
             {
-                // TODO: add a generic way of loading the motion sheets, when more assets are made
-                Texture2D motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/idle_sheet_24");
+                miner = miners.ElementAt(1);
+                motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/idle_sheet_24_b");
                 miner.SetMotionSprite(motionSprite, MotionType.idle);
-                motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/walk_sheet_11");
+                motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/walk_sheet_11_b");
                 miner.SetMotionSprite(motionSprite, MotionType.walk);
-                motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/run_sheet_12");
+                motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/run_sheet_12_b");
                 miner.SetMotionSprite(motionSprite, MotionType.run);
-                motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/jump_sheet_12");
+                motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/jump_sheet_12_b");
                 miner.SetMotionSprite(motionSprite, MotionType.jump);
             }
+
         }
         public Texture2D getBackground()
         {

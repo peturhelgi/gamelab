@@ -119,7 +119,6 @@ namespace Project.GameLogic
                     new Vector2(actor.BBox.Max.X, actor.BBox.Min.Y), 
                     new Vector2(actor.BBox.Max.X + direction.X, actor.BBox.Max.Y)
                     );
-                //actor.ChangeCurrentMotion(MotionType.walk);
             }
             else
             {
@@ -127,7 +126,6 @@ namespace Project.GameLogic
                     new Vector2(actor.BBox.Min.X + direction.X, actor.BBox.Min.Y),
                     new Vector2(actor.BBox.Min.X, actor.BBox.Max.Y)
                     );
-                //actor.ChangeCurrentMotion(MotionType.walk);
             }
 
             
