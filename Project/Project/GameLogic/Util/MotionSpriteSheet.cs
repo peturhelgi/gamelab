@@ -48,16 +48,8 @@ namespace TheGreatEscape.GameLogic.Util {
         public bool DifferentMotionType(MotionType motion) {
             return motion != SheetType;
         }
-        //public void LoadContent(ref Image image) {
-        //    base.LoadContent(ref image);
-        //}
-
-        //public void UnloadContent() {
-        //    base.UnloadContent();
-        //}
 
         public void Update(GameTime gametime) {
-            //base.Update(gametime);
             if (IsActive) {
                 FrameCounter += (int)gametime.ElapsedGameTime.TotalMilliseconds;
                 if (FrameCounter >= SwitchFrame) {

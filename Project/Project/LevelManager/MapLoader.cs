@@ -73,7 +73,7 @@ namespace Project.LevelManager
         public void LoadMotionSheets(GameState gameState) {
 
             List<Miner> miners = gameState.GetActors();
-            Miner miner = miners.ElementAt(0);
+            Miner miner = miners[0];
             // TODO: add a generic way of loading the motion sheets, when more assets are made
             Texture2D motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/idle_sheet_24");
             miner.SetMotionSprite(motionSprite, MotionType.idle);
@@ -84,6 +84,7 @@ namespace Project.LevelManager
             motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/jump_sheet_12");
             miner.SetMotionSprite(motionSprite, MotionType.jump);
 
+            // Check if there are two miners in the game
             if (miners.Last() != miner)
             {
                 miner = miners.ElementAt(1);

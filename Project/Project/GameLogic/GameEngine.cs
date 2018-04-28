@@ -6,6 +6,7 @@ using System.Diagnostics;
 using Project.GameLogic.GameObjects.Miner;
 using Project.GameLogic.GameObjects;
 using Project.GameLogic.Collision;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Project.GameLogic
 {
@@ -37,19 +38,22 @@ namespace Project.GameLogic
 
 
         public void HandleInput(int player, GameAction action, float value) {
+            if (player >= GameState.Actors.Count)
+                return;
+
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
 
             switch (action) {
                 case (GameAction.walk_right):
                     CalculateAndSetNewPosition(miner, new Vector2(8, 0));
                     miner.ChangeCurrentMotion(MotionType.walk);
-                    miner.orientation = Microsoft.Xna.Framework.Graphics.SpriteEffects.FlipHorizontally;
+                    miner.orientation = SpriteEffects.FlipHorizontally;
                     break;
 
                 case (GameAction.walk_left):
                     CalculateAndSetNewPosition(miner, new Vector2(-8, 0));
                     miner.ChangeCurrentMotion(MotionType.walk);
-                    miner.orientation = Microsoft.Xna.Framework.Graphics.SpriteEffects.None;
+                    miner.orientation = SpriteEffects.None;
                     break;
                 case (GameAction.jump):
                     TryToJump(miner, new Vector2(0,-800));
@@ -188,8 +192,6 @@ namespace Project.GameLogic
                     new Vector2(actor.BBox.Max.X, actor.BBox.Max.Y + 0.5f)
                     );
 
-                
-                
                 collisions = CollisionDetector.FindCollisions(tempBox, GameState.Solids);
                 if (collisions.Count == 0)
                     actor.Falling = true;

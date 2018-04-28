@@ -11,15 +11,12 @@ using TheGreatEscape.GameLogic.Util;
 namespace Project.GameLogic.GameObjects.Miner
 {
 
-    enum Gait { stop, crawl, walk, run, jump};
-    enum Stance { stand, jump, crouch, lie };
-
     public enum MotionType { idle, walk, run, jump };
     class Miner : GameObject
     {
         Tool tool;
-        Gait Gait;
-        Stance Stance;
+        MotionType motionType;
+
         public Dictionary<MotionType, MotionSpriteSheet> Motion;
         public MotionSpriteSheet CurrMotion;
         public SpriteEffects orientation;
@@ -32,8 +29,7 @@ namespace Project.GameLogic.GameObjects.Miner
             Mass     = mass;
             SpriteSize = spriteSize;
             Visible  = true;
-            Gait     = Gait.walk;
-            Stance   = Stance.jump;
+            motionType     = MotionType.walk;
             tool = new Pickaxe();
             TextureString = textureString;
             Lights = new List<Light>
@@ -87,15 +83,20 @@ namespace Project.GameLogic.GameObjects.Miner
             }
         }
 
-        public void ChangeCurrentMotion(MotionType m) {
+        public void ChangeCurrentMotion(MotionType m)
+        {
 
             //TODO: Improve fix for corner case when miner is walking while in air
             if (m == MotionType.walk && CurrMotion.SheetType == MotionType.jump)
+            {
                 return;
+            }
             //TODO: add check when this TryGetValue fails
-            Motion.TryGetValue(m,out CurrMotion);
+            Motion.TryGetValue(m, out CurrMotion);
             if (CurrMotion.DifferentMotionType(m))
+            {
                 CurrMotion.ResetCurrentFrame();
+            }
 
         }
         /// <summary>
@@ -103,17 +104,12 @@ namespace Project.GameLogic.GameObjects.Miner
         /// </summary>
         /// <returns>True if 1==1</returns>
         public bool Jump(Vector2 speed) {
-            this.Stance = Stance.jump;
-            this.Gait = Gait.jump;
+            this.motionType = MotionType.jump;
             // TODO: add jump logic
             this.Speed = speed;
 
             ChangeCurrentMotion(MotionType.jump);
             return true;
-        }
-        public bool IsAirborne()
-        {
-            return this.Stance == Stance.jump;
         }
 
 
@@ -122,87 +118,56 @@ namespace Project.GameLogic.GameObjects.Miner
         /// </summary>
         /// <returns></returns>
         public bool Crouch() {
-            this.Stance = Stance.crouch;
-            this.Gait = Gait.crawl;
+            this.motionType = MotionType.crawl;
             // TODO: add crouch logic
 
             return true;
         }
 
-        public bool IsCrouching()
-        {
-            return this.Stance == Stance.crouch;
-        }
 
         public bool IsCrawling() {
-            return this.Gait == Gait.crawl;
+            return this.motionType == MotionType.crawl;
         }
         /// <summary>
         /// Makes the miner walk if possible
         /// </summary>
         /// <returns>true iff 1==1</returns>
         public bool Walk() {
-            this.Stance = Stance.stand;
-            this.Gait = Gait.walk;
+            this.motionType = MotionType.walk;
             // TODO: Add some walk logic
 
             return true;
         }
 
-        /// <summary>
-        /// Makes the miner stand up if possible
-        /// </summary>
-        /// <returns>true iff 1==1</returns>
-        public bool StandUp()
-        {
-            this.Stance = Stance.stand;
-            return true;
-        }
-
-        public bool IsStanding()
-        {
-            return this.Stance == Stance.stand;
-        }
         public bool IsWalking() {
-            return this.Gait == Gait.walk;
+            return this.motionType == MotionType.walk;
         }
 
         public bool LieDown() {
-            this.Stance = Stance.lie;
-            this.Gait = Gait.stop;
+            this.motionType = MotionType.stop;
 
             return true;
         }              
 
-        public bool IsLying()
-        {
-            return this.Stance == Stance.lie;
-        }
-
-        /// <summary>
-        /// Makes the miner run if possible
-        /// </summary>
-        /// <returns>true iff 1==1</returns>
         public bool Run() {
-            this.Stance = Stance.stand;
-            this.Gait = Gait.run;
+            this.motionType = MotionType.run;
             // TODO: Add some running logic
 
             return true;
         }
 
         public bool IsRunning() {
-            return this.Gait == Gait.run;
+            return this.motionType == MotionType.run;
         }
+
         public bool Halt() {
             this.Speed = new Vector2(0, 0);
-            this.Gait = Gait.stop;
-            this.Stance = Stance.stand;
+            this.motionType = MotionType.stop;
             return true;
         }
 
         public bool IsStill() {
-            return this.Gait == Gait.stop;
+            return this.motionType == MotionType.stop;
         }
 
         /// <summary>
@@ -212,16 +177,16 @@ namespace Project.GameLogic.GameObjects.Miner
         /// <returns>True iff 1==1</returns>
         public bool Move(Vector2 dv) {
             //TODO: add move logic, the one here is just an example
-            switch (this.Gait) {
-                case Gait.crawl:
+            switch (this.motionType) {
+                case MotionType.crawl:
                     this.Speed = dv/2; // for example, there could be some more logic here using our physics
                     break;
 
-                case Gait.walk:
+                case MotionType.walk:
                     this.Speed = dv;   // for example, there could be some more logic here using our physics
                     break;
 
-                case Gait.run:
+                case MotionType.run:
                     this.Speed = 2*dv; // for example, there could be some more logic here using our physics
                     break;
 
@@ -234,14 +199,11 @@ namespace Project.GameLogic.GameObjects.Miner
             return true;
         }
 
-       
-
         /// <summary>
-        /// Uses the tool that the miner currenty has
+        /// Uses the tool that the miner currently has
         /// </summary>
         /// <returns>True iff 1==1</returns>
         public bool UseTool(List<GameObject> gameObjects) {
-            this.Stance = Stance.stand;
             tool.Use(this, gameObjects);
 
             return true;
