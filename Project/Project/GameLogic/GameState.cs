@@ -62,6 +62,10 @@ namespace Project.GameLogic
         {
             return Collectibles;
         }
+        public void RemoveCollectible(GameObject collectible)
+        {
+            Collectibles.Remove(collectible);
+        }
 
 
 

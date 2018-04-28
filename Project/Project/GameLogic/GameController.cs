@@ -14,13 +14,14 @@ namespace Project.GameLogic
     class GameController
     {
         public GameEngine GameEngine;
-
+        private KeyboardState _oldKeyboardState;
         public Camera Camera;
 
 
         public GameController(GameEngine gameEngine, Camera camera) {
             GameEngine = gameEngine;
             Camera = camera;
+            _oldKeyboardState = Keyboard.GetState();
         }
 
 
@@ -38,7 +39,6 @@ namespace Project.GameLogic
                 if (PlayerTwoState.IsConnected)
                     HandleGamePad(PlayerTwoState,1);
             }
-
 
             HandleKeyboard(Keyboard.GetState());
 
@@ -80,7 +80,7 @@ namespace Project.GameLogic
             // Player 1
             if (state.IsKeyDown(Keys.Right)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_right, 0);
             if (state.IsKeyDown(Keys.Left)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_left, 0);
-            if (state.IsKeyDown(Keys.Down)) GameEngine.HandleInput(0, GameEngine.GameAction.interact, 0);
+            if (state.IsKeyDown(Keys.Down) && !_oldKeyboardState.IsKeyDown(Keys.Down)) GameEngine.HandleInput(0, GameEngine.GameAction.interact, 0);
             if (state.IsKeyDown(Keys.Up)) GameEngine.HandleInput(0, GameEngine.GameAction.jump, 0);
 
             // Player 2
@@ -90,9 +90,7 @@ namespace Project.GameLogic
             if (state.IsKeyDown(Keys.I)) GameEngine.HandleInput(1, GameEngine.GameAction.jump, 0);
             // END Handle GameAction
 
-
-
-
+            _oldKeyboardState = state;
         }
 
         private void HandleGamePad(GamePadState gs, int player)

@@ -237,6 +237,23 @@
       "m": 1000,
       "type": "ground",
       "texture": "Sprites/Rocks/SuspendedRock"
+    },
+    {
+      "dim": {
+        "x": 200,
+        "y": 200
+      },
+      "pos": {
+        "x": 1500,
+        "y": 600
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 20,
+      "type": "crate",
+      "texture": "Sprites/Interactables/crate"
     }
   ]
 }

@@ -104,6 +104,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameLogic\GameObjects\Crate.cs" />
     <Compile Include="GameLogic\GameObjects\Pickaxe.cs" />
     <Compile Include="GameLogic\GameObjects\Ground.cs" />
     <Compile Include="GameLogic\GameObjects\Rock.cs" />
@@ -180,6 +181,10 @@
     <Content Include="Content\Sprites\Backgrounds\Background2.jpg" />
     <Content Include="Content\Sprites\Backgrounds\ExitSign.png" />
     <Content Include="Content\Sprites\Backgrounds\ExitSign_2.png" />
+    <Content Include="Content\Sprites\Interactables\crate.png" />
+    <Content Include="Content\Sprites\Interactables\Door.png" />
+    <Content Include="Content\Sprites\Interactables\LadderLong.png" />
+    <Content Include="Content\Sprites\Interactables\LadderShort.png" />
     <Content Include="Content\Sprites\Miners\MinerHandsInPants.png" />
     <Content Include="Content\Sprites\Miners\MinerHandsOut.png" />
     <Content Include="Content\Sprites\Miners\MinerPickaxe.png" />

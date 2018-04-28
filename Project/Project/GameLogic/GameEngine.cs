@@ -38,14 +38,27 @@ namespace Project.GameLogic
 
         public void HandleInput(int player, GameAction action, float value) {
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
+            Vector2 difference = new Vector2(0.0f);
 
             switch (action) {
                 case (GameAction.walk_right):
+                    difference = miner.Position;
                     CalculateAndSetNewPosition(miner, new Vector2(8, 0));
+                    difference -= miner.Position;
+                    if (miner.holdingThisObject != null)
+                    {
+                        miner.holdingThisObject.Position -= difference;
+                    }
                     break;
 
                 case (GameAction.walk_left):
+                    difference = miner.Position;
                     CalculateAndSetNewPosition(miner, new Vector2(-8, 0));
+                    difference -= miner.Position;
+                    if (miner.holdingThisObject != null)
+                    {
+                        miner.holdingThisObject.Position -= difference;
+                    }
                     break;
                 case (GameAction.jump):
                     TryToJump(miner, new Vector2(0,-800));
@@ -67,7 +80,14 @@ namespace Project.GameLogic
             // we only need to update this, if some time has passed since the last update
             if (miner0.lastUpdated != gameTime)
             {
+                Vector2 difference = miner0.Position;
                 CalculateAndSetNewPosition(miner0, Vector2.Zero);
+                difference -= miner0.Position;
+                // Debug.WriteLine("x: " + difference.X.ToString() + ", y: " + difference.Y.ToString());
+                if (miner0.holdingThisObject != null)
+                {
+                    miner0.holdingThisObject.Position -= difference;
+                }
             }
 
             if (GameState.Actors.Count > 1) {
@@ -87,27 +107,8 @@ namespace Project.GameLogic
         void TryToInteract(Miner obj)
         {
             obj.UseTool(GameState);
-            //List<GameObject> collisions = CollisionDetector.FindCollisions(obj.InteractionBox(), GameState.Solids);
-            //foreach (GameObject c in collisions)
-            //{
-            //    if (c is Rock)
-            //    {
-            //        c.Visible = false;
-            //        GameState.RemoveSolid(c);
-            //    }
-            //    Debug.WriteLine(c.TextureString);
-            //    Debug.WriteLine(c.Position);
-            //}
+            obj.InteractWithCrate(GameState);
         }
-
-        //void TryToInteract(GameObject obj) {
-        //    List<GameObject> collisions = CollisionDetector.FindCollisions(obj.BBox, GameState.Collectibles);
-        //    foreach (GameObject c in collisions) {
-        //        c.Visible = false;
-        //        Debug.WriteLine(c.TextureString);
-        //        Debug.WriteLine(c.Position);
-        //    }
-        //}
 
 
         void CalculateAndSetNewPosition(Miner actor, Vector2 direction)
@@ -159,7 +160,7 @@ namespace Project.GameLogic
             // 3. check, if there are any collisions in the X-axis and correct position
             List<GameObject> collisions = CollisionDetector.FindCollisions(xBox, GameState.Solids);
             if (collisions.Count > 0) {
-                Debug.WriteLine("collided with x-axis");
+                // Debug.WriteLine("collided with x-axis");
                 direction.X = 0;
             }
 
@@ -170,7 +171,7 @@ namespace Project.GameLogic
                 collisions = CollisionDetector.FindCollisions(yBox, GameState.Solids);
                 if (collisions.Count > 0)
                 {
-                    Debug.WriteLine("collided with y-axis");
+                    // Debug.WriteLine("collided with y-axis");
 
                     float lowestPoint = float.MaxValue;
                     foreach (GameObject collision in collisions)

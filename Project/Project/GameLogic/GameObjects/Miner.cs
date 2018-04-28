@@ -20,7 +20,8 @@ namespace Project.GameLogic.GameObjects.Miner
         Gait Gait;
         Stance Stance;
         public TimeSpan lastUpdated;
-        private float _scaleOfBBoxInt = (float)1.2;
+        private CollisionDetector CollisionDetector = new CollisionDetector();
+        public GameObject holdingThisObject;
 
         public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
         {
@@ -40,6 +41,7 @@ namespace Project.GameLogic.GameObjects.Miner
             };
             Seed = SingleRandom.Instance.Next();
             lastUpdated = new TimeSpan();
+            holdingThisObject = null;
         }
 
         /// <summary>
@@ -192,8 +194,40 @@ namespace Project.GameLogic.GameObjects.Miner
 
         public AxisAllignedBoundingBox InteractionBox()
         {
-            Vector2 offset = new Vector2(100, 100);
+            Vector2 offset = new Vector2(50, 50);
             return new AxisAllignedBoundingBox(Position - offset, Position + SpriteSize + offset);
         }
+
+        public void InteractWithCrate(GameState gs)
+        {
+            // picking up crate
+            if(holdingThisObject == null)
+            {
+                List<GameObject> collisions = CollisionDetector.FindCollisions(InteractionBox(), gs.GetSolids());
+                foreach (GameObject c in collisions)
+                {
+                    if (c is Crate)
+                    {
+                        c.Position = new Vector2(c.Position.X, Position.Y);
+                        gs.AddCollectible(c);
+                        gs.RemoveSolid(c);
+
+                        holdingThisObject = c;
+                    }
+                }
+            }
+            // Dropping crate
+            else
+            {
+                holdingThisObject.Position = new Vector2(holdingThisObject.Position.X, 
+                    holdingThisObject.Position.Y + SpriteSize.Y - holdingThisObject.SpriteSize.Y);
+                gs.AddSolid(holdingThisObject);
+                gs.RemoveCollectible(holdingThisObject);
+
+                holdingThisObject = null;
+            }
+
+        }
+
     }
 }
