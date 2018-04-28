@@ -1,6 +1,8 @@
 ﻿using Project.GameLogic.Collision;
 using Project.GameLogic.GameObjects;
 using System.Collections.Generic;
+using System.Diagnostics;
+using Project.GameLogic.GameObjects.Miner;
 
 namespace Project.GameLogic
 {

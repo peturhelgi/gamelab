@@ -84,15 +84,30 @@ namespace Project.GameLogic
 
         }
 
-        void TryToInteract(GameObject obj) {
-            List<GameObject> collisions = CollisionDetector.FindCollisions(obj.BBox, GameState.Collectibles);
-            foreach (GameObject c in collisions) {
-                c.Visible = false;
+        void TryToInteract(Miner obj)
+        {
+            List<GameObject> collisions = CollisionDetector.FindCollisions(obj.InteractionBox(), GameState.Solids);
+            foreach (GameObject c in collisions)
+            {
+                if (c is Rock)
+                {
+                    c.Visible = false;
+                    GameState.RemoveSolid(c);
+                }
                 Debug.WriteLine(c.TextureString);
                 Debug.WriteLine(c.Position);
             }
         }
-        
+
+        //void TryToInteract(GameObject obj) {
+        //    List<GameObject> collisions = CollisionDetector.FindCollisions(obj.BBox, GameState.Collectibles);
+        //    foreach (GameObject c in collisions) {
+        //        c.Visible = false;
+        //        Debug.WriteLine(c.TextureString);
+        //        Debug.WriteLine(c.Position);
+        //    }
+        //}
+
 
         void CalculateAndSetNewPosition(Miner actor, Vector2 direction)
         {

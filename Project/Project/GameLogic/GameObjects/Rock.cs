@@ -9,7 +9,8 @@ namespace Project.GameLogic.GameObjects
 {
     class Rock : GameObject
     {
-        public Rock(Vector2 position, Vector2 spriteSize, string textureString) {
+        public Rock(Vector2 position, Vector2 spriteSize, string textureString)
+        {
 
             TextureString = textureString;
             Position = position;

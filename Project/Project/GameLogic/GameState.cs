@@ -48,6 +48,10 @@ namespace Project.GameLogic
         {
             return Solids;
         }
+        public void RemoveSolid(GameObject solid)
+        {
+            Solids.Remove(solid);
+        }
 
 
         public void AddCollectible(GameObject collectible)

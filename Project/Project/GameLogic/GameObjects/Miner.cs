@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Project.Libs;
+using Project.GameLogic.Collision;
 
 
 namespace Project.GameLogic.GameObjects.Miner
@@ -19,6 +20,8 @@ namespace Project.GameLogic.GameObjects.Miner
         Gait Gait;
         Stance Stance;
         public TimeSpan lastUpdated;
+        private float _scaleOfBBoxInt = (float)1.2;
+
         public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
         {
             Position = position;
@@ -37,7 +40,6 @@ namespace Project.GameLogic.GameObjects.Miner
             };
             Seed = SingleRandom.Instance.Next();
             lastUpdated = new TimeSpan();
-
         }
 
         /// <summary>
@@ -186,6 +188,12 @@ namespace Project.GameLogic.GameObjects.Miner
             tool.Use(this, gameObjects);
 
             return true;
+        }
+
+        public AxisAllignedBoundingBox InteractionBox()
+        {
+            Vector2 offset = new Vector2(100, 100);
+            return new AxisAllignedBoundingBox(Position - offset, Position + SpriteSize + offset);
         }
     }
 }
