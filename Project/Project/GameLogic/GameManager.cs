@@ -7,6 +7,8 @@ using Project.GameLogic.Renderer;
 using Project.LevelManager;
 using System;
 
+using TheGreatEscape.GameLogic.Util;
+
 namespace Project.GameLogic
 {
     class GameManager
@@ -18,12 +20,15 @@ namespace Project.GameLogic
         GraphicsDevice _graphicsDevice;
         ContentManager _content;
         GameRenderer _renderer;
-        
-        public GameManager(ContentManager content, GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics) {
+        public static bool RenderDark;
+
+        public GameManager(ContentManager content, GraphicsDevice graphicsDevice, 
+                GraphicsDeviceManager graphics) {
             _content = content;
             _graphicsDevice = graphicsDevice;
             _graphics = graphics;
             _mapLoader = new MapLoader(content);
+            RenderDark = true;
         }
 
         public void LoadLevel(String path) {
@@ -65,7 +70,10 @@ namespace Project.GameLogic
 
         public void Draw(GameTime gameTime, int width, int height)
         {
-            _renderer.Draw(gameTime, width, height, Keyboard.GetState().IsKeyDown(Keys.P) ? GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, _controller.Camera.view); 
+            _renderer.Draw(gameTime, width, height,
+                MyDebugger.IsActive ? 
+                GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, 
+                _controller.Camera.view); 
         }
 
     }
