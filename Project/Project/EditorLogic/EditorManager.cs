@@ -123,6 +123,11 @@ namespace EditorLogic
 
         public void Draw(GameTime gameTime, int width, int height)
         {
+            if (Editing)
+            {
+                GameManager.RenderDark = false;
+            }
+
             _gameRenderer.Draw(gameTime, width, height, Keyboard.GetState().IsKeyDown(Keys.P) ? GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, _editorController.Camera.view);
 
             if (Editing)

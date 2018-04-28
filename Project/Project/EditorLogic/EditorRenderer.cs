@@ -35,12 +35,11 @@ namespace EditorLogic
         public void Draw(GameTime gameTime, int width, int height, Matrix camera)
         {
 
-            SpriteBatch spriteBatch = new SpriteBatch(_graphicsDevice);
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, null, null, null, null, camera);
-            spriteBatch.Draw(_debugBox, new Rectangle((int)_manager.CursorPosition.X, (int)_manager.CursorPosition.Y, 10, 10), Color.White);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, null, null, null, null, camera);
+            _spriteBatch.Draw(_debugBox, new Rectangle((int)_manager.CursorPosition.X, (int)_manager.CursorPosition.Y, 10, 10), Color.White);
             if (_manager.CurrentObject != null)
             {
-                spriteBatch.Draw(
+                _spriteBatch.Draw(
                     _manager.CurrentObject.Texture,
                     new Rectangle(
                         (int)_manager.CursorPosition.X,
@@ -49,8 +48,8 @@ namespace EditorLogic
                         (int)_manager.CurrentObject.SpriteSize.Y),
                     Color.White);
             }
-            
-            spriteBatch.End();
+
+            _spriteBatch.End();
 
         }
     }
