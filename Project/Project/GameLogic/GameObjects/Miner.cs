@@ -183,9 +183,9 @@ namespace Project.GameLogic.GameObjects.Miner
         /// Uses the tool that the miner currenty has
         /// </summary>
         /// <returns>True iff 1==1</returns>
-        public bool UseTool(List<GameObject> gameObjects) {
+        public bool UseTool(GameState gs) {
             this.Stance = Stance.stand;
-            tool.Use(this, gameObjects);
+            tool.Use(this, gs);
 
             return true;
         }
