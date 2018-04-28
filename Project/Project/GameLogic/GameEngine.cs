@@ -35,8 +35,11 @@ namespace Project.GameLogic
             return _attentions;
         }
 
-
         public void HandleInput(int player, GameAction action, float value) {
+            if(player < 0 || player > 1)
+            {
+                return;
+            }
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
 
             switch (action) {
@@ -54,7 +57,6 @@ namespace Project.GameLogic
                 case (GameAction.interact):
                     TryToInteract(miner);
                     break;
-
                 default:
                     break;
             }
