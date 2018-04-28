@@ -31,7 +31,14 @@ namespace Project.GameLogic
             {
                 UnloadContent();
             }
-            _controller = new GameController(new GameEngine(_mapLoader.InitMap(path)), new Camera(0.8f, Vector2.Zero, new Vector2(_graphicsDevice.PresentationParameters.BackBufferWidth, _graphicsDevice.PresentationParameters.BackBufferHeight)));
+            _controller = new GameController(
+                new GameEngine(_mapLoader.InitMap(path)), 
+                new Camera(0.8f, 
+                    Vector2.Zero, 
+                    new Vector2(
+                        _graphicsDevice.PresentationParameters.BackBufferWidth, 
+                        _graphicsDevice.PresentationParameters.BackBufferHeight)
+                ));
             LoadContent();
         }
 
@@ -39,7 +46,8 @@ namespace Project.GameLogic
         {
             _mapLoader.LoadMapContent(_controller.GameEngine.GameState);
             // The render instance is create per level: Like this we don't need to worry about resetting global variables in the renderer (e.g. lightning)
-            _renderer = new GameRenderer(_graphicsDevice, _controller.GameEngine.GameState, _content);
+            _renderer = new GameRenderer(_graphicsDevice, 
+                _controller.GameEngine.GameState, _content);
         }
 
         //TODO remove public

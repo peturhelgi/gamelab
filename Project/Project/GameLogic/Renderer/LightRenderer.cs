@@ -27,7 +27,10 @@ namespace Project.GameLogic.Renderer
             _circularLight = content.Load<Texture2D>("Lights/circular_light");
             _directionalLight = content.Load<Texture2D>("Lights/directional_light");
             _graphicsDevice = graphicsDevice;
-            _renderTarget = new RenderTarget2D(_graphicsDevice, _graphicsDevice.PresentationParameters.BackBufferWidth, _graphicsDevice.PresentationParameters.BackBufferHeight);
+            _renderTarget = new RenderTarget2D(
+                _graphicsDevice, 
+                _graphicsDevice.PresentationParameters.BackBufferWidth, 
+                _graphicsDevice.PresentationParameters.BackBufferHeight);
             _spriteBatch = new SpriteBatch(_graphicsDevice);
         }
 
