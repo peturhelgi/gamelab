@@ -64,7 +64,6 @@ namespace Project.GameLogic
 
             GameEngine.Update();
 
-
             // Handle the Camera
             AxisAllignedBoundingBox frame = new AxisAllignedBoundingBox(new Vector2(float.MaxValue, float.MaxValue), new Vector2(float.MinValue, float.MinValue));
             List<AxisAllignedBoundingBox> attentions = GameEngine.GetAttentions();
@@ -98,6 +97,7 @@ namespace Project.GameLogic
             // Player 1
 
             MyDebugger.IsActive = state.IsKeyDown(Keys.P);
+            GameManager.RenderDark = state.IsKeyUp(Keys.L);
             if(_numPlayers > 0)
             {
                 if(state.IsKeyDown(Keys.Right)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_right, 0);

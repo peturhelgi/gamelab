@@ -20,13 +20,15 @@ namespace Project.GameLogic
         GraphicsDevice _graphicsDevice;
         ContentManager _content;
         GameRenderer _renderer;
-        
+        public static bool RenderDark;
+
         public GameManager(ContentManager content, GraphicsDevice graphicsDevice, 
                 GraphicsDeviceManager graphics) {
             _content = content;
             _graphicsDevice = graphicsDevice;
             _graphics = graphics;
             _mapLoader = new MapLoader(content);
+            RenderDark = true;
         }
 
         public void LoadLevel(String path) {

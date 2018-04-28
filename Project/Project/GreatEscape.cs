@@ -55,7 +55,10 @@ namespace Project
 
         protected override void Draw(GameTime gameTime)
         {
-            _menu.Draw(gameTime, GraphicsDevice.PresentationParameters.BackBufferWidth, GraphicsDevice.PresentationParameters.BackBufferHeight);
+            _menu.Draw(
+                gameTime, 
+                GraphicsDevice.PresentationParameters.BackBufferWidth, 
+                GraphicsDevice.PresentationParameters.BackBufferHeight);
             base.Draw(gameTime);
         }
     }
