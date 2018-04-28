@@ -45,7 +45,6 @@ namespace Project.GameLogic
         void LoadContent()
         {
             _mapLoader.LoadMapContent(_controller.GameEngine.GameState);
-            _controller.Initialize();
             // The render instance is create per level: Like this we don't need to worry about resetting global variables in the renderer (e.g. lightning)
             _renderer = new GameRenderer(_graphicsDevice, 
                 _controller.GameEngine.GameState, _content);
