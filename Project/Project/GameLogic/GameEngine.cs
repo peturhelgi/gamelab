@@ -7,6 +7,8 @@ using Project.GameLogic.GameObjects.Miner;
 using Project.GameLogic.GameObjects;
 using Project.GameLogic.Collision;
 
+using TheGreatEscape.GameLogic.Util;
+
 namespace Project.GameLogic
 {
 
@@ -36,6 +38,7 @@ namespace Project.GameLogic
         }
 
         public void HandleInput(int player, GameAction action, float value) {
+
             if(player < 0 || player > 1)
             {
                 return;
@@ -57,6 +60,7 @@ namespace Project.GameLogic
                 case (GameAction.interact):
                     TryToInteract(miner);
                     break;
+
                 default:
                     break;
             }
@@ -90,8 +94,8 @@ namespace Project.GameLogic
             List<GameObject> collisions = CollisionDetector.FindCollisions(obj.BBox, GameState.Collectibles);
             foreach (GameObject c in collisions) {
                 c.Visible = false;
-                Debug.WriteLine(c.TextureString);
-                Debug.WriteLine(c.Position);
+                MyDebugger.WriteLine(c.TextureString);
+                MyDebugger.WriteLine(c.Position);
             }
         }
         
@@ -145,7 +149,7 @@ namespace Project.GameLogic
             // 3. check, if there are any collisions in the X-axis and correct position
             List<GameObject> collisions = CollisionDetector.FindCollisions(xBox, GameState.Solids);
             if (collisions.Count > 0) {
-                Debug.WriteLine("collided with x-axis");
+                MyDebugger.WriteLine("collided with x-axis");
                 direction.X = 0;
             }
 
@@ -156,7 +160,7 @@ namespace Project.GameLogic
                 collisions = CollisionDetector.FindCollisions(yBox, GameState.Solids);
                 if (collisions.Count > 0)
                 {
-                    Debug.WriteLine("collided with y-axis");
+                    MyDebugger.WriteLine("collided with y-axis");
 
                     float lowestPoint = float.MaxValue;
                     foreach (GameObject collision in collisions)

@@ -8,28 +8,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using TheGreatEscape.GameLogic.Util;
+
 
 namespace Project.GameLogic
 {
     class GameController
     {
         public GameEngine GameEngine;
-
         public Camera Camera;
-
-        List<GamePadState> _padStates;
+        public bool DebugView { private set; get; }
+        
         int _maxNumPlayers;
-
 
         public GameController(GameEngine gameEngine, Camera camera) {
             GameEngine = gameEngine;
             Camera = camera;
             _maxNumPlayers = 2;
-            _padStates = new List<GamePadState>();
-            for(int i = 0; i < _maxNumPlayers; ++i)
-            {
-                _padStates.Add(GamePad.GetState(i));
-            }
+
+            DebugView = false;
         }
 
         internal void HandleUpdate(GameTime gameTime)
@@ -39,13 +36,12 @@ namespace Project.GameLogic
 
             for(int i = 0; i < _maxNumPlayers; ++i)
             {
-                HandleGamePad(_padStates[i], i);
+                HandleGamePad(GamePad.GetState(i), i);
             }
 
             HandleKeyboard(Keyboard.GetState());
 
             GameEngine.Update();
-
 
             // Handle the Camera
             AxisAllignedBoundingBox frame = new AxisAllignedBoundingBox(new Vector2(float.MaxValue, float.MaxValue), new Vector2(float.MinValue, float.MinValue));
@@ -60,8 +56,8 @@ namespace Project.GameLogic
         private void HandleMouse(MouseState ms) {
             if (ms.LeftButton == ButtonState.Pressed)
             {
-                Debug.WriteLine(ms.Position.X);
-                Debug.WriteLine(ms.Position.Y);
+                MyDebugger.WriteLine(ms.Position.X);
+                MyDebugger.WriteLine(ms.Position.Y);
             }
         }
 
@@ -78,6 +74,9 @@ namespace Project.GameLogic
 
             // START Handle GameAction
             // Player 1
+
+            MyDebugger.IsActive = state.IsKeyDown(Keys.P);
+            GameManager.RenderDark = state.IsKeyUp(Keys.L);
             if(_maxNumPlayers > 0)
             {
                 if(state.IsKeyDown(Keys.Right)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_right, 0);
@@ -104,9 +103,10 @@ namespace Project.GameLogic
             {
                 return;
             }
+
             // START Handle GameAction
             if (gs.ThumbSticks.Left.X > 0.5f) GameEngine.HandleInput(player, GameEngine.GameAction.walk_right, 0);
-            if (gs.ThumbSticks.Left.X < -0.5) GameEngine.HandleInput(player, GameEngine.GameAction.walk_left, 0);
+            if (gs.ThumbSticks.Left.X < -0.5f) GameEngine.HandleInput(player, GameEngine.GameAction.walk_left, 0);
 
             if (gs.IsButtonDown(Buttons.RightTrigger)) GameEngine.HandleInput(player, GameEngine.GameAction.interact, 0);
             if (gs.IsButtonDown(Buttons.A)) GameEngine.HandleInput(player, GameEngine.GameAction.jump, 0);

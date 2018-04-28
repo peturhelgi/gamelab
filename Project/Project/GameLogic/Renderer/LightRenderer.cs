@@ -34,7 +34,8 @@ namespace Project.GameLogic.Renderer
             _spriteBatch = new SpriteBatch(_graphicsDevice);
         }
 
-        public RenderTarget2D Draw(GameTime gametime, int width, int height, List<Light> lights, Matrix camera)
+        public RenderTarget2D Draw(GameTime gametime, int width, int height, 
+            List<Light> lights, Matrix camera)
         {
             _graphicsDevice.SetRenderTarget(_renderTarget);
             _graphicsDevice.Clear(Color.Black);
@@ -53,7 +54,8 @@ namespace Project.GameLogic.Renderer
                 switch (light.Type)
                 {
                     case Lighttype.Circular:
-                        _spriteBatch.Draw(_circularLight, light.Center - (_circularLight.Bounds.Size.ToVector2() * 1.5f * pulse) + light.Owner.Position, null, Color.White * brightness, 0f, Vector2.Zero, 3f * pulse, SpriteEffects.None, 0);
+                        _spriteBatch.Draw(_circularLight, 
+                            light.Center - (_circularLight.Bounds.Size.ToVector2() * 1.5f * pulse) + light.Owner.Position, null, Color.White * brightness, 0f, Vector2.Zero, 3f * pulse, SpriteEffects.None, 0);
                         break;
 
                     case Lighttype.Directional:
@@ -81,7 +83,5 @@ namespace Project.GameLogic.Renderer
             Type = type;
             Owner = owner;
         }
-
-
     }
 }
