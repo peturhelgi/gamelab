@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using TheGreatEscape.GameLogic.Util;
 
 namespace EditorLogic
 {
@@ -55,8 +55,8 @@ namespace EditorLogic
         {
             if (ms.LeftButton == ButtonState.Pressed)
             {
-                Debug.WriteLine(ms.Position.X);
-                Debug.WriteLine(ms.Position.Y);
+                MyDebugger.WriteLine(ms.Position.X);
+                MyDebugger.WriteLine(ms.Position.Y);
             }
         }
 

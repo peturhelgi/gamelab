@@ -100,7 +100,7 @@ namespace EditorLogic
 
             GamePad.GetState(PlayerIndex.One);
             if ((gamePadState.IsButtonDown(Buttons.B) && _oldGamePadState.IsButtonUp(Buttons.B))
-                || (keyboardState.IsKeyDown(Keys.Tab) && keyboardState.IsKeyUp(Keys.Tab)))
+                || (keyboardState.IsKeyDown(Keys.Tab) && _oldKeyboardState.IsKeyUp(Keys.Tab)))
             {
                 Editing = !Editing;
                 if (Editing)
