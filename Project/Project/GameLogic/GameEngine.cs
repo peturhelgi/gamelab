@@ -15,7 +15,7 @@ namespace Project.GameLogic
     class GameEngine
     {
         public GameState GameState;
-        public enum GameAction { walk_right, walk_left, jump, interact, collect, look };
+        public enum GameAction { walk_right, walk_left, jump, interact, collect };
         private CollisionDetector CollisionDetector;
         List<AxisAllignedBoundingBox> _attentions;
 
@@ -37,10 +37,6 @@ namespace Project.GameLogic
             return _attentions;
         }
 
-        public void ChangeLookingDirection(Miner miner, float value)
-        {
-            miner.LookingAngle += value;
-        }
         public void HandleInput(int player, GameAction action, float value) {
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
 
@@ -60,9 +56,6 @@ namespace Project.GameLogic
                     TryToInteract(miner);
                     break;
 
-                case (GameAction.look):
-                    ChangeLookingDirection(miner, value);
-                    break;
                 default:
                     break;
             }

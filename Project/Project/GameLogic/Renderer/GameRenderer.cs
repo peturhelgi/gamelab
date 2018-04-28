@@ -80,8 +80,13 @@ namespace Project.GameLogic.Renderer
             _lightingEffect.CurrentTechnique.Passes[0].Apply();
 
             if(GameManager.RenderDark)
+            {
                 _spriteBatch.Begin(effect: _lightingEffect);
-            else _spriteBatch.Begin();
+            }
+            else
+            {
+                _spriteBatch.Begin();
+            }
 
             _lightingEffect.Parameters["LightMask"].SetValue(_renderTargetLights);
 
