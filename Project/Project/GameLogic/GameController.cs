@@ -36,13 +36,9 @@ namespace Project.GameLogic
         {
             GameEngine.gameTime = gameTime.TotalGameTime;
             HandleMouse( Mouse.GetState());
+
             for(int i = 0; i < _maxNumPlayers; ++i)
             {
-                _padStates[i] = GamePad.GetState(i);
-                if(!_padStates[i].IsConnected)
-                {
-                    break;
-                }
                 HandleGamePad(_padStates[i], i);
             }
 
@@ -104,7 +100,6 @@ namespace Project.GameLogic
 
         private void HandleGamePad(GamePadState gs, int player)
         {
-            player %= _maxNumPlayers;
             if(!gs.IsConnected)
             {
                 return;
