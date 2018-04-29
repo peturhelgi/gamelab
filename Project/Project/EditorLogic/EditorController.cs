@@ -108,7 +108,7 @@ namespace EditorLogic
                 _manager.CreateNewGameObject(null);
             }
 
-            
+
 
             // let A go > place Object or Pick Object(s)
             if (gamePadState.IsButtonUp(Buttons.A) && _oldGamePadState.IsButtonDown(Buttons.A))
@@ -131,14 +131,12 @@ namespace EditorLogic
                 {
                     // We are in selector mode
 
-                    if (gamePadState.IsButtonDown(Buttons.LeftTrigger))
-                    {
-                        _manager.CursorSize += (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
-                        _manager.CursorSize += (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
+                    _manager.CursorSize += (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
+                    _manager.CursorSize += (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
 
-                        _manager.CursorPosition -= (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
-                        _manager.CursorPosition -= (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
-                    }
+                    _manager.CursorPosition -= (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
+                    _manager.CursorPosition -= (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
+
                 }
 
             }
