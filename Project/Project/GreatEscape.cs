@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using EditorLogic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Project.GameLogic;
 using Project.Menu;
@@ -11,6 +12,7 @@ namespace Project
     public class GreatEscape : Game
     {
         GameManager _gameManager;
+        EditorManager _editorManager;
         MenuManager _menu;
         GraphicsDeviceManager _graphics;
 
@@ -31,7 +33,8 @@ namespace Project
             Content.RootDirectory = "Content";
 
             _gameManager = new GameManager(Content, GraphicsDevice, _graphics);
-            _menu = new MenuManager(Content, GraphicsDevice, _graphics, _gameManager);
+            _editorManager = new EditorManager(Content, GraphicsDevice, _graphics);
+            _menu = new MenuManager(Content, GraphicsDevice, _graphics, _gameManager, _editorManager);
             
             IsMouseVisible = true;
             base.Initialize();
@@ -55,7 +58,10 @@ namespace Project
 
         protected override void Draw(GameTime gameTime)
         {
-            _menu.Draw(gameTime, GraphicsDevice.PresentationParameters.BackBufferWidth, GraphicsDevice.PresentationParameters.BackBufferHeight);
+            _menu.Draw(
+                gameTime, 
+                GraphicsDevice.PresentationParameters.BackBufferWidth, 
+                GraphicsDevice.PresentationParameters.BackBufferHeight);
             base.Draw(gameTime);
         }
     }

@@ -104,13 +104,17 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EditorLogic\EditorController.cs" />
+    <Compile Include="EditorLogic\EditorManager.cs" />
     <Compile Include="GameLogic\GameObjects\Pickaxe.cs" />
     <Compile Include="GameLogic\GameObjects\Ground.cs" />
     <Compile Include="GameLogic\GameObjects\Rock.cs" />
     <Compile Include="GameLogic\GameObjects\Tool.cs" />
     <Compile Include="GameLogic\GameObjects\GameObject.cs" />
     <Compile Include="GameLogic\GameObjects\Miner.cs" />
+    <Compile Include="EditorLogic\EditorRenderer.cs" />
     <Compile Include="GameLogic\Renderer\LightRenderer.cs" />
+    <Compile Include="GameLogic\Util\Debugger.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
@@ -218,9 +222,7 @@
       <Version>11.0.2</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GameLogic\Util\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

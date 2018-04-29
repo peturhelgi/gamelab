@@ -29,10 +29,10 @@ namespace Project.GameLogic
         }
 
         public void SetCameraToRectangle(Rectangle r) {
-            int offset = 500;
-            _position = new Vector2(r.X-offset, r.Y- offset);
+            Vector2 offset = new Vector2(500, 800);
+            _position = new Vector2(r.X-offset.X, r.Y- offset.Y);
 
-            Vector2 dims = r.Size.ToVector2()+new Vector2(2*offset);
+            Vector2 dims = r.Size.ToVector2()+ 2 * offset;
             Vector2 scales =    _dimensions/ dims;
             _zoom = Math.Min(scales.X, scales.Y);
             int width = Math.Max(2560, (int)dims.X);
@@ -47,19 +47,19 @@ namespace Project.GameLogic
             switch (action)
             {
                 case (CameraAction.right):
-                    Translate(new Vector2(2, 0));
+                    Translate(new Vector2(20, 0) / _zoom);
                     break;
 
                 case (CameraAction.left):
-                    Translate(new Vector2(-2, 0));
+                    Translate(new Vector2(-20, 0) / _zoom);
                     break;
 
                 case (CameraAction.up):
-                    Translate(new Vector2(0, -2));
+                    Translate(new Vector2(0, -20) / _zoom);
                     break;
 
                 case (CameraAction.down):
-                    Translate(new Vector2(0, 2));
+                    Translate(new Vector2(0, 20) / _zoom);
                     break;
 
                 case (CameraAction.zoom_in):
