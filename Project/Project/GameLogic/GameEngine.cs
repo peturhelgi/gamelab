@@ -46,14 +46,12 @@ namespace Project.GameLogic
             switch (action) {
                 case (GameAction.walk_right):
                     CalculateAndSetNewPosition(miner, new Vector2(8, 0));
-                    miner.ChangeCurrentMotion(MotionType.walk);
-                    miner.orientation = SpriteEffects.FlipHorizontally;
+                    miner.Orientation = SpriteEffects.FlipHorizontally;
                     break;
 
                 case (GameAction.walk_left):
                     CalculateAndSetNewPosition(miner, new Vector2(-8, 0));
-                    miner.ChangeCurrentMotion(MotionType.walk);
-                    miner.orientation = SpriteEffects.None;
+                    miner.Orientation = SpriteEffects.None;
                     break;
                 case (GameAction.jump):
                     TryToJump(miner, new Vector2(0,-800));
@@ -64,7 +62,6 @@ namespace Project.GameLogic
                     break;
 
                 default:
-                    miner.ChangeCurrentMotion(MotionType.idle);
                     break;
             }
         }
@@ -176,7 +173,6 @@ namespace Project.GameLogic
                     {
                         direction.Y = (lowestPoint - actor.BBox.Max.Y) - 0.1f;
                         actor.Falling = false;
-                        actor.ChangeCurrentMotion(MotionType.idle);
                     }
 
                 }
@@ -197,15 +193,15 @@ namespace Project.GameLogic
                     actor.Falling = true;
             }
 
-            //if (!actor.Falling)
-            //    actor.ChangeCurrentMotion(MotionType.walk);
             actor.lastUpdated = gameTime;
+            actor.ChangeCurrentMotion();
+
         }
 
         void TryToJump(Miner miner, Vector2 speed) 
         {
             if (!miner.Falling) {
-                miner.Jump(speed);
+                miner.Speed = speed;
                 miner.Falling = true;
             }
         }

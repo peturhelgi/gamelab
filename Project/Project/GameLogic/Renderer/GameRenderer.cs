@@ -64,7 +64,7 @@ namespace Project.GameLogic.Renderer
                         Vector2 scale = new Vector2(obj.SpriteSize.X, obj.SpriteSize.Y) / motionSize;
                         motionSize *= scale;
                         _spriteBatch.Draw(m.CurrMotion.Image, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)motionSize.X, 
-                            (int)motionSize.Y), source, Color.White, 0f, Vector2.Zero, m.orientation , 0f);
+                            (int)motionSize.Y), source, Color.White, 0f, Vector2.Zero, m.Orientation , 0f);
                     }
                     else {
                         _spriteBatch.Draw(mode == Mode.DebugView ? _debugBox : obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);
