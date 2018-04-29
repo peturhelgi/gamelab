@@ -9,16 +9,20 @@ namespace Project.GameLogic.GameObjects
 {
     class Crate : GameObject
     {
+        public TimeSpan lastUpdated;
+
         public Crate(Vector2 position, Vector2 spriteSize, string textureString)
         {
 
             TextureString = textureString;
             Position = position;
             SpriteSize = spriteSize;
+            Falling = true;
 
-            Speed = new Vector2(0);
+            Speed = Vector2.Zero;
             Mass = 10;
             Visible = true;
+            lastUpdated = new TimeSpan();
         }
     }
 }

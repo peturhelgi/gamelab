@@ -218,8 +218,9 @@ namespace Project.GameLogic.GameObjects.Miner
             }
             else
             {
-                holdingThisObject.Position = new Vector2(holdingThisObject.Position.X,
-                    holdingThisObject.Position.Y + SpriteSize.Y - holdingThisObject.SpriteSize.Y);
+                holdingThisObject.Falling = true;
+                // holdingThisObject.Position = new Vector2(holdingThisObject.Position.X,
+                //     holdingThisObject.Position.Y + SpriteSize.Y - holdingThisObject.SpriteSize.Y);
                 gs.AddSolid(holdingThisObject);
                 gs.RemoveCollectible(holdingThisObject);
 

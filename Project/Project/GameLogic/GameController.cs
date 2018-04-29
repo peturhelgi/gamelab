@@ -15,6 +15,8 @@ namespace Project.GameLogic
     {
         public GameEngine GameEngine;
         private KeyboardState _oldKeyboardState;
+        private GamePadState _oldPlayerOneState;
+        private GamePadState _oldPlayerTwoState;
         public Camera Camera;
 
 
@@ -22,6 +24,8 @@ namespace Project.GameLogic
             GameEngine = gameEngine;
             Camera = camera;
             _oldKeyboardState = Keyboard.GetState();
+            _oldPlayerOneState = GamePad.GetState(PlayerIndex.One);
+            _oldPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
         }
 
 
@@ -100,14 +104,21 @@ namespace Project.GameLogic
             // START Handle GameAction
             if (gs.ThumbSticks.Left.X > 0.5f) GameEngine.HandleInput(player, GameEngine.GameAction.walk_right, 0);
             if (gs.ThumbSticks.Left.X < -0.5) GameEngine.HandleInput(player, GameEngine.GameAction.walk_left, 0);
-            if (gs.IsButtonDown(Buttons.RightTrigger)) GameEngine.HandleInput(player, GameEngine.GameAction.interact, 0);
+            if (player == 0)
+            {
+                if (gs.IsButtonDown(Buttons.RightTrigger) && !_oldPlayerOneState.IsButtonDown(Buttons.RightTrigger))
+                    GameEngine.HandleInput(player, GameEngine.GameAction.interact, 0);
+            }
+            else
+            {
+                if (gs.IsButtonDown(Buttons.RightTrigger) && !_oldPlayerTwoState.IsButtonDown(Buttons.RightTrigger))
+                    GameEngine.HandleInput(player, GameEngine.GameAction.interact, 0);
+            }
             if (gs.IsButtonDown(Buttons.A)) GameEngine.HandleInput(player, GameEngine.GameAction.jump, 0);
             // END Handle GameAction
 
-            if (gs.IsButtonDown(Buttons.Back)) 
-                // TODO: Add a changed GameState, to escape the game
-                //Exit();
-                return;
+            if (player == 0) _oldPlayerOneState = gs;
+            else _oldPlayerTwoState = gs;
         }
         
     }
