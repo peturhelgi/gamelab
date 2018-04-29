@@ -74,7 +74,7 @@ namespace Project.GameLogic.Renderer
             _spriteBatch.End();
 
             // Render the Lights
-            _renderTargetLights = _lightRenderer.Draw(gameTime, width, height, lights, camera);
+            _renderTargetLights = _lightRenderer.Draw(gameTime, width, height, lights, camera.view);
 
             _graphicsDevice.SetRenderTarget(null);
 
