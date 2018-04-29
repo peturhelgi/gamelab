@@ -32,8 +32,11 @@ namespace EditorLogic
 
         // Editor State
         public Vector2 CursorPosition;
+        public Vector2 CursorSize;
+        public Vector2 MovingStartPosition;
         public bool Editing = true;
-        public GameObject CurrentObject;
+        public List<GameObject> CurrentObjects;
+        public bool isNewObject;
 
 
        
@@ -45,31 +48,71 @@ namespace EditorLogic
             _graphics = graphics;
             _mapLoader = new MapLoader(content);
             CursorPosition = Vector2.Zero;
+            CursorSize = new Vector2(10);
+            
 
             _oldKeyboardState = Keyboard.GetState();
             _oldGamePadState = GamePad.GetState(PlayerIndex.One);
         }
 
-
-        public void ExchangeCurrentObject(Object newObject)
+        public void DeselectCurrentObjects()
         {
-            CurrentObject = new Ground(Vector2.Zero, new Vector2(640, 318), "Sprites/Rocks/Ground1");
-            CurrentObject.Texture = _content.Load<Texture2D>(CurrentObject.TextureString);
+            if (CurrentObjects != null && !isNewObject)
+            {
+                foreach (var obj in CurrentObjects)
+                {
+                    _engine.GameState.Solids.Add(obj);
+                }
+            }
+            CurrentObjects = null;
         }
 
-        public void PlaceCurrentObject() {
-            if (CurrentObject != null) {
-                CurrentObject.Position = CursorPosition;
-                _engine.GameState.AddSolid(CurrentObject);
-                CurrentObject = null;
+        public void DeleteCurrentObject()
+        {
+            if (CurrentObjects != null)
+            {
+                foreach (var obj in CurrentObjects)
+                {
+                    _engine.GameState.Solids.Remove(obj);
+                }
+            }
+            CurrentObjects = null;
+        }
+
+        public void CreateNewGameObject(Object newObject)
+        {
+            CurrentObjects = new List<GameObject>
+            {
+                new Ground(CursorPosition, new Vector2(640, 318), "Sprites/Rocks/Ground1")
+            };
+            CurrentObjects[0].Texture = _content.Load<Texture2D>(CurrentObjects[0].TextureString);
+            isNewObject = true;
+            MovingStartPosition = CursorPosition;
+
+        }
+
+        public void PlaceCurrentObjects() {
+            if (CurrentObjects != null) {
+                foreach (GameObject obj in CurrentObjects)
+                {
+                    obj.Position += (CursorPosition - MovingStartPosition);
+                    _engine.GameState.AddSolid(obj);
+                }
+                CurrentObjects = null;
             }
         }
 
         public void PickObjectUnderCursor() {
-            List<GameObject> collisions = _engine.CollisionDetector.FindCollisions(new AxisAllignedBoundingBox(CursorPosition, CursorPosition+new Vector2(10)), _engine.GameState.Solids);
+            List<GameObject> collisions = _engine.CollisionDetector.FindCollisions(new AxisAllignedBoundingBox(CursorPosition, CursorPosition+CursorSize), _engine.GameState.Solids);
             if (collisions.Count > 0) {
-                CurrentObject = collisions[0];
-                CursorPosition = CurrentObject.Position;
+                CurrentObjects = collisions;
+                CursorPosition = new Vector2(float.MaxValue);
+                foreach (GameObject obj in collisions) {
+                    CursorPosition = Vector2.Min(CursorPosition, obj.Position);
+                    _engine.GameState.Solids.Remove(obj);
+                }
+                MovingStartPosition = CursorPosition;
+                isNewObject = false;
             }
         }
 

@@ -38,7 +38,7 @@ namespace EditorLogic
         {
             GameEngine.gameTime = gameTime.TotalGameTime;
             HandleMouse(Mouse.GetState());
-            
+
 
             HandleGamePad(GamePad.GetState(PlayerIndex.One));
 
@@ -48,7 +48,7 @@ namespace EditorLogic
             _oldGamePadState = GamePad.GetState(PlayerIndex.One);
 
             GameEngine.Update();
-            
+
         }
 
         private void HandleMouse(MouseState ms)
@@ -71,12 +71,12 @@ namespace EditorLogic
 
             // START Handle Cursor movement
             // Player 1
-            if (state.IsKeyDown(Keys.Right)) _manager.CursorPosition += new Vector2(20,0);
+            if (state.IsKeyDown(Keys.Right)) _manager.CursorPosition += new Vector2(20, 0);
             if (state.IsKeyDown(Keys.Left)) _manager.CursorPosition += new Vector2(-20, 0);
             if (state.IsKeyDown(Keys.Down)) _manager.CursorPosition += new Vector2(0, 20);
             if (state.IsKeyDown(Keys.Up)) _manager.CursorPosition += new Vector2(0, -20);
 
-            
+
 
 
 
@@ -84,40 +84,81 @@ namespace EditorLogic
 
         private void HandleGamePad(GamePadState gamePadState)
         {
-           
+
             if (gamePadState.IsButtonDown(Buttons.DPadLeft)) Camera.HandleAction(Camera.CameraAction.left);
             if (gamePadState.IsButtonDown(Buttons.DPadRight)) Camera.HandleAction(Camera.CameraAction.right);
             if (gamePadState.IsButtonDown(Buttons.DPadUp)) Camera.HandleAction(Camera.CameraAction.up);
             if (gamePadState.IsButtonDown(Buttons.DPadDown)) Camera.HandleAction(Camera.CameraAction.down);
 
-            // START Handle GameAction
+
             _manager.CursorPosition += (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
             _manager.CursorPosition += (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
 
-            // END Handle GameAction
 
-            if (_manager.CurrentObject != null) {
-                _manager.CurrentObject.SpriteSize +=  gamePadState.ThumbSticks.Right*new Vector2(5,-5);
+            if (_manager.CurrentObjects != null)
+            {
+                if (_manager.CurrentObjects.Count == 1)
+                {
+                    _manager.CurrentObjects[0].SpriteSize += gamePadState.ThumbSticks.Right * new Vector2(5, -5);
+                }
             }
 
             if (gamePadState.IsButtonDown(Buttons.Y) && _oldGamePadState.IsButtonUp(Buttons.Y))
             {
-                _manager.ExchangeCurrentObject(null);
+                _manager.CreateNewGameObject(null);
+            }
+
+            
+
+            // let A go > place Object or Pick Object(s)
+            if (gamePadState.IsButtonUp(Buttons.A) && _oldGamePadState.IsButtonDown(Buttons.A))
+            {
+                if (_manager.CurrentObjects != null)
+                {
+                    _manager.PlaceCurrentObjects();
+                }
+                else
+                {
+                    _manager.PickObjectUnderCursor();
+                    _manager.CursorSize = new Vector2(10);
+                }
             }
 
 
-            if (gamePadState.IsButtonDown(Buttons.A) && _oldGamePadState.IsButtonUp(Buttons.A))
+            if (gamePadState.IsButtonDown(Buttons.A))
             {
-                _manager.PlaceCurrentObject();
+                if (_manager.CurrentObjects == null)
+                {
+                    // We are in selector mode
+
+                    if (gamePadState.IsButtonDown(Buttons.LeftTrigger))
+                    {
+                        _manager.CursorSize += (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
+                        _manager.CursorSize += (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
+
+                        _manager.CursorPosition -= (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
+                        _manager.CursorPosition -= (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
+                    }
+                }
+
+            }
+            else
+            {
+                // only if A is not pressed
+                // Press left trigger to deselect current selection
+                if (gamePadState.IsButtonDown(Buttons.LeftTrigger) && _oldGamePadState.IsButtonUp(Buttons.LeftTrigger))
+                {
+                    _manager.DeselectCurrentObjects();
+                }
             }
 
-            if (gamePadState.IsButtonDown(Buttons.X) && _oldGamePadState.IsButtonUp(Buttons.X))
+            if (gamePadState.IsButtonDown(Buttons.RightTrigger) && _oldGamePadState.IsButtonUp(Buttons.RightTrigger))
             {
-                _manager.PickObjectUnderCursor();
+                _manager.DeleteCurrentObject();
             }
 
             if (gamePadState.IsButtonDown(Buttons.Back))
-                // TODO: Add a changed GameState, to escape the game
+                // TODO: Ask the user to save the level
                 //Exit();
                 return;
         }

@@ -28,10 +28,10 @@ namespace Project.GameLogic
         }
 
         public void SetCameraToRectangle(Rectangle r) {
-            int offset = 500;
-            _position = new Vector2(r.X-offset, r.Y- offset);
+            Vector2 offset = new Vector2(500, 800);
+            _position = new Vector2(r.X-offset.X, r.Y- offset.Y);
 
-            Vector2 dims = r.Size.ToVector2()+new Vector2(2*offset);
+            Vector2 dims = r.Size.ToVector2()+ 2 * offset;
             Vector2 scales =    _dimensions/ dims;
             _zoom = Math.Min(scales.X, scales.Y);
             Refresh();

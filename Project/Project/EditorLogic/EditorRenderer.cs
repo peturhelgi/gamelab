@@ -36,17 +36,36 @@ namespace EditorLogic
         {
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, null, null, null, null, camera);
-            _spriteBatch.Draw(_debugBox, new Rectangle((int)_manager.CursorPosition.X, (int)_manager.CursorPosition.Y, 10, 10), Color.White);
-            if (_manager.CurrentObject != null)
+
+            Vector2 cursorMin = Vector2.Min(_manager.CursorPosition, _manager.CursorPosition + _manager.CursorSize);
+            Vector2 cursorMax = Vector2.Max(_manager.CursorPosition, _manager.CursorPosition + _manager.CursorSize);
+
+
+
+            _spriteBatch.Draw(
+                _debugBox,
+                new Rectangle(
+                    (int)cursorMin.X,
+                    (int)cursorMin.Y,
+                    (int)(cursorMax.X - cursorMin.X),
+                    (int)(cursorMax.Y - cursorMin.Y)
+                    ),
+                Color.White);
+
+
+            if (_manager.CurrentObjects != null)
             {
-                _spriteBatch.Draw(
-                    _manager.CurrentObject.Texture,
-                    new Rectangle(
-                        (int)_manager.CursorPosition.X,
-                        (int)_manager.CursorPosition.Y,
-                        (int)_manager.CurrentObject.SpriteSize.X,
-                        (int)_manager.CurrentObject.SpriteSize.Y),
-                    Color.White);
+                foreach (GameObject obj in _manager.CurrentObjects)
+                {
+                    _spriteBatch.Draw(
+                   obj.Texture,
+                   new Rectangle(
+                       (int)(obj.Position.X + (_manager.CursorPosition.X - _manager.MovingStartPosition.X)),
+                       (int)(obj.Position.Y + (_manager.CursorPosition.Y - _manager.MovingStartPosition.Y)),
+                       (int)obj.SpriteSize.X,
+                       (int)obj.SpriteSize.Y),
+                   Color.White);
+                }
             }
 
             _spriteBatch.End();
