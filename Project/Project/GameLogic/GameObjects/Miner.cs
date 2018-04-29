@@ -117,17 +117,17 @@ namespace Project.GameLogic.GameObjects.Miner
         /// Makes the miner crouch if possible
         /// </summary>
         /// <returns></returns>
-        public bool Crouch() {
-            this.motionType = MotionType.crawl;
-            // TODO: add crouch logic
+        //public bool Crouch() {
+        //    this.motionType = MotionType.crawl;
+        //    // TODO: add crouch logic
 
-            return true;
-        }
+        //    return true;
+        //}
 
 
-        public bool IsCrawling() {
-            return this.motionType == MotionType.crawl;
-        }
+        //public bool IsCrawling() {
+        //    return this.motionType == MotionType.crawl;
+        //}
         /// <summary>
         /// Makes the miner walk if possible
         /// </summary>
@@ -143,11 +143,11 @@ namespace Project.GameLogic.GameObjects.Miner
             return this.motionType == MotionType.walk;
         }
 
-        public bool LieDown() {
-            this.motionType = MotionType.stop;
+        //public bool LieDown() {
+        //    this.motionType = MotionType.stop;
 
-            return true;
-        }              
+        //    return true;
+        //}              
 
         public bool Run() {
             this.motionType = MotionType.run;
@@ -160,15 +160,15 @@ namespace Project.GameLogic.GameObjects.Miner
             return this.motionType == MotionType.run;
         }
 
-        public bool Halt() {
-            this.Speed = new Vector2(0, 0);
-            this.motionType = MotionType.stop;
-            return true;
-        }
+        //public bool Halt() {
+        //    this.Speed = new Vector2(0, 0);
+        //    this.motionType = MotionType.stop;
+        //    return true;
+        //}
 
-        public bool IsStill() {
-            return this.motionType == MotionType.stop;
-        }
+        //public bool IsStill() {
+        //    return this.motionType == MotionType.stop;
+        //}
 
         /// <summary>
         /// Updates the speed if the miner if possible.
@@ -178,9 +178,9 @@ namespace Project.GameLogic.GameObjects.Miner
         public bool Move(Vector2 dv) {
             //TODO: add move logic, the one here is just an example
             switch (this.motionType) {
-                case MotionType.crawl:
-                    this.Speed = dv/2; // for example, there could be some more logic here using our physics
-                    break;
+                //case MotionType.crawl:
+                //    this.Speed = dv/2; // for example, there could be some more logic here using our physics
+                //    break;
 
                 case MotionType.walk:
                     this.Speed = dv;   // for example, there could be some more logic here using our physics
