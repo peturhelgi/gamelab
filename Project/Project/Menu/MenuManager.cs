@@ -1,5 +1,6 @@
 ﻿
 
+using EditorLogic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -23,6 +24,7 @@ namespace Project.Menu
         GameScreen _game;
         LoadingScreen _loading;
         Screen _gameMenu;
+        EditorScreen _editor;
 
         public enum Action
         {
@@ -33,9 +35,12 @@ namespace Project.Menu
             ShowLevelCompletedScreen,
             ShowGameOverScreen,
             ShowPauseMenu,
-            ResumeGame
+            ResumeGame,
+            ShowLevelEditor
         };
+
         GameManager _gameManager;
+        EditorManager _editorManager;
         GraphicsDeviceManager _graphics;
         GraphicsDevice _graphicsDevice;
         ContentManager _content;
@@ -48,21 +53,25 @@ namespace Project.Menu
         public SpriteFont MenuFont;
 
 
+
         public MenuManager(ContentManager content, GraphicsDevice graphicsDevice,
-            GraphicsDeviceManager graphics, GameManager gameManager)
+            GraphicsDeviceManager graphics, GameManager gameManager, EditorManager editorManager)
+
         {
             _content = content;
             _graphicsDevice = graphicsDevice;
             _graphics = graphics;
             _gameManager = gameManager;
+            _editorManager = editorManager;
             _popOver = null;
 
             // create the screens
             _currentScreen = _mainMenu = new SelectionMenu(
                 "Main Menu", _graphicsDevice, this);
             _mainMenu.AddSelection("play", Action.StartGame, "Level_1");
-            _mainMenu.AddSelection(
-                "choose level", Action.ShowLevelSelector, null);
+            _mainMenu.AddSelection("choose level", Action.ShowLevelSelector, null);
+            _mainMenu.AddSelection("level editor", Action.ShowLevelEditor, "Level_1");
+
 
             _levelSelector = new SelectionMenu(
                 "Select a Level", _graphicsDevice, this);
@@ -95,6 +104,8 @@ namespace Project.Menu
 
             _game = new GameScreen(_gameManager, _graphicsDevice, this);
 
+            _editor = new EditorScreen(_editorManager, _graphicsDevice, this);
+
             OldKeyboardState = Keyboard.GetState();
             OldPlayerOneState = GamePad.GetState(PlayerIndex.One);
             OldPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
@@ -117,6 +128,12 @@ namespace Project.Menu
                 case Action.ShowMainMenu:
                     _currentScreen = _mainMenu;
                     break;
+
+                case Action.ShowLevelEditor:
+                    _editor.LoadGame((string)value);
+                    _currentScreen = _editor;
+                    break;
+
                 case Action.ShowGameOverScreen:
                     _popOver = _gameOver;
                     retry = _popOver.GetSelection(0);
@@ -251,26 +268,22 @@ namespace Project.Menu
 
         public override void Update(GameTime gameTime)
         {
-            if(Keyboard.GetState().IsKeyDown(Keys.Escape) && _manager.OldKeyboardState.IsKeyUp(Keys.Escape))
+
+            if ((Keyboard.GetState().IsKeyDown(Keys.Escape) && _manager.OldKeyboardState.IsKeyUp(Keys.Escape)) ||
+                (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start) && _manager.OldPlayerOneState.IsButtonUp(Buttons.Start)) ||
+                (GamePad.GetState(PlayerIndex.Two).IsButtonDown(Buttons.Start) && _manager.OldPlayerTwoState.IsButtonUp(Buttons.Start)))
             {
                 _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
             }
-            else if(GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start) && _manager.OldPlayerOneState.IsButtonUp(Buttons.Start))
+            else if (Keyboard.GetState().IsKeyDown(Keys.F1))
             {
-                _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
-            }
-            else if(GamePad.GetState(PlayerIndex.Two).IsButtonDown(Buttons.Start) && _manager.OldPlayerTwoState.IsButtonUp(Buttons.Start))
-            {
-                _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
-            }
-            else if(Keyboard.GetState().IsKeyDown(Keys.F1)) {
                 _manager.CallAction(MenuManager.Action.ShowGameOverScreen, null);
             }
-            else if(Keyboard.GetState().IsKeyDown(Keys.F2))
+            else if (Keyboard.GetState().IsKeyDown(Keys.F2))
             {
                 _manager.CallAction(MenuManager.Action.ShowLevelCompletedScreen, null);
             }
-            else if(Keyboard.GetState().IsKeyDown(Keys.Space) 
+            else if (Keyboard.GetState().IsKeyDown(Keys.Space)
                 && _manager.OldKeyboardState.IsKeyUp(Keys.Space))
             {
                 _manager.CallAction(MenuManager.Action.ShowPauseMenu, null);
@@ -278,6 +291,39 @@ namespace Project.Menu
             else
             {
                 _gameManager.Update(gameTime);
+            }
+        }
+    }
+
+    class EditorScreen : Screen
+    {
+        EditorManager _editorManager;
+        public EditorScreen(EditorManager editorManager, GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
+        {
+            _editorManager = editorManager;
+        }
+
+        public void LoadGame(String level)
+        {
+            _editorManager.LoadLevel(level);
+        }
+
+        public override void Draw(GameTime gameTime, int width, int height)
+        {
+            _editorManager.Draw(gameTime, width, height);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if ((Keyboard.GetState().IsKeyDown(Keys.Escape) && _manager.OldKeyboardState.IsKeyUp(Keys.Escape)) || 
+                (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start) && _manager.OldPlayerOneState.IsButtonUp(Buttons.Start)) || 
+                (GamePad.GetState(PlayerIndex.Two).IsButtonDown(Buttons.Start) && _manager.OldPlayerTwoState.IsButtonUp(Buttons.Start)))
+            {
+                _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
+            }
+            else
+            {
+                _editorManager.Update(gameTime);
             }
         }
     }

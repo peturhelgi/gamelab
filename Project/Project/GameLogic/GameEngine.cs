@@ -16,8 +16,7 @@ namespace Project.GameLogic
     {
         public GameState GameState;
         public enum GameAction { walk_right, walk_left, jump, interact, collect };
-
-        private CollisionDetector CollisionDetector;
+        public CollisionDetector CollisionDetector;
         List<AxisAllignedBoundingBox> _attentions;
 
         int[] CurrentMiner = {0,1};
