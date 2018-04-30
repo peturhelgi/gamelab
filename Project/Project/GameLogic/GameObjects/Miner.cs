@@ -21,7 +21,7 @@ namespace Project.GameLogic.GameObjects.Miner
         Stance Stance;
         public TimeSpan lastUpdated;
         private CollisionDetector CollisionDetector = new CollisionDetector();
-        public GameObject holdingThisObject;
+        public GameObject HeldObj;
 
         public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
         {
@@ -41,7 +41,7 @@ namespace Project.GameLogic.GameObjects.Miner
             };
             Seed = SingleRandom.Instance.Next();
             lastUpdated = new TimeSpan();
-            holdingThisObject = null;
+            HeldObj = null;
         }
 
         /// <summary>
@@ -212,25 +212,23 @@ namespace Project.GameLogic.GameObjects.Miner
                         gs.AddCollectible(c);
                         gs.RemoveSolid(c);
 
-                        holdingThisObject = c;
+                        HeldObj = c;
                     }
                 }
             }
             else
             {
-                holdingThisObject.Falling = true;
-                // holdingThisObject.Position = new Vector2(holdingThisObject.Position.X,
-                //     holdingThisObject.Position.Y + SpriteSize.Y - holdingThisObject.SpriteSize.Y);
-                gs.AddSolid(holdingThisObject);
-                gs.RemoveCollectible(holdingThisObject);
+                HeldObj.Falling = true;
+                gs.AddSolid(HeldObj);
+                gs.RemoveCollectible(HeldObj);
 
-                holdingThisObject = null;
+                HeldObj = null;
             }
         }
 
         public bool isHolding()
         {
-            return (holdingThisObject != null);
+            return (HeldObj != null);
         }
 
     }

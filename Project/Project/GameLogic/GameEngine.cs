@@ -53,7 +53,7 @@ namespace Project.GameLogic
                     difference -= miner.Position;
                     if (miner.isHolding())
                     {
-                        miner.holdingThisObject.Position -= difference;
+                        miner.HeldObj.Position -= difference;
                     }
                     break;
 
@@ -63,17 +63,11 @@ namespace Project.GameLogic
                     difference -= miner.Position;
                     if (miner.isHolding())
                     {
-                        miner.holdingThisObject.Position -= difference;
+                        miner.HeldObj.Position -= difference;
                     }
                     break;
                 case (GameAction.jump):
-                    difference = miner.Position;
                     TryToJump(miner, new Vector2(0, -800));
-                    difference -= miner.Position;
-                    if (miner.isHolding())
-                    {
-                        miner.holdingThisObject.Position -= difference;
-                    }
                     break;
 
                 case (GameAction.interact):
@@ -87,18 +81,17 @@ namespace Project.GameLogic
 
         public void Update() {
 
-
+            Vector2 difference = Vector2.Zero;
             Miner miner0 = GameState.Actors.ElementAt(CurrentMiner[0]);
             // we only need to update this, if some time has passed since the last update
             if (miner0.lastUpdated != gameTime)
             {
-                Vector2 difference = miner0.Position;
+                difference = miner0.Position;
                 CalculateAndSetNewPosition(miner0, Vector2.Zero);
                 difference -= miner0.Position;
-                // Debug.WriteLine("x: " + difference.X.ToString() + ", y: " + difference.Y.ToString());
-                if (miner0.holdingThisObject != null)
+                if (miner0.HeldObj != null)
                 {
-                    miner0.holdingThisObject.Position -= difference;
+                    miner0.HeldObj.Position -= difference;
                 }
             }
 
@@ -106,7 +99,13 @@ namespace Project.GameLogic
                 Miner miner1 = GameState.Actors.ElementAt(CurrentMiner[1]);
                 if (miner1.lastUpdated != gameTime)
                 {
+                    difference = miner1.Position;
                     CalculateAndSetNewPosition(miner1, Vector2.Zero);
+                    difference -= miner1.Position;
+                    if (miner1.HeldObj != null)
+                    {
+                        miner1.HeldObj.Position -= difference;
+                    }
                 }
             }
 
@@ -158,8 +157,8 @@ namespace Project.GameLogic
                 if (actor.isHolding())
                 {
                     xCrate = new AxisAllignedBoundingBox(
-                         new Vector2(actor.holdingThisObject.BBox.Max.X, actor.holdingThisObject.BBox.Min.Y),
-                         new Vector2(actor.holdingThisObject.BBox.Max.X + direction.X, actor.holdingThisObject.BBox.Max.Y)
+                         new Vector2(actor.HeldObj.BBox.Max.X, actor.HeldObj.BBox.Min.Y),
+                         new Vector2(actor.HeldObj.BBox.Max.X + direction.X, actor.HeldObj.BBox.Max.Y)
                          );
                 }
                 else xCrate = new AxisAllignedBoundingBox(new Vector2(0), new Vector2(0));
@@ -174,8 +173,8 @@ namespace Project.GameLogic
                 if (actor.isHolding())
                 {
                     xCrate = new AxisAllignedBoundingBox(
-                        new Vector2(actor.holdingThisObject.BBox.Min.X + direction.X, actor.holdingThisObject.BBox.Min.Y),
-                        new Vector2(actor.holdingThisObject.BBox.Min.X, actor.holdingThisObject.BBox.Max.Y)
+                        new Vector2(actor.HeldObj.BBox.Min.X + direction.X, actor.HeldObj.BBox.Min.Y),
+                        new Vector2(actor.HeldObj.BBox.Min.X, actor.HeldObj.BBox.Max.Y)
                         );
                 }
                 else xCrate = new AxisAllignedBoundingBox(new Vector2(0), new Vector2(0));
@@ -192,8 +191,8 @@ namespace Project.GameLogic
                 if (actor.isHolding())
                 {
                     yCrate = new AxisAllignedBoundingBox(
-                    new Vector2(actor.holdingThisObject.BBox.Min.X, actor.holdingThisObject.BBox.Max.Y),
-                    new Vector2(actor.holdingThisObject.BBox.Max.X, actor.holdingThisObject.BBox.Max.Y + direction.Y)
+                    new Vector2(actor.HeldObj.BBox.Min.X, actor.HeldObj.BBox.Max.Y),
+                    new Vector2(actor.HeldObj.BBox.Max.X, actor.HeldObj.BBox.Max.Y + direction.Y)
                     );
                 }
                 else yCrate = new AxisAllignedBoundingBox(new Vector2(0), new Vector2(0));
@@ -207,8 +206,8 @@ namespace Project.GameLogic
                 if (actor.isHolding())
                 {
                     yCrate = new AxisAllignedBoundingBox(
-                    new Vector2(actor.holdingThisObject.BBox.Min.X, actor.holdingThisObject.BBox.Min.Y + direction.Y),
-                    new Vector2(actor.holdingThisObject.BBox.Max.X, actor.holdingThisObject.BBox.Min.Y)
+                    new Vector2(actor.HeldObj.BBox.Min.X, actor.HeldObj.BBox.Min.Y + direction.Y),
+                    new Vector2(actor.HeldObj.BBox.Max.X, actor.HeldObj.BBox.Min.Y)
                     );
                 }
                 else yCrate = new AxisAllignedBoundingBox(new Vector2(0), new Vector2(0));
@@ -252,13 +251,11 @@ namespace Project.GameLogic
             boxCollisions = CollisionDetector.FindCollisions(yCrate, GameState.Solids);
             if (boxCollisions.Count > 0)
             {
-                actor.holdingThisObject.Falling = true;
-                // actor.holdingThisObject.Position = new Vector2(actor.holdingThisObject.Position.X,
-                   //  actor.holdingThisObject.Position.Y + actor.SpriteSize.Y - actor.holdingThisObject.SpriteSize.Y);
-                GameState.AddSolid(actor.holdingThisObject);
-                GameState.RemoveCollectible(actor.holdingThisObject);
+                actor.HeldObj.Falling = true;
+                GameState.AddSolid(actor.HeldObj);
+                GameState.RemoveCollectible(actor.HeldObj);
 
-                actor.holdingThisObject = null;
+                actor.HeldObj = null;
 
             }
 
