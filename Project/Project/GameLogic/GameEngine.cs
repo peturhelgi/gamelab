@@ -7,6 +7,8 @@ using Project.GameLogic.GameObjects.Miner;
 using Project.GameLogic.GameObjects;
 using Project.GameLogic.Collision;
 
+using TheGreatEscape.GameLogic.Util;
+
 namespace Project.GameLogic
 {
 
@@ -14,7 +16,7 @@ namespace Project.GameLogic
     {
         public GameState GameState;
         public enum GameAction { walk_right, walk_left, jump, interact, collect };
-        private CollisionDetector CollisionDetector;
+        public CollisionDetector CollisionDetector;
         List<AxisAllignedBoundingBox> _attentions;
 
         int[] CurrentMiner = {0,1};
@@ -35,8 +37,12 @@ namespace Project.GameLogic
             return _attentions;
         }
 
-
         public void HandleInput(int player, GameAction action, float value) {
+
+            if(player < 0 || player > 1)
+            {
+                return;
+            }
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
             Vector2 difference = new Vector2(0.0f);
 
@@ -207,7 +213,7 @@ namespace Project.GameLogic
             List<GameObject> collisions = CollisionDetector.FindCollisions(xBox, GameState.Solids);
             List<GameObject> boxCollisions = CollisionDetector.FindCollisions(xCrate, GameState.Solids);
             if (collisions.Count > 0 || boxCollisions.Count > 0) {
-                // Debug.WriteLine("collided with x-axis");
+                MyDebugger.WriteLine("collided with x-axis");
                 direction.X = 0;
             }
 
@@ -218,7 +224,7 @@ namespace Project.GameLogic
                 collisions = CollisionDetector.FindCollisions(yBox, GameState.Solids);
                 if (collisions.Count > 0)
                 {
-                    // Debug.WriteLine("collided with y-axis");
+                    MyDebugger.WriteLine("collided with y-axis");
 
                     float lowestPoint = float.MaxValue;
                     foreach (GameObject collision in collisions)
