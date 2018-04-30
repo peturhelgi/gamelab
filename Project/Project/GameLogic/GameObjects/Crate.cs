@@ -21,7 +21,7 @@ namespace Project.GameLogic.GameObjects
             Speed = Vector2.Zero;
             Mass = 10;
             Visible = true;
-            lastUpdated = new TimeSpan();
+            LastUpdated = new TimeSpan();
             Moveable = true;
         }
     }

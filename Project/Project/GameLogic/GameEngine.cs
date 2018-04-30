@@ -44,26 +44,26 @@ namespace Project.GameLogic
                 return;
             }
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
-            Vector2 difference = new Vector2(0.0f);
+            Vector2 minerPositionDifference = new Vector2(0.0f);
 
             switch (action) {
                 case (GameAction.walk_right):
-                    difference = miner.Position;
+                    minerPositionDifference = miner.Position;
                     CalculateAndSetNewPosition(miner, new Vector2(8, 0));
-                    difference -= miner.Position;
-                    if (miner.isHolding())
+                    minerPositionDifference -= miner.Position;
+                    if (miner.Holding)
                     {
-                        miner.HeldObj.Position -= difference;
+                        miner.HeldObj.Position -= minerPositionDifference;
                     }
                     break;
 
                 case (GameAction.walk_left):
-                    difference = miner.Position;
+                    minerPositionDifference = miner.Position;
                     CalculateAndSetNewPosition(miner, new Vector2(-8, 0));
-                    difference -= miner.Position;
-                    if (miner.isHolding())
+                    minerPositionDifference -= miner.Position;
+                    if (miner.Holding)
                     {
-                        miner.HeldObj.Position -= difference;
+                        miner.HeldObj.Position -= minerPositionDifference;
                     }
                     break;
                 case (GameAction.jump):
@@ -81,30 +81,30 @@ namespace Project.GameLogic
 
         public void Update() {
 
-            Vector2 difference = Vector2.Zero;
+            Vector2 minerPositionDifference = Vector2.Zero;
             Miner miner0 = GameState.Actors.ElementAt(CurrentMiner[0]);
             // we only need to update this, if some time has passed since the last update
-            if (miner0.lastUpdated != gameTime)
+            if (miner0.LastUpdated != gameTime)
             {
-                difference = miner0.Position;
+                minerPositionDifference = miner0.Position;
                 CalculateAndSetNewPosition(miner0, Vector2.Zero);
-                difference -= miner0.Position;
+                minerPositionDifference -= miner0.Position;
                 if (miner0.HeldObj != null)
                 {
-                    miner0.HeldObj.Position -= difference;
+                    miner0.HeldObj.Position -= minerPositionDifference;
                 }
             }
 
             if (GameState.Actors.Count > 1) {
                 Miner miner1 = GameState.Actors.ElementAt(CurrentMiner[1]);
-                if (miner1.lastUpdated != gameTime)
+                if (miner1.LastUpdated != gameTime)
                 {
-                    difference = miner1.Position;
+                    minerPositionDifference = miner1.Position;
                     CalculateAndSetNewPosition(miner1, Vector2.Zero);
-                    difference -= miner1.Position;
+                    minerPositionDifference -= miner1.Position;
                     if (miner1.HeldObj != null)
                     {
-                        miner1.HeldObj.Position -= difference;
+                        miner1.HeldObj.Position -= minerPositionDifference;
                     }
                 }
             }
@@ -115,9 +115,9 @@ namespace Project.GameLogic
                 {
                     if (c.Falling)
                     {
-                        if ((c as Crate).lastUpdated != gameTime) fallingObject((Crate)c);
+                        if ((c as Crate).LastUpdated != gameTime) FallingObject((Crate)c);
                     }
-                    (c as Crate).lastUpdated = gameTime;
+                    (c as Crate).LastUpdated = gameTime;
                 }
             }
 
@@ -140,9 +140,9 @@ namespace Project.GameLogic
             // 1. calulate position without any obstacles
             if (actor.Falling)
             {
-                actor.Speed += GRAVITY * (float)(gameTime -actor.lastUpdated).TotalSeconds;
+                actor.Speed += GRAVITY * (float)(gameTime -actor.LastUpdated).TotalSeconds;
             }
-            direction += actor.Speed * (float)(gameTime - actor.lastUpdated).TotalSeconds;
+            direction += actor.Speed * (float)(gameTime - actor.LastUpdated).TotalSeconds;
 
 
             // 2. check for collisions in the X-axis, the Y-axis (falling and jumping against something) and the intersection of the movement
@@ -154,7 +154,7 @@ namespace Project.GameLogic
                     new Vector2(actor.BBox.Max.X, actor.BBox.Min.Y), 
                     new Vector2(actor.BBox.Max.X + direction.X, actor.BBox.Max.Y)
                     );
-                if (actor.isHolding())
+                if (actor.Holding)
                 {
                     xCrate = new AxisAllignedBoundingBox(
                          new Vector2(actor.HeldObj.BBox.Max.X, actor.HeldObj.BBox.Min.Y),
@@ -170,7 +170,7 @@ namespace Project.GameLogic
                     new Vector2(actor.BBox.Min.X + direction.X, actor.BBox.Min.Y),
                     new Vector2(actor.BBox.Min.X, actor.BBox.Max.Y)
                     );
-                if (actor.isHolding())
+                if (actor.Holding)
                 {
                     xCrate = new AxisAllignedBoundingBox(
                         new Vector2(actor.HeldObj.BBox.Min.X + direction.X, actor.HeldObj.BBox.Min.Y),
@@ -188,7 +188,7 @@ namespace Project.GameLogic
                     new Vector2(actor.BBox.Min.X, actor.BBox.Max.Y),
                     new Vector2(actor.BBox.Max.X, actor.BBox.Max.Y + direction.Y)
                     );
-                if (actor.isHolding())
+                if (actor.Holding)
                 {
                     yCrate = new AxisAllignedBoundingBox(
                     new Vector2(actor.HeldObj.BBox.Min.X, actor.HeldObj.BBox.Max.Y),
@@ -203,7 +203,7 @@ namespace Project.GameLogic
                    new Vector2(actor.BBox.Min.X, actor.BBox.Min.Y + direction.Y),
                    new Vector2(actor.BBox.Max.X, actor.BBox.Min.Y)
                    );
-                if (actor.isHolding())
+                if (actor.Holding)
                 {
                     yCrate = new AxisAllignedBoundingBox(
                     new Vector2(actor.HeldObj.BBox.Min.X, actor.HeldObj.BBox.Min.Y + direction.Y),
@@ -216,7 +216,12 @@ namespace Project.GameLogic
             
             // 3. check, if there are any collisions in the X-axis and correct position
             List<GameObject> collisions = CollisionDetector.FindCollisions(xBox, GameState.Solids);
-            List<GameObject> boxCollisions = CollisionDetector.FindCollisions(xCrate, GameState.Solids);
+            List<GameObject> boxCollisions;
+            if (actor.Holding)
+            {
+                boxCollisions = CollisionDetector.FindCollisions(xCrate, GameState.Solids);
+            }
+            else boxCollisions = new List<GameObject>();
             if (collisions.Count > 0 || boxCollisions.Count > 0) {
                 MyDebugger.WriteLine("collided with x-axis");
                 direction.X = 0;
@@ -247,17 +252,20 @@ namespace Project.GameLogic
                 }
                 
             }
-            // dropping crate
-            boxCollisions = CollisionDetector.FindCollisions(yCrate, GameState.Solids);
-            if (boxCollisions.Count > 0)
+            // dropping crate if it hits something in the y direction
+            if (actor.Holding)
             {
-                actor.HeldObj.Falling = true;
-                GameState.AddSolid(actor.HeldObj);
-                GameState.RemoveCollectible(actor.HeldObj);
-
-                actor.HeldObj = null;
-
+                boxCollisions = CollisionDetector.FindCollisions(yCrate, GameState.Solids);
+                if (boxCollisions.Count > 0)
+                {
+                    actor.HeldObj.Falling = true;
+                    GameState.AddSolid(actor.HeldObj);
+                    GameState.RemoveCollectible(actor.HeldObj);
+                    actor.HeldObj = null;
+                    actor.Holding = false;
+                }
             }
+
 
             actor.Position += direction;
 
@@ -275,7 +283,7 @@ namespace Project.GameLogic
                 if (collisions.Count == 0)
                     actor.Falling = true;
             }
-            actor.lastUpdated = gameTime;
+            actor.LastUpdated = gameTime;
         }
 
         void TryToJump(Miner miner, Vector2 speed) 
@@ -286,14 +294,14 @@ namespace Project.GameLogic
             }
         }
 
-        public void fallingObject(GameObject obj)
+        public void FallingObject(GameObject obj)
         {
             if (!obj.Falling) return;
             if (!obj.Moveable) return;
             Vector2 direction = Vector2.Zero;
             // 1. calulate position without any obstacles
-            obj.Speed += GRAVITY * (float)(gameTime - obj.lastUpdated).TotalSeconds;
-            direction += obj.Speed * (float)(gameTime - obj.lastUpdated).TotalSeconds;
+            obj.Speed += GRAVITY * (float)(gameTime - obj.LastUpdated).TotalSeconds;
+            direction += obj.Speed * (float)(gameTime - obj.LastUpdated).TotalSeconds;
 
             // 2. check for collisions in the Y-axis (falling) and the intersection of the movement
             AxisAllignedBoundingBox yCrate;
@@ -330,7 +338,7 @@ namespace Project.GameLogic
             }
 
             obj.Position += direction;
-            obj.lastUpdated = gameTime;
+            obj.LastUpdated = gameTime;
         }
     }
 }

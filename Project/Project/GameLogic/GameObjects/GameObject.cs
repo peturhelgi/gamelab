@@ -69,7 +69,7 @@ namespace Project.GameLogic.GameObjects
             set;
         }
 
-        TimeSpan lastUpdated
+        TimeSpan LastUpdated
         {
             get;
             set;
@@ -111,7 +111,7 @@ namespace Project.GameLogic.GameObjects
 
         public int Seed { get; set; }
 
-        public TimeSpan lastUpdated { get; set; }
+        public TimeSpan LastUpdated { get; set; }
 
         public bool Moveable { get; set; }
     }
