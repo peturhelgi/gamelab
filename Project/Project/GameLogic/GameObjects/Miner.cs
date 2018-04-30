@@ -19,7 +19,6 @@ namespace Project.GameLogic.GameObjects.Miner
         Tool tool;
         Gait Gait;
         Stance Stance;
-        public TimeSpan lastUpdated;
         private CollisionDetector CollisionDetector = new CollisionDetector();
         public GameObject HeldObj;
 

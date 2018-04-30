@@ -115,7 +115,7 @@ namespace Project.GameLogic
                 {
                     if (c.Falling)
                     {
-                        if ((c as Crate).lastUpdated != gameTime) fallingBox((Crate)c);
+                        if ((c as Crate).lastUpdated != gameTime) fallingObject((Crate)c);
                     }
                     (c as Crate).lastUpdated = gameTime;
                 }
@@ -286,13 +286,14 @@ namespace Project.GameLogic
             }
         }
 
-        public void fallingBox(Crate crate)
+        public void fallingObject(GameObject obj)
         {
-            if (!crate.Falling) return;
+            if (!obj.Falling) return;
+            if (!obj.Moveable) return;
             Vector2 direction = Vector2.Zero;
             // 1. calulate position without any obstacles
-            crate.Speed += GRAVITY * (float)(gameTime - crate.lastUpdated).TotalSeconds;
-            direction += crate.Speed * (float)(gameTime - crate.lastUpdated).TotalSeconds;
+            obj.Speed += GRAVITY * (float)(gameTime - obj.lastUpdated).TotalSeconds;
+            direction += obj.Speed * (float)(gameTime - obj.lastUpdated).TotalSeconds;
 
             // 2. check for collisions in the Y-axis (falling) and the intersection of the movement
             AxisAllignedBoundingBox yCrate;
@@ -301,14 +302,14 @@ namespace Project.GameLogic
             if (direction.Y > 0) // we are moving downwards
             {
                 yCrate = new AxisAllignedBoundingBox(
-                    new Vector2(crate.BBox.Min.X, crate.BBox.Max.Y),
-                    new Vector2(crate.BBox.Max.X, crate.BBox.Max.Y + direction.Y));
+                    new Vector2(obj.BBox.Min.X, obj.BBox.Max.Y),
+                    new Vector2(obj.BBox.Max.X, obj.BBox.Max.Y + direction.Y));
             }
             else
             {
                 yCrate = new AxisAllignedBoundingBox(
-                    new Vector2(crate.BBox.Min.X, crate.BBox.Min.Y + direction.Y),
-                    new Vector2(crate.BBox.Max.X, crate.BBox.Min.Y));
+                    new Vector2(obj.BBox.Min.X, obj.BBox.Min.Y + direction.Y),
+                    new Vector2(obj.BBox.Max.X, obj.BBox.Min.Y));
             }
 
             List<GameObject> collisions = CollisionDetector.FindCollisions(yCrate, GameState.Solids);
@@ -320,16 +321,16 @@ namespace Project.GameLogic
                     lowestPoint = Math.Min(lowestPoint, collision.BBox.Min.Y);
                 }
 
-                crate.Speed = Vector2.Zero;
+                obj.Speed = Vector2.Zero;
                 if (direction.Y > 0) // hitting floor
                 {
-                    direction.Y = (lowestPoint - crate.BBox.Max.Y) - 0.1f;
-                    crate.Falling = false;
+                    direction.Y = (lowestPoint - obj.BBox.Max.Y) - 0.1f;
+                    obj.Falling = false;
                 }
             }
 
-            crate.Position += direction;
-            crate.lastUpdated = gameTime;
+            obj.Position += direction;
+            obj.lastUpdated = gameTime;
         }
     }
 }

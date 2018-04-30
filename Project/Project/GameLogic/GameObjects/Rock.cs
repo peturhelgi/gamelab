@@ -19,6 +19,7 @@ namespace Project.GameLogic.GameObjects
             Speed = new Vector2(0);
             Mass = 10;
             Visible = true;
+            Moveable = false;
         }
     }
 }

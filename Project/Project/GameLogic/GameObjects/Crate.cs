@@ -9,7 +9,6 @@ namespace Project.GameLogic.GameObjects
 {
     class Crate : GameObject
     {
-        public TimeSpan lastUpdated;
 
         public Crate(Vector2 position, Vector2 spriteSize, string textureString)
         {
@@ -23,6 +22,7 @@ namespace Project.GameLogic.GameObjects
             Mass = 10;
             Visible = true;
             lastUpdated = new TimeSpan();
+            Moveable = true;
         }
     }
 }
