@@ -297,5 +297,4 @@ __pycache__/
 
 # Build files
 Project/Project/AppX/
-*.dll
-*.xnb
+

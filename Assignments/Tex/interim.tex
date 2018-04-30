@@ -1,5 +1,52 @@
 \section{Progress}
+When starting the game, the player is presented with Menu, where he can choose to just start playing, or to pick a specific level. 
+Under the hood, the MenuManager tells the GameManager to load a JSON-file, which represents all elements within the level. 
+The game itself then uses multiple components, to enable the gameplay:
+
+The GameState represents the current state of the game, allowing us in a next step to serialize it to enable a \enquote{Save} function. A GameEngine instance handles the interaction between elements, especially the Physics. It also relies on a CollisionDetector, which uses the separated axis theorem to find collisions between convex shapes. The GameController handles the input of the player and tells the GameEngine, which actions to call on which element of the game. Also, it tells the Camera which attraction points to consider when setting the position and the zoom. Like this, interesting points are automatically shown on the screen. The Renderer then uses the GameState to draw the scene with no shadows and a light map, which are then combined using a HLSL shader. 
+
+\section*{Visual Assets}
+For the visual assets, we created the three levels that were presented in the prototype, and then split up the scene into individual sprites.
+\begin{figure}
+\centering
+\includegraphics[width = 0.7\textwidth]{img/interim/Level3.png}
+\caption{Example level from the prototype.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width = 0.7\textwidth]{img/interim/separated_assets.png}
+\caption{The separated assets.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width = 0.7\textwidth]{img/interim/MoCap_Overview.png}
+\caption{ The structure of the motion capture recordings.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width = 0.7\textwidth]{img/interim/mocap_walk.png}
+\caption{ From person to sprite.}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width = 0.9\textwidth]{img/interim/walk_sheet.png}
+\caption{A sprite sheet for animating the walking motion.}
+\end{figure}
+
+
+The assets were created using Photoshop CS6 and they're saved as PNG files that can have a transparent background. 
+In creating the miner, we did a sort of motion-capture in which we took many pictures of a specific kind of movements. This was initially done with one purpose in our mind: to use the joints positions as a reference for the actual miner sprite and deform that one, but later we realized that it would not look realistic at all. Therefore, we changed the approach into taking a set of frames from each kind of motion, sketched the miner, with all the limbs on separate layers (which helps with the later-on animation) and then animate the limbs for each frame. 
 
 \section{Challenges}
+Our team suffered from ongoing discussion about which structure to use for the project. While the team members worked on different parts of the game, the structure changed over and over again, making it very hard to merge the different parts and breaking things, that worked before. This got worse and worse, until our game started to degrade instead of getting better. 
 
-\section{Future Work}
+To solve this issue, we pulled the emergency break and set up a team meeting, where we discussed the different propositions and decided on one structure to use from that point on. In the same meeting, we also set up some rules, to prevent further conflicts due to incompatible code changes and wasted work due to bad communication/missing knowledge. The draft for these rules can be be found in the readme.
+
+
+\section{Future Work}There are still many features we need implement for the next release. We need to get the level editor on fast track, as well as introduce more game objects for level design. Implementing the graph like structure of a level is still in its infancy and we still have to finish the switching of the miners, as well as implementing more tools.
+As for the visual and sound aspects, we haven’t composed a final version of a soundtrack and our visual artists are still working on creating the animation from the motion capture. Finally, we need to add some tutorial and narration.

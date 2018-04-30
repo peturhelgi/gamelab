@@ -8,8 +8,8 @@
     <ProjectGuid>{439CD82A-F559-427D-8B17-62E43CAE7C8A}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Project</RootNamespace>
-    <AssemblyName>Project</AssemblyName>
+    <RootNamespace>TheGreatEscape</RootNamespace>
+    <AssemblyName>TheGreatEscape</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.16299.0</TargetPlatformVersion>
@@ -21,12 +21,9 @@
     <PackageCertificateKeyFile>Project_TemporaryKey.pfx</PackageCertificateKeyFile>
     <MonoGamePlatform>WindowsStoreApp</MonoGamePlatform>
     <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
-    <AppxPackageDir>C:\Users\randr\Documents\GitHub\gamelab-2018-team1\Releases\</AppxPackageDir>
-    <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
-    <PackageCertificateThumbprint>C6D273FBC00AC094791FBE48D766E82F077BFFF4</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -107,29 +104,45 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GameObjects\Pickaxe.cs" />
-    <Compile Include="GameObjects\Ground.cs" />
-    <Compile Include="GameObjects\Rock.cs" />
-    <Compile Include="GameObjects\Tool.cs" />
-    <Compile Include="GameObjects\GameObject.cs" />
-    <Compile Include="GameObjects\Miner.cs" />
+    <Compile Include="GameLogic\GameObjects\Pickaxe.cs" />
+    <Compile Include="GameLogic\GameObjects\Ground.cs" />
+    <Compile Include="GameLogic\GameObjects\Rock.cs" />
+    <Compile Include="GameLogic\GameObjects\Tool.cs" />
+    <Compile Include="GameLogic\GameObjects\GameObject.cs" />
+    <Compile Include="GameLogic\GameObjects\Miner.cs" />
+    <Compile Include="GameLogic\Renderer\LightRenderer.cs" />
+    <Compile Include="GameLogic\Util\MotionSpriteSheet.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameLogic\Renderer\GameRenderer.cs" />
     <Compile Include="GreatEscape.cs" />
+    <Compile Include="GameLogic\GameManager.cs" />
+    <Compile Include="Libs\Simplex.cs" />
+    <Compile Include="Libs\SingleRandom.cs" />
+    <Compile Include="Menu\MenuManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\Camera.cs" />
-    <Compile Include="Util\CollisionDetector.cs" />
-    <Compile Include="Util\GameController.cs" />
-    <Compile Include="Util\GameEngine.cs" />
-    <Compile Include="Util\GameState.cs" />
-    <Compile Include="Util\Level.cs" />
-    <Compile Include="Util\MapLoader.cs" />
+    <Compile Include="GameLogic\Camera.cs" />
+    <Compile Include="GameLogic\Collision\AxisAllignedBoundingBox.cs" />
+    <Compile Include="GameLogic\Collision\Axis.cs" />
+    <Compile Include="GameLogic\Collision\CollisionDetector.cs" />
+    <Compile Include="GameLogic\Collision\PolygonalCollisionObject.cs" />
+    <Compile Include="GameLogic\GameController.cs" />
+    <Compile Include="GameLogic\GameEngine.cs" />
+    <Compile Include="GameLogic\GameState.cs" />
+    <Compile Include="LevelManager\Level.cs" />
+    <Compile Include="LevelManager\MapLoader.cs" />
   </ItemGroup>
   <ItemGroup>
-    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <MonoGameContentReference Include="Content\Content.mgcb">
+      <SubType>Designer</SubType>
+    </MonoGameContentReference>
+    <None Include="Content\Fonts\Orbitron.spritefont" />
+    <None Include="Content\wide_level.json" />
     <None Include="Content\more_platforms.json" />
     <None Include="Content\samplelvl.json" />
+    <None Include="Content\Lights\circular_light.psd" />
+    <None Include="Content\Lights\directional_light.psd" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -138,58 +151,44 @@
     <None Include="Project_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\LargeTile.scale-100.png" />
-    <Content Include="Assets\LargeTile.scale-125.png" />
-    <Content Include="Assets\LargeTile.scale-150.png" />
-    <Content Include="Assets\LargeTile.scale-200.png" />
-    <Content Include="Assets\LargeTile.scale-400.png" />
-    <Content Include="Assets\Logo.scale-100.png" />
-    <Content Include="Assets\Logo.scale-125.png" />
-    <Content Include="Assets\Logo.scale-150.png" />
-    <Content Include="Assets\Logo.scale-200.png" />
-    <Content Include="Assets\Logo.scale-400.png" />
-    <Content Include="Assets\SmallLogo.altform-unplated_targetsize-16.png" />
-    <Content Include="Assets\SmallLogo.altform-unplated_targetsize-24.png" />
-    <Content Include="Assets\SmallLogo.altform-unplated_targetsize-256.png" />
-    <Content Include="Assets\SmallLogo.altform-unplated_targetsize-32.png" />
-    <Content Include="Assets\SmallLogo.altform-unplated_targetsize-48.png" />
-    <Content Include="Assets\SmallLogo.scale-100.png" />
-    <Content Include="Assets\SmallLogo.scale-125.png" />
-    <Content Include="Assets\SmallLogo.scale-150.png" />
-    <Content Include="Assets\SmallLogo.scale-200.png" />
-    <Content Include="Assets\SmallLogo.scale-400.png" />
-    <Content Include="Assets\SmallLogo.targetsize-16.png" />
-    <Content Include="Assets\SmallLogo.targetsize-24.png" />
-    <Content Include="Assets\SmallLogo.targetsize-256.png" />
-    <Content Include="Assets\SmallLogo.targetsize-32.png" />
-    <Content Include="Assets\SmallLogo.targetsize-48.png" />
-    <Content Include="Assets\SmallTile.scale-100.png" />
-    <Content Include="Assets\SmallTile.scale-125.png" />
-    <Content Include="Assets\SmallTile.scale-150.png" />
-    <Content Include="Assets\SmallTile.scale-200.png" />
-    <Content Include="Assets\SmallTile.scale-400.png" />
+    <Content Include="Assets\AppIcon.altform-unplated_targetsize-16.png" />
+    <Content Include="Assets\AppIcon.altform-unplated_targetsize-256.png" />
+    <Content Include="Assets\AppIcon.altform-unplated_targetsize-48.png" />
+    <Content Include="Assets\AppIcon.scale-100.png" />
+    <Content Include="Assets\AppIcon.scale-200.png" />
+    <Content Include="Assets\AppIcon.scale-400.png" />
+    <Content Include="Assets\AppIcon.targetsize-16.png" />
+    <Content Include="Assets\AppIcon.targetsize-256.png" />
+    <Content Include="Assets\AppIcon.targetsize-48.png" />
+    <Content Include="Assets\MediumTile.scale-100.png" />
+    <Content Include="Assets\MediumTile.scale-200.png" />
+    <Content Include="Assets\PackageLogo.scale-100.png" />
+    <Content Include="Assets\PackageLogo.scale-200.png" />
+    <Content Include="Assets\PackageLogo.scale-400.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
-    <Content Include="Assets\SplashScreen.scale-125.png" />
-    <Content Include="Assets\SplashScreen.scale-150.png" />
-    <Content Include="Assets\SplashScreen.scale-400.png" />
-    <Content Include="Assets\StoreLogo.scale-100.png" />
-    <Content Include="Assets\StoreLogo.scale-125.png" />
-    <Content Include="Assets\StoreLogo.scale-150.png" />
-    <Content Include="Assets\StoreLogo.scale-200.png" />
-    <Content Include="Assets\StoreLogo.scale-400.png" />
-    <Content Include="Assets\WideTile.scale-100.png" />
-    <Content Include="Assets\WideTile.scale-125.png" />
-    <Content Include="Assets\WideTile.scale-150.png" />
-    <Content Include="Assets\WideTile.scale-200.png" />
-    <Content Include="Assets\WideTile.scale-400.png" />
-    <Content Include="Content\caveMusic.mp3" />
-    <Content Include="Properties\Default.rd.xml" />
-    <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
-    <Content Include="Assets\Square150x150Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="Assets\SplashScreen.scale-400.png" />
+    <Content Include="Content\caveMusic.mp3" />
+    <Content Include="Content\Lights\circular_light.png" />
+    <Content Include="Content\Lights\directional_light.png" />
+    <Content Include="Content\Sprites\Miners\MinerHandsInPants.png" />
+    <Content Include="Content\Sprites\Miners\MinerPickaxe.png" />
+    <Content Include="Content\Sprites\Miners\MinerRope.png" />
+    <Content Include="Content\Sprites\Misc\box.png" />
+    <Content Include="Content\Sprites\Rocks\BareRock1.png" />
+    <Content Include="Content\Sprites\Rocks\BareRock2.png" />
+    <Content Include="Content\Sprites\Rocks\BareRock3.png" />
+    <Content Include="Content\Sprites\Rocks\BareRock4.png" />
+    <Content Include="Content\Sprites\Rocks\BareRock5.png" />
+    <Content Include="Content\Sprites\Rocks\Ground1.png" />
+    <Content Include="Content\Sprites\Rocks\Ground2.png" />
+    <Content Include="Content\Sprites\Rocks\Ground3.png" />
+    <Content Include="Content\Sprites\Rocks\Ground4.png" />
+    <Content Include="Content\Sprites\Rocks\SuspendedRock.png" />
+    <Content Include="Content\Sprites\Tools\Pickaxe.png" />
+    <Content Include="Content\Sprites\Tools\Rope.png" />
+    <Content Include="Content\Lights\Lighting.fx" />
+    <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -209,6 +208,7 @@
       <Version>11.0.2</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
