@@ -51,7 +51,7 @@ namespace Project.GameLogic
                     difference = miner.Position;
                     CalculateAndSetNewPosition(miner, new Vector2(8, 0));
                     difference -= miner.Position;
-                    if (miner.holdingThisObject != null)
+                    if (miner.isHolding())
                     {
                         miner.holdingThisObject.Position -= difference;
                     }
@@ -61,13 +61,19 @@ namespace Project.GameLogic
                     difference = miner.Position;
                     CalculateAndSetNewPosition(miner, new Vector2(-8, 0));
                     difference -= miner.Position;
-                    if (miner.holdingThisObject != null)
+                    if (miner.isHolding())
                     {
                         miner.holdingThisObject.Position -= difference;
                     }
                     break;
                 case (GameAction.jump):
-                    TryToJump(miner, new Vector2(0,-800));
+                    difference = miner.Position;
+                    TryToJump(miner, new Vector2(0, -800));
+                    difference -= miner.Position;
+                    if (miner.isHolding())
+                    {
+                        miner.holdingThisObject.Position -= difference;
+                    }
                     break;
 
                 case (GameAction.interact):
