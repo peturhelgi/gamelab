@@ -35,12 +35,13 @@ namespace Project.GameLogic
             Vector2 dims = r.Size.ToVector2()+ 2 * offset;
             Vector2 scales =    _dimensions/ dims;
             _zoom = Math.Min(scales.X, scales.Y);
-            int width = Math.Max(2560, (int)dims.X);
-            _rectangle = new Rectangle(r.X - (int)offset.X, r.Y - (int)offset.Y , width, 1600);
+            _rectangle = new Rectangle(r.X - (int)offset.X, r.Y - (int)offset.Y , (int)dims.X, (int)dims.Y);
             Refresh();
         }
 
-        public Rectangle GetCameraRectangle() {
+        public Rectangle GetCameraRectangle(int backgroundW, int backgroundH) {
+            _rectangle.Height = Math.Max(backgroundH, _rectangle.Height);
+            _rectangle.Width = Math.Max(backgroundW, _rectangle.Width);
             return _rectangle;
         }
         public void HandleAction(CameraAction action) {

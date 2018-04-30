@@ -58,7 +58,7 @@ namespace Project.GameLogic.Renderer
                 mode == Mode.DebugView ? BlendState.Opaque : null, 
                 null, null, null, null, camera.view);
 
-            _spriteBatch.Draw(background, camera.GetCameraRectangle(), Color.White);
+            _spriteBatch.Draw(background, camera.GetCameraRectangle(background.Width, background.Height), Color.White);
 
             foreach(GameObject obj in _gameState.GetAll())
             {
