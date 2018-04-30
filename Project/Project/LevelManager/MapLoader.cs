@@ -58,7 +58,6 @@ namespace Project.LevelManager
 
         public void LoadMapContent(GameState gameState)
         {
-
             Texture2D background = ContentManager.Load<Texture2D>(gameState.background);
             gameState.SetBackground(background);
 
