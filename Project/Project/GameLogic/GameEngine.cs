@@ -14,7 +14,7 @@ namespace Project.GameLogic
     class GameEngine
     {
         public GameState GameState;
-        public enum GameAction { walk_right, walk_left, jump, interact, collect, sit_still };
+        public enum GameAction { walk_right, walk_left, jump, interact, collect };
         private CollisionDetector CollisionDetector;
         List<AxisAllignedBoundingBox> _attentions;
 
@@ -46,12 +46,10 @@ namespace Project.GameLogic
             switch (action) {
                 case (GameAction.walk_right):
                     CalculateAndSetNewPosition(miner, new Vector2(8, 0));
-                    miner.Orientation = SpriteEffects.FlipHorizontally;
                     break;
 
                 case (GameAction.walk_left):
                     CalculateAndSetNewPosition(miner, new Vector2(-8, 0));
-                    miner.Orientation = SpriteEffects.None;
                     break;
                 case (GameAction.jump):
                     TryToJump(miner, new Vector2(0,-800));
@@ -106,10 +104,9 @@ namespace Project.GameLogic
             // 1. calulate position without any obstacles
             if (actor.Falling)
             {
-                actor.Speed += GRAVITY * (float)(gameTime -actor.lastUpdated).TotalSeconds;
+                actor.Speed += GRAVITY * (float)(gameTime - actor.lastUpdated).TotalSeconds;
             }
             direction += actor.Speed * (float)(gameTime - actor.lastUpdated).TotalSeconds;
-
 
             // 2. check for collisions in the X-axis, the Y-axis (falling and jumping against something) and the intersection of the movement
             AxisAllignedBoundingBox xBox, yBox;
@@ -179,7 +176,7 @@ namespace Project.GameLogic
 
             }
             actor.Position += direction;
-
+            actor.AnimVel = direction;
 
             if (!actor.Falling) {
                 // Next, we need to check if we are falling, i.e. walking over an edge to store it to the character, to calculate the difference in height for the next iteration

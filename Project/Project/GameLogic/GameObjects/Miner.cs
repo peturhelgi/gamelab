@@ -11,7 +11,7 @@ using TheGreatEscape.GameLogic.Util;
 namespace Project.GameLogic.GameObjects.Miner
 {
 
-    public enum MotionType { idle, walk, run, jump };
+    public enum MotionType { idle, walk_left, walk_right, run, jump };
     class Miner : GameObject
     {
         Tool _tool;
@@ -20,6 +20,7 @@ namespace Project.GameLogic.GameObjects.Miner
         public Dictionary<MotionType, MotionSpriteSheet> Motion;
         public MotionSpriteSheet CurrMotion;
         public SpriteEffects Orientation;
+        public Vector2 AnimVel;
 
         public TimeSpan lastUpdated;
         public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
@@ -32,7 +33,6 @@ namespace Project.GameLogic.GameObjects.Miner
             Speed    = speed;
             Mass     = mass;
 
-
             // Rendering
             SpriteSize = spriteSize; //the size of the spritesheet used to render
             Visible = true;
@@ -44,20 +44,15 @@ namespace Project.GameLogic.GameObjects.Miner
             };
             Seed = SingleRandom.Instance.Next();
 
-
-
+            // Motion sheets
+            AnimVel = Vector2.Zero;
             InstantiateMotionSheets();
             Orientation = SpriteEffects.FlipHorizontally;
-            _motionType = MotionType.walk;
+            _motionType = MotionType.idle;
             //TODO: add a case when it fails to get that type of motion
             Motion.TryGetValue(MotionType.idle, out CurrMotion);
 
-
-
             _tool = new Pickaxe();
-            
-
-
         }
 
         private void InstantiateMotionSheets() {
@@ -71,8 +66,11 @@ namespace Project.GameLogic.GameObjects.Miner
                     case MotionType.idle:
                         mss = new MotionSpriteSheet(24, 42, MotionType.idle);
                         break;
-                    case MotionType.walk:
-                        mss = new MotionSpriteSheet(11, 100, MotionType.walk);
+                    case MotionType.walk_left:
+                        mss = new MotionSpriteSheet(11, 100, MotionType.walk_left);
+                        break;
+                    case MotionType.walk_right:
+                        mss = new MotionSpriteSheet(11, 100, MotionType.walk_right);
                         break;
                     case MotionType.run:
                         mss = new MotionSpriteSheet(12, 88, MotionType.run);
@@ -97,16 +95,46 @@ namespace Project.GameLogic.GameObjects.Miner
             }
         }
 
+        private MotionType GetCurrentState() {
 
+            if (this.AnimVel.X > 0)
+            {
+                if (this.Speed.Y > 0)
+                    return MotionType.jump;
+                else
+                    return MotionType.walk_right;
+            }
+            if (this.AnimVel.X < 0)
+            {
+                if (this.Speed.Y > 0)
+                    return MotionType.jump;
+                else
+                    return MotionType.walk_left;
+            }
+            if (this.Speed.Y != 0)
+            {
+                return MotionType.jump;
+            }
+
+            return MotionType.idle;
+
+        }
 
         public void ChangeCurrentMotion()
         {
-            MotionType m = MotionType.idle;
-            //TODO: Improve fix for corner case when miner is walking while in air
-            if (m == MotionType.walk && CurrMotion.SheetType == MotionType.jump)
+            MotionType m = GetCurrentState();
+
+            switch (m)
             {
-                return;
+                case MotionType.walk_right:
+                    this.Orientation = SpriteEffects.FlipHorizontally;
+                    break;
+                case MotionType.walk_left:
+                    this.Orientation = SpriteEffects.None;
+                    break;
+
             }
+           
             //TODO: add check when this TryGetValue fails
             Motion.TryGetValue(m, out CurrMotion);
             if (CurrMotion.DifferentMotionType(m))
@@ -115,11 +143,6 @@ namespace Project.GameLogic.GameObjects.Miner
             }
 
         }
-
-
-
-
-       
 
         public bool UseTool(List<GameObject> gameObjects) {
             _tool.Use(this, gameObjects);

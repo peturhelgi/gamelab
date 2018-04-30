@@ -78,7 +78,8 @@ namespace Project.LevelManager
             Texture2D motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/idle_sheet_24");
             miner.SetMotionSprite(motionSprite, MotionType.idle);
             motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/walk_sheet_11");
-            miner.SetMotionSprite(motionSprite, MotionType.walk);
+            miner.SetMotionSprite(motionSprite, MotionType.walk_left);
+            miner.SetMotionSprite(motionSprite, MotionType.walk_right);
             motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/run_sheet_12");
             miner.SetMotionSprite(motionSprite, MotionType.run);
             motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/jump_sheet_12");
@@ -91,7 +92,8 @@ namespace Project.LevelManager
                 motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/idle_sheet_24_b");
                 miner.SetMotionSprite(motionSprite, MotionType.idle);
                 motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/walk_sheet_11_b");
-                miner.SetMotionSprite(motionSprite, MotionType.walk);
+                miner.SetMotionSprite(motionSprite, MotionType.walk_left);
+                miner.SetMotionSprite(motionSprite, MotionType.walk_right);
                 motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/run_sheet_12_b");
                 miner.SetMotionSprite(motionSprite, MotionType.run);
                 motionSprite = ContentManager.Load<Texture2D>("Sprites/Miners/jump_sheet_12_b");
