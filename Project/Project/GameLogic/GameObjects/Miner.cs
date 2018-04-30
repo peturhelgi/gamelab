@@ -1,14 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Project.GameLogic.Renderer;
+using TheGreatEscape.GameLogic.Renderer;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Project.Libs;
+using TheGreatEscape.Libs;
 
 
-namespace Project.GameLogic.GameObjects.Miner
+namespace TheGreatEscape.GameLogic.GameObjects.Miner
 {
 
     enum Gait { stop, crawl, walk, run, jump};

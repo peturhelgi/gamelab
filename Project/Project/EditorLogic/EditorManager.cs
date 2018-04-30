@@ -2,12 +2,12 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Project.GameLogic;
-using Project.GameLogic.Collision;
-using Project.GameLogic.GameObjects;
-using Project.GameLogic.GameObjects.Miner;
-using Project.GameLogic.Renderer;
-using Project.LevelManager;
+using TheGreatEscape.GameLogic;
+using TheGreatEscape.GameLogic.Collision;
+using TheGreatEscape.GameLogic.GameObjects;
+using TheGreatEscape.GameLogic.GameObjects.Miner;
+using TheGreatEscape.GameLogic.Renderer;
+using TheGreatEscape.LevelManager;
 using System;
 using System.Collections.Generic;
 

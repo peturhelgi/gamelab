@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.LevelManager
+namespace TheGreatEscape.LevelManager
 {
     class Level
     {

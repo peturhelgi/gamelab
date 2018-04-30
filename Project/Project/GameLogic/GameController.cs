@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Project.GameLogic.Collision;
+using TheGreatEscape.GameLogic.Collision;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using TheGreatEscape.GameLogic.Util;
 
 
-namespace Project.GameLogic
+namespace TheGreatEscape.GameLogic
 {
     class GameController
     {

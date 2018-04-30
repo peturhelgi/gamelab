@@ -2,11 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Newtonsoft.Json;
-using Project.GameLogic;
-using Project.GameLogic.GameObjects;
-using Project.GameLogic.GameObjects.Miner;
+using TheGreatEscape.GameLogic;
+using TheGreatEscape.GameLogic.GameObjects;
+using TheGreatEscape.GameLogic.GameObjects.Miner;
 
-namespace Project.LevelManager
+namespace TheGreatEscape.LevelManager
 {
     class MapLoader
     {

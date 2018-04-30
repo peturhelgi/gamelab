@@ -1,10 +1,10 @@
 ﻿using EditorLogic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Project.GameLogic;
-using Project.Menu;
+using TheGreatEscape.GameLogic;
+using TheGreatEscape.Menu;
 
-namespace Project
+namespace TheGreatEscape
 {
     /// <summary>
     /// This is the main type for your game.

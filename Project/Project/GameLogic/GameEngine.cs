@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
-using Project.GameLogic.GameObjects.Miner;
-using Project.GameLogic.GameObjects;
-using Project.GameLogic.Collision;
+using TheGreatEscape.GameLogic.GameObjects.Miner;
+using TheGreatEscape.GameLogic.GameObjects;
+using TheGreatEscape.GameLogic.Collision;
 
 using TheGreatEscape.GameLogic.Util;
 
-namespace Project.GameLogic
+namespace TheGreatEscape.GameLogic
 {
 
     class GameEngine
