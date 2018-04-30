@@ -210,6 +210,10 @@ namespace Project.Menu
             OldKeyboardState = Keyboard.GetState();
             OldPlayerOneState = GamePad.GetState(PlayerIndex.One);
             OldPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
+            if(_gameManager?.GameEngine?.GameState != null
+                && _gameManager.GameEngine.GameState.Completed) {
+                CallAction(MenuManager.Action.ShowLevelCompletedScreen, null);
+            }
         }
 
         public void Draw(GameTime gameTime, int width, int height)

@@ -68,13 +68,22 @@ namespace Project.GameLogic.GameObjects
             set;
         }
 
-
+        bool Movable
+        {
+            get; set;
+        }
     }
 
     public abstract class GameObject : IGameObject {
 
 
         public bool Falling { get; set; }
+        public GameObject(Vector2 position, Vector2 spriteSize, string texture)
+        {
+            Position = position;
+            SpriteSize = spriteSize;
+            TextureString = texture;
+        }
 
         public Vector2 Position { get; set; }
 
@@ -91,6 +100,8 @@ namespace Project.GameLogic.GameObjects
         public Texture2D Texture { get; set; }
 
         public bool Visible { get; set; }
+
+        public bool Movable { get; set; }
 
         public string TextureString { get; set; }
 

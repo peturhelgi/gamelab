@@ -8,6 +8,7 @@ using Project.GameLogic.GameObjects;
 using Project.GameLogic.Collision;
 
 using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.GameLogic.GameObjects;
 
 namespace Project.GameLogic
 {
@@ -93,6 +94,18 @@ namespace Project.GameLogic
         void TryToInteract(GameObject obj) {
             List<GameObject> collisions = CollisionDetector.FindCollisions(obj.BBox, GameState.Collectibles);
             foreach (GameObject c in collisions) {
+                if(c is Door)
+                {
+                    if((c as Door).Open())
+                    {
+                        if((c as Door).IsExit)
+                        {
+                            GameState.Completed = true;
+                        }
+                        //TODO: load new scene if not exit
+                    }
+                    continue;
+                }
                 c.Visible = false;
                 MyDebugger.WriteLine(c.TextureString);
                 MyDebugger.WriteLine(c.Position);

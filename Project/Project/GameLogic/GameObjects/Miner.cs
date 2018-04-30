@@ -20,6 +20,7 @@ namespace Project.GameLogic.GameObjects.Miner
         Stance Stance;
         public TimeSpan lastUpdated;
         public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
+            :base(position, spriteSize, textureString)
         {
             Position = position;
             Speed    = speed;

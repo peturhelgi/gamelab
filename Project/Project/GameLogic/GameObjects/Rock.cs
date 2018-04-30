@@ -9,11 +9,12 @@ namespace Project.GameLogic.GameObjects
 {
     class Rock : GameObject
     {
-        public Rock(Vector2 position, Vector2 spriteSize, string textureString) {
+        public Rock(Vector2 position, Vector2 spriteSize, string textureString)
+        :base(position, spriteSize, textureString){
 
-            TextureString = textureString;
-            Position = position;
-            SpriteSize = spriteSize;
+           // TextureString = textureString;
+           // Position = position;
+           // SpriteSize = spriteSize;
 
             Speed = new Vector2(0);
             Mass = 10;

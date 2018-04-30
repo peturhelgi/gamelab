@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheGreatEscape.GameLogic.GameObjects;
 
 namespace Project.GameLogic
 {
@@ -15,6 +16,7 @@ namespace Project.GameLogic
         public List<Miner> Actors;
         public List<GameObject> Solids;
         public List<GameObject> Collectibles;
+        public bool Completed;
         CollisionDetector CollisionDetector;
 
 
@@ -23,6 +25,7 @@ namespace Project.GameLogic
             Solids = new List<GameObject>();
             Collectibles = new List<GameObject>();
             CollisionDetector = new CollisionDetector();
+            Completed = false;
         }
 
         public List<GameObject> GetAll() {
@@ -49,6 +52,10 @@ namespace Project.GameLogic
             return Solids;
         }
 
+        public void AddDoor(Door door)
+        {
+            Collectibles.Add(door);
+        }
 
         public void AddCollectible(GameObject collectible)
         {

@@ -106,6 +106,7 @@
     </Compile>
     <Compile Include="EditorLogic\EditorController.cs" />
     <Compile Include="EditorLogic\EditorManager.cs" />
+    <Compile Include="GameLogic\GameObjects\Door.cs" />
     <Compile Include="GameLogic\GameObjects\Pickaxe.cs" />
     <Compile Include="GameLogic\GameObjects\Ground.cs" />
     <Compile Include="GameLogic\GameObjects\Rock.cs" />
@@ -141,6 +142,7 @@
       <SubType>Designer</SubType>
     </MonoGameContentReference>
     <None Include="Content\Fonts\Orbitron.spritefont" />
+    <None Include="Content\level_1.json" />
     <None Include="Content\wide_level.json" />
     <None Include="Content\more_platforms.json" />
     <None Include="Content\samplelvl.json" />

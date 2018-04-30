@@ -9,7 +9,8 @@ namespace Project.GameLogic.GameObjects
 {
     class Ground : GameObject
     {
-        public Ground(Vector2 position, Vector2 spriteSize, string TextureString) {
+        public Ground(Vector2 position, Vector2 spriteSize, string TextureString)
+        :base(position, spriteSize, TextureString){
             Position = position;
             Speed = new Vector2(0);
             Mass = 1000;

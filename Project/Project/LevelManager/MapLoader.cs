@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Project.GameLogic;
 using Project.GameLogic.GameObjects;
 using Project.GameLogic.GameObjects.Miner;
+using TheGreatEscape.GameLogic.GameObjects;
 
 namespace Project.LevelManager
 {
@@ -44,6 +45,8 @@ namespace Project.LevelManager
                         gameState.AddSolid(ground);
                         break;
                     case "end":
+                        Door door = new Door(obj.Position, obj.SpriteSize, obj.Texture);
+                        gameState.AddDoor(door);
                         break;
 
                     default:

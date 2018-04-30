@@ -21,6 +21,7 @@ namespace Project.GameLogic
         ContentManager _content;
         GameRenderer _renderer;
         public static bool RenderDark;
+        public GameEngine GameEngine { get; private set; }
 
         public GameManager(ContentManager content, GraphicsDevice graphicsDevice, 
                 GraphicsDeviceManager graphics) {
@@ -36,8 +37,9 @@ namespace Project.GameLogic
             {
                 UnloadContent();
             }
+            GameEngine = new GameEngine(_mapLoader.InitMap(path));
             _controller = new GameController(
-                new GameEngine(_mapLoader.InitMap(path)), 
+                GameEngine, 
                 new Camera(0.8f, 
                     Vector2.Zero, 
                     new Vector2(
