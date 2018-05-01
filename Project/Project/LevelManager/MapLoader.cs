@@ -85,7 +85,8 @@ namespace Project.LevelManager
                 miner.SetMotionSprite(motionSprite, MotionType.walk_left);
                 miner.SetMotionSprite(motionSprite, MotionType.walk_right);
                 motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/run");
-                miner.SetMotionSprite(motionSprite, MotionType.run);
+                miner.SetMotionSprite(motionSprite, MotionType.run_left);
+                miner.SetMotionSprite(motionSprite, MotionType.run_right);
                 motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/jump");
                 miner.SetMotionSprite(motionSprite, MotionType.jump);
 

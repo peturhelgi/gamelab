@@ -11,16 +11,15 @@ using TheGreatEscape.GameLogic.Util;
 namespace Project.GameLogic.GameObjects.Miner
 {
 
-    public enum MotionType { idle, walk_left, walk_right, run, jump };
+    public enum MotionType { idle, walk_left, walk_right, run_left, run_right, jump };
     class Miner : GameObject
     {
         Tool _tool;
-        MotionType _motionType;
 
         public Dictionary<MotionType, MotionSpriteSheet> Motion;
         public MotionSpriteSheet CurrMotion;
         public SpriteEffects Orientation;
-        public Vector2 AnimVel;
+        public float xVel;
 
         public TimeSpan lastUpdated;
         public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
@@ -45,10 +44,9 @@ namespace Project.GameLogic.GameObjects.Miner
             Seed = SingleRandom.Instance.Next();
 
             // Motion sheets
-            AnimVel = Vector2.Zero;
+            xVel = 0;
             InstantiateMotionSheets();
             Orientation = SpriteEffects.FlipHorizontally;
-            _motionType = MotionType.idle;
             //TODO: add a case when it fails to get that type of motion
             Motion.TryGetValue(MotionType.idle, out CurrMotion);
 
@@ -61,14 +59,31 @@ namespace Project.GameLogic.GameObjects.Miner
 
             foreach (MotionType m in Enum.GetValues(typeof(MotionType)))
             {
-                if (m == MotionType.idle)
+                switch (m)
                 {
-                    mss = new MotionSpriteSheet(24, 42, MotionType.idle);
+                    case MotionType.idle:
+                        mss = new MotionSpriteSheet(24, 42, MotionType.idle, new Vector2(1, 1));
+                        break;
+                    case MotionType.walk_left:
+                        mss = new MotionSpriteSheet(12, 84, m, new Vector2(1.2f, 1));
+                        break;
+                    case MotionType.walk_right:
+                        mss = new MotionSpriteSheet(12, 84, m, new Vector2(1.2f, 1));
+                        break;
+                    case MotionType.jump:
+                        mss = new MotionSpriteSheet(12, 84, m, new Vector2(1.5f, 1.12f));
+                        break;
+                    case MotionType.run_left:
+                        mss = new MotionSpriteSheet(12, 64, m, new Vector2(1.4f, 1));
+                        break;
+                    case MotionType.run_right:
+                        mss = new MotionSpriteSheet(12, 64, m, new Vector2(1.4f, 1));
+                        break;
+                    default:
+                        mss = null;
+                        break;
                 }
-                else
-                {
-                    mss = new MotionSpriteSheet(12, 84, m);
-                }
+
                 Motion.Add(m, mss);
             }
         }
@@ -83,17 +98,21 @@ namespace Project.GameLogic.GameObjects.Miner
 
         private MotionType GetCurrentState() {
 
-            if (this.AnimVel.X > 0)
+            if (this.xVel > 0)
             {
                 if (this.Speed.Y < 0f)
                     return MotionType.jump;
+                else if (this.xVel >= GameEngine.RunSpeed)
+                    return MotionType.run_right;
                 else
                     return MotionType.walk_right;
             }
-            if (this.AnimVel.X < 0)
+            if (this.xVel < 0)
             {
                 if (this.Speed.Y < 0)
                     return MotionType.jump;
+                else if (this.xVel <= -GameEngine.RunSpeed)
+                    return MotionType.run_left;
                 else
                     return MotionType.walk_left;
             }
@@ -116,6 +135,12 @@ namespace Project.GameLogic.GameObjects.Miner
                     this.Orientation = SpriteEffects.FlipHorizontally;
                     break;
                 case MotionType.walk_left:
+                    this.Orientation = SpriteEffects.None;
+                    break;
+                case MotionType.run_right:
+                    this.Orientation = SpriteEffects.FlipHorizontally;
+                    break;
+                case MotionType.run_left:
                     this.Orientation = SpriteEffects.None;
                     break;
 

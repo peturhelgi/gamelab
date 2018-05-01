@@ -60,9 +60,7 @@ namespace Project.GameLogic.Renderer
                     if (obj is Miner) {
                         Miner m = obj as Miner;
                         Rectangle source =  m.CurrMotion.SourceRectangle;
-                        Vector2 motionSize = new Vector2(source.Width, source.Height);
-                        Vector2 scale = new Vector2(obj.SpriteSize.X, obj.SpriteSize.Y) / motionSize;
-                        motionSize *= scale;
+                        Vector2 motionSize = obj.SpriteSize * new Vector2(m.CurrMotion.Scale.X, m.CurrMotion.Scale.Y);
                         _spriteBatch.Draw(m.CurrMotion.Image, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)motionSize.X, 
                             (int)motionSize.Y), source, Color.White, 0f, Vector2.Zero, m.Orientation , 0f);
                     }
