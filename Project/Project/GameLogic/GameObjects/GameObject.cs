@@ -120,20 +120,6 @@ namespace Project.GameLogic.GameObjects
         public static GameObject Clone(GameObject source)
         {
             return (GameObject) source.MemberwiseClone();
-            /*if (source is GameObject)
-            {
-                Texture2D tempTexture = source.Texture;
-                source.Texture = null;
-                var serialized = JsonConvert.SerializeObject(source);
-                GameObject result = JsonConvert.DeserializeObject<source.>(serialized);
-                result.Texture = tempTexture;
-                source.Texture = tempTexture;
-                return result;
-
-            }
-            return null;*/
         }
-
-
     }
 }
