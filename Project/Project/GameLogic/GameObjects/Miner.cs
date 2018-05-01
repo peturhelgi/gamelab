@@ -15,8 +15,6 @@ namespace TheGreatEscape.GameLogic.GameObjects.Miner
 
     class Miner : GameObject
     {
-        Tool _tool;
-
         public Dictionary<MotionType, MotionSpriteSheet> Motion;
         public MotionSpriteSheet CurrMotion;
         public SpriteEffects Orientation;
@@ -24,7 +22,7 @@ namespace TheGreatEscape.GameLogic.GameObjects.Miner
 
         public TimeSpan lastUpdated;
 
-        Tool tool;
+        Tool Tool;
 
         private CollisionDetector CollisionDetector = new CollisionDetector();
         public GameObject HeldObj;
@@ -61,7 +59,7 @@ namespace TheGreatEscape.GameLogic.GameObjects.Miner
             //TODO: add a case when it fails to get that type of motion
             Motion.TryGetValue(MotionType.idle, out CurrMotion);
 
-            _tool = new Pickaxe();
+            Tool = new Pickaxe();
         }
 
         private void InstantiateMotionSheets() {
@@ -111,7 +109,7 @@ namespace TheGreatEscape.GameLogic.GameObjects.Miner
 
             if (this.xVel > 0)
             {
-                if (this.Speed.Y < 0f)
+                if (this.Speed.Y != 0f)
                     return MotionType.jump;
                 else if (this.xVel >= GameEngine.RunSpeed)
                     return MotionType.run_right;
@@ -120,7 +118,7 @@ namespace TheGreatEscape.GameLogic.GameObjects.Miner
             }
             if (this.xVel < 0)
             {
-                if (this.Speed.Y < 0)
+                if (this.Speed.Y != 0)
                     return MotionType.jump;
                 else if (this.xVel <= -GameEngine.RunSpeed)
                     return MotionType.run_left;
@@ -171,7 +169,7 @@ namespace TheGreatEscape.GameLogic.GameObjects.Miner
         /// </summary>
         /// <returns>True iff 1==1</returns>
         public bool UseTool(GameState gs) {
-            tool.Use(this, gs);
+            Tool.Use(this, gs);
 
             return true;
         }
