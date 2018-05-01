@@ -3,6 +3,56 @@
 Next meetings: Tuesday, 24.04.2018, after class - Friday, 27.04.2018, 12:00 - Tuesday, 1.05.2018
 
 
+## 26.04.2018
+### Rules
+Are OK, are now final and added to the readme
+
+### Progress report:
+Nicolas: As some issues with his laptop, partally helped Simon in his device
+Bjarni: Had a presentation, wasn't able to do anything yet
+Pétur: Menu overlays one ( GameOver, Won, Pause Menu), ready to merge
+Simon: Level Editor, ready to merge first version
+Andreea: Animation: Thought about how to integrate them into the renderer process, would need to load all sprites
+
+### Discussions:
+We'll use a Factory pattern to init the GameObjects
+
+### Tasks
+**Andreea**: 
+
+[] Adds more sprites to the **Miner** and starts with showing the animations
+
+[] Look at Sprite Mesh Rendering possibilities
+
+**Bjarni**:
+
+[] Adding seperate BBox for the Miner to indicate the area, in which he can interact with things.
+
+[] Changing the seperation of collectibles, solids and miners ( see GameState lines 22ff)
+
+[] Create some interactibles: Crates & Rocks, Ropes and Ladders
+
+**Pétur**:
+
+[] change debug function (right now when pressing `P`) for the collisions (i.e. drawing a polygon, where the BBoxes are, switching of lighting , ...)
+
+[] GameOver / "You Won" / Pause-Menu Merge
+
+[] Object Factory
+
+
+**Nicolas**:
+
+[] Fix his Laptop (or set it on fire)
+
+**Simon**:
+
+[] Level Editor (& Merge)
+
+[] Look at Sprite Mesh Rendering possibilities
+
+---
+
 ## 24.04.2018
 ### Progress report:
 Andreea: created a bigger level: we need to tweak jumping height and speed (sprint) to make the levels more interesting.
@@ -19,9 +69,11 @@ None for this Meeting
 
 ### Task to complete until the next meeting
 **Andreea**: 
+
 [] Adds more sprites to the **Miner** and starts with showing the animations
 
 **Bjarni**:
+
 [] Adding seperate BBox for the Miner to indicate the area, in which he can interact with things.
 
 [] Changing the seperation of collectibles, solids and miners ( see GameState lines 22ff)
@@ -29,6 +81,7 @@ None for this Meeting
 [] Create some interactibles: Crates & Rocks
 
 **Pétur**:
+
 [] change debug function (right now when pressing `P`) for the collisions (i.e. drawing a polygon, where the BBoxes are, switching of lighting , ...)
 
 [] Pause-Menu (a Menu overlaying the Game Screen, i.e. render both on top of each other)
@@ -36,6 +89,7 @@ None for this Meeting
 [] GameOver / "You Won" Screens (not connected to interactibles yet, but show then on a certain button-press, i.e. `F1` and `F2`
 
 **Nicolas and Simon**:
+
 [] Level Editor
 
 ---

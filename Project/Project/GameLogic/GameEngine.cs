@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
-using Project.GameLogic.GameObjects.Miner;
-using Project.GameLogic.GameObjects;
-using Project.GameLogic.Collision;
-using Microsoft.Xna.Framework.Graphics;
+using TheGreatEscape.GameLogic.GameObjects.Miner;
+using TheGreatEscape.GameLogic.GameObjects;
+using TheGreatEscape.GameLogic.Collision;
 
-namespace Project.GameLogic
+using TheGreatEscape.GameLogic.Util;
+
+namespace TheGreatEscape.GameLogic
 {
 
     class GameEngine
@@ -17,9 +18,10 @@ namespace Project.GameLogic
         public const float RunSpeed = 9.8f;
         public const float JumpForce = -800;
         public GameState GameState;
+
         public enum GameAction { walk_right, walk_left, jump, interact, collect, run_left, run_right };
 
-        private CollisionDetector CollisionDetector;
+        public CollisionDetector CollisionDetector;
         List<AxisAllignedBoundingBox> _attentions;
 
         int[] CurrentMiner = {0,1};
@@ -40,10 +42,12 @@ namespace Project.GameLogic
             return _attentions;
         }
 
-
         public void HandleInput(int player, GameAction action, float value) {
-            if (player >= GameState.Actors.Count)
+
+            if(player < 0 || player > 1)
+            {
                 return;
+            }
 
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
 
@@ -101,8 +105,8 @@ namespace Project.GameLogic
             List<GameObject> collisions = CollisionDetector.FindCollisions(obj.BBox, GameState.Collectibles);
             foreach (GameObject c in collisions) {
                 c.Visible = false;
-                Debug.WriteLine(c.TextureString);
-                Debug.WriteLine(c.Position);
+                MyDebugger.WriteLine(c.TextureString);
+                MyDebugger.WriteLine(c.Position);
             }
         }
         
@@ -155,7 +159,7 @@ namespace Project.GameLogic
             // 3. check, if there are any collisions in the X-axis and correct position
             List<GameObject> collisions = CollisionDetector.FindCollisions(xBox, GameState.Solids);
             if (collisions.Count > 0) {
-                Debug.WriteLine("collided with x-axis");
+                MyDebugger.WriteLine("collided with x-axis");
                 direction.X = 0;
             }
 
@@ -166,7 +170,7 @@ namespace Project.GameLogic
                 collisions = CollisionDetector.FindCollisions(yBox, GameState.Solids);
                 if (collisions.Count > 0)
                 {
-                    Debug.WriteLine("collided with y-axis");
+                    MyDebugger.WriteLine("collided with y-axis");
 
                     float lowestPoint = float.MaxValue;
                     foreach (GameObject collision in collisions)

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.GameLogic.GameObjects
+namespace TheGreatEscape.GameLogic.GameObjects
 {
     class Ground : GameObject
     {

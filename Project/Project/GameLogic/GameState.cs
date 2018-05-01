@@ -1,14 +1,14 @@
 ﻿
-using Project.GameLogic.GameObjects;
-using Project.GameLogic.GameObjects.Miner;
-using Project.LevelManager;
+using TheGreatEscape.GameLogic.GameObjects;
+using TheGreatEscape.GameLogic.GameObjects.Miner;
+using TheGreatEscape.LevelManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.GameLogic
+namespace TheGreatEscape.GameLogic
 {
     class GameState : Level
     {

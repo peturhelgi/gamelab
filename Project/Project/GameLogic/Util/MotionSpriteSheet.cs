@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Project.GameLogic.GameObjects.Miner;
+using TheGreatEscape.GameLogic.GameObjects.Miner;
 
 namespace TheGreatEscape.GameLogic.Util {
     class MotionSpriteSheet {
