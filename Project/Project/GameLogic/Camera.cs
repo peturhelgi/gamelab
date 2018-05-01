@@ -35,7 +35,7 @@ namespace Project.GameLogic
             Vector2 dims = r.Size.ToVector2()+ 2 * offset;
             Vector2 scales =    _dimensions/ dims;
             _zoom = Math.Min(scales.X, scales.Y);
-            _rectangle = new Rectangle(r.X - (int)offset.X, r.Y - (int)offset.Y , (int)dims.X, (int)dims.Y);
+            _rectangle = new Rectangle((int)_position.X, (int)_position.Y, (int)dims.X, (int)dims.Y);
             Refresh();
         }
 
