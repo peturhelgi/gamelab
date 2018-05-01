@@ -62,39 +62,35 @@ namespace EditorLogic
 
         private void HandleKeyboard(KeyboardState state)
         {
-            // START Handle camera
+            // Handle camera
             if (state.IsKeyDown(Keys.A)) Camera.HandleAction(Camera.CameraAction.left);
             if (state.IsKeyDown(Keys.D)) Camera.HandleAction(Camera.CameraAction.right);
             if (state.IsKeyDown(Keys.W)) Camera.HandleAction(Camera.CameraAction.up);
             if (state.IsKeyDown(Keys.S)) Camera.HandleAction(Camera.CameraAction.down);
-            // END Handle camera
 
-            // START Handle Cursor movement
-            // Player 1
+            // Handle Cursor movement
             if (state.IsKeyDown(Keys.Right)) _manager.CursorPosition += new Vector2(20, 0);
             if (state.IsKeyDown(Keys.Left)) _manager.CursorPosition += new Vector2(-20, 0);
             if (state.IsKeyDown(Keys.Down)) _manager.CursorPosition += new Vector2(0, 20);
             if (state.IsKeyDown(Keys.Up)) _manager.CursorPosition += new Vector2(0, -20);
-
-
-
-
-
+            
         }
 
         private void HandleGamePad(GamePadState gamePadState)
         {
-
+            // Handle camera
             if (gamePadState.IsButtonDown(Buttons.DPadLeft)) Camera.HandleAction(Camera.CameraAction.left);
             if (gamePadState.IsButtonDown(Buttons.DPadRight)) Camera.HandleAction(Camera.CameraAction.right);
             if (gamePadState.IsButtonDown(Buttons.DPadUp)) Camera.HandleAction(Camera.CameraAction.up);
             if (gamePadState.IsButtonDown(Buttons.DPadDown)) Camera.HandleAction(Camera.CameraAction.down);
 
-
+            // Handle Cursor movement
             _manager.CursorPosition += (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
             _manager.CursorPosition += (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
 
 
+
+            // enable object size changes, if we only select one object
             if (_manager.CurrentObjects != null)
             {
                 if (_manager.CurrentObjects.Count == 1)
@@ -124,8 +120,22 @@ namespace EditorLogic
                 }
             }
 
+            // let X go > place Object or duplicate Object(s)
+            if (gamePadState.IsButtonUp(Buttons.X) && _oldGamePadState.IsButtonDown(Buttons.X))
+            {
+                if (_manager.CurrentObjects != null)
+                {
+                    _manager.PlaceCurrentObjects();
+                }
+                else
+                {
+                    _manager.DuplicateObjectUnderCursor();
+                    _manager.CursorSize = new Vector2(10);
+                }
+            }
 
-            if (gamePadState.IsButtonDown(Buttons.A))
+
+            if (gamePadState.IsButtonDown(Buttons.A)|| gamePadState.IsButtonDown(Buttons.X))
             {
                 if (_manager.CurrentObjects == null)
                 {
@@ -140,16 +150,14 @@ namespace EditorLogic
                 }
 
             }
-            else
+          
+            // remove current selection
+            if (gamePadState.IsButtonDown(Buttons.LeftTrigger) && _oldGamePadState.IsButtonUp(Buttons.LeftTrigger))
             {
-                // only if A is not pressed
-                // Press left trigger to deselect current selection
-                if (gamePadState.IsButtonDown(Buttons.LeftTrigger) && _oldGamePadState.IsButtonUp(Buttons.LeftTrigger))
-                {
-                    _manager.DeselectCurrentObjects();
-                }
+                _manager.DeselectCurrentObjects();
             }
-
+            
+            // delete current object
             if (gamePadState.IsButtonDown(Buttons.RightTrigger) && _oldGamePadState.IsButtonUp(Buttons.RightTrigger))
             {
                 _manager.DeleteCurrentObject();

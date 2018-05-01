@@ -4,6 +4,7 @@ using Project.GameLogic.Collision;
 using Project.GameLogic.Renderer;
 using System.Collections.Generic;
 using System;
+using Newtonsoft.Json;
 
 namespace Project.GameLogic.GameObjects
 {
@@ -114,5 +115,25 @@ namespace Project.GameLogic.GameObjects
         public TimeSpan LastUpdated { get; set; }
 
         public bool Moveable { get; set; }
+
+
+        public static GameObject Clone(GameObject source)
+        {
+            return (GameObject) source.MemberwiseClone();
+            /*if (source is GameObject)
+            {
+                Texture2D tempTexture = source.Texture;
+                source.Texture = null;
+                var serialized = JsonConvert.SerializeObject(source);
+                GameObject result = JsonConvert.DeserializeObject<source.>(serialized);
+                result.Texture = tempTexture;
+                source.Texture = tempTexture;
+                return result;
+
+            }
+            return null;*/
+        }
+
+
     }
 }

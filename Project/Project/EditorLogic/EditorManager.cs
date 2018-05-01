@@ -102,6 +102,23 @@ namespace EditorLogic
             }
         }
 
+        public void DuplicateObjectUnderCursor()
+        {
+            List<GameObject> collisions = _engine.CollisionDetector.FindCollisions(new AxisAllignedBoundingBox(CursorPosition, CursorPosition + CursorSize), _engine.GameState.Solids);
+            if (collisions.Count > 0)
+            {
+                CurrentObjects = new List<GameObject>();
+                CursorPosition = new Vector2(float.MaxValue);
+                foreach (GameObject obj in collisions)
+                {
+                    CursorPosition = Vector2.Min(CursorPosition, obj.Position);
+                    CurrentObjects.Add(GameObject.Clone(obj));
+                }
+                MovingStartPosition = CursorPosition;
+                isNewObject = true;
+            }
+        }
+
         public void PickObjectUnderCursor() {
             List<GameObject> collisions = _engine.CollisionDetector.FindCollisions(new AxisAllignedBoundingBox(CursorPosition, CursorPosition+CursorSize), _engine.GameState.Solids);
             if (collisions.Count > 0) {
