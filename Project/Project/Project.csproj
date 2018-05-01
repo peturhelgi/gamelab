@@ -104,15 +104,17 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EditorLogic\EditorController.cs" />
-    <Compile Include="EditorLogic\EditorManager.cs" />
+
     <Compile Include="GameLogic\GameObjects\Pickaxe.cs" />
     <Compile Include="GameLogic\GameObjects\Ground.cs" />
     <Compile Include="GameLogic\GameObjects\Rock.cs" />
     <Compile Include="GameLogic\GameObjects\Tool.cs" />
     <Compile Include="GameLogic\GameObjects\GameObject.cs" />
     <Compile Include="GameLogic\GameObjects\Miner.cs" />
+    <Compile Include="GameLogic\GameObjects\Crate.cs" />
     <Compile Include="EditorLogic\EditorRenderer.cs" />
+    <Compile Include="EditorLogic\EditorController.cs" />
+    <Compile Include="EditorLogic\EditorManager.cs" />
     <Compile Include="GameLogic\Renderer\LightRenderer.cs" />
     <Compile Include="GameLogic\Util\Debugger.cs" />
     <Compile Include="GamePage.xaml.cs">
@@ -135,6 +137,7 @@
     <Compile Include="GameLogic\GameState.cs" />
     <Compile Include="LevelManager\Level.cs" />
     <Compile Include="LevelManager\MapLoader.cs" />
+
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb">

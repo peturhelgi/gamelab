@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Project.GameLogic.Collision;
 using Project.GameLogic.Renderer;
 using System.Collections.Generic;
+using System;
 
 namespace Project.GameLogic.GameObjects
 {
@@ -68,6 +69,18 @@ namespace Project.GameLogic.GameObjects
             set;
         }
 
+        TimeSpan LastUpdated
+        {
+            get;
+            set;
+        }
+
+        bool Moveable
+        {
+            get;
+            set;
+        }
+
 
     }
 
@@ -97,5 +110,9 @@ namespace Project.GameLogic.GameObjects
         public List<Light> Lights { get; set; }
 
         public int Seed { get; set; }
+
+        public TimeSpan LastUpdated { get; set; }
+
+        public bool Moveable { get; set; }
     }
 }
