@@ -7,19 +7,22 @@ using System.Threading.Tasks;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
-    class Rock : GameObject
+    class Crate : GameObject
     {
-        public Rock(Vector2 position, Vector2 spriteSize, string textureString)
+
+        public Crate(Vector2 position, Vector2 spriteSize, string textureString)
         {
 
             TextureString = textureString;
             Position = position;
             SpriteSize = spriteSize;
+            Falling = true;
 
-            Speed = new Vector2(0);
+            Speed = Vector2.Zero;
             Mass = 10;
             Visible = true;
-            Moveable = false;
+            LastUpdated = new TimeSpan();
+            Moveable = true;
         }
     }
 }

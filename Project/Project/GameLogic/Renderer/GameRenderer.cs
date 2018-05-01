@@ -3,12 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.GameLogic.GameObjects.Miner;
-using System;
 using System.Collections.Generic;
-using TheGreatEscape.GameLogic.Util;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TheGreatEscape.GameLogic.Renderer
 {

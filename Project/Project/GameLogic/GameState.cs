@@ -48,6 +48,10 @@ namespace TheGreatEscape.GameLogic
         {
             return Solids;
         }
+        public void RemoveSolid(GameObject solid)
+        {
+            Solids.Remove(solid);
+        }
 
 
         public void AddCollectible(GameObject collectible)
@@ -57,6 +61,10 @@ namespace TheGreatEscape.GameLogic
         public List<GameObject> GetCollectibles()
         {
             return Collectibles;
+        }
+        public void RemoveCollectible(GameObject collectible)
+        {
+            Collectibles.Remove(collectible);
         }
 
 

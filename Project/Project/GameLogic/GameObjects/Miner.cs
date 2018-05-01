@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using TheGreatEscape.GameLogic.Util;
 using TheGreatEscape.Libs;
+using TheGreatEscape.GameLogic.Collision;
+using TheGreatEscape.GameLogic.GameObjects;
 
 namespace TheGreatEscape.GameLogic.GameObjects.Miner
 {
@@ -20,6 +22,12 @@ namespace TheGreatEscape.GameLogic.GameObjects.Miner
         public float xVel;
 
         public TimeSpan lastUpdated;
+
+        Tool tool;
+        private CollisionDetector CollisionDetector = new CollisionDetector();
+        public GameObject HeldObj;
+        public bool Holding;
+
         public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
         {
             lastUpdated = new TimeSpan();
@@ -40,7 +48,10 @@ namespace TheGreatEscape.GameLogic.GameObjects.Miner
                 new Light((SpriteSize * new Vector2(0.5f, 0.15f)), Vector2.Zero, LightRenderer.Lighttype.Directional, this)
             };
             Seed = SingleRandom.Instance.Next();
-
+            LastUpdated = new TimeSpan();
+            HeldObj = null;
+            Holding = false;
+            Moveable = true;
             // Motion sheets
             xVel = 0;
             InstantiateMotionSheets();
@@ -153,10 +164,52 @@ namespace TheGreatEscape.GameLogic.GameObjects.Miner
 
         }
 
-        public bool UseTool(List<GameObject> gameObjects) {
-            _tool.Use(this, gameObjects);
+        /// <summary>
+        /// Uses the tool that the miner currenty has
+        /// </summary>
+        /// <returns>True iff 1==1</returns>
+        public bool UseTool(GameState gs) {
+            tool.Use(this, gs);
 
             return true;
         }
+
+        public AxisAllignedBoundingBox InteractionBox()
+        {
+            Vector2 offset = new Vector2(50, 50);
+            return new AxisAllignedBoundingBox(Position - offset, Position + SpriteSize + offset);
+        }
+
+        public void InteractWithCrate(GameState gs)
+        {
+            // picking up crate
+            if(!Holding)
+            {
+                List<GameObject> collisions = CollisionDetector.FindCollisions(InteractionBox(), gs.GetSolids());
+                foreach (GameObject c in collisions)
+                {
+                    if (c is Crate)
+                    {
+                        c.Position = new Vector2(c.Position.X, Position.Y);
+                        gs.AddCollectible(c);
+                        gs.RemoveSolid(c);
+
+                        HeldObj = c;
+                        HeldObj.Falling = false;
+                        Holding = true;
+                    }
+                }
+            }
+            else
+            {
+                HeldObj.Falling = true;
+                gs.AddSolid(HeldObj);
+                gs.RemoveCollectible(HeldObj);
+
+                HeldObj = null;
+                Holding = false;
+            }
+        }
+
     }
 }
