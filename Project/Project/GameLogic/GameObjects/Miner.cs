@@ -8,7 +8,7 @@ using System.Diagnostics;
 using Project.Libs;
 
 
-namespace Project.GameLogic.GameObjects.Miner
+namespace Project.GameLogic.GameObjects
 {
 
     enum Gait { stop, crawl, walk, run, jump};
