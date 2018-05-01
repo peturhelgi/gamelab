@@ -8,11 +8,12 @@ using System.Diagnostics;
 using TheGreatEscape.Libs;
 
 
-namespace TheGreatEscape.GameLogic.GameObjects.Miner
+namespace TheGreatEscape.GameLogic.GameObjects
 {
 
     enum Gait { stop, crawl, walk, run, jump};
     enum Stance { stand, jump, crouch, lie };
+    
     class Miner : GameObject
     {
         Tool tool;
@@ -20,11 +21,10 @@ namespace TheGreatEscape.GameLogic.GameObjects.Miner
         Stance Stance;
         public TimeSpan lastUpdated;
         public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
+            :base(position, spriteSize)
         {
-            Position = position;
             Speed    = speed;
             Mass     = mass;
-            SpriteSize = spriteSize;
             Visible  = true;
             Gait     = Gait.walk;
             Stance   = Stance.jump;
@@ -37,7 +37,6 @@ namespace TheGreatEscape.GameLogic.GameObjects.Miner
             };
             Seed = SingleRandom.Instance.Next();
             lastUpdated = new TimeSpan();
-
         }
 
         /// <summary>

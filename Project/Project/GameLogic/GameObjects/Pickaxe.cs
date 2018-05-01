@@ -9,7 +9,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
 {
     class Pickaxe : Tool
     {
-        public override void Use(Miner.Miner user, List<GameObject> gameObjects)
+        public override void Use(Miner user, List<GameObject> gameObjects)
         {
             foreach (GameObject obj in gameObjects) {
                 if (obj is Rock && obj.Visible) { 

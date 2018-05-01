@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
-using TheGreatEscape.GameLogic.GameObjects.Miner;
 using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.GameLogic.Collision;
 

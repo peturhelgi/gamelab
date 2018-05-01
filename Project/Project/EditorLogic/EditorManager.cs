@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.Collision;
 using TheGreatEscape.GameLogic.GameObjects;
-using TheGreatEscape.GameLogic.GameObjects.Miner;
+using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.GameLogic.Renderer;
 using TheGreatEscape.LevelManager;
 using System;

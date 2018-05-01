@@ -1,6 +1,5 @@
 ﻿
 using TheGreatEscape.GameLogic.GameObjects;
-using TheGreatEscape.GameLogic.GameObjects.Miner;
 using TheGreatEscape.LevelManager;
 using System;
 using System.Collections.Generic;

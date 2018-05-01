@@ -4,7 +4,6 @@ using System;
 using Newtonsoft.Json;
 using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.GameObjects;
-using TheGreatEscape.GameLogic.GameObjects.Miner;
 
 namespace TheGreatEscape.LevelManager
 {
