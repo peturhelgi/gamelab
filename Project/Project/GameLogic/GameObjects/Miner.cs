@@ -61,27 +61,13 @@ namespace Project.GameLogic.GameObjects.Miner
 
             foreach (MotionType m in Enum.GetValues(typeof(MotionType)))
             {
-                switch (m)
+                if (m == MotionType.idle)
                 {
-                    case MotionType.idle:
-                        mss = new MotionSpriteSheet(24, 42, MotionType.idle);
-                        break;
-                    case MotionType.walk_left:
-                        mss = new MotionSpriteSheet(11, 100, MotionType.walk_left);
-                        break;
-                    case MotionType.walk_right:
-                        mss = new MotionSpriteSheet(11, 100, MotionType.walk_right);
-                        break;
-                    case MotionType.run:
-                        mss = new MotionSpriteSheet(12, 88, MotionType.run);
-                        break;
-                    //TODO: fix the jump sprite, has a small artefact
-                    case MotionType.jump:
-                        mss = new MotionSpriteSheet(12, 60, MotionType.jump);
-                        break;
-                    default:
-                        mss = null;
-                        break;
+                    mss = new MotionSpriteSheet(24, 42, MotionType.idle);
+                }
+                else
+                {
+                    mss = new MotionSpriteSheet(12, 84, m);
                 }
                 Motion.Add(m, mss);
             }
@@ -99,14 +85,14 @@ namespace Project.GameLogic.GameObjects.Miner
 
             if (this.AnimVel.X > 0)
             {
-                if (this.Speed.Y > 0)
+                if (this.Speed.Y < 0f)
                     return MotionType.jump;
                 else
                     return MotionType.walk_right;
             }
             if (this.AnimVel.X < 0)
             {
-                if (this.Speed.Y > 0)
+                if (this.Speed.Y < 0)
                     return MotionType.jump;
                 else
                     return MotionType.walk_left;
