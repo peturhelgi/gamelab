@@ -37,11 +37,15 @@ namespace Project.LevelManager
                         break;
                     case "rock":
                         Rock rock = new Rock(obj.Position, obj.SpriteSize, obj.Texture);
-                        gameState.AddCollectible(rock);
+                        gameState.AddSolid(rock);
                         break;
                     case "ground":
                         Ground ground = new Ground(obj.Position, obj.SpriteSize, obj.Texture);
                         gameState.AddSolid(ground);
+                        break;
+                    case "crate":
+                        Crate crate = new Crate(obj.Position, obj.SpriteSize, obj.Texture);
+                        gameState.AddSolid(crate);
                         break;
                     case "end":
                         break;
