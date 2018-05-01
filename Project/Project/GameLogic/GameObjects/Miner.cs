@@ -8,17 +8,17 @@ using System.Diagnostics;
 using Project.Libs;
 using Project.GameLogic.Collision;
 
-
 namespace Project.GameLogic.GameObjects.Miner
 {
 
-    enum Gait { stop, crawl, walk, run, jump};
-    enum Stance { stand, jump, crouch, lie };
+    public enum Gait { stop, crawl, walk, run, jump};
+    public enum Stance { stand, jump, crouch, lie };
     class Miner : GameObject
     {
         Tool tool;
         Gait Gait;
         Stance Stance;
+
         private CollisionDetector CollisionDetector = new CollisionDetector();
         public GameObject HeldObj;
         public bool Holding;
