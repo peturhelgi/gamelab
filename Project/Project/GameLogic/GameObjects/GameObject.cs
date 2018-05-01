@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.Collision;
 using TheGreatEscape.GameLogic.Renderer;
 using System.Collections.Generic;
+using System;
+using Newtonsoft.Json;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
@@ -68,6 +70,18 @@ namespace TheGreatEscape.GameLogic.GameObjects
             set;
         }
 
+        TimeSpan LastUpdated
+        {
+            get;
+            set;
+        }
+
+        bool Moveable
+        {
+            get;
+            set;
+        }
+
 
     }
 
@@ -97,5 +111,15 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public List<Light> Lights { get; set; }
 
         public int Seed { get; set; }
+
+        public TimeSpan LastUpdated { get; set; }
+
+        public bool Moveable { get; set; }
+
+
+        public static GameObject Clone(GameObject source)
+        {
+            return (GameObject) source.MemberwiseClone();
+        }
     }
 }

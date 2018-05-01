@@ -73,7 +73,7 @@ namespace TheGreatEscape.GameLogic
             _renderer.Draw(gameTime, width, height,
                 MyDebugger.IsActive ? 
                 GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, 
-                _controller.Camera.view); 
+                _controller.Camera); 
         }
 
     }

@@ -16,7 +16,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             SpriteSize = spriteSize;
             Visible = true;
             this.TextureString = TextureString;
-
+            Moveable = false;
         }
     }
 }

@@ -44,19 +44,22 @@ namespace TheGreatEscape.GameLogic.Renderer
             
         }
 
-        public void Draw(GameTime gameTime, int width, int height, Mode mode, Matrix camera)
+        public void Draw(GameTime gameTime, int width, int height, Mode mode, Camera camera)
         {
 
             List<Light> lights = new List<Light>();
+            Texture2D background = _gameState.GetBackground();
 
             // Render the scene
             _graphicsDevice.SetRenderTarget(_renderTargetScene);
             _graphicsDevice.Clear(Color.Gray);
-
             _spriteBatch.Begin(
                 SpriteSortMode.Deferred, 
                 mode == Mode.DebugView ? BlendState.Opaque : null, 
-                null, null, null, null, camera);
+                null, null, null, null, camera.view);
+
+            _spriteBatch.Draw(background, camera.GetCameraRectangle(background.Width, background.Height), Color.White);
+
             foreach(GameObject obj in _gameState.GetAll())
             {
                 if(obj.Visible)
@@ -71,7 +74,7 @@ namespace TheGreatEscape.GameLogic.Renderer
             _spriteBatch.End();
 
             // Render the Lights
-            _renderTargetLights = _lightRenderer.Draw(gameTime, width, height, lights, camera);
+            _renderTargetLights = _lightRenderer.Draw(gameTime, width, height, lights, camera.view);
 
             _graphicsDevice.SetRenderTarget(null);
 
