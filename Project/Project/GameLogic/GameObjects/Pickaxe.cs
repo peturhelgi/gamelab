@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
-    class Pickaxe : Tool
+    public class Pickaxe : Tool
     {
         public override void Use(Miner user, List<GameObject> gameObjects)
         {
@@ -17,8 +17,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     if (true)
                     {
                         obj.Visible = false;
-                    }
-                    
+                    }                    
                 }
             }
         }

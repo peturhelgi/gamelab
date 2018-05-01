@@ -3,60 +3,89 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using TheGreatEscape.GameLogic.Util;
 using Microsoft.Xna.Framework;
 using TheGreatEscape.GameLogic.GameObjects;
-
+using TheGreatEscape.LevelManager;
 namespace TheGreatEscape.GameLogic.GameObjects
 {
     public abstract class Factory<T>
     {
-        public enum ObjectType
-        {
-            Miner,
-            Ground,
-            Rock,
-            Crate,
-            Ladder,
-            Lever,
-            Platform,
-            Pickaxe,
-            Rope
-        }
-        public abstract T CreateGameObject(ObjectType type,
-            params object[] args);
+        public abstract T Create(
+            Object obj);
     }
 
+    public class ToolFactory : Factory<Tool>
+    {
+        public override Tool Create(Object obj)
+        {
+            string type = "pickaxe";
+            Tool tool;
+            switch(type)
+            {
+                case "pickaxe":
+                    tool = new Pickaxe();
+                    break;
+                case "rope":
+                default:
+                    throw new NotImplementedException(
+                        string.Format("Tool '{0}' cannot be created", type));
+            }
+            return tool;
+        }
+    }
     public class GameObjectFactory : Factory<GameObject>
     {
 
-        public override GameObject CreateGameObject(ObjectType type,
-            params object[] args)
+        public override GameObject Create(
+            Object obj)
         {
-
-            switch(type)
+            GameObject instance;
+            Obj entity = obj as Obj;
+            switch(entity.Type.ToLower())
             {
-                case ObjectType.Miner:
-                    return Activator.CreateInstance(typeof(Miner), args)
-                        as GameObject;
-                case ObjectType.Ground:
-                    return Activator.CreateInstance(typeof(Ground), args)
-                        as GameObject;
-                case ObjectType.Rock:
-                    return Activator.CreateInstance(typeof(Rock), args)
-                        as GameObject;
-                case ObjectType.Pickaxe:
-                    return Activator.CreateInstance(typeof(Pickaxe), args)
-                        as GameObject;
-                case ObjectType.Rope:
-                case ObjectType.Crate:
-                case ObjectType.Ladder:
-                case ObjectType.Lever:
-                case ObjectType.Platform:
-
+                case "miner":
+                    instance = new Miner(
+                        entity.Position,
+                        entity.SpriteSize,
+                        entity.Velocity,
+                        entity.Mass,
+                        entity.Texture);
+                    instance.Speed = entity.Velocity;
+                    instance.Mass = entity.Mass;
+                    instance.TextureString = entity.Texture;                    
+                    break;
+                case "ground":
+                    instance = new Ground(
+                        entity.Position,
+                        entity.SpriteSize,
+                        entity.Texture);
+                    instance.TextureString = entity.Texture;                    
+                    break;
+                case "rock":
+                    instance = new Rock(
+                        entity.Position,
+                        entity.SpriteSize,
+                        entity.Texture);
+                    instance.TextureString = entity.Texture;                    
+                    break;
+                case "end":
+                case "crate":
+                case "ladder":
+                case "lever":
+                case "platform":
                 default:
-                    throw new Exception(string.Format("GameObject '{0}' cannot be created", type));
+                    instance = null;
+                    MyDebugger.WriteLine(
+                        string.Format("GameObject '{0}' cannot be created",
+                        entity?.Type), true);
+                    break;
             }
+            if(instance != null)
+            {
+                instance.Visible = true;
+            }
+            return instance;
         }
     }
 }

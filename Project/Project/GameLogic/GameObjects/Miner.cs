@@ -14,13 +14,14 @@ namespace TheGreatEscape.GameLogic.GameObjects
     enum Gait { stop, crawl, walk, run, jump};
     enum Stance { stand, jump, crouch, lie };
     
-    class Miner : GameObject
+    public class Miner : GameObject
     {
         Tool tool;
         Gait Gait;
         Stance Stance;
         public TimeSpan lastUpdated;
-        public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
+        public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, 
+            double mass, string textureString)
             :base(position, spriteSize)
         {
             Speed    = speed;

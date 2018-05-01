@@ -17,24 +17,43 @@ namespace TheGreatEscape.GameLogic
         CollisionDetector CollisionDetector;
 
 
-        public GameState() {
+        public GameState()
+        {
             Actors = new List<Miner>();
             Solids = new List<GameObject>();
             Collectibles = new List<GameObject>();
             CollisionDetector = new CollisionDetector();
         }
 
-        public List<GameObject> GetAll() {
+        public List<GameObject> GetAll()
+        {
             return Actors.Concat(Solids).Concat(Collectibles).ToList();
         }
 
+        public void AddObject(GameObject obj)
+        {
+            if(obj is Miner)
+            {
+                AddActor(obj as Miner);
+            }
+            else if(obj is Ground)
+            {
+                AddSolid(obj);
+            }
+            else if(obj is Rock)
+            {
+                AddCollectible(obj);
+            }
+
+        }
 
         public void AddActor(Miner actor)
         {
             Actors.Add(actor);
         }
 
-        public List<Miner> GetActors() {
+        public List<Miner> GetActors()
+        {
             return Actors;
         }
 
