@@ -10,6 +10,7 @@ using Project.GameLogic.Renderer;
 using Project.LevelManager;
 using System;
 using System.Collections.Generic;
+using TheGreatEscape.EditorLogic.Util;
 
 namespace EditorLogic
 {
@@ -36,10 +37,13 @@ namespace EditorLogic
         public Vector2 MovingStartPosition;
         public bool Editing = true;
         public List<GameObject> CurrentObjects;
-        public bool isNewObject;
+        public bool CurrentIsNewObject;
+        public bool ObjectPickerOpen;
+
+        public List<GameObject> ObjectTemplates;
+        public CircularSelector CircularSelector;
 
 
-       
 
         public EditorManager(ContentManager content, GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics)
         {
@@ -53,11 +57,31 @@ namespace EditorLogic
 
             _oldKeyboardState = Keyboard.GetState();
             _oldGamePadState = GamePad.GetState(PlayerIndex.One);
+
+
+            // TODO: Move to GameObject factory
+            // Templates.Add(new Miner(Vector2.Zero, new Vector2(100, 150), Vector2.Zero, 80, "Sprites/Miners/MinerHandsInPants"));
+            ObjectTemplates = new List<GameObject>
+            {
+                new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock1"),
+                new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock2"),
+                new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock3"),
+                new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock4"),
+                new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock5")
+            };
+
+            foreach (GameObject obj in ObjectTemplates) {
+                obj.Texture = content.Load<Texture2D>(obj.TextureString);
+            }
+
+            CircularSelector = new CircularSelector(_content);
+            CircularSelector.SetObjects(ObjectTemplates);
+
         }
 
         public void DeselectCurrentObjects()
         {
-            if (CurrentObjects != null && !isNewObject)
+            if (CurrentObjects != null && !CurrentIsNewObject)
             {
                 foreach (var obj in CurrentObjects)
                 {
@@ -79,15 +103,15 @@ namespace EditorLogic
             CurrentObjects = null;
         }
 
-        public void CreateNewGameObject(Object newObject)
+        public void CreateNewGameObject(GameObject newObject)
         {
             CurrentObjects = new List<GameObject>
             {
-                new Ground(CursorPosition, new Vector2(640, 318), "Sprites/Rocks/Ground1")
+                GameObject.Clone(newObject)
             };
-            CurrentObjects[0].Texture = _content.Load<Texture2D>(CurrentObjects[0].TextureString);
-            isNewObject = true;
-            MovingStartPosition = CursorPosition;
+            
+            CurrentIsNewObject = true;
+            MovingStartPosition =  Vector2.Zero;
 
         }
 
@@ -115,7 +139,7 @@ namespace EditorLogic
                     CurrentObjects.Add(GameObject.Clone(obj));
                 }
                 MovingStartPosition = CursorPosition;
-                isNewObject = true;
+                CurrentIsNewObject = true;
             }
         }
 
@@ -129,7 +153,7 @@ namespace EditorLogic
                     _engine.GameState.Solids.Remove(obj);
                 }
                 MovingStartPosition = CursorPosition;
-                isNewObject = false;
+                CurrentIsNewObject = false;
             }
         }
 

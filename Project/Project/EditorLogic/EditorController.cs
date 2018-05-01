@@ -73,7 +73,7 @@ namespace EditorLogic
             if (state.IsKeyDown(Keys.Left)) _manager.CursorPosition += new Vector2(-20, 0);
             if (state.IsKeyDown(Keys.Down)) _manager.CursorPosition += new Vector2(0, 20);
             if (state.IsKeyDown(Keys.Up)) _manager.CursorPosition += new Vector2(0, -20);
-            
+
         }
 
         private void HandleGamePad(GamePadState gamePadState)
@@ -84,84 +84,103 @@ namespace EditorLogic
             if (gamePadState.IsButtonDown(Buttons.DPadUp)) Camera.HandleAction(Camera.CameraAction.up);
             if (gamePadState.IsButtonDown(Buttons.DPadDown)) Camera.HandleAction(Camera.CameraAction.down);
 
-            // Handle Cursor movement
-            _manager.CursorPosition += (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
-            _manager.CursorPosition += (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
 
-
-
-            // enable object size changes, if we only select one object
-            if (_manager.CurrentObjects != null)
+            // when Y is pressed, open the picker wheel
+            if (gamePadState.IsButtonDown(Buttons.Y))
             {
-                if (_manager.CurrentObjects.Count == 1)
+                _manager.ObjectPickerOpen = true;
+                if (gamePadState.ThumbSticks.Left.Length() > 0.5)
                 {
-                    _manager.CurrentObjects[0].SpriteSize += gamePadState.ThumbSticks.Right * new Vector2(5, -5);
+                    _manager.CircularSelector.Update(gamePadState.ThumbSticks.Left);
                 }
             }
-
-            if (gamePadState.IsButtonDown(Buttons.Y) && _oldGamePadState.IsButtonUp(Buttons.Y))
+            else
             {
-                _manager.CreateNewGameObject(null);
-            }
+                // Handle Cursor movement
+                _manager.CursorPosition += (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
+                _manager.CursorPosition += (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
 
 
 
-            // let A go > place Object or Pick Object(s)
-            if (gamePadState.IsButtonUp(Buttons.A) && _oldGamePadState.IsButtonDown(Buttons.A))
-            {
+                // enable object size changes, if we only select one object
                 if (_manager.CurrentObjects != null)
                 {
-                    _manager.PlaceCurrentObjects();
+                    if (_manager.CurrentObjects.Count == 1)
+                    {
+                        _manager.CurrentObjects[0].SpriteSize += gamePadState.ThumbSticks.Right * new Vector2(5, -5);
+                    }
                 }
-                else
+
+
+                // let A go > place Object or Pick Object(s)
+                if (gamePadState.IsButtonUp(Buttons.A) && _oldGamePadState.IsButtonDown(Buttons.A))
                 {
-                    _manager.PickObjectUnderCursor();
-                    _manager.CursorSize = new Vector2(10);
+                    if (_manager.CurrentObjects != null)
+                    {
+                        _manager.PlaceCurrentObjects();
+                    }
+                    else
+                    {
+                        _manager.PickObjectUnderCursor();
+                        _manager.CursorSize = new Vector2(10);
+                    }
                 }
-            }
 
-            // let X go > place Object or duplicate Object(s)
-            if (gamePadState.IsButtonUp(Buttons.X) && _oldGamePadState.IsButtonDown(Buttons.X))
-            {
-                if (_manager.CurrentObjects != null)
+                // let X go > place Object or duplicate Object(s)
+                if (gamePadState.IsButtonUp(Buttons.X) && _oldGamePadState.IsButtonDown(Buttons.X))
                 {
-                    _manager.PlaceCurrentObjects();
+                    if (_manager.CurrentObjects != null)
+                    {
+                        _manager.PlaceCurrentObjects();
+                    }
+                    else
+                    {
+                        _manager.DuplicateObjectUnderCursor();
+                        _manager.CursorSize = new Vector2(10);
+                    }
                 }
-                else
+
+
+                if (gamePadState.IsButtonDown(Buttons.A) || gamePadState.IsButtonDown(Buttons.X))
                 {
-                    _manager.DuplicateObjectUnderCursor();
-                    _manager.CursorSize = new Vector2(10);
+                    if (_manager.CurrentObjects == null)
+                    {
+                        // We are in selector mode
+
+                        _manager.CursorSize += (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
+                        _manager.CursorSize += (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
+
+                        _manager.CursorPosition -= (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
+                        _manager.CursorPosition -= (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
+
+                    }
+
                 }
-            }
 
-
-            if (gamePadState.IsButtonDown(Buttons.A)|| gamePadState.IsButtonDown(Buttons.X))
-            {
-                if (_manager.CurrentObjects == null)
+                // remove current selection
+                if (gamePadState.IsButtonDown(Buttons.LeftTrigger) && _oldGamePadState.IsButtonUp(Buttons.LeftTrigger))
                 {
-                    // We are in selector mode
-
-                    _manager.CursorSize += (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
-                    _manager.CursorSize += (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
-
-                    _manager.CursorPosition -= (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
-                    _manager.CursorPosition -= (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
-
+                    _manager.DeselectCurrentObjects();
                 }
 
+                // delete current object
+                if (gamePadState.IsButtonDown(Buttons.RightTrigger) && _oldGamePadState.IsButtonUp(Buttons.RightTrigger))
+                {
+                    _manager.DeleteCurrentObject();
+                }
             }
-          
-            // remove current selection
-            if (gamePadState.IsButtonDown(Buttons.LeftTrigger) && _oldGamePadState.IsButtonUp(Buttons.LeftTrigger))
+
+            //on release of Y, pick the current object of the selector
+            if (gamePadState.IsButtonUp(Buttons.Y) && _oldGamePadState.IsButtonDown(Buttons.Y))
             {
-                _manager.DeselectCurrentObjects();
+                _manager.ObjectPickerOpen = false;
+                int itemNumber = _manager.CircularSelector.SelectedElement % _manager.ObjectTemplates.Count;
+                _manager.CreateNewGameObject(_manager.ObjectTemplates[itemNumber]);
             }
-            
-            // delete current object
-            if (gamePadState.IsButtonDown(Buttons.RightTrigger) && _oldGamePadState.IsButtonUp(Buttons.RightTrigger))
-            {
-                _manager.DeleteCurrentObject();
-            }
+
+
+
+
 
             if (gamePadState.IsButtonDown(Buttons.Back))
                 // TODO: Ask the user to save the level
