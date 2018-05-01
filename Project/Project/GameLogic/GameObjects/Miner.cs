@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using TheGreatEscape.Libs;
+using TheGreatEscape.LevelManager;
 
 
 namespace TheGreatEscape.GameLogic.GameObjects
@@ -19,18 +20,14 @@ namespace TheGreatEscape.GameLogic.GameObjects
         Tool tool;
         Gait Gait;
         Stance Stance;
+        ToolFactory factory = new ToolFactory();
         public TimeSpan lastUpdated;
-        public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, 
-            double mass, string textureString)
+        public Miner(Vector2 position, Vector2 spriteSize)
             :base(position, spriteSize)
         {
-            Speed    = speed;
-            Mass     = mass;
-            Visible  = true;
             Gait     = Gait.walk;
             Stance   = Stance.jump;
-            tool = new Pickaxe();
-            TextureString = textureString;
+            tool = factory.Create(new Obj{Type = "pickaxe" });
             Lights = new List<Light>
             {
                 new Light((SpriteSize * new Vector2(0.5f, 0.15f)), Vector2.Zero, LightRenderer.Lighttype.Circular, this),

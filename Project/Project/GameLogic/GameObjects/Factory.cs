@@ -47,10 +47,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 case "miner":
                     instance = new Miner(
                         entity.Position,
-                        entity.SpriteSize,
-                        entity.Velocity,
-                        entity.Mass,
-                        entity.Texture);
+                        entity.SpriteSize);
                     instance.Speed = entity.Velocity;
                     instance.Mass = entity.Mass;
                     instance.TextureString = entity.Texture;                    
@@ -65,8 +62,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 case "rock":
                     instance = new Rock(
                         entity.Position,
-                        entity.SpriteSize,
-                        entity.Texture);
+                        entity.SpriteSize);
                     instance.TextureString = entity.Texture;                    
                     break;
                 case "end":
