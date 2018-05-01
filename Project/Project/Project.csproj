@@ -104,7 +104,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-
+    <Compile Include="EditorLogic\Util\CircularSelector.cs" />
     <Compile Include="GameLogic\GameObjects\Pickaxe.cs" />
     <Compile Include="GameLogic\GameObjects\Ground.cs" />
     <Compile Include="GameLogic\GameObjects\Rock.cs" />
@@ -138,7 +138,6 @@
     <Compile Include="GameLogic\GameState.cs" />
     <Compile Include="LevelManager\Level.cs" />
     <Compile Include="LevelManager\MapLoader.cs" />
-
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb">
@@ -156,12 +155,6 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="Content\Sprites\VisualAssets_PS\Background.psd" />
-    <None Include="Content\Sprites\VisualAssets_PS\Ground.psd" />
-    <None Include="Content\Sprites\VisualAssets_PS\Miner.psd" />
-    <None Include="Content\Sprites\VisualAssets_PS\Pickaxe.psd" />
-    <None Include="Content\Sprites\VisualAssets_PS\Rock.psd" />
-    <None Include="Content\Sprites\VisualAssets_PS\Rope.psd" />
     <None Include="Project_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -185,30 +178,6 @@
     <Content Include="Content\caveMusic.mp3" />
     <Content Include="Content\Lights\circular_light.png" />
     <Content Include="Content\Lights\directional_light.png" />
-    <Content Include="Content\Sprites\Backgrounds\Background1.jpg" />
-    <Content Include="Content\Sprites\Backgrounds\Background2.jpg" />
-    <Content Include="Content\Sprites\Backgrounds\ExitSign.png" />
-    <Content Include="Content\Sprites\Backgrounds\ExitSign_2.png" />
-    <Content Include="Content\Sprites\Interactables\crate.png" />
-    <Content Include="Content\Sprites\Interactables\Door.png" />
-    <Content Include="Content\Sprites\Interactables\LadderLong.png" />
-    <Content Include="Content\Sprites\Interactables\LadderShort.png" />
-    <Content Include="Content\Sprites\Miners\MinerHandsInPants.png" />
-    <Content Include="Content\Sprites\Miners\MinerPickaxe.png" />
-    <Content Include="Content\Sprites\Miners\MinerRope.png" />
-    <Content Include="Content\Sprites\Misc\box.png" />
-    <Content Include="Content\Sprites\Rocks\BareRock1.png" />
-    <Content Include="Content\Sprites\Rocks\BareRock2.png" />
-    <Content Include="Content\Sprites\Rocks\BareRock3.png" />
-    <Content Include="Content\Sprites\Rocks\BareRock4.png" />
-    <Content Include="Content\Sprites\Rocks\BareRock5.png" />
-    <Content Include="Content\Sprites\Rocks\Ground1.png" />
-    <Content Include="Content\Sprites\Rocks\Ground2.png" />
-    <Content Include="Content\Sprites\Rocks\Ground3.png" />
-    <Content Include="Content\Sprites\Rocks\Ground4.png" />
-    <Content Include="Content\Sprites\Rocks\SuspendedRock.png" />
-    <Content Include="Content\Sprites\Tools\Pickaxe.png" />
-    <Content Include="Content\Sprites\Tools\Rope.png" />
     <Content Include="Content\Lights\Lighting.fx" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>

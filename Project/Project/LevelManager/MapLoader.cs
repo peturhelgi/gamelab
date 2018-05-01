@@ -26,7 +26,8 @@ namespace TheGreatEscape.LevelManager
 
             string text = ContentManager.Load<string>(levelName);
             Level level = JsonConvert.DeserializeObject<Level>(text);
-
+            gameState.background = level.background;
+            
             foreach (Obj obj in level.objects)
             {
 
@@ -62,8 +63,9 @@ namespace TheGreatEscape.LevelManager
 
         public void LoadMapContent(GameState gameState)
         {
+            Texture2D background = ContentManager.Load<Texture2D>(gameState.background);
+            gameState.SetBackground(background);
 
-            //background = ContentManager.Load<Texture2D>("Sprites/Backgrounds/Background1");
             // TODO possibly add a hashed Map to only load every Texture once
             foreach (GameObject obj in gameState.GetAll())
             {

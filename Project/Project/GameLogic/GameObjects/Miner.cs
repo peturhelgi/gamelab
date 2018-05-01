@@ -12,6 +12,7 @@ namespace TheGreatEscape.GameLogic.GameObjects.Miner
 {
 
     public enum MotionType { idle, walk_left, walk_right, run_left, run_right, jump };
+
     class Miner : GameObject
     {
         Tool _tool;
@@ -24,6 +25,7 @@ namespace TheGreatEscape.GameLogic.GameObjects.Miner
         public TimeSpan lastUpdated;
 
         Tool tool;
+
         private CollisionDetector CollisionDetector = new CollisionDetector();
         public GameObject HeldObj;
         public bool Holding;

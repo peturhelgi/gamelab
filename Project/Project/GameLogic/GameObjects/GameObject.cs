@@ -4,6 +4,7 @@ using TheGreatEscape.GameLogic.Collision;
 using TheGreatEscape.GameLogic.Renderer;
 using System.Collections.Generic;
 using System;
+using Newtonsoft.Json;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
@@ -114,5 +115,11 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public TimeSpan LastUpdated { get; set; }
 
         public bool Moveable { get; set; }
+
+
+        public static GameObject Clone(GameObject source)
+        {
+            return (GameObject) source.MemberwiseClone();
+        }
     }
 }
