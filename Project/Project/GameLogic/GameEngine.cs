@@ -13,8 +13,12 @@ namespace Project.GameLogic
 
     class GameEngine
     {
+        public const float WalkSpeed = 5.6f;
+        public const float RunSpeed = 9.8f;
+        public const float JumpForce = -800;
         public GameState GameState;
-        public enum GameAction { walk_right, walk_left, jump, interact, collect };
+        public enum GameAction { walk_right, walk_left, jump, interact, collect, run_left, run_right };
+
         private CollisionDetector CollisionDetector;
         List<AxisAllignedBoundingBox> _attentions;
 
@@ -45,20 +49,25 @@ namespace Project.GameLogic
 
             switch (action) {
                 case (GameAction.walk_right):
-                    CalculateAndSetNewPosition(miner, new Vector2(8, 0));
+                    CalculateAndSetNewPosition(miner, new Vector2(WalkSpeed, 0));
                     break;
 
                 case (GameAction.walk_left):
-                    CalculateAndSetNewPosition(miner, new Vector2(-8, 0));
+                    CalculateAndSetNewPosition(miner, new Vector2(-WalkSpeed, 0));
                     break;
                 case (GameAction.jump):
-                    TryToJump(miner, new Vector2(0,-800));
+                    TryToJump(miner, new Vector2(0, JumpForce));
                     break;
-
+                case (GameAction.run_right):
+                    CalculateAndSetNewPosition(miner, new Vector2(RunSpeed, 0));
+                    break;
+                case (GameAction.run_left):
+                    CalculateAndSetNewPosition(miner, new Vector2(-RunSpeed, 0));
+                    break;
                 case (GameAction.interact):
                     TryToInteract(miner);
                     break;
-
+                
                 default:
                     break;
             }
@@ -176,7 +185,7 @@ namespace Project.GameLogic
 
             }
             actor.Position += direction;
-            actor.AnimVel = direction;
+            actor.xVel = direction.X;
 
             if (!actor.Falling) {
                 // Next, we need to check if we are falling, i.e. walking over an edge to store it to the character, to calculate the difference in height for the next iteration

@@ -82,18 +82,22 @@ namespace Project.GameLogic
             if (state.IsKeyDown(Keys.Left)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_left, 0);
             if (state.IsKeyDown(Keys.Down)) GameEngine.HandleInput(0, GameEngine.GameAction.interact, 0);
             if (state.IsKeyDown(Keys.Up)) GameEngine.HandleInput(0, GameEngine.GameAction.jump, 0);
+            if (state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Right))
+                GameEngine.HandleInput(0, GameEngine.GameAction.run_right, 0);
+            if (state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Left))
+                GameEngine.HandleInput(0, GameEngine.GameAction.run_left, 0);
 
             // Player 2
             if (state.IsKeyDown(Keys.L)) GameEngine.HandleInput(1, GameEngine.GameAction.walk_right, 0);
             if (state.IsKeyDown(Keys.J)) GameEngine.HandleInput(1, GameEngine.GameAction.walk_left, 0);
             if (state.IsKeyDown(Keys.K)) GameEngine.HandleInput(1, GameEngine.GameAction.interact, 0);
             if (state.IsKeyDown(Keys.I)) GameEngine.HandleInput(1, GameEngine.GameAction.jump, 0);
+            if (state.IsKeyDown(Keys.LeftShift) && state.IsKeyDown(Keys.L))
+                GameEngine.HandleInput(1, GameEngine.GameAction.run_right, 0);
+            if (state.IsKeyDown(Keys.LeftShift) && state.IsKeyDown(Keys.J))
+                GameEngine.HandleInput(1, GameEngine.GameAction.run_left, 0);
 
             // END Handle GameAction
-
-
-
-
         }
 
         private void HandleGamePad(GamePadState gs, int player)
