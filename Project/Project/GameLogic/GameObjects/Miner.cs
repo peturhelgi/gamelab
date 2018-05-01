@@ -43,6 +43,7 @@ namespace Project.GameLogic.GameObjects.Miner
             LastUpdated = new TimeSpan();
             HeldObj = null;
             Holding = false;
+            Moveable = true;
         }
 
         /// <summary>
@@ -214,6 +215,7 @@ namespace Project.GameLogic.GameObjects.Miner
                         gs.RemoveSolid(c);
 
                         HeldObj = c;
+                        HeldObj.Falling = false;
                         Holding = true;
                     }
                 }
