@@ -359,13 +359,11 @@ namespace TheGreatEscape.GameLogic {
                     (obj as Miner).Climbing = true;
                     (obj as Miner).Falling = false;
                 }
-            }
 
-            if (obj is Miner)
-            {
                 (obj as Miner).xVel = direction.X;
                 (obj as Miner).ChangeCurrentMotion();
             }
+
             obj.Position += direction;
             obj.LastUpdated = gameTime;
         }
