@@ -14,26 +14,40 @@ Simon: Multiple things on the GameEditor
 
 ### Discussions
 
+
+Game Menu style improvement
+Camera
+Lighting
+
+
+
+
 ### Tasks
 **Andreea**: 
 
 [] Adds more sprites to the **Miner** and starts with showing the animations
 
+[] Adding Tools onto the miner (Drawing)
+
 **Bjarni**:
 
 [] Ladder / Create: minor control fixes, change box to face direction of walking
 
-[] Create some interactibles: Ropes 
+[] Create some interactibles: Ropes, Plattforms
 
 **Pétur**:
 
 [] change debug function (right now when pressing `P`) for the collisions (i.e. drawing a polygon, where the BBoxes are, ...)
 
-[] GameOver functionality
+[] GameOver functionality (falling out of the level, including removal of Objects which drop out of the level )
+
+[] Add key to door
 
 **Nicolas**:
 
-[] Fix his Laptop (or set it on fire)
+[] Add saving to Level Editor
+
+[] GameMenu
 
 **Simon**:
 
