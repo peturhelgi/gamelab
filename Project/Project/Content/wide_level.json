@@ -13,7 +13,8 @@
         "x": 210,
         "y": 250
       },
-      "type": "end"
+      "type": "end",
+      "texture": "Sprites/Interactables/Door"
     },
     {
       "dim": {

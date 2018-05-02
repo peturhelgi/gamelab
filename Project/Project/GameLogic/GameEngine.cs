@@ -123,9 +123,16 @@ namespace TheGreatEscape.GameLogic {
         }
 
         void TryToInteract(Miner obj)
-        {            
-            obj.UseTool(GameState);
-            obj.InteractWithCrate(GameState);
+        {
+            if (obj.Holding)
+            {
+                obj.InteractWithCrate(GameState);
+            }
+            else
+            {
+                bool worked = obj.InteractWithCrate(GameState);
+                if(!worked) obj.UseTool(GameState);
+            }
         }
 
 

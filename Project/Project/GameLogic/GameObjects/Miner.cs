@@ -175,7 +175,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             return new AxisAllignedBoundingBox(Position - offset, Position + SpriteSize + offset);
         }
 
-        public void InteractWithCrate(GameState gs)
+        public bool InteractWithCrate(GameState gs)
         {
             // picking up crate
             if(!Holding)
@@ -192,8 +192,10 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         HeldObj = c;
                         HeldObj.Falling = false;
                         Holding = true;
+                        return true;
                     }
                 }
+                return false;
             }
             else
             {
@@ -203,6 +205,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
                 HeldObj = null;
                 Holding = false;
+                return true;
             }
         }
 
