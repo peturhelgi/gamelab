@@ -15,7 +15,7 @@ namespace Project.GameLogic
     class GameEngine
     {
         public GameState GameState;
-        public enum GameAction { walk_right, walk_left, jump, interact, collect };
+        public enum GameAction { walk_right, walk_left, jump, interact, collect, climb_up, climb_down };
         public CollisionDetector CollisionDetector;
         List<AxisAllignedBoundingBox> _attentions;
 
@@ -73,24 +73,30 @@ namespace Project.GameLogic
                 case (GameAction.interact):
                     TryToInteract(miner);
                     break;
+                case (GameAction.climb_up):
+                    TryToClimb(miner, new Vector2(0, -8));
+                    break;
+                case (GameAction.climb_down):
+                    TryToClimb(miner, new Vector2(0, 8));
+                    break;
 
                 default:
                     break;
             }
         }
 
-        public void Update() {
-
+        public void Update()
+        {
             List<GameObject> allObjects = GameState.GetAll();
+            
             foreach (GameObject c in allObjects)
             {
                 if (c.Moveable)
-                {
+                { 
                     if(c.LastUpdated != gameTime)
                     {
                         CalculateAndSetNewPosition(c, Vector2.Zero);
                     }
-                    
                 }
             }
 
@@ -109,7 +115,7 @@ namespace Project.GameLogic
 
         void TryToJump(Miner miner, Vector2 speed) 
         {
-            if (!miner.Falling) {
+            if (!miner.Falling && !miner.Climbing) {
                 miner.Jump(speed);
                 miner.Falling = true;
                 if (miner.Holding)
@@ -118,6 +124,31 @@ namespace Project.GameLogic
                     miner.HeldObj.Falling = true;
                 }
             }
+        }
+
+        void TryToClimb(Miner miner, Vector2 direction)
+        {
+            List<GameObject> ladders = new List<GameObject>();
+            foreach (GameObject c in GameState.NonSolids)
+            {
+                if (c is Ladder) ladders.Add(c);
+            }
+            if (ladders.Count == 0) return;
+
+            AxisAllignedBoundingBox Box = new AxisAllignedBoundingBox(
+                   new Vector2(miner.BBox.Min.X, miner.BBox.Max.Y),
+                   new Vector2(miner.BBox.Max.X, miner.BBox.Max.Y + direction.Y)
+                   );
+
+            List<GameObject> onLadders = CollisionDetector.FindCollisions(Box, ladders);
+            if (onLadders.Count > 0)
+            {
+                miner.Speed = Vector2.Zero;
+                miner.Climbing = true;
+                miner.Falling = false;
+                CalculateAndSetNewPosition(miner, direction);
+            }
+            else miner.Climbing = false;
         }
 
 
@@ -204,9 +235,11 @@ namespace Project.GameLogic
                 direction.X = 0;
             }
 
+            bool climbingMiner = false;
+            if (obj is Miner) climbingMiner = (obj as Miner).Climbing;
 
             // We only need to check things in y-axis (including intersection), if we are actually moving in it
-            if (obj.Falling)
+            if (obj.Falling || climbingMiner)
             {
                 collisions = CollisionDetector.FindCollisions(yBox, GameState.Solids);
                 if (collisions.Count > 0)
@@ -239,14 +272,13 @@ namespace Project.GameLogic
                             { 
                                 miner.HeldObj.Falling = true;
                                 GameState.AddSolid(miner.HeldObj);
-                                GameState.RemoveCollectible(miner.HeldObj);
+                                GameState.RemoveNonSolid(miner.HeldObj);
                                 miner.HeldObj = null;
                                 miner.Holding = false;
                             }
                         }
                     }
                 }
-
             }
 
             if (!obj.Falling)
@@ -261,6 +293,7 @@ namespace Project.GameLogic
                 if (collisions.Count == 0)
                 {
                     obj.Falling = true;
+                    
                     // do not drop if object is being held by a miner
                     List<GameObject> allObjects = GameState.GetAll();
                     foreach (GameObject c in allObjects)
@@ -276,6 +309,32 @@ namespace Project.GameLogic
                         }
                     }
 
+                    // correct if object is miner and is climbing a ladder
+                    if (obj is Miner && (obj as Miner).Climbing)
+                    { 
+                        obj.Falling = false;
+                    }
+                        
+                }
+            }
+
+            if(obj is Miner)
+            {
+                List<GameObject> ladders = new List<GameObject>();
+                foreach (GameObject c in GameState.NonSolids)
+                {
+                    if (c is Ladder) ladders.Add(c);
+                }
+                AxisAllignedBoundingBox Box = new AxisAllignedBoundingBox(
+                                   new Vector2(obj.BBox.Min.X, obj.BBox.Max.Y),
+                                   new Vector2(obj.BBox.Max.X, obj.BBox.Max.Y + 10)
+                                   );
+                List<GameObject> onLadders = CollisionDetector.FindCollisions(Box, ladders);
+                if (onLadders.Count == 0) (obj as Miner).Climbing = false;
+                else
+                {
+                    (obj as Miner).Climbing = true;
+                    (obj as Miner).Falling = false;
                 }
             }
 

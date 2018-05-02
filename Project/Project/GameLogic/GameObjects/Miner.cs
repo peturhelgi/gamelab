@@ -22,6 +22,7 @@ namespace Project.GameLogic.GameObjects.Miner
         private CollisionDetector CollisionDetector = new CollisionDetector();
         public GameObject HeldObj;
         public bool Holding;
+        public bool Climbing;
 
         public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
         {
@@ -43,6 +44,7 @@ namespace Project.GameLogic.GameObjects.Miner
             LastUpdated = new TimeSpan();
             HeldObj = null;
             Holding = false;
+            Climbing = false;
             Moveable = true;
         }
 
@@ -211,7 +213,7 @@ namespace Project.GameLogic.GameObjects.Miner
                     if (c is Crate)
                     {
                         c.Position = new Vector2(c.Position.X, Position.Y);
-                        gs.AddCollectible(c);
+                        gs.AddNonSolid(c);
                         gs.RemoveSolid(c);
 
                         HeldObj = c;
@@ -224,7 +226,7 @@ namespace Project.GameLogic.GameObjects.Miner
             {
                 HeldObj.Falling = true;
                 gs.AddSolid(HeldObj);
-                gs.RemoveCollectible(HeldObj);
+                gs.RemoveNonSolid(HeldObj);
 
                 HeldObj = null;
                 Holding = false;

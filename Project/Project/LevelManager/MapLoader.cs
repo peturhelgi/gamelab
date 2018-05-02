@@ -47,6 +47,10 @@ namespace Project.LevelManager
                         Crate crate = new Crate(obj.Position, obj.SpriteSize, obj.Texture);
                         gameState.AddSolid(crate);
                         break;
+                    case "ladder":
+                        Ladder ladder = new Ladder(obj.Position, obj.SpriteSize, obj.Texture);
+                        gameState.AddNonSolid(ladder);
+                        break;
                     case "end":
                         break;
 

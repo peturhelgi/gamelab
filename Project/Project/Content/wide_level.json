@@ -254,6 +254,23 @@
       "m": 20,
       "type": "crate",
       "texture": "Sprites/Interactables/crate"
+    },
+    {
+      "dim": {
+        "x": 150,
+        "y": 600
+      },
+      "pos": {
+        "x": 2500,
+        "y": 200
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 20,
+      "type": "ladder",
+      "texture": "Sprites/Interactables/LadderShort"
     }
   ]
 }

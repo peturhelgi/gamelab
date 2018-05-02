@@ -14,6 +14,7 @@ namespace Project.GameLogic
     {
         public List<Miner> Actors;
         public List<GameObject> Solids;
+        public List<GameObject> NonSolids;
         public List<GameObject> Collectibles;
         CollisionDetector CollisionDetector;
 
@@ -21,12 +22,13 @@ namespace Project.GameLogic
         public GameState() {
             Actors = new List<Miner>();
             Solids = new List<GameObject>();
+            NonSolids = new List<GameObject>();
             Collectibles = new List<GameObject>();
             CollisionDetector = new CollisionDetector();
         }
 
         public List<GameObject> GetAll() {
-            return Actors.Concat(Solids).Concat(Collectibles).ToList();
+            return Actors.Concat(Solids).Concat(Collectibles).Concat(NonSolids).ToList();
         }
 
 
@@ -51,6 +53,19 @@ namespace Project.GameLogic
         public void RemoveSolid(GameObject solid)
         {
             Solids.Remove(solid);
+        }
+
+        public void AddNonSolid(GameObject nonsolid)
+        {
+            NonSolids.Add(nonsolid);
+        }
+        public List<GameObject> GetNonSolids()
+        {
+            return NonSolids;
+        }
+        public void RemoveNonSolid(GameObject nonsolid)
+        {
+            NonSolids.Remove(nonsolid);
         }
 
 
