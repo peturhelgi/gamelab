@@ -1,6 +1,61 @@
 # Meetings
 
-Next meetings: Tuesday, 24.04.2018, after class - Friday, 27.04.2018, 12:00 - Tuesday, 1.05.2018
+Next meetings: Friday, 04.05.2018, 12:00 - Tuesday, 8.05.2018 after class
+
+## 02.05.2018
+### Progress report:
+Nicolas: Laptop is burnt. He will use the Lab PCs
+
+Bjarni: Rocks are solid, can pick up crate (jump not yet affected, but collides, can't push it), ladder controls are not perfect yet, but already work pretty well
+
+Pétur: on L: no lights, Advanced debugger on P
+Object Factory: on GameObject and Tools
+Exit door, i.e. you won
+
+Andreea: Animation works, with some miner inconsistencies. BoundingBoxes of Rock and Miner should be changed, that the miner stands on the rock
+
+Simon: Multiple things on the GameEditor
+
+### Discussions
+None
+
+### Tasks
+**Andreea**: 
+
+[] Adds more sprites to the **Miner** and starts with showing the animations
+
+[] Adding Tools onto the miner (Drawing)
+
+[] GameMenu, GameOver, LevelCompleted, PauseMenu, LevelSelector
+[] Add credits
+
+
+**Bjarni**:
+
+[] Ladder / Create: minor control fixes, change box to face direction of walking
+
+[] Create some interactibles: Ropes, Plattforms
+
+**Pétur**:
+
+[] change debug function (right now when pressing `P`) for the collisions (i.e. drawing a polygon, where the BBoxes are, ...)
+
+[] GameOver functionality (falling out of the level, including removal of Objects which drop out of the level, add fall damage )
+
+[] Add key to door
+
+**Nicolas**:
+
+[] Add saving to Level Editor
+
+[] GameMenu
+
+**Simon**:
+
+[] Level Editor 
+
+
+---
 
 
 ## 26.04.2018
