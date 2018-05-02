@@ -9,16 +9,21 @@
 
   "objects": [
     {
-      "pos": {
-        "x": 210,
-        "y": 250
-      },
-      "type": "end"
-    },
-    {
       "dim": {
         "x": 102,
         "y": 370
+      },
+      "pos": {
+        "x": 1952,
+        "y": -170        
+      },
+      "type": "end",
+      "texture": "Sprites/Interactables/Door"
+    },
+    {
+      "dim": {
+        "x": 51,
+        "y": 185
       },
       "pos": {
         "x": -200,
@@ -30,12 +35,12 @@
       },
       "m": 80,
       "type": "miner",
-      "texture": "Sprites/Miners/MinerHandsInPants"
+      "texture": "Sprites/Miners/MinerStatic"
     },
     {
       "dim": {
-        "x": 123,
-        "y": 370
+        "x": 61.5,
+        "y": 185
       },
       "pos": {
         "x": -100,
@@ -56,7 +61,7 @@
       },
       "pos": {
         "x": 1300,
-        "y": 350
+        "y": 330
       },
       "vel": {
         "x": 0,

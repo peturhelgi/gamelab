@@ -1,14 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
-namespace Project.LevelManager
-{
-    class Level
+namespace TheGreatEscape.LevelManager {
+    public class Level
     {
         public int levelnr;
         public string levelname;
@@ -23,7 +18,7 @@ namespace Project.LevelManager
 
 
 
-    class Obj
+    public class Obj
     {
 
         [JsonProperty("dim")]

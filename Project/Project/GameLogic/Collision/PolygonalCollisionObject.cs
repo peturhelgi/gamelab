@@ -1,12 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Project.GameLogic.Collision
-{
+namespace TheGreatEscape.GameLogic.Collision {
     public abstract class PolygonalCollisionObject
     {
         public List<Vector2> Points = new List<Vector2>();

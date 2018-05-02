@@ -2,14 +2,14 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Project.GameLogic;
-using Project.GameLogic.Collision;
-using Project.GameLogic.GameObjects;
-using Project.GameLogic.GameObjects.Miner;
-using Project.GameLogic.Renderer;
-using Project.LevelManager;
+using TheGreatEscape.GameLogic;
+using TheGreatEscape.GameLogic.Collision;
+using TheGreatEscape.GameLogic.GameObjects;
+using TheGreatEscape.LevelManager;
+using TheGreatEscape.GameLogic.Renderer;
 using System;
 using System.Collections.Generic;
+using TheGreatEscape.EditorLogic.Util;
 
 namespace EditorLogic
 {
@@ -36,10 +36,13 @@ namespace EditorLogic
         public Vector2 MovingStartPosition;
         public bool Editing = true;
         public List<GameObject> CurrentObjects;
-        public bool isNewObject;
+        public bool CurrentIsNewObject;
+        public bool ObjectPickerOpen;
+
+        public List<GameObject> ObjectTemplates;
+        public CircularSelector CircularSelector;
 
 
-       
 
         public EditorManager(ContentManager content, GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics)
         {
@@ -53,11 +56,44 @@ namespace EditorLogic
 
             _oldKeyboardState = Keyboard.GetState();
             _oldGamePadState = GamePad.GetState(PlayerIndex.One);
+
+
+            // TODO: Move to GameObject factory
+            // Templates.Add(new Miner(Vector2.Zero, new Vector2(100, 150), Vector2.Zero, 80, "Sprites/Miners/MinerHandsInPants"));
+            GameObjectFactory factory = new GameObjectFactory();
+            Obj rock = new Obj
+            {
+                Type = "rock",
+                Position = Vector2.Zero,
+                SpriteSize = new Vector2(150, 100)
+            };
+
+            /*ObjectTemplates = new List<GameObject>
+            {
+                new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock1"),
+                new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock2"),
+                new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock3"),
+                new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock4"),
+                new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock5")
+            };*/
+            ObjectTemplates = new List<GameObject>();
+            for(int i = 1; i <= 5; ++i)
+            {
+                rock.Texture = "Sprites/Rocks/BareRock" + i;
+                ObjectTemplates.Add(factory.Create(rock));
+            }
+            foreach (GameObject obj in ObjectTemplates) {
+                obj.Texture = content.Load<Texture2D>(obj.TextureString);
+            }
+
+            CircularSelector = new CircularSelector(_content);
+            CircularSelector.SetObjects(ObjectTemplates);
+
         }
 
         public void DeselectCurrentObjects()
         {
-            if (CurrentObjects != null && !isNewObject)
+            if (CurrentObjects != null && !CurrentIsNewObject)
             {
                 foreach (var obj in CurrentObjects)
                 {
@@ -79,15 +115,15 @@ namespace EditorLogic
             CurrentObjects = null;
         }
 
-        public void CreateNewGameObject(Object newObject)
+        public void CreateNewGameObject(GameObject newObject)
         {
             CurrentObjects = new List<GameObject>
             {
-                new Ground(CursorPosition, new Vector2(640, 318), "Sprites/Rocks/Ground1")
+                GameObject.Clone(newObject)
             };
-            CurrentObjects[0].Texture = _content.Load<Texture2D>(CurrentObjects[0].TextureString);
-            isNewObject = true;
-            MovingStartPosition = CursorPosition;
+            
+            CurrentIsNewObject = true;
+            MovingStartPosition =  Vector2.Zero;
 
         }
 
@@ -102,6 +138,23 @@ namespace EditorLogic
             }
         }
 
+        public void DuplicateObjectUnderCursor()
+        {
+            List<GameObject> collisions = _engine.CollisionDetector.FindCollisions(new AxisAllignedBoundingBox(CursorPosition, CursorPosition + CursorSize), _engine.GameState.Solids);
+            if (collisions.Count > 0)
+            {
+                CurrentObjects = new List<GameObject>();
+                CursorPosition = new Vector2(float.MaxValue);
+                foreach (GameObject obj in collisions)
+                {
+                    CursorPosition = Vector2.Min(CursorPosition, obj.Position);
+                    CurrentObjects.Add(GameObject.Clone(obj));
+                }
+                MovingStartPosition = CursorPosition;
+                CurrentIsNewObject = true;
+            }
+        }
+
         public void PickObjectUnderCursor() {
             List<GameObject> collisions = _engine.CollisionDetector.FindCollisions(new AxisAllignedBoundingBox(CursorPosition, CursorPosition+CursorSize), _engine.GameState.Solids);
             if (collisions.Count > 0) {
@@ -112,7 +165,7 @@ namespace EditorLogic
                     _engine.GameState.Solids.Remove(obj);
                 }
                 MovingStartPosition = CursorPosition;
-                isNewObject = false;
+                CurrentIsNewObject = false;
             }
         }
 
@@ -171,7 +224,7 @@ namespace EditorLogic
                 GameManager.RenderDark = false;
             }
 
-            _gameRenderer.Draw(gameTime, width, height, Keyboard.GetState().IsKeyDown(Keys.P) ? GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, _editorController.Camera.view);
+            _gameRenderer.Draw(gameTime, width, height, Keyboard.GetState().IsKeyDown(Keys.P) ? GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, _editorController.Camera);
 
             if (Editing)
             {

@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace Project.GameLogic.GameObjects
+﻿namespace TheGreatEscape.GameLogic.GameObjects
 {
-    abstract class Tool
+    public abstract class Tool
     {
-        abstract public void Use(Miner.Miner user, GameState gamestate);
+        abstract public void Use(Miner user, GameState gamestate);
     }
 }

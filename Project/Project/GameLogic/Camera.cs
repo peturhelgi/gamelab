@@ -1,18 +1,14 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Microsoft.Xna.Framework;
 
-namespace Project.GameLogic
-{
+namespace TheGreatEscape.GameLogic {
     class Camera
     {
         public Matrix view;
         float _zoom;
         Vector2 _position;
         Vector2 _dimensions;
+        Rectangle _rectangle;
 
         public enum CameraAction { right, left, up, down, zoom_in, zoom_out };
 
@@ -28,15 +24,21 @@ namespace Project.GameLogic
         }
 
         public void SetCameraToRectangle(Rectangle r) {
-            Vector2 offset = new Vector2(500, 800);
+            Vector2 offset = new Vector2(500, 300);
             _position = new Vector2(r.X-offset.X, r.Y- offset.Y);
 
             Vector2 dims = r.Size.ToVector2()+ 2 * offset;
             Vector2 scales =    _dimensions/ dims;
             _zoom = Math.Min(scales.X, scales.Y);
+            _rectangle = new Rectangle((int)_position.X, (int)_position.Y, (int)dims.X, (int)dims.Y);
             Refresh();
         }
 
+        public Rectangle GetCameraRectangle(int backgroundW, int backgroundH) {
+            _rectangle.Height = Math.Max(backgroundH, _rectangle.Height);
+            _rectangle.Width = Math.Max(backgroundW, _rectangle.Width);
+            return _rectangle;
+        }
         public void HandleAction(CameraAction action) {
             switch (action)
             {

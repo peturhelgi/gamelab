@@ -1,16 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Project.GameLogic.GameObjects;
-using Project.GameLogic.Renderer;
-using Project.LevelManager;
+using TheGreatEscape.GameLogic.Renderer;
+using TheGreatEscape.LevelManager;
 using System;
-
 using TheGreatEscape.GameLogic.Util;
 
-namespace Project.GameLogic
-{
+namespace TheGreatEscape.GameLogic {
     class GameManager
     {
         GameController _controller;
@@ -21,6 +17,7 @@ namespace Project.GameLogic
         ContentManager _content;
         GameRenderer _renderer;
         public static bool RenderDark;
+        public GameEngine GameEngine { get; private set; }
 
         public GameManager(ContentManager content, GraphicsDevice graphicsDevice, 
                 GraphicsDeviceManager graphics) {
@@ -36,8 +33,9 @@ namespace Project.GameLogic
             {
                 UnloadContent();
             }
+            GameEngine = new GameEngine(_mapLoader.InitMap(path));
             _controller = new GameController(
-                new GameEngine(_mapLoader.InitMap(path)), 
+                GameEngine, 
                 new Camera(0.8f, 
                     Vector2.Zero, 
                     new Vector2(
@@ -73,7 +71,7 @@ namespace Project.GameLogic
             _renderer.Draw(gameTime, width, height,
                 MyDebugger.IsActive ? 
                 GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, 
-                _controller.Camera.view); 
+                _controller.Camera); 
         }
 
     }

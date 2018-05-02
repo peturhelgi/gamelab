@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.GameLogic.GameObjects
+namespace TheGreatEscape.GameLogic.GameObjects
 {
     class Ladder : GameObject
     {
 
-        public Ladder(Vector2 position, Vector2 spriteSize, string textureString)
+        public Ladder(Vector2 position, Vector2 spriteSize, string textureString): base(position, spriteSize)
         {
 
             TextureString = textureString;

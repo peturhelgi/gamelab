@@ -105,6 +105,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="GameLogic\GameObjects\Ladder.cs" />
+    <Compile Include="EditorLogic\Util\CircularSelector.cs" />
+    <Compile Include="GameLogic\GameObjects\Door.cs" />
+    <Compile Include="GameLogic\GameObjects\Factory.cs" />
     <Compile Include="GameLogic\GameObjects\Pickaxe.cs" />
     <Compile Include="GameLogic\GameObjects\Ground.cs" />
     <Compile Include="GameLogic\GameObjects\Rock.cs" />
@@ -116,6 +119,7 @@
     <Compile Include="EditorLogic\EditorController.cs" />
     <Compile Include="EditorLogic\EditorManager.cs" />
     <Compile Include="GameLogic\Renderer\LightRenderer.cs" />
+    <Compile Include="GameLogic\Util\MotionSpriteSheet.cs" />
     <Compile Include="GameLogic\Util\Debugger.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
@@ -143,6 +147,13 @@
       <SubType>Designer</SubType>
     </MonoGameContentReference>
     <None Include="Content\Fonts\Orbitron.spritefont" />
+    <None Include="Content\level_1.json" />
+    <None Include="Content\Sprites\VisualAssets_PS\Background.psd" />
+    <None Include="Content\Sprites\VisualAssets_PS\Ground.psd" />
+    <None Include="Content\Sprites\VisualAssets_PS\Miner.psd" />
+    <None Include="Content\Sprites\VisualAssets_PS\Pickaxe.psd" />
+    <None Include="Content\Sprites\VisualAssets_PS\Rock.psd" />
+    <None Include="Content\Sprites\VisualAssets_PS\Rope.psd" />
     <None Include="Content\wide_level.json" />
     <None Include="Content\more_platforms.json" />
     <None Include="Content\samplelvl.json" />
@@ -153,12 +164,6 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="Content\Sprites\VisualAssets_PS\Background.psd" />
-    <None Include="Content\Sprites\VisualAssets_PS\Ground.psd" />
-    <None Include="Content\Sprites\VisualAssets_PS\Miner.psd" />
-    <None Include="Content\Sprites\VisualAssets_PS\Pickaxe.psd" />
-    <None Include="Content\Sprites\VisualAssets_PS\Rock.psd" />
-    <None Include="Content\Sprites\VisualAssets_PS\Rope.psd" />
     <None Include="Project_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -182,19 +187,19 @@
     <Content Include="Content\caveMusic.mp3" />
     <Content Include="Content\Lights\circular_light.png" />
     <Content Include="Content\Lights\directional_light.png" />
-    <Content Include="Content\Sprites\Backgrounds\Background1.jpg" />
-    <Content Include="Content\Sprites\Backgrounds\Background2.jpg" />
-    <Content Include="Content\Sprites\Backgrounds\ExitSign.png" />
-    <Content Include="Content\Sprites\Backgrounds\ExitSign_2.png" />
+    <Content Include="Content\Lights\Lighting.fx" />
+    <Content Include="Content\Sprites\Backgrounds\Level1Background.png" />
+    <Content Include="Content\Sprites\Backgrounds\Level2Background.png" />
+    <Content Include="Content\Sprites\Backgrounds\Level3Background.png" />
     <Content Include="Content\Sprites\Interactables\crate.png" />
     <Content Include="Content\Sprites\Interactables\Door.png" />
     <Content Include="Content\Sprites\Interactables\LadderLong.png" />
     <Content Include="Content\Sprites\Interactables\LadderShort.png" />
     <Content Include="Content\Sprites\Miners\MinerHandsInPants.png" />
-    <Content Include="Content\Sprites\Miners\MinerHandsOut.png" />
     <Content Include="Content\Sprites\Miners\MinerPickaxe.png" />
     <Content Include="Content\Sprites\Miners\MinerRope.png" />
     <Content Include="Content\Sprites\Misc\box.png" />
+    <Content Include="Content\Sprites\Misc\picker_wheel.png" />
     <Content Include="Content\Sprites\Rocks\BareRock1.png" />
     <Content Include="Content\Sprites\Rocks\BareRock2.png" />
     <Content Include="Content\Sprites\Rocks\BareRock3.png" />
@@ -204,10 +209,14 @@
     <Content Include="Content\Sprites\Rocks\Ground2.png" />
     <Content Include="Content\Sprites\Rocks\Ground3.png" />
     <Content Include="Content\Sprites\Rocks\Ground4.png" />
+    <Content Include="Content\Sprites\Rocks\LowGround.png" />
+    <Content Include="Content\Sprites\Rocks\SlidingGround.png" />
+    <Content Include="Content\Sprites\Rocks\SuspendedGround1.png" />
+    <Content Include="Content\Sprites\Rocks\SuspendedGround2.png" />
     <Content Include="Content\Sprites\Rocks\SuspendedRock.png" />
+    <Content Include="Content\Sprites\Rocks\TallGround.png" />
     <Content Include="Content\Sprites\Tools\Pickaxe.png" />
     <Content Include="Content\Sprites\Tools\Rope.png" />
-    <Content Include="Content\Lights\Lighting.fx" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
