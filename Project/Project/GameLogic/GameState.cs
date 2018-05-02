@@ -4,14 +4,22 @@ using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.LevelManager;
 
-namespace TheGreatEscape.GameLogic {
+namespace TheGreatEscape.GameLogic
+{
     public class GameState : Level
     {
         public List<Miner> Actors;
         public List<GameObject> Solids;
         public List<GameObject> Collectibles;
+        public enum State
+        {
+            Completed,
+            Paused,
+            Running
+        }
         public bool Completed;
         private Texture2D Background;
+        public float OutOfBounds;
 
         CollisionDetector CollisionDetector;
 
@@ -23,6 +31,7 @@ namespace TheGreatEscape.GameLogic {
             Collectibles = new List<GameObject>();
             CollisionDetector = new CollisionDetector();
             Completed = false;
+            OutOfBounds = float.MinValue;
         }
 
         public List<GameObject> GetAll()
@@ -48,7 +57,10 @@ namespace TheGreatEscape.GameLogic {
             {
                 AddDoor(obj as Door);
             }
-
+            if(obj.BBox.Max.Y > OutOfBounds)
+            {
+                OutOfBounds = obj.BBox.Max.Y;
+            }
         }
 
         public void AddActor(Miner actor)
@@ -93,11 +105,13 @@ namespace TheGreatEscape.GameLogic {
             Collectibles.Remove(collectible);
         }
 
-        public void SetBackground(Texture2D background) {
+        public void SetBackground(Texture2D background)
+        {
             Background = background;
         }
-        
-        public Texture2D GetBackground() {
+
+        public Texture2D GetBackground()
+        {
             return Background;
         }
 

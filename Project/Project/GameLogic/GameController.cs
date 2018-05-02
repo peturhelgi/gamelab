@@ -5,7 +5,8 @@ using TheGreatEscape.GameLogic.Collision;
 using TheGreatEscape.GameLogic.Util;
 
 
-namespace TheGreatEscape.GameLogic {
+namespace TheGreatEscape.GameLogic
+{
     class GameController
     {
         public GameEngine GameEngine;
@@ -14,10 +15,11 @@ namespace TheGreatEscape.GameLogic {
         private GamePadState _oldPlayerTwoState;
         public Camera Camera;
         public bool DebugView { private set; get; }
-        
+
         int _maxNumPlayers;
 
-        public GameController(GameEngine gameEngine, Camera camera) {
+        public GameController(GameEngine gameEngine, Camera camera)
+        {
             GameEngine = gameEngine;
             Camera = camera;
             _oldKeyboardState = Keyboard.GetState();
@@ -30,7 +32,7 @@ namespace TheGreatEscape.GameLogic {
         internal void HandleUpdate(GameTime gameTime)
         {
             GameEngine.gameTime = gameTime.TotalGameTime;
-            HandleMouse( Mouse.GetState());
+            HandleMouse(Mouse.GetState());
 
             for(int i = 0; i < _maxNumPlayers; ++i)
             {
@@ -44,15 +46,17 @@ namespace TheGreatEscape.GameLogic {
             // Handle the Camera
             AxisAllignedBoundingBox frame = new AxisAllignedBoundingBox(new Vector2(float.MaxValue, float.MaxValue), new Vector2(float.MinValue, float.MinValue));
             List<AxisAllignedBoundingBox> attentions = GameEngine.GetAttentions();
-            foreach (AxisAllignedBoundingBox a in attentions) {
+            foreach(AxisAllignedBoundingBox a in attentions)
+            {
                 frame.Min = Vector2.Min(frame.Min, a.Min);
                 frame.Max = Vector2.Max(frame.Max, a.Max);
             }
             Camera.SetCameraToRectangle(new Rectangle((int)frame.Min.X, (int)frame.Min.Y, (int)(frame.Max.X - frame.Min.X), (int)(frame.Max.Y - frame.Min.Y)));
         }
 
-        private void HandleMouse(MouseState ms) {
-            if (ms.LeftButton == ButtonState.Pressed)
+        private void HandleMouse(MouseState ms)
+        {
+            if(ms.LeftButton == ButtonState.Pressed)
             {
                 MyDebugger.WriteLine(ms.Position.X);
                 MyDebugger.WriteLine(ms.Position.Y);
@@ -80,9 +84,9 @@ namespace TheGreatEscape.GameLogic {
                 if(state.IsKeyDown(Keys.Left)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_left, 0);
                 if(state.IsKeyDown(Keys.Down) && !_oldKeyboardState.IsKeyDown(Keys.Down)) GameEngine.HandleInput(0, GameEngine.GameAction.interact, 0);
                 if(state.IsKeyDown(Keys.Up)) GameEngine.HandleInput(0, GameEngine.GameAction.jump, 0);
-                if (state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Right))
+                if(state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Right))
                     GameEngine.HandleInput(0, GameEngine.GameAction.run_right, 0);
-                if (state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Left))
+                if(state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Left))
                     GameEngine.HandleInput(0, GameEngine.GameAction.run_left, 0);
             }
 
@@ -93,9 +97,9 @@ namespace TheGreatEscape.GameLogic {
                 if(state.IsKeyDown(Keys.A)) GameEngine.HandleInput(1, GameEngine.GameAction.walk_left, 0);
                 if(state.IsKeyDown(Keys.S) && !_oldKeyboardState.IsKeyDown(Keys.S)) GameEngine.HandleInput(1, GameEngine.GameAction.interact, 0);
                 if(state.IsKeyDown(Keys.W)) GameEngine.HandleInput(1, GameEngine.GameAction.jump, 0);
-                if (state.IsKeyDown(Keys.LeftShift) && state.IsKeyDown(Keys.D))
+                if(state.IsKeyDown(Keys.LeftShift) && state.IsKeyDown(Keys.D))
                     GameEngine.HandleInput(1, GameEngine.GameAction.run_right, 0);
-                if (state.IsKeyDown(Keys.LeftShift) && state.IsKeyDown(Keys.A))
+                if(state.IsKeyDown(Keys.LeftShift) && state.IsKeyDown(Keys.A))
                     GameEngine.HandleInput(1, GameEngine.GameAction.run_left, 0);
             }
             // END Handle GameAction      
@@ -112,17 +116,17 @@ namespace TheGreatEscape.GameLogic {
             // START Handle GameAction
             if(gs.ThumbSticks.Left.X > 0.5f)
             {
-                GameEngine.HandleInput(player, 
-                    gs.IsButtonDown(Buttons.B)? GameEngine.GameAction.walk_right
-                    :GameEngine.GameAction.run_right, 0);
+                GameEngine.HandleInput(player,
+                    gs.IsButtonUp(Buttons.LeftTrigger) ? GameEngine.GameAction.walk_right
+                    : GameEngine.GameAction.run_right, 0);
             }
             if(gs.ThumbSticks.Left.X < -0.5)
             {
-                GameEngine.HandleInput(player, 
-                    gs.IsButtonDown(Buttons.B)?GameEngine.GameAction.walk_left
-                    :GameEngine.GameAction.run_left, 0);
+                GameEngine.HandleInput(player,
+                    gs.IsButtonUp(Buttons.LeftTrigger) ? GameEngine.GameAction.walk_left
+                    : GameEngine.GameAction.run_left, 0);
             }
-            if (player == 0)
+            if(player == 0)
             {
                 if(gs.IsButtonDown(Buttons.RightTrigger) && !_oldPlayerOneState.IsButtonDown(Buttons.RightTrigger))
                 {
@@ -131,15 +135,15 @@ namespace TheGreatEscape.GameLogic {
             }
             else
             {
-                if (gs.IsButtonDown(Buttons.RightTrigger) && !_oldPlayerTwoState.IsButtonDown(Buttons.RightTrigger))
+                if(gs.IsButtonDown(Buttons.RightTrigger) && !_oldPlayerTwoState.IsButtonDown(Buttons.RightTrigger))
                     GameEngine.HandleInput(player, GameEngine.GameAction.interact, 0);
             }
-            if (gs.IsButtonDown(Buttons.A)) GameEngine.HandleInput(player, GameEngine.GameAction.jump, 0);
+            if(gs.IsButtonDown(Buttons.A)) GameEngine.HandleInput(player, GameEngine.GameAction.jump, 0);
             // END Handle GameAction
 
-            if (player == 0) _oldPlayerOneState = gs;
+            if(player == 0) _oldPlayerOneState = gs;
             else _oldPlayerTwoState = gs;
         }
-        
+
     }
 }
