@@ -22,7 +22,7 @@ None
 
 [] Adding Tools onto the miner (Drawing)
 
-[] GameMenu
+[] GameMenu, GameOver, LevelCompleted, PauseMenu, LevelSelector
 
 
 **Bjarni**:
@@ -35,7 +35,7 @@ None
 
 [] change debug function (right now when pressing `P`) for the collisions (i.e. drawing a polygon, where the BBoxes are, ...)
 
-[] GameOver functionality (falling out of the level, including removal of Objects which drop out of the level )
+[] GameOver functionality (falling out of the level, including removal of Objects which drop out of the level, add fall damage )
 
 [] Add key to door
 
