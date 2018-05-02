@@ -18,7 +18,7 @@
         "y": -170        
       },
       "type": "end",
-      "texture": "Sprites/Miners/MinerHandsInPants"
+      "texture": "Sprites/Interactables/Door"
     },
     {
       "dim": {
