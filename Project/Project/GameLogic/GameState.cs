@@ -41,6 +41,10 @@ namespace TheGreatEscape.GameLogic
 
         public void AddObject(GameObject obj)
         {
+            if(obj == null)
+            {
+                return;
+            }
             if(obj is Miner)
             {
                 AddActor(obj as Miner);
