@@ -2,12 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Newtonsoft.Json;
-using Project.GameLogic;
-using Project.GameLogic.GameObjects;
-using Project.GameLogic.GameObjects.Miner;
+using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.GameObjects;
 
-namespace Project.LevelManager
+namespace TheGreatEscape.LevelManager
 {
     class MapLoader
     {
@@ -22,37 +20,17 @@ namespace Project.LevelManager
 
         public GameState InitMap(string levelName)
         {
+            GameObjectFactory factory = new GameObjectFactory();
             GameState gameState = new GameState();
 
             string text = ContentManager.Load<string>(levelName);
             Level level = JsonConvert.DeserializeObject<Level>(text);
-
+            gameState.background = level.background;
+            
             foreach (Obj obj in level.objects)
             {
-
-                switch (obj.Type)
-                {
-                    case "miner":
-                        Miner miner = new Miner(obj.Position, obj.SpriteSize, obj.Velocity, obj.Mass, obj.Texture);
-                        gameState.AddActor(miner);
-                        break;
-                    case "rock":
-                        Rock rock = new Rock(obj.Position, obj.SpriteSize, obj.Texture);
-                        gameState.AddCollectible(rock);
-                        break;
-                    case "ground":
-                        Ground ground = new Ground(obj.Position, obj.SpriteSize, obj.Texture);
-                        gameState.AddSolid(ground);
-                        break;
-                    case "end":
-                        Door door = new Door(obj.Position, obj.SpriteSize, obj.Texture);
-                        gameState.AddDoor(door);
-                        break;
-
-                    default:
-                        Console.WriteLine("Object of Type " + obj.Type + " not implemented.");
-                        break;
-                }
+                GameObject gameObject = factory.Create(obj);
+                gameState.AddObject(gameObject);
             }
 
             return gameState;
@@ -60,8 +38,9 @@ namespace Project.LevelManager
 
         public void LoadMapContent(GameState gameState)
         {
+            Texture2D background = ContentManager.Load<Texture2D>(gameState.background);
+            gameState.SetBackground(background);
 
-            background = ContentManager.Load<Texture2D>("Sprites/Backgrounds/Background1");
             // TODO possibly add a hashed Map to only load every Texture once
             foreach (GameObject obj in gameState.GetAll())
             {
@@ -69,9 +48,5 @@ namespace Project.LevelManager
             }
         }
 
-        public Texture2D getBackground()
-        {
-            return background;
-        }
     }
 }

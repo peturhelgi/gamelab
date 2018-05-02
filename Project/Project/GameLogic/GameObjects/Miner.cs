@@ -1,44 +1,47 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Project.GameLogic.Renderer;
+using TheGreatEscape.GameLogic.Renderer;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Project.Libs;
 
+using TheGreatEscape.Libs;
+using TheGreatEscape.LevelManager;
 
-namespace Project.GameLogic.GameObjects
+using TheGreatEscape.GameLogic.Collision;
+
+namespace TheGreatEscape.GameLogic.GameObjects
 {
 
-    enum Gait { stop, crawl, walk, run, jump};
-    enum Stance { stand, jump, crouch, lie };
-    class Miner : GameObject
+    public enum Gait { stop, crawl, walk, run, jump};
+    public enum Stance { stand, jump, crouch, lie };
+    public class Miner : GameObject
     {
         Tool tool;
         Gait Gait;
         Stance Stance;
-        public TimeSpan lastUpdated;
-        public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
-            :base(position, spriteSize, textureString)
+        public TimeSpan lastUpdated;       
+        private CollisionDetector CollisionDetector = new CollisionDetector();
+        public GameObject HeldObj;
+        public bool Holding;
+        ToolFactory factory = new ToolFactory();
+        public Miner(Vector2 position, Vector2 spriteSize)
+            :base(position, spriteSize)
         {
-            Position = position;
-            Speed    = speed;
-            Mass     = mass;
-            SpriteSize = spriteSize;
-            Visible  = true;
             Gait     = Gait.walk;
             Stance   = Stance.jump;
-            tool = new Pickaxe();
-            TextureString = textureString;
+            tool = factory.Create(new Obj { Type = "pickaxe" });
             Lights = new List<Light>
             {
                 new Light((SpriteSize * new Vector2(0.5f, 0.15f)), Vector2.Zero, LightRenderer.Lighttype.Circular, this),
                 new Light((SpriteSize * new Vector2(0.5f, 0.15f)), Vector2.Zero, LightRenderer.Lighttype.Directional, this)
             };
             Seed = SingleRandom.Instance.Next();
-            lastUpdated = new TimeSpan();
-
+            LastUpdated = new TimeSpan();
+            HeldObj = null;
+            Holding = false;
+            Moveable = true;
         }
 
         /// <summary>
@@ -182,11 +185,49 @@ namespace Project.GameLogic.GameObjects
         /// Uses the tool that the miner currenty has
         /// </summary>
         /// <returns>True iff 1==1</returns>
-        public bool UseTool(List<GameObject> gameObjects) {
+        public bool UseTool(GameState gs) {
             this.Stance = Stance.stand;
-            tool.Use(this, gameObjects);
+            tool.Use(this, gs);
 
             return true;
         }
+
+        public AxisAllignedBoundingBox InteractionBox()
+        {
+            Vector2 offset = new Vector2(50, 50);
+            return new AxisAllignedBoundingBox(Position - offset, Position + SpriteSize + offset);
+        }
+
+        public void InteractWithCrate(GameState gs)
+        {
+            // picking up crate
+            if(!Holding)
+            {
+                List<GameObject> collisions = CollisionDetector.FindCollisions(InteractionBox(), gs.GetSolids());
+                foreach (GameObject c in collisions)
+                {
+                    if (c is Crate)
+                    {
+                        c.Position = new Vector2(c.Position.X, Position.Y);
+                        gs.AddCollectible(c);
+                        gs.RemoveSolid(c);
+
+                        HeldObj = c;
+                        HeldObj.Falling = false;
+                        Holding = true;
+                    }
+                }
+            }
+            else
+            {
+                HeldObj.Falling = true;
+                gs.AddSolid(HeldObj);
+                gs.RemoveCollectible(HeldObj);
+
+                HeldObj = null;
+                Holding = false;
+            }
+        }
+
     }
 }

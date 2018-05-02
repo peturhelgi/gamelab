@@ -5,20 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.GameLogic.GameObjects
+namespace TheGreatEscape.GameLogic.GameObjects
 {
     class Rock : GameObject
     {
-        public Rock(Vector2 position, Vector2 spriteSize, string textureString)
-        :base(position, spriteSize, textureString){
-
-           // TextureString = textureString;
-           // Position = position;
-           // SpriteSize = spriteSize;
-
-            Speed = new Vector2(0);
-            Mass = 10;
-            Visible = true;
+       public Rock(Vector2 position, Vector2 spriteSize)
+        : base(position, spriteSize)
+        {
+            {
+                Speed = new Vector2(0);
+                Mass = 10;
+                Visible = true;
+                Moveable = false;
+            }
         }
     }
 }

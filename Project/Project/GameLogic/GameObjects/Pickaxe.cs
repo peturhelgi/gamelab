@@ -4,21 +4,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheGreatEscape.GameLogic.Collision;
 
-namespace Project.GameLogic.GameObjects
+namespace TheGreatEscape.GameLogic.GameObjects
 {
-    class Pickaxe : Tool
+    public class Pickaxe : Tool
     {
-        public override void Use(Miner user, List<GameObject> gameObjects)
+        private CollisionDetector CollisionDetector = new CollisionDetector();
+        public override void Use(Miner user, GameState gamestate)
         {
-            foreach (GameObject obj in gameObjects) {
-                if (obj is Rock && obj.Visible) { 
-                    //TODO: add collision detection
-                    if (true)
+
+
+
+            List<GameObject> collisions = CollisionDetector.FindCollisions(user.InteractionBox(), gamestate.GetSolids());
+            foreach (GameObject c in collisions)
+            {
+                if (c is Rock)
+                {
+                    c.Visible = false;
+                    gamestate.RemoveSolid(c);
+                }
+                if(c is Door)
+                {
+                    if((c as Door).Open())
                     {
-                        obj.Visible = false;
+                        if((c as Door).IsExit)
+                        {
+                            gamestate.Completed = true;
+                        }
+                        //TODO: load new scene if not exit
                     }
-                    
+                    continue;
                 }
             }
         }

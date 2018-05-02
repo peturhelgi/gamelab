@@ -1,11 +1,11 @@
 {
-  "levelnr" : 0,
-  "levelname" : "sample",
-  "prevlvl" : -1,
-  "prevlvlname" : "0",
-  "nextlvl" : 1,
-  "nextlvlname" : "tbd",
-  "background" : "path/to/pixelmap",
+  "levelnr": 0,
+  "levelname": "sample",
+  "prevlvl": -1,
+  "prevlvlname": "0",
+  "nextlvl": 1,
+  "nextlvlname": "tbd",
+  "background": "Sprites/Backgrounds/Level2Background",
 
   "objects": [
     {

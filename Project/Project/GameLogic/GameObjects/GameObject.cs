@@ -1,13 +1,16 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Project.GameLogic.Collision;
-using Project.GameLogic.Renderer;
+using TheGreatEscape.GameLogic.Collision;
+using TheGreatEscape.GameLogic.Renderer;
 using System.Collections.Generic;
+using System;
+using Newtonsoft.Json;
 
-namespace Project.GameLogic.GameObjects
+namespace TheGreatEscape.GameLogic.GameObjects
 {
     public interface IGameObject
     {
+
         AxisAllignedBoundingBox BBox {
             get;
         }
@@ -67,16 +70,26 @@ namespace Project.GameLogic.GameObjects
             get;
             set;
         }
-
-        bool Movable
+        TimeSpan LastUpdated
         {
-            get; set;
+            get;
+            set;
+        }
+
+        bool Moveable
+        {
+            get;
+            set;
         }
     }
 
     public abstract class GameObject : IGameObject {
-
-
+        
+        public GameObject(Vector2 position, Vector2 spriteSize)
+        {
+            Position = position;
+            SpriteSize = spriteSize;
+        }
         public bool Falling { get; set; }
         public GameObject(Vector2 position, Vector2 spriteSize, string texture)
         {
@@ -108,5 +121,15 @@ namespace Project.GameLogic.GameObjects
         public List<Light> Lights { get; set; }
 
         public int Seed { get; set; }
+
+        public TimeSpan LastUpdated { get; set; }
+
+        public bool Moveable { get; set; }
+
+
+        public static GameObject Clone(GameObject source)
+        {
+            return (GameObject) source.MemberwiseClone();
+        }
     }
 }

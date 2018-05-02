@@ -2,14 +2,14 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Project.GameLogic.GameObjects;
-using Project.GameLogic.Renderer;
-using Project.LevelManager;
+using TheGreatEscape.GameLogic.GameObjects;
+using TheGreatEscape.GameLogic.Renderer;
+using TheGreatEscape.LevelManager;
 using System;
 
 using TheGreatEscape.GameLogic.Util;
 
-namespace Project.GameLogic
+namespace TheGreatEscape.GameLogic
 {
     class GameManager
     {
@@ -75,7 +75,7 @@ namespace Project.GameLogic
             _renderer.Draw(gameTime, width, height,
                 MyDebugger.IsActive ? 
                 GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, 
-                _controller.Camera.view); 
+                _controller.Camera); 
         }
 
     }

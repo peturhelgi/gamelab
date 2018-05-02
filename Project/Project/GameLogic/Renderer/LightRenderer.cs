@@ -2,14 +2,14 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Project.GameLogic.GameObjects;
+using TheGreatEscape.GameLogic.GameObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.GameLogic.Renderer
+namespace TheGreatEscape.GameLogic.Renderer
 {
     public class LightRenderer
     {

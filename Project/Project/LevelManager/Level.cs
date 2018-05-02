@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.LevelManager
+namespace TheGreatEscape.LevelManager
 {
-    class Level
+    public class Level
     {
         public int levelnr;
         public string levelname;
@@ -23,7 +23,7 @@ namespace Project.LevelManager
 
 
 
-    class Obj
+    public class Obj
     {
 
         [JsonProperty("dim")]

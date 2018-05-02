@@ -11,9 +11,9 @@ namespace TheGreatEscape.GameLogic.Util
     public static class MyDebugger
     {
         public static bool IsActive;
-        public static void WriteLine(object value)
+        public static void WriteLine(object value, bool forcePrint = false)
         {
-            if(IsActive)
+            if(forcePrint || IsActive)
             {
                 Debug.WriteLine(value);
             }
