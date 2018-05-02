@@ -1,13 +1,8 @@
 ﻿// from here: https://social.msdn.microsoft.com/Forums/vstudio/en-US/3b1b39be-3f0f-4f9f-8ee8-beaa4fce4981/sharing-one-random-object-across-entire-application?forum=csharpgeneral
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TheGreatEscape.Libs
-{
+namespace TheGreatEscape.Libs {
     class SingleRandom : Random
     {
         static SingleRandom _Instance;

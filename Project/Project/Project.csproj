@@ -118,6 +118,7 @@
     <Compile Include="EditorLogic\EditorController.cs" />
     <Compile Include="EditorLogic\EditorManager.cs" />
     <Compile Include="GameLogic\Renderer\LightRenderer.cs" />
+    <Compile Include="GameLogic\Util\MotionSpriteSheet.cs" />
     <Compile Include="GameLogic\Util\Debugger.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
@@ -194,7 +195,6 @@
     <Content Include="Content\Sprites\Interactables\LadderLong.png" />
     <Content Include="Content\Sprites\Interactables\LadderShort.png" />
     <Content Include="Content\Sprites\Miners\MinerHandsInPants.png" />
-    <Content Include="Content\Sprites\Miners\MinerHandsOut.png" />
     <Content Include="Content\Sprites\Miners\MinerPickaxe.png" />
     <Content Include="Content\Sprites\Miners\MinerRope.png" />
     <Content Include="Content\Sprites\Misc\box.png" />

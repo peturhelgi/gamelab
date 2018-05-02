@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 
-namespace TheGreatEscape.GameLogic.GameObjects
-{
+namespace TheGreatEscape.GameLogic.GameObjects {
     public class Door : GameObject
     {
         public Tuple<int, int> OutEdge;

@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TheGreatEscape.GameLogic.Util;
-using Microsoft.Xna.Framework;
-using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.LevelManager;
+
 namespace TheGreatEscape.GameLogic.GameObjects
 {
     public abstract class Factory<T>

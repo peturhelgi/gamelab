@@ -1,12 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TheGreatEscape.GameLogic.GameObjects
-{
+namespace TheGreatEscape.GameLogic.GameObjects {
     class Crate : GameObject
     {
 

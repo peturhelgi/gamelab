@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using Newtonsoft.Json;
 using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.GameObjects;
 
@@ -9,7 +9,6 @@ namespace TheGreatEscape.LevelManager
 {
     class MapLoader
     {
-        public Texture2D background;
         public ContentManager ContentManager;
 
 
@@ -46,7 +45,31 @@ namespace TheGreatEscape.LevelManager
             {
                 obj.Texture = ContentManager.Load<Texture2D>(obj.TextureString);
             }
+
+            LoadMotionSheets(gameState);
         }
 
-    }
+        public void LoadMotionSheets(GameState gameState) {
+
+            List<Miner> miners = gameState.GetActors();
+            Miner miner;
+            Texture2D motionSprite;
+            string minerPath = "Sprites/Miner";
+            for (int i = 1; i < miners.Count + 1; ++i)
+            {
+                miner = miners[i - 1];
+                motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/idle");
+                miner.SetMotionSprite(motionSprite, MotionType.idle);
+                motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/walk");
+                miner.SetMotionSprite(motionSprite, MotionType.walk_left);
+                miner.SetMotionSprite(motionSprite, MotionType.walk_right);
+                motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/run");
+                miner.SetMotionSprite(motionSprite, MotionType.run_left);
+                miner.SetMotionSprite(motionSprite, MotionType.run_right);
+                motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/jump");
+                miner.SetMotionSprite(motionSprite, MotionType.jump);
+
+            }
+        }
+    }                                      
 }

@@ -1,12 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Microsoft.Xna.Framework;
 
-namespace TheGreatEscape.GameLogic
-{
+namespace TheGreatEscape.GameLogic {
     class Camera
     {
         public Matrix view;

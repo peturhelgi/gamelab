@@ -35,7 +35,7 @@
       },
       "m": 80,
       "type": "miner",
-      "texture": "Sprites/Miners/MinerHandsInPants"
+      "texture": "Sprites/Miners/MinerStatic"
     },
     {
       "dim": {

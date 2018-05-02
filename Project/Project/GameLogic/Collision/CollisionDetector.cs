@@ -1,6 +1,6 @@
-﻿using TheGreatEscape.GameLogic.Collision;
+﻿using System.Collections.Generic;
+using TheGreatEscape.GameLogic.Collision;
 using TheGreatEscape.GameLogic.GameObjects;
-using System.Collections.Generic;
 
 namespace TheGreatEscape.GameLogic
 {

@@ -1,10 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.Collision;
 using TheGreatEscape.GameLogic.Renderer;
-using System.Collections.Generic;
-using System;
-using Newtonsoft.Json;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {

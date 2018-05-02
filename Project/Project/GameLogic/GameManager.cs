@@ -1,16 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.GameLogic.Renderer;
 using TheGreatEscape.LevelManager;
 using System;
-
 using TheGreatEscape.GameLogic.Util;
 
-namespace TheGreatEscape.GameLogic
-{
+namespace TheGreatEscape.GameLogic {
     class GameManager
     {
         GameController _controller;

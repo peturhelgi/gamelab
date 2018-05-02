@@ -1,18 +1,10 @@
-﻿
+using System.Linq;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.LevelManager;
 
-using Microsoft.Xna.Framework.Graphics;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TheGreatEscape.GameLogic.GameObjects;
-
-namespace TheGreatEscape.GameLogic
-{
+namespace TheGreatEscape.GameLogic {
     public class GameState : Level
     {
         public List<Miner> Actors;

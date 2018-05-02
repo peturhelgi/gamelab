@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using System.Diagnostics;
 using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.GameLogic.Collision;
-
 using TheGreatEscape.GameLogic.Util;
-using TheGreatEscape.GameLogic.GameObjects;
 
-namespace TheGreatEscape.GameLogic
-{
+namespace TheGreatEscape.GameLogic {
 
     class GameEngine
     {
+        public const float WalkSpeed = 5.6f;
+        public const float RunSpeed = 9.8f;
+        public const float JumpForce = -800;
         public GameState GameState;
-        public enum GameAction { walk_right, walk_left, jump, interact, collect };
+
+        public enum GameAction { walk_right, walk_left, jump, interact, collect, run_left, run_right };
+
         public CollisionDetector CollisionDetector;
         List<AxisAllignedBoundingBox> _attentions;
 
@@ -43,37 +44,43 @@ namespace TheGreatEscape.GameLogic
             {
                 return;
             }
+
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
             Vector2 posDiff = Vector2.Zero;
 
             switch (action) {
                 case (GameAction.walk_right):
                     posDiff = miner.Position;
-                    CalculateAndSetNewPosition(miner, new Vector2(8, 0));
+                    CalculateAndSetNewPosition(miner, new Vector2(WalkSpeed, 0));
                     posDiff -= miner.Position;
                     if (miner.Holding && (posDiff.Length() > 1e-6))
                     {
-                        CalculateAndSetNewPosition(miner.HeldObj, new Vector2(8, 0));
+                        CalculateAndSetNewPosition(miner.HeldObj, new Vector2(WalkSpeed, 0));
                     }
                     break;
 
                 case (GameAction.walk_left):
                     posDiff = miner.Position;
-                    CalculateAndSetNewPosition(miner, new Vector2(-8, 0));
+                    CalculateAndSetNewPosition(miner, new Vector2(-WalkSpeed, 0));
                     posDiff -= miner.Position;
-                    if (miner.Holding  && (posDiff.Length() > 1e-6))
+                    if (miner.Holding && (posDiff.Length() > 1e-6))
                     {
-                        CalculateAndSetNewPosition(miner.HeldObj, new Vector2(-8, 0));
+                        CalculateAndSetNewPosition(miner.HeldObj, new Vector2(-WalkSpeed, 0));
                     }
                     break;
                 case (GameAction.jump):
-                    TryToJump(miner, new Vector2(0, -800));
+                    TryToJump(miner, new Vector2(0, JumpForce));
                     break;
-
+                case (GameAction.run_right):
+                    CalculateAndSetNewPosition(miner, new Vector2(RunSpeed, 0));
+                    break;
+                case (GameAction.run_left):
+                    CalculateAndSetNewPosition(miner, new Vector2(-RunSpeed, 0));
+                    break;
                 case (GameAction.interact):
                     TryToInteract(miner);
                     break;
-
+                
                 default:
                     break;
             }
@@ -110,7 +117,7 @@ namespace TheGreatEscape.GameLogic
         void TryToJump(Miner miner, Vector2 speed) 
         {
             if (!miner.Falling) {
-                miner.Jump(speed);
+                miner.Speed = speed;
                 miner.Falling = true;
                 if (miner.Holding)
                 {
@@ -130,7 +137,6 @@ namespace TheGreatEscape.GameLogic
                 obj.Speed += GRAVITY * (float)(gameTime - obj.LastUpdated).TotalSeconds;
             }
             direction += obj.Speed * (float)(gameTime - obj.LastUpdated).TotalSeconds;
-
 
             // 2. check for collisions in the X-axis, the Y-axis (falling and jumping against something) and the intersection of the movement
             AxisAllignedBoundingBox xBox, yBox;
@@ -249,6 +255,7 @@ namespace TheGreatEscape.GameLogic
 
             }
 
+
             if (!obj.Falling)
             {
                 // Next, we need to check if we are falling, i.e. walking over an edge to store it to the character, to calculate the difference in height for the next iteration
@@ -279,6 +286,11 @@ namespace TheGreatEscape.GameLogic
                 }
             }
 
+            if (obj is Miner)
+            {
+                (obj as Miner).xVel = direction.X;
+                (obj as Miner).ChangeCurrentMotion();
+            }
             obj.Position += direction;
             obj.LastUpdated = gameTime;
         }

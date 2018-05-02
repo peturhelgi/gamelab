@@ -3,14 +3,8 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.GameObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EditorLogic
-{
+namespace EditorLogic {
     class EditorRenderer
     {
         GraphicsDevice _graphicsDevice;
