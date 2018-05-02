@@ -1,23 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Project.GameLogic.Renderer;
+using TheGreatEscape.GameLogic.Renderer;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Project.Libs;
-using Project.GameLogic.Collision;
+using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.Libs;
+using TheGreatEscape.GameLogic.Collision;
+using TheGreatEscape.GameLogic.GameObjects;
 
-namespace Project.GameLogic.GameObjects.Miner
+namespace TheGreatEscape.GameLogic.GameObjects.Miner
 {
 
-    public enum Gait { stop, crawl, walk, run, jump};
-    public enum Stance { stand, jump, crouch, lie };
+    public enum MotionType { idle, walk_left, walk_right, run_left, run_right, jump };
+
     class Miner : GameObject
     {
-        Tool tool;
-        Gait Gait;
-        Stance Stance;
+        public Dictionary<MotionType, MotionSpriteSheet> Motion;
+        public MotionSpriteSheet CurrMotion;
+        public SpriteEffects Orientation;
+        public float xVel;
+
+        public TimeSpan lastUpdated;
+
+        Tool Tool;
 
         private CollisionDetector CollisionDetector = new CollisionDetector();
         public GameObject HeldObj;
@@ -25,14 +30,17 @@ namespace Project.GameLogic.GameObjects.Miner
 
         public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
         {
+            lastUpdated = new TimeSpan();
+
+
+            // Game Engine / motion parameters
             Position = position;
             Speed    = speed;
             Mass     = mass;
-            SpriteSize = spriteSize;
-            Visible  = true;
-            Gait     = Gait.walk;
-            Stance   = Stance.jump;
-            tool = new Pickaxe();
+
+            // Rendering
+            SpriteSize = spriteSize; //the size of the spritesheet used to render
+            Visible = true;
             TextureString = textureString;
             Lights = new List<Light>
             {
@@ -44,152 +52,124 @@ namespace Project.GameLogic.GameObjects.Miner
             HeldObj = null;
             Holding = false;
             Moveable = true;
+            // Motion sheets
+            xVel = 0;
+            InstantiateMotionSheets();
+            Orientation = SpriteEffects.FlipHorizontally;
+            //TODO: add a case when it fails to get that type of motion
+            Motion.TryGetValue(MotionType.idle, out CurrMotion);
+
+            Tool = new Pickaxe();
         }
 
-        /// <summary>
-        /// Makes the miner jump if possible
-        /// </summary>
-        /// <returns>True if 1==1</returns>
-        public bool Jump(Vector2 speed) {
-            this.Stance = Stance.jump;
-            this.Gait = Gait.jump;
-            // TODO: add jump logic
-            this.Speed = speed;
+        private void InstantiateMotionSheets() {
+            MotionSpriteSheet mss;
+            Motion = new Dictionary<MotionType, MotionSpriteSheet>();
 
-            return true;
+            foreach (MotionType m in Enum.GetValues(typeof(MotionType)))
+            {
+                switch (m)
+                {
+                    case MotionType.idle:
+                        mss = new MotionSpriteSheet(24, 42, MotionType.idle, new Vector2(1, 1));
+                        break;
+                    case MotionType.walk_left:
+                        mss = new MotionSpriteSheet(12, 84, m, new Vector2(1.2f, 1));
+                        break;
+                    case MotionType.walk_right:
+                        mss = new MotionSpriteSheet(12, 84, m, new Vector2(1.2f, 1));
+                        break;
+                    case MotionType.jump:
+                        mss = new MotionSpriteSheet(12, 84, m, new Vector2(1.5f, 1.12f));
+                        break;
+                    case MotionType.run_left:
+                        mss = new MotionSpriteSheet(12, 64, m, new Vector2(1.4f, 1));
+                        break;
+                    case MotionType.run_right:
+                        mss = new MotionSpriteSheet(12, 64, m, new Vector2(1.4f, 1));
+                        break;
+                    default:
+                        mss = null;
+                        break;
+                }
+
+                Motion.Add(m, mss);
+            }
         }
-        public bool IsAirborne()
+
+        public void SetMotionSprite(Texture2D sprite, MotionType m) 
         {
-            return this.Stance == Stance.jump;
+            if (Motion.TryGetValue(m, out MotionSpriteSheet mss))
+            {
+                mss.Image = sprite;
+            }
         }
 
+        private MotionType GetCurrentState() {
 
-        /// <summary>
-        /// Makes the miner crouch if possible
-        /// </summary>
-        /// <returns></returns>
-        public bool Crouch() {
-            this.Stance = Stance.crouch;
-            this.Gait = Gait.crawl;
-            // TODO: add crouch logic
-
-            return true;
-        }
-
-        public bool IsCrouching()
-        {
-            return this.Stance == Stance.crouch;
-        }
-
-        public bool IsCrawling() {
-            return this.Gait == Gait.crawl;
-        }
-        /// <summary>
-        /// Makes the miner walk if possible
-        /// </summary>
-        /// <returns>true iff 1==1</returns>
-        public bool Walk() {
-            this.Stance = Stance.stand;
-            this.Gait = Gait.walk;
-            // TODO: Add some walk logic
-
-            return true;
-        }
-
-        /// <summary>
-        /// Makes the miner stand up if possible
-        /// </summary>
-        /// <returns>true iff 1==1</returns>
-        public bool StandUp()
-        {
-            this.Stance = Stance.stand;
-            return true;
-        }
-
-        public bool IsStanding()
-        {
-            return this.Stance == Stance.stand;
-        }
-        public bool IsWalking() {
-            return this.Gait == Gait.walk;
-        }
-
-        public bool LieDown() {
-            this.Stance = Stance.lie;
-            this.Gait = Gait.stop;
-
-            return true;
-        }              
-
-        public bool IsLying()
-        {
-            return this.Stance == Stance.lie;
-        }
-
-        /// <summary>
-        /// Makes the miner run if possible
-        /// </summary>
-        /// <returns>true iff 1==1</returns>
-        public bool Run() {
-            this.Stance = Stance.stand;
-            this.Gait = Gait.run;
-            // TODO: Add some running logic
-
-            return true;
-        }
-
-        public bool IsRunning() {
-            return this.Gait == Gait.run;
-        }
-        public bool Halt() {
-            this.Speed = new Vector2(0, 0);
-            this.Gait = Gait.stop;
-            this.Stance = Stance.stand;
-            return true;
-        }
-
-        public bool IsStill() {
-            return this.Gait == Gait.stop;
-        }
-
-        /// <summary>
-        /// Updates the speed if the miner if possible.
-        /// </summary>
-        /// <param name="direction">Direction in which to move the miner</param>
-        /// <returns>True iff 1==1</returns>
-        public bool Move(Vector2 dv) {
-            //TODO: add move logic, the one here is just an example
-            switch (this.Gait) {
-                case Gait.crawl:
-                    this.Speed = dv/2; // for example, there could be some more logic here using our physics
-                    break;
-
-                case Gait.walk:
-                    this.Speed = dv;   // for example, there could be some more logic here using our physics
-                    break;
-
-                case Gait.run:
-                    this.Speed = 2*dv; // for example, there could be some more logic here using our physics
-                    break;
-
-                default:
-                    // Nothing happens yet
-                    this.Speed = dv;
-                    break;
+            if (this.xVel > 0)
+            {
+                if (this.Speed.Y != 0f)
+                    return MotionType.jump;
+                else if (this.xVel >= GameEngine.RunSpeed)
+                    return MotionType.run_right;
+                else
+                    return MotionType.walk_right;
+            }
+            if (this.xVel < 0)
+            {
+                if (this.Speed.Y != 0)
+                    return MotionType.jump;
+                else if (this.xVel <= -GameEngine.RunSpeed)
+                    return MotionType.run_left;
+                else
+                    return MotionType.walk_left;
+            }
+            if (this.Speed.Y != 0)
+            {
+                return MotionType.jump;
             }
 
-            return true;
+            return MotionType.idle;
+
         }
 
-       
+        public void ChangeCurrentMotion()
+        {
+            MotionType m = GetCurrentState();
+
+            switch (m)
+            {
+                case MotionType.walk_right:
+                    this.Orientation = SpriteEffects.FlipHorizontally;
+                    break;
+                case MotionType.walk_left:
+                    this.Orientation = SpriteEffects.None;
+                    break;
+                case MotionType.run_right:
+                    this.Orientation = SpriteEffects.FlipHorizontally;
+                    break;
+                case MotionType.run_left:
+                    this.Orientation = SpriteEffects.None;
+                    break;
+
+            }
+           
+            //TODO: add check when this TryGetValue fails
+            Motion.TryGetValue(m, out CurrMotion);
+            if (CurrMotion.DifferentMotionType(m))
+            {
+                CurrMotion.ResetCurrentFrame();
+            }
+
+        }
 
         /// <summary>
         /// Uses the tool that the miner currenty has
         /// </summary>
         /// <returns>True iff 1==1</returns>
         public bool UseTool(GameState gs) {
-            this.Stance = Stance.stand;
-            tool.Use(this, gs);
+            Tool.Use(this, gs);
 
             return true;
         }

@@ -1,16 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Project.GameLogic.GameObjects;
-using Project.GameLogic.GameObjects.Miner;
-using System;
+using TheGreatEscape.GameLogic.GameObjects;
+using TheGreatEscape.GameLogic.GameObjects.Miner;
 using System.Collections.Generic;
-using TheGreatEscape.GameLogic.Util;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Project.GameLogic.Renderer
+namespace TheGreatEscape.GameLogic.Renderer
 {
     class GameRenderer
     {
@@ -64,7 +59,16 @@ namespace Project.GameLogic.Renderer
             {
                 if(obj.Visible)
                 {
-                    _spriteBatch.Draw(mode == Mode.DebugView ? _debugBox : obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);
+                    if (obj is Miner) {
+                        Miner m = obj as Miner;
+                        Rectangle source =  m.CurrMotion.SourceRectangle;
+                        Vector2 motionSize = obj.SpriteSize * new Vector2(m.CurrMotion.Scale.X, m.CurrMotion.Scale.Y);
+                        _spriteBatch.Draw(m.CurrMotion.Image, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)motionSize.X, 
+                            (int)motionSize.Y), source, Color.White, 0f, Vector2.Zero, m.Orientation , 0f);
+                    }
+                    else {
+                        _spriteBatch.Draw(mode == Mode.DebugView ? _debugBox : obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);
+                    }
                 }
                 if(obj.Lights is List<Light>)
                 {
@@ -72,6 +76,11 @@ namespace Project.GameLogic.Renderer
                 }
             }
             _spriteBatch.End();
+
+            foreach (Miner miner in _gameState.GetActors())
+            {
+                miner.CurrMotion.Update(gameTime);
+            }
 
             // Render the Lights
             _renderTargetLights = _lightRenderer.Draw(gameTime, width, height, lights, camera.view);

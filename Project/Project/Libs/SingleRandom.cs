@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.Libs
+namespace TheGreatEscape.Libs
 {
     class SingleRandom : Random
     {

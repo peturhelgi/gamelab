@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Project.GameLogic.GameObjects
+namespace TheGreatEscape.GameLogic.GameObjects
 {
     abstract class Tool
     {

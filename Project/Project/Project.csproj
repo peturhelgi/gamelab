@@ -116,6 +116,7 @@
     <Compile Include="EditorLogic\EditorController.cs" />
     <Compile Include="EditorLogic\EditorManager.cs" />
     <Compile Include="GameLogic\Renderer\LightRenderer.cs" />
+    <Compile Include="GameLogic\Util\MotionSpriteSheet.cs" />
     <Compile Include="GameLogic\Util\Debugger.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>

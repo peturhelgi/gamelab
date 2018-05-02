@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Project.GameLogic;
-using Project.GameLogic.Collision;
+using TheGreatEscape.GameLogic;
+using TheGreatEscape.GameLogic.Collision;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

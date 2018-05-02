@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Project.GameLogic.Collision;
+using TheGreatEscape.GameLogic.Collision;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using TheGreatEscape.GameLogic.Util;
 
 
-namespace Project.GameLogic
+namespace TheGreatEscape.GameLogic
 {
     class GameController
     {
@@ -78,17 +78,20 @@ namespace Project.GameLogic
             // END Handle camera*/
 
             // START Handle GameAction
-            // Player 1
             MyDebugger.IsActive = state.IsKeyDown(Keys.P);
             GameManager.RenderDark = state.IsKeyUp(Keys.L);
+            // Player 1
             if(_maxNumPlayers > 0)
             {
                 if(state.IsKeyDown(Keys.Right)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_right, 0);
                 if(state.IsKeyDown(Keys.Left)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_left, 0);
                 if(state.IsKeyDown(Keys.Down) && !_oldKeyboardState.IsKeyDown(Keys.Down)) GameEngine.HandleInput(0, GameEngine.GameAction.interact, 0);
                 if(state.IsKeyDown(Keys.Up)) GameEngine.HandleInput(0, GameEngine.GameAction.jump, 0);
+                if (state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Right))
+                    GameEngine.HandleInput(0, GameEngine.GameAction.run_right, 0);
+                if (state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Left))
+                    GameEngine.HandleInput(0, GameEngine.GameAction.run_left, 0);
             }
-
 
             // Player 2
             if(_maxNumPlayers > 1)
@@ -97,6 +100,10 @@ namespace Project.GameLogic
                 if(state.IsKeyDown(Keys.A)) GameEngine.HandleInput(1, GameEngine.GameAction.walk_left, 0);
                 if(state.IsKeyDown(Keys.S) && !_oldKeyboardState.IsKeyDown(Keys.S)) GameEngine.HandleInput(1, GameEngine.GameAction.interact, 0);
                 if(state.IsKeyDown(Keys.W)) GameEngine.HandleInput(1, GameEngine.GameAction.jump, 0);
+                if (state.IsKeyDown(Keys.LeftShift) && state.IsKeyDown(Keys.D))
+                    GameEngine.HandleInput(1, GameEngine.GameAction.run_right, 0);
+                if (state.IsKeyDown(Keys.LeftShift) && state.IsKeyDown(Keys.A))
+                    GameEngine.HandleInput(1, GameEngine.GameAction.run_left, 0);
             }
             // END Handle GameAction      
             _oldKeyboardState = state;

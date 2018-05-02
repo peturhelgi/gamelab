@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Project.GameLogic;
-using Project.GameLogic.GameObjects;
-using Project.GameLogic.GameObjects.Miner;
+using TheGreatEscape.GameLogic;
+using TheGreatEscape.GameLogic.GameObjects;
+using TheGreatEscape.GameLogic.GameObjects.Miner;
 using System;
 using System.Collections.Generic;
 using System.Linq;

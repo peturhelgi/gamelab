@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Project.GameLogic.Collision;
-using Project.GameLogic.Renderer;
+using TheGreatEscape.GameLogic.Collision;
+using TheGreatEscape.GameLogic.Renderer;
 using System.Collections.Generic;
 using System;
 using Newtonsoft.Json;
 
-namespace Project.GameLogic.GameObjects
+namespace TheGreatEscape.GameLogic.GameObjects
 {
     interface IGameObject
     {
