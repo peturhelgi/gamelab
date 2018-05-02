@@ -39,7 +39,7 @@ namespace Project.GameLogic
 
         public void HandleInput(int player, GameAction action, float value) {
 
-            if(player < 0 || player > 1)
+            if(player < 0 || player >= GameState.Actors.Count)
             {
                 return;
             }
