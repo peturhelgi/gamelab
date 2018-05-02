@@ -8,10 +8,10 @@ using TheGreatEscape.GameLogic.Collision;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
-    class Pickaxe : Tool
+    public class Pickaxe : Tool
     {
         private CollisionDetector CollisionDetector = new CollisionDetector();
-        public override void Use(Miner.Miner user, GameState gamestate)
+        public override void Use(Miner user, GameState gamestate)
         {
             List<GameObject> collisions = CollisionDetector.FindCollisions(user.InteractionBox(), gamestate.GetSolids());
             foreach (GameObject c in collisions)

@@ -11,6 +11,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
     {
 
         public Crate(Vector2 position, Vector2 spriteSize, string textureString)
+            :base(position, spriteSize)
         {
 
             TextureString = textureString;

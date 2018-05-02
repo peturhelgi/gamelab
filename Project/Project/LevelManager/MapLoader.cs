@@ -4,7 +4,6 @@ using System;
 using Newtonsoft.Json;
 using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.GameObjects;
-using TheGreatEscape.GameLogic.GameObjects.Miner;
 
 namespace TheGreatEscape.LevelManager
 {
@@ -21,6 +20,7 @@ namespace TheGreatEscape.LevelManager
 
         public GameState InitMap(string levelName)
         {
+            GameObjectFactory factory = new GameObjectFactory();
             GameState gameState = new GameState();
 
             string text = ContentManager.Load<string>(levelName);
@@ -29,32 +29,8 @@ namespace TheGreatEscape.LevelManager
             
             foreach (Obj obj in level.objects)
             {
-
-                switch (obj.Type)
-                {
-                    case "miner":
-                        Miner miner = new Miner(obj.Position, obj.SpriteSize, obj.Velocity, obj.Mass, obj.Texture);
-                        gameState.AddActor(miner);
-                        break;
-                    case "rock":
-                        Rock rock = new Rock(obj.Position, obj.SpriteSize, obj.Texture);
-                        gameState.AddSolid(rock);
-                        break;
-                    case "ground":
-                        Ground ground = new Ground(obj.Position, obj.SpriteSize, obj.Texture);
-                        gameState.AddSolid(ground);
-                        break;
-                    case "crate":
-                        Crate crate = new Crate(obj.Position, obj.SpriteSize, obj.Texture);
-                        gameState.AddSolid(crate);
-                        break;
-                    case "end":
-                        break;
-
-                    default:
-                        Console.WriteLine("Object of Type " + obj.Type + " not implemented.");
-                        break;
-                }
+                GameObject gameObject = factory.Create(obj);
+                gameState.AddObject(gameObject);
             }
 
             return gameState;

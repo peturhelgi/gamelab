@@ -9,17 +9,16 @@ namespace TheGreatEscape.GameLogic.GameObjects
 {
     class Rock : GameObject
     {
-        public Rock(Vector2 position, Vector2 spriteSize, string textureString)
+
+        public Rock(Vector2 position, Vector2 spriteSize)
+        : base(position, spriteSize)
         {
-
-            TextureString = textureString;
-            Position = position;
-            SpriteSize = spriteSize;
-
-            Speed = new Vector2(0);
-            Mass = 10;
-            Visible = true;
-            Moveable = false;
+            {
+                Speed = new Vector2(0);
+                Mass = 10;
+                Visible = true;
+                Moveable = false;
+            }
         }
     }
 }

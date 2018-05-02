@@ -7,14 +7,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 
 using TheGreatEscape.Libs;
+using TheGreatEscape.LevelManager;
+
 using TheGreatEscape.GameLogic.Collision;
 
-namespace TheGreatEscape.GameLogic.GameObjects.Miner
+namespace TheGreatEscape.GameLogic.GameObjects
 {
 
     public enum Gait { stop, crawl, walk, run, jump};
     public enum Stance { stand, jump, crouch, lie };
-    class Miner : GameObject
+    public class Miner : GameObject
     {
         Tool tool;
         Gait Gait;
@@ -23,18 +25,13 @@ namespace TheGreatEscape.GameLogic.GameObjects.Miner
         private CollisionDetector CollisionDetector = new CollisionDetector();
         public GameObject HeldObj;
         public bool Holding;
-
-        public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
+        ToolFactory factory = new ToolFactory();
+        public Miner(Vector2 position, Vector2 spriteSize)
+            :base(position, spriteSize)
         {
-            Position = position;
-            Speed    = speed;
-            Mass     = mass;
-            SpriteSize = spriteSize;
-            Visible  = true;
             Gait     = Gait.walk;
             Stance   = Stance.jump;
-            tool = new Pickaxe();
-            TextureString = textureString;
+            tool = factory.Create(new Obj { Type = "pickaxe" });
             Lights = new List<Light>
             {
                 new Light((SpriteSize * new Vector2(0.5f, 0.15f)), Vector2.Zero, LightRenderer.Lighttype.Circular, this),

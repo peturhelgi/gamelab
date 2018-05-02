@@ -8,8 +8,9 @@ using Newtonsoft.Json;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
-    interface IGameObject
+    public interface IGameObject
     {
+
         AxisAllignedBoundingBox BBox {
             get;
         }
@@ -86,8 +87,12 @@ namespace TheGreatEscape.GameLogic.GameObjects
     }
 
     public abstract class GameObject : IGameObject {
-
-
+        
+        public GameObject(Vector2 position, Vector2 spriteSize)
+        {
+            Position = position;
+            SpriteSize = spriteSize;
+        }
         public bool Falling { get; set; }
 
         public Vector2 Position { get; set; }

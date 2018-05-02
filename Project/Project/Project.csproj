@@ -105,6 +105,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="EditorLogic\Util\CircularSelector.cs" />
+    <Compile Include="GameLogic\GameObjects\Factory.cs" />
     <Compile Include="GameLogic\GameObjects\Pickaxe.cs" />
     <Compile Include="GameLogic\GameObjects\Ground.cs" />
     <Compile Include="GameLogic\GameObjects\Rock.cs" />

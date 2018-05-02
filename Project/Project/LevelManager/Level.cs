@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TheGreatEscape.LevelManager
 {
-    class Level
+    public class Level
     {
         public int levelnr;
         public string levelname;
@@ -23,7 +23,7 @@ namespace TheGreatEscape.LevelManager
 
 
 
-    class Obj
+    public class Obj
     {
 
         [JsonProperty("dim")]
