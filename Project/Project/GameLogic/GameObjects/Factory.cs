@@ -67,7 +67,17 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.Texture);
                     break;
                 case "crate":
+                    instance = new Crate(
+                        entity.Position,
+                        entity.SpriteSize,
+                        entity.Texture);
+                    break;
                 case "ladder":
+                    instance = new Ladder(
+                        entity.Position,
+                        entity.SpriteSize,
+                        entity.Texture);
+                    break;
                 case "lever":
                 case "platform":
                 default:

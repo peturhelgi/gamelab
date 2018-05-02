@@ -24,6 +24,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         Tool Tool;
         public GameObject HeldObj;
         public bool Holding;
+        public bool Climbing;
 
         private CollisionDetector CollisionDetector = new CollisionDetector();
 
@@ -44,6 +45,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             LastUpdated = new TimeSpan();
             HeldObj = null;
             Holding = false;
+            Climbing = false;
             Moveable = true;
             
             // Motion sheets
@@ -173,7 +175,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             return new AxisAllignedBoundingBox(Position - offset, Position + SpriteSize + offset);
         }
 
-        public void InteractWithCrate(GameState gs)
+        public bool InteractWithCrate(GameState gs)
         {
             // picking up crate
             if(!Holding)
@@ -184,23 +186,26 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     if (c is Crate)
                     {
                         c.Position = new Vector2(c.Position.X, Position.Y);
-                        gs.AddCollectible(c);
+                        gs.AddNonSolid(c);
                         gs.RemoveSolid(c);
 
                         HeldObj = c;
                         HeldObj.Falling = false;
                         Holding = true;
+                        return true;
                     }
                 }
+                return false;
             }
             else
             {
                 HeldObj.Falling = true;
                 gs.AddSolid(HeldObj);
-                gs.RemoveCollectible(HeldObj);
+                gs.RemoveNonSolid(HeldObj);
 
                 HeldObj = null;
                 Holding = false;
+                return true;
             }
         }
 

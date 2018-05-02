@@ -9,6 +9,7 @@ namespace TheGreatEscape.GameLogic {
     {
         public List<Miner> Actors;
         public List<GameObject> Solids;
+        public List<GameObject> NonSolids;
         public List<GameObject> Collectibles;
         public bool Completed;
         private Texture2D Background;
@@ -20,14 +21,14 @@ namespace TheGreatEscape.GameLogic {
         {
             Actors = new List<Miner>();
             Solids = new List<GameObject>();
+            NonSolids = new List<GameObject>();
             Collectibles = new List<GameObject>();
             CollisionDetector = new CollisionDetector();
             Completed = false;
         }
 
-        public List<GameObject> GetAll()
-        {
-            return Actors.Concat(Solids).Concat(Collectibles).ToList();
+        public List<GameObject> GetAll() {
+            return Actors.Concat(Solids).Concat(Collectibles).Concat(NonSolids).ToList();
         }
 
         public void AddObject(GameObject obj)
@@ -47,6 +48,14 @@ namespace TheGreatEscape.GameLogic {
             else if(obj is Door)
             {
                 AddDoor(obj as Door);
+            }
+            else if(obj is Crate)
+            {
+                AddSolid(obj);
+            }
+            else if (obj is Ladder)
+            {
+                AddNonSolid(obj);
             }
 
         }
@@ -73,6 +82,19 @@ namespace TheGreatEscape.GameLogic {
         public void RemoveSolid(GameObject solid)
         {
             Solids.Remove(solid);
+        }
+
+        public void AddNonSolid(GameObject nonsolid)
+        {
+            NonSolids.Add(nonsolid);
+        }
+        public List<GameObject> GetNonSolids()
+        {
+            return NonSolids;
+        }
+        public void RemoveNonSolid(GameObject nonsolid)
+        {
+            NonSolids.Remove(nonsolid);
         }
 
         public void AddDoor(Door door)
