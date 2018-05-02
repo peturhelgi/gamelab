@@ -13,14 +13,7 @@ Andreea: Animation works, with some miner inconsistencies. BoundingBoxes of Rock
 Simon: Multiple things on the GameEditor
 
 ### Discussions
-
-
-Game Menu style improvement
-Camera
-Lighting
-
-
-
+None
 
 ### Tasks
 **Andreea**: 
@@ -28,6 +21,9 @@ Lighting
 [] Adds more sprites to the **Miner** and starts with showing the animations
 
 [] Adding Tools onto the miner (Drawing)
+
+[] GameMenu
+
 
 **Bjarni**:
 
