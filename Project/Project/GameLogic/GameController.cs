@@ -110,12 +110,24 @@ namespace TheGreatEscape.GameLogic {
             }
 
             // START Handle GameAction
-            if (gs.ThumbSticks.Left.X > 0.5f) GameEngine.HandleInput(player, GameEngine.GameAction.walk_right, 0);
-            if (gs.ThumbSticks.Left.X < -0.5) GameEngine.HandleInput(player, GameEngine.GameAction.walk_left, 0);
+            if(gs.ThumbSticks.Left.X > 0.5f)
+            {
+                GameEngine.HandleInput(player, 
+                    gs.IsButtonDown(Buttons.B)? GameEngine.GameAction.walk_right
+                    :GameEngine.GameAction.run_right, 0);
+            }
+            if(gs.ThumbSticks.Left.X < -0.5)
+            {
+                GameEngine.HandleInput(player, 
+                    gs.IsButtonDown(Buttons.B)?GameEngine.GameAction.walk_left
+                    :GameEngine.GameAction.run_left, 0);
+            }
             if (player == 0)
             {
-                if (gs.IsButtonDown(Buttons.RightTrigger) && !_oldPlayerOneState.IsButtonDown(Buttons.RightTrigger))
+                if(gs.IsButtonDown(Buttons.RightTrigger) && !_oldPlayerOneState.IsButtonDown(Buttons.RightTrigger))
+                {
                     GameEngine.HandleInput(player, GameEngine.GameAction.interact, 0);
+                }
             }
             else
             {

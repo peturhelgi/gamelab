@@ -43,6 +43,10 @@ namespace TheGreatEscape.LevelManager
             // TODO possibly add a hashed Map to only load every Texture once
             foreach (GameObject obj in gameState.GetAll())
             {
+                if(obj?.TextureString == null || obj.TextureString == "")
+                {
+                    continue;
+                }
                 obj.Texture = ContentManager.Load<Texture2D>(obj.TextureString);
             }
 
