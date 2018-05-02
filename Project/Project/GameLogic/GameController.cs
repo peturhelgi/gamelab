@@ -117,13 +117,13 @@ namespace TheGreatEscape.GameLogic
             if(gs.ThumbSticks.Left.X > 0.5f)
             {
                 GameEngine.HandleInput(player,
-                    gs.IsButtonUp(Buttons.LeftTrigger) ? GameEngine.GameAction.walk_right
+                    (gs.IsButtonUp(Buttons.LeftStick) && gs.IsButtonUp(Buttons.LeftTrigger)) ? GameEngine.GameAction.walk_right
                     : GameEngine.GameAction.run_right, 0);
             }
             if(gs.ThumbSticks.Left.X < -0.5)
             {
                 GameEngine.HandleInput(player,
-                    gs.IsButtonUp(Buttons.LeftTrigger) ? GameEngine.GameAction.walk_left
+                    gs.IsButtonUp(Buttons.LeftStick) && gs.IsButtonUp(Buttons.LeftTrigger) ? GameEngine.GameAction.walk_left
                     : GameEngine.GameAction.run_left, 0);
             }
             if(player == 0)
