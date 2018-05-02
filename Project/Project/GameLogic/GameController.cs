@@ -83,11 +83,16 @@ namespace TheGreatEscape.GameLogic
                 if(state.IsKeyDown(Keys.Right)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_right, 0);
                 if(state.IsKeyDown(Keys.Left)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_left, 0);
                 if(state.IsKeyDown(Keys.Down) && !_oldKeyboardState.IsKeyDown(Keys.Down)) GameEngine.HandleInput(0, GameEngine.GameAction.interact, 0);
-                if(state.IsKeyDown(Keys.Up)) GameEngine.HandleInput(0, GameEngine.GameAction.jump, 0);
-                if(state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Right))
+
+                if (state.IsKeyDown(Keys.Up)) GameEngine.HandleInput(0, GameEngine.GameAction.jump, 0);
+                if (state.IsKeyDown(Keys.Z)) GameEngine.HandleInput(0, GameEngine.GameAction.climb_up, 0);
+                if (state.IsKeyDown(Keys.X)) GameEngine.HandleInput(0, GameEngine.GameAction.climb_down, 0);
+                if (state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Right))
+
                     GameEngine.HandleInput(0, GameEngine.GameAction.run_right, 0);
                 if(state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Left))
                     GameEngine.HandleInput(0, GameEngine.GameAction.run_left, 0);
+
             }
 
             // Player 2
@@ -114,6 +119,10 @@ namespace TheGreatEscape.GameLogic
             }
 
             // START Handle GameAction
+
+            if (gs.ThumbSticks.Left.Y < -0.5) GameEngine.HandleInput(player, GameEngine.GameAction.climb_down, 0);
+            if (gs.ThumbSticks.Left.Y > 0.5) GameEngine.HandleInput(player, GameEngine.GameAction.climb_up, 0);
+
             if(gs.ThumbSticks.Left.X > 0.5f)
             {
                 GameEngine.HandleInput(player,
