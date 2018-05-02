@@ -1,18 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using TheGreatEscape.GameLogic.Collision;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using TheGreatEscape.GameLogic.Util;
 
 
-namespace TheGreatEscape.GameLogic
-{
+namespace TheGreatEscape.GameLogic {
     class GameController
     {
         public GameEngine GameEngine;

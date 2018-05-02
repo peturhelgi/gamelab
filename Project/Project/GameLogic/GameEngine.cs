@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using System.Diagnostics;
-using TheGreatEscape.GameLogic.GameObjects.Miner;
 using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.GameLogic.Collision;
-
 using TheGreatEscape.GameLogic.Util;
 
-namespace TheGreatEscape.GameLogic
-{
+namespace TheGreatEscape.GameLogic {
 
     class GameEngine
     {
@@ -112,7 +108,7 @@ namespace TheGreatEscape.GameLogic
         }
 
         void TryToInteract(Miner obj)
-        {
+        {            
             obj.UseTool(GameState);
             obj.InteractWithCrate(GameState);
         }

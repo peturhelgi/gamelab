@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using TheGreatEscape.GameLogic.GameObjects.Miner;
+using TheGreatEscape.GameLogic.GameObjects;
 
 namespace TheGreatEscape.GameLogic.Util {
-    class MotionSpriteSheet {
+    public class MotionSpriteSheet {
 
         public int FrameCounter;
         public int SwitchFrame;

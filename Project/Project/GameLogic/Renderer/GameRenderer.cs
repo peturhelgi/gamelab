@@ -1,9 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.GameObjects;
-using TheGreatEscape.GameLogic.GameObjects.Miner;
-using System.Collections.Generic;
 
 namespace TheGreatEscape.GameLogic.Renderer
 {

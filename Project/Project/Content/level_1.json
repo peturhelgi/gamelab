@@ -9,11 +9,16 @@
 
   "objects": [
     {
-      "pos": {
-        "x": 210,
-        "y": 250
+      "dim": {
+        "x": 102,
+        "y": 370
       },
-      "type": "end"
+      "pos": {
+        "x": 1952,
+        "y": -170        
+      },
+      "type": "end",
+      "texture": "Sprites/Interactables/Door"
     },
     {
       "dim": {
@@ -56,7 +61,7 @@
       },
       "pos": {
         "x": 1300,
-        "y": 350
+        "y": 330
       },
       "vel": {
         "x": 0,

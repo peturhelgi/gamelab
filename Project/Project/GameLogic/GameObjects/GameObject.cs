@@ -1,15 +1,15 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.Collision;
 using TheGreatEscape.GameLogic.Renderer;
-using System.Collections.Generic;
-using System;
-using Newtonsoft.Json;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
-    interface IGameObject
+    public interface IGameObject
     {
+
         AxisAllignedBoundingBox BBox {
             get;
         }
@@ -69,7 +69,6 @@ namespace TheGreatEscape.GameLogic.GameObjects
             get;
             set;
         }
-
         TimeSpan LastUpdated
         {
             get;
@@ -81,14 +80,22 @@ namespace TheGreatEscape.GameLogic.GameObjects
             get;
             set;
         }
-
-
     }
 
     public abstract class GameObject : IGameObject {
-
-
+        
+        public GameObject(Vector2 position, Vector2 spriteSize)
+        {
+            Position = position;
+            SpriteSize = spriteSize;
+        }
         public bool Falling { get; set; }
+        public GameObject(Vector2 position, Vector2 spriteSize, string texture)
+        {
+            Position = position;
+            SpriteSize = spriteSize;
+            TextureString = texture;
+        }
 
         public Vector2 Position { get; set; }
 
@@ -105,6 +112,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public Texture2D Texture { get; set; }
 
         public bool Visible { get; set; }
+
+        public bool Movable { get; set; }
 
         public string TextureString { get; set; }
 

@@ -1,13 +1,11 @@
-﻿
-
+﻿using System;
+using System.Collections.Generic;
 using EditorLogic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using TheGreatEscape.GameLogic;
-using System;
-using System.Collections.Generic;
 
 namespace TheGreatEscape.Menu
 {
@@ -210,6 +208,10 @@ namespace TheGreatEscape.Menu
             OldKeyboardState = Keyboard.GetState();
             OldPlayerOneState = GamePad.GetState(PlayerIndex.One);
             OldPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
+            if(_gameManager?.GameEngine?.GameState != null
+                && _gameManager.GameEngine.GameState.Completed) {
+                CallAction(MenuManager.Action.ShowLevelCompletedScreen, null);
+            }
         }
 
         public void Draw(GameTime gameTime, int width, int height)

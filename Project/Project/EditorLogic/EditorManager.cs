@@ -5,9 +5,8 @@ using Microsoft.Xna.Framework.Input;
 using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.Collision;
 using TheGreatEscape.GameLogic.GameObjects;
-using TheGreatEscape.GameLogic.GameObjects.Miner;
-using TheGreatEscape.GameLogic.Renderer;
 using TheGreatEscape.LevelManager;
+using TheGreatEscape.GameLogic.Renderer;
 using System;
 using System.Collections.Generic;
 using TheGreatEscape.EditorLogic.Util;
@@ -61,15 +60,28 @@ namespace EditorLogic
 
             // TODO: Move to GameObject factory
             // Templates.Add(new Miner(Vector2.Zero, new Vector2(100, 150), Vector2.Zero, 80, "Sprites/Miners/MinerHandsInPants"));
-            ObjectTemplates = new List<GameObject>
+            GameObjectFactory factory = new GameObjectFactory();
+            Obj rock = new Obj
+            {
+                Type = "rock",
+                Position = Vector2.Zero,
+                SpriteSize = new Vector2(150, 100)
+            };
+
+            /*ObjectTemplates = new List<GameObject>
             {
                 new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock1"),
                 new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock2"),
                 new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock3"),
                 new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock4"),
                 new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock5")
-            };
-
+            };*/
+            ObjectTemplates = new List<GameObject>();
+            for(int i = 1; i <= 5; ++i)
+            {
+                rock.Texture = "Sprites/Rocks/BareRock" + i;
+                ObjectTemplates.Add(factory.Create(rock));
+            }
             foreach (GameObject obj in ObjectTemplates) {
                 obj.Texture = content.Load<Texture2D>(obj.TextureString);
             }

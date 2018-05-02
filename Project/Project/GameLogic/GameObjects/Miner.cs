@@ -1,57 +1,51 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using TheGreatEscape.GameLogic.Renderer;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using TheGreatEscape.GameLogic.Util;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.Libs;
+using TheGreatEscape.LevelManager;
 using TheGreatEscape.GameLogic.Collision;
-using TheGreatEscape.GameLogic.GameObjects;
+using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.GameLogic.Renderer;
 
-namespace TheGreatEscape.GameLogic.GameObjects.Miner
+namespace TheGreatEscape.GameLogic.GameObjects
 {
 
     public enum MotionType { idle, walk_left, walk_right, run_left, run_right, jump };
 
-    class Miner : GameObject
+    public class Miner : GameObject
     {
         public Dictionary<MotionType, MotionSpriteSheet> Motion;
         public MotionSpriteSheet CurrMotion;
         public SpriteEffects Orientation;
         public float xVel;
 
-        public TimeSpan lastUpdated;
-
+        ToolFactory factory = new ToolFactory();
         Tool Tool;
-
-        private CollisionDetector CollisionDetector = new CollisionDetector();
         public GameObject HeldObj;
         public bool Holding;
 
-        public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
+        private CollisionDetector CollisionDetector = new CollisionDetector();
+
+        public Miner(Vector2 position, Vector2 spriteSize)
+            :base(position, spriteSize)
         {
-            lastUpdated = new TimeSpan();
 
+            Tool = factory.Create(new Obj { Type = "pickaxe" });
 
-            // Game Engine / motion parameters
-            Position = position;
-            Speed    = speed;
-            Mass     = mass;
-
-            // Rendering
-            SpriteSize = spriteSize; //the size of the spritesheet used to render
-            Visible = true;
-            TextureString = textureString;
+            // Miner Lights
             Lights = new List<Light>
             {
                 new Light((SpriteSize * new Vector2(0.5f, 0.15f)), Vector2.Zero, LightRenderer.Lighttype.Circular, this),
                 new Light((SpriteSize * new Vector2(0.5f, 0.15f)), Vector2.Zero, LightRenderer.Lighttype.Directional, this)
             };
             Seed = SingleRandom.Instance.Next();
+
             LastUpdated = new TimeSpan();
             HeldObj = null;
             Holding = false;
             Moveable = true;
+            
             // Motion sheets
             xVel = 0;
             InstantiateMotionSheets();
@@ -59,7 +53,6 @@ namespace TheGreatEscape.GameLogic.GameObjects.Miner
             //TODO: add a case when it fails to get that type of motion
             Motion.TryGetValue(MotionType.idle, out CurrMotion);
 
-            Tool = new Pickaxe();
         }
 
         private void InstantiateMotionSheets() {
