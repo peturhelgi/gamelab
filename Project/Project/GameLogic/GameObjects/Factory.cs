@@ -14,9 +14,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
     {
         public override Tool Create(Object obj)
         {
-            string type = "pickaxe";
+            Obj entity = obj as Obj;
             Tool tool;
-            switch(type)
+            switch(entity.Type)
             {
                 case "pickaxe":
                     tool = new Pickaxe();
@@ -24,7 +24,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 case "rope":
                 default:
                     throw new NotImplementedException(
-                        string.Format("Tool '{0}' cannot be created", type));
+                        string.Format("Tool '{0}' cannot be created", entity.Type));
             }
             return tool;
         }
