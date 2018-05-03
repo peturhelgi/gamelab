@@ -45,38 +45,44 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.SpriteSize);
                     instance.Speed = entity.Velocity;
                     instance.Mass = entity.Mass;
-                    instance.TextureString = entity?.Texture;                    
+                    instance.TextureString = entity?.Texture;
+                    instance.Handling = GameState.Handling.Actor;
                     break;
                 case "ground":
                     instance = new Ground(
                         entity.Position,
                         entity.SpriteSize,
                         entity.Texture);
-                    instance.TextureString = entity?.Texture;                    
+                    instance.TextureString = entity?.Texture;
+                    instance.Handling = GameState.Handling.Solid;
                     break;
                 case "rock":
                     instance = new Rock(
                         entity.Position,
                         entity.SpriteSize);
                     instance.TextureString = entity?.Texture;                    
+                    instance.Handling = GameState.Handling.Solid;
                     break;
                 case "end":
                     instance = new Door(
                         entity.Position, 
                         entity.SpriteSize, 
                         entity.Texture);
+                    instance.Handling = GameState.Handling.Interact;
                     break;
                 case "crate":
                     instance = new Crate(
                         entity.Position,
                         entity.SpriteSize,
                         entity.Texture);
+                    instance.Handling = GameState.Handling.Solid;
                     break;
                 case "ladder":
                     instance = new Ladder(
                         entity.Position,
                         entity.SpriteSize,
                         entity.Texture);
+                    instance.Handling = GameState.Handling.None;
                     break;
                 case "lever":
                 case "platform":

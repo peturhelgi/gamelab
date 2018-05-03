@@ -187,14 +187,16 @@ namespace TheGreatEscape.GameLogic.GameObjects
             // picking up crate
             if(!Holding)
             {
-                List<GameObject> collisions = CollisionDetector.FindCollisions(InteractionBox(), gs.GetSolids());
+                List<GameObject> collisions = CollisionDetector.FindCollisions(
+                    InteractionBox(), gs.GetObjects(GameObject.Handling.Solid));
                 foreach (GameObject c in collisions)
                 {
                     if (c is Crate)
                     {
                         c.Position = new Vector2(c.Position.X, Position.Y);
-                        gs.AddNonSolid(c);
-                        gs.RemoveSolid(c);
+                        gs.SetObject(c, GameState.Action.Remove);
+                        c.Handling = GameObject.Handling.None;
+                        gs.SetObject(c);
 
                         HeldObj = c;
                         HeldObj.Falling = false;
@@ -207,8 +209,10 @@ namespace TheGreatEscape.GameLogic.GameObjects
             else
             {
                 HeldObj.Falling = true;
-                gs.AddSolid(HeldObj);
-                gs.RemoveNonSolid(HeldObj);
+                HeldObj.Handling = GameObject.Handling.None;
+                gs.SetObject(HeldObj, GameState.Action.Remove);
+                HeldObj.Handling = GameObject.Handling.Solid;
+                gs.SetObject(HeldObj);
 
                 HeldObj = null;
                 Holding = false;

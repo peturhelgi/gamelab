@@ -112,6 +112,10 @@ namespace TheGreatEscape.GameLogic {
                     if(c.LastUpdated != gameTime)
                     {
                         CalculateAndSetNewPosition(c, Vector2.Zero);
+                        if(c.Position.Y > GameState.OutOfBounds)
+                        {
+                            GameState.SetObject(c, GameState.Action.Remove);
+                        }
                     }
                 }
             }
@@ -291,10 +295,13 @@ namespace TheGreatEscape.GameLogic {
                         {
                             Miner miner = c as Miner;
                             if (miner.Holding && miner.HeldObj == obj)
-                            { 
+                            {
+                                GameState.SetObject(miner.HeldObj, GameState.Action.Remove);
+
+                                miner.HeldObj.Handling = GameState.Handling.Solid;
                                 miner.HeldObj.Falling = true;
-                                GameState.AddSolid(miner.HeldObj);
-                                GameState.RemoveNonSolid(miner.HeldObj);
+                                GameState.SetObject(miner.HeldObj);
+
                                 miner.HeldObj = null;
                                 miner.Holding = false;
                             }

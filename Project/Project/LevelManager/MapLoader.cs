@@ -29,7 +29,7 @@ namespace TheGreatEscape.LevelManager
             foreach (Obj obj in level.objects)
             {
                 GameObject gameObject = factory.Create(obj);
-                gameState.AddObject(gameObject);
+                gameState.SetObject(gameObject);
             }
 
             return gameState;

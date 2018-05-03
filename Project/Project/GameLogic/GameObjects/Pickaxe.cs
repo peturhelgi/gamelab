@@ -10,13 +10,15 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
 
 
-            List<GameObject> collisions = CollisionDetector.FindCollisions(user.InteractionBox(), gamestate.GetSolids());
+            List<GameObject> collisions = CollisionDetector.FindCollisions(
+                user.InteractionBox(), 
+                gamestate.GetObjects(GameObject.Handling.Solid));
             foreach (GameObject c in collisions)
             {
                 if (c is Rock)
                 {
                     c.Visible = false;
-                    gamestate.RemoveSolid(c);
+                    gamestate.SetObject(c, GameState.Action.Remove);
                 }
                 if(c is Door)
                 {
