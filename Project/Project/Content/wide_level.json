@@ -272,6 +272,25 @@
       "m": 20,
       "type": "ladder",
       "texture": "Sprites/Interactables/LadderShort"
+    },
+    {
+      "dim": {
+        "x": 180,
+        "y": 116
+      },
+      "pos": {
+        "x": 2800,
+        "y": 700
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 20,
+      "type": "platform",
+      "displacementy": 500,
+      "activationkey": 0,
+      "texture": "Sprites/Interactables/escalator_platform"
     }
   ]
 }

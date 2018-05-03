@@ -38,5 +38,11 @@ namespace TheGreatEscape.LevelManager {
 
         [JsonProperty("texture")]
         public string Texture;
+
+        [JsonProperty("displacementy")]
+        public float DisplacementY;
+
+        [JsonProperty("activationkey")]
+        public int ActivationKey;
     }
 }

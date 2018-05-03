@@ -110,6 +110,7 @@
     <Compile Include="GameLogic\GameObjects\Factory.cs" />
     <Compile Include="GameLogic\GameObjects\Pickaxe.cs" />
     <Compile Include="GameLogic\GameObjects\Ground.cs" />
+    <Compile Include="GameLogic\GameObjects\Platform.cs" />
     <Compile Include="GameLogic\GameObjects\Rock.cs" />
     <Compile Include="GameLogic\GameObjects\Tool.cs" />
     <Compile Include="GameLogic\GameObjects\GameObject.cs" />
@@ -193,6 +194,8 @@
     <Content Include="Content\Sprites\Backgrounds\Level3Background.png" />
     <Content Include="Content\Sprites\Interactables\crate.png" />
     <Content Include="Content\Sprites\Interactables\Door.png" />
+    <Content Include="Content\Sprites\Interactables\escalator_mechanism.png" />
+    <Content Include="Content\Sprites\Interactables\escalator_platform.png" />
     <Content Include="Content\Sprites\Interactables\LadderLong.png" />
     <Content Include="Content\Sprites\Interactables\LadderShort.png" />
     <Content Include="Content\Sprites\Miners\MinerHandsInPants.png" />

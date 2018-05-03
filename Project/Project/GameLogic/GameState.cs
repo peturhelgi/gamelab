@@ -46,7 +46,11 @@ namespace TheGreatEscape.GameLogic
             {
                 return;
             }
-            if(obj is Miner)
+            if (obj.BBox.Max.Y > OutOfBounds)
+            {
+                OutOfBounds = obj.BBox.Max.Y;
+            }
+            if (obj is Miner)
             {
                 AddActor(obj as Miner);
             }
@@ -62,10 +66,6 @@ namespace TheGreatEscape.GameLogic
             {
                 AddDoor(obj as Door);
             }
-            if(obj.BBox.Max.Y > OutOfBounds)
-            {
-                OutOfBounds = obj.BBox.Max.Y;
-            }
             else if(obj is Crate)
             {
                 AddSolid(obj);
@@ -73,6 +73,10 @@ namespace TheGreatEscape.GameLogic
             else if (obj is Ladder)
             {
                 AddNonSolid(obj);
+            }
+            else if (obj is Platform)
+            {
+                AddSolid(obj);
             }
         }
 

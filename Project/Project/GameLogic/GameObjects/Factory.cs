@@ -50,8 +50,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 case "ground":
                     instance = new Ground(
                         entity.Position,
-                        entity.SpriteSize,
-                        entity.Texture);
+                        entity.SpriteSize);
                     instance.TextureString = entity?.Texture;                    
                     break;
                 case "rock":
@@ -78,8 +77,14 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.SpriteSize,
                         entity.Texture);
                     break;
-                case "lever":
                 case "platform":
+                    instance = new Platform(
+                        entity.Position,
+                        entity.SpriteSize,
+                        entity.Texture,
+                        entity.DisplacementY);
+                    break;
+                case "lever":
                 default:
                     instance = null;
                     MyDebugger.WriteLine(

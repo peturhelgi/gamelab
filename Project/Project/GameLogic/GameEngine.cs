@@ -14,7 +14,7 @@ namespace TheGreatEscape.GameLogic {
         public const float RunSpeed = 9.8f;
         public const float JumpForce = -800;
         public GameState GameState;
-        public enum GameAction { walk_right, walk_left, jump, interact, collect, climb_up, climb_down, run_left, run_right };
+        public enum GameAction { walk_right, walk_left, jump, interact, collect, climb_up, climb_down, run_left, run_right, movePlatform };
         public CollisionDetector CollisionDetector;
         List<AxisAllignedBoundingBox> _attentions;
 
@@ -100,6 +100,9 @@ namespace TheGreatEscape.GameLogic {
                 case (GameAction.climb_down):
                     TryToClimb(miner, new Vector2(0, 8));
                     break;
+                case (GameAction.movePlatform):
+                    TryToMovePlatform();
+                    break;
                 default:
                     break;
             }
@@ -176,6 +179,19 @@ namespace TheGreatEscape.GameLogic {
                 CalculateAndSetNewPosition(miner, direction);
             }
             else miner.Climbing = false;
+        }
+
+        void TryToMovePlatform()
+        {
+            foreach(GameObject c in GameState.GetAll())
+            {
+                if (c is Platform)
+                {
+                    (c as Platform).Activate = true;
+                    (c as Platform).MoveUp();
+                }
+            }
+
         }
 
 
