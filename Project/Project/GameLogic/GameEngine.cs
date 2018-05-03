@@ -324,7 +324,11 @@ namespace TheGreatEscape.GameLogic
                     {
                         lowestPoint = Math.Min(lowestPoint, collision.BBox.Min.Y);
                     }
-
+                    float FatalSpeed = 10000.0f;
+                    if(obj is Miner && obj.Speed.Y > FatalSpeed)
+                    {
+                        GameState.SetObject(obj, GameState.Action.Remove);
+                    }
                     obj.Speed = Vector2.Zero;
 
                     // TODO: Perhaps move this to the Miner class
