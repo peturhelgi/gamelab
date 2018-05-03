@@ -11,7 +11,7 @@ using TheGreatEscape.GameLogic.Renderer;
 namespace TheGreatEscape.GameLogic.GameObjects
 {
 
-    public enum MotionType { idle, walk_left, walk_right, run_left, run_right, jump };
+    public enum MotionType { idle, walk_left, walk_right, run_left, run_right, jump, pickaxe };
 
     public class Miner : GameObject
     {
@@ -25,6 +25,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public GameObject HeldObj;
         public bool Holding;
         public bool Climbing;
+        public bool Interacting;
 
         private CollisionDetector CollisionDetector = new CollisionDetector();
 
@@ -54,7 +55,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Holding = false;
             Climbing = false;
             Moveable = true;
-            
+            Interacting = false;
+
             // Motion sheets
             xVel = 0;
             InstantiateMotionSheets();
@@ -90,6 +92,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     case MotionType.run_right:
                         mss = new MotionSpriteSheet(12, 64, m, new Vector2(1.4f, 1));
                         break;
+                    case MotionType.pickaxe:
+                        mss = new MotionSpriteSheet(12, 64, m, new Vector2(2.3f, 1));
+                        break;
                     default:
                         mss = null;
                         break;
@@ -118,6 +123,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 else
                     return MotionType.walk_right;
             }
+
             if (this.xVel < 0)
             {
                 if (this.Speed.Y != 0)
@@ -127,10 +133,15 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 else
                     return MotionType.walk_left;
             }
+
             if (this.Speed.Y != 0)
             {
                 return MotionType.jump;
             }
+
+            if (this.Interacting)
+                return MotionType.pickaxe;
+
 
             return MotionType.idle;
 
@@ -139,6 +150,13 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public void ChangeCurrentMotion()
         {
             MotionType m = GetCurrentState();
+
+            //TODO: add check when this TryGetValue fails
+            Motion.TryGetValue(m, out CurrMotion);
+            if (CurrMotion.DifferentMotionType(m))
+            {
+                CurrMotion.ResetCurrentFrame();
+            }
 
             switch (m)
             {
@@ -154,14 +172,14 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 case MotionType.run_left:
                     this.Orientation = SpriteEffects.None;
                     break;
+                case MotionType.pickaxe:
+                    if (CurrMotion.LoopsPlayed >= 1)
+                    {
+                        this.Interacting = false;
+                        CurrMotion.ResetCurrentFrame();
+                    }
+                    break;
 
-            }
-           
-            //TODO: add check when this TryGetValue fails
-            Motion.TryGetValue(m, out CurrMotion);
-            if (CurrMotion.DifferentMotionType(m))
-            {
-                CurrMotion.ResetCurrentFrame();
             }
 
         }
@@ -171,8 +189,10 @@ namespace TheGreatEscape.GameLogic.GameObjects
         /// </summary>
         /// <returns>True iff 1==1</returns>
         public bool UseTool(GameState gs) {
+            this.Interacting = true;
             Tool.Use(this, gs);
-
+            //if (CurrMotion.LoopsPlayed >= 1)
+            //    this.Interacting = false;
             return true;
         }
 
