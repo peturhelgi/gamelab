@@ -1,8 +1,8 @@
-﻿using Project.GameLogic.Collision;
-using Project.GameLogic.GameObjects;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using TheGreatEscape.GameLogic.Collision;
+using TheGreatEscape.GameLogic.GameObjects;
 
-namespace Project.GameLogic
+namespace TheGreatEscape.GameLogic
 {
 
     class CollisionDetector

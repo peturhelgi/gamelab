@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Project.GameLogic.GameObjects.Miner;
+using TheGreatEscape.GameLogic.GameObjects;
 
 namespace TheGreatEscape.GameLogic.Util {
-    class MotionSpriteSheet {
+    public class MotionSpriteSheet {
 
         public int FrameCounter;
         public int SwitchFrame;
         public Vector2 CurrentFrame;
         public Vector2 NumFrames;
         public Texture2D Image;
+        public Vector2 Scale;
         public bool IsActive;
         public Rectangle SourceRectangle;
         public MotionType SheetType;
@@ -31,13 +27,14 @@ namespace TheGreatEscape.GameLogic.Util {
             }
         }
 
-        public MotionSpriteSheet(int NumberOfFrames, int MotionFPS, MotionType SpriteMotionType) {
+        public MotionSpriteSheet(int NumberOfFrames, int MotionFPS, MotionType SpriteMotionType, Vector2 scale) {
             NumFrames = new Vector2(NumberOfFrames, 1);
             CurrentFrame = new Vector2(0, 0);
             SwitchFrame = MotionFPS;
             FrameCounter = 0;
             IsActive = true;
             SheetType = SpriteMotionType;
+            Scale = scale;
         }
 
         public void ResetCurrentFrame() {

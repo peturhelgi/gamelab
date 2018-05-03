@@ -2,7 +2,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xna.Framework;
-using Project.Util.Collision;
+using TheGreatEscape.Util.Collision;
 
 namespace Unit_Tests
 {

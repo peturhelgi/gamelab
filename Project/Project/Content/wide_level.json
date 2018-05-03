@@ -1,11 +1,11 @@
 {
-  "levelnr" : 0,
-  "levelname" : "sample",
-  "prevlvl" : -1,
-  "prevlvlname" : "0",
-  "nextlvl" : 1,
-  "nextlvlname" : "tbd",
-  "background" : "path/to/pixelmap",
+  "levelnr": 0,
+  "levelname": "sample",
+  "prevlvl": -1,
+  "prevlvlname": "0",
+  "nextlvl": 1,
+  "nextlvlname": "tbd",
+  "background": "Sprites/Backgrounds/Level3Background",
 
   "objects": [
     {
@@ -13,12 +13,13 @@
         "x": 210,
         "y": 250
       },
-      "type": "end"
+      "type": "end",
+      "texture": "Sprites/Interactables/Door"
     },
     {
       "dim": {
-        "x": 102,
-        "y": 370
+        "x": 51,
+        "y": 185
       },
       "pos": {
         "x": 100,
@@ -34,8 +35,8 @@
     },
     {
       "dim": {
-        "x": 102,
-        "y": 370
+        "x": 51,
+        "y": 185
       },
       "pos": {
         "x": 200,
@@ -237,6 +238,40 @@
       "m": 1000,
       "type": "ground",
       "texture": "Sprites/Rocks/SuspendedRock"
+    },
+    {
+      "dim": {
+        "x": 150,
+        "y": 150
+      },
+      "pos": {
+        "x": 1500,
+        "y": 550
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 20,
+      "type": "crate",
+      "texture": "Sprites/Interactables/crate"
+    },
+    {
+      "dim": {
+        "x": 150,
+        "y": 600
+      },
+      "pos": {
+        "x": 2500,
+        "y": 200
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 20,
+      "type": "ladder",
+      "texture": "Sprites/Interactables/LadderShort"
     }
   ]
 }

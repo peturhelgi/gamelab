@@ -1,62 +1,66 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Project.GameLogic.Renderer;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Project.Libs;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using TheGreatEscape.Libs;
+using TheGreatEscape.LevelManager;
+using TheGreatEscape.GameLogic.Collision;
 using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.GameLogic.Renderer;
 
-namespace Project.GameLogic.GameObjects.Miner
+namespace TheGreatEscape.GameLogic.GameObjects
 {
 
-    public enum MotionType { idle, walk, run, jump };
-    class Miner : GameObject
-    {
-        Tool _tool;
-        MotionType _motionType;
+    public enum MotionType { idle, walk_left, walk_right, run_left, run_right, jump };
 
+    public class Miner : GameObject
+    {
         public Dictionary<MotionType, MotionSpriteSheet> Motion;
         public MotionSpriteSheet CurrMotion;
         public SpriteEffects Orientation;
+        public float xVel;
 
-        public TimeSpan lastUpdated;
-        public Miner(Vector2 position, Vector2 spriteSize, Vector2 speed, double mass, string textureString)
+        ToolFactory factory = new ToolFactory();
+        Tool Tool;
+        public GameObject HeldObj;
+        public bool Holding;
+        public bool Climbing;
+
+        private CollisionDetector CollisionDetector = new CollisionDetector();
+
+        public Miner(Vector2 position, Vector2 spriteSize)
+            :base(position, spriteSize)
         {
-            lastUpdated = new TimeSpan();
 
+            Tool = factory.Create(new Obj { Type = "pickaxe" });
 
-            // Game Engine / motion parameters
-            Position = position;
-            Speed    = speed;
-            Mass     = mass;
-
-
-            // Rendering
-            SpriteSize = spriteSize; //the size of the spritesheet used to render
-            Visible = true;
-            TextureString = textureString;
+            // Miner Lights
+            float x = 0.5f, y = 0.15f, scale = 0.9f;
             Lights = new List<Light>
             {
-                new Light((SpriteSize * new Vector2(0.5f, 0.15f)), Vector2.Zero, LightRenderer.Lighttype.Circular, this),
-                new Light((SpriteSize * new Vector2(0.5f, 0.15f)), Vector2.Zero, LightRenderer.Lighttype.Directional, this)
+                new Light(
+                    (SpriteSize * new Vector2(x, y)), 
+                    Vector2.Zero, LightRenderer.Lighttype.Circular, this,
+                    Vector2.One, scale),
+                new Light(
+                    (SpriteSize * new Vector2(x, y)), 
+                    Vector2.Zero, LightRenderer.Lighttype.Directional, this,
+                    new Vector2(0.8f, 1.5f), scale)
             };
             Seed = SingleRandom.Instance.Next();
 
-
-
+            LastUpdated = new TimeSpan();
+            HeldObj = null;
+            Holding = false;
+            Climbing = false;
+            Moveable = true;
+            
+            // Motion sheets
+            xVel = 0;
             InstantiateMotionSheets();
             Orientation = SpriteEffects.FlipHorizontally;
-            _motionType = MotionType.walk;
             //TODO: add a case when it fails to get that type of motion
             Motion.TryGetValue(MotionType.idle, out CurrMotion);
-
-
-
-            _tool = new Pickaxe();
-            
-
 
         }
 
@@ -69,22 +73,28 @@ namespace Project.GameLogic.GameObjects.Miner
                 switch (m)
                 {
                     case MotionType.idle:
-                        mss = new MotionSpriteSheet(24, 42, MotionType.idle);
+                        mss = new MotionSpriteSheet(24, 42, MotionType.idle, new Vector2(1, 1));
                         break;
-                    case MotionType.walk:
-                        mss = new MotionSpriteSheet(11, 100, MotionType.walk);
+                    case MotionType.walk_left:
+                        mss = new MotionSpriteSheet(12, 84, m, new Vector2(1.2f, 1));
                         break;
-                    case MotionType.run:
-                        mss = new MotionSpriteSheet(12, 88, MotionType.run);
+                    case MotionType.walk_right:
+                        mss = new MotionSpriteSheet(12, 84, m, new Vector2(1.2f, 1));
                         break;
-                    //TODO: fix the jump sprite, has a small artefact
                     case MotionType.jump:
-                        mss = new MotionSpriteSheet(12, 60, MotionType.jump);
+                        mss = new MotionSpriteSheet(12, 84, m, new Vector2(1.5f, 1.12f));
+                        break;
+                    case MotionType.run_left:
+                        mss = new MotionSpriteSheet(12, 64, m, new Vector2(1.4f, 1));
+                        break;
+                    case MotionType.run_right:
+                        mss = new MotionSpriteSheet(12, 64, m, new Vector2(1.4f, 1));
                         break;
                     default:
                         mss = null;
                         break;
                 }
+
                 Motion.Add(m, mss);
             }
         }
@@ -97,16 +107,56 @@ namespace Project.GameLogic.GameObjects.Miner
             }
         }
 
+        private MotionType GetCurrentState() {
 
+            if (this.xVel > 0)
+            {
+                if (this.Speed.Y != 0f)
+                    return MotionType.jump;
+                else if (this.xVel >= GameEngine.RunSpeed)
+                    return MotionType.run_right;
+                else
+                    return MotionType.walk_right;
+            }
+            if (this.xVel < 0)
+            {
+                if (this.Speed.Y != 0)
+                    return MotionType.jump;
+                else if (this.xVel <= -GameEngine.RunSpeed)
+                    return MotionType.run_left;
+                else
+                    return MotionType.walk_left;
+            }
+            if (this.Speed.Y != 0)
+            {
+                return MotionType.jump;
+            }
+
+            return MotionType.idle;
+
+        }
 
         public void ChangeCurrentMotion()
         {
-            MotionType m = MotionType.idle;
-            //TODO: Improve fix for corner case when miner is walking while in air
-            if (m == MotionType.walk && CurrMotion.SheetType == MotionType.jump)
+            MotionType m = GetCurrentState();
+
+            switch (m)
             {
-                return;
+                case MotionType.walk_right:
+                    this.Orientation = SpriteEffects.FlipHorizontally;
+                    break;
+                case MotionType.walk_left:
+                    this.Orientation = SpriteEffects.None;
+                    break;
+                case MotionType.run_right:
+                    this.Orientation = SpriteEffects.FlipHorizontally;
+                    break;
+                case MotionType.run_left:
+                    this.Orientation = SpriteEffects.None;
+                    break;
+
             }
+           
             //TODO: add check when this TryGetValue fails
             Motion.TryGetValue(m, out CurrMotion);
             if (CurrMotion.DifferentMotionType(m))
@@ -116,15 +166,55 @@ namespace Project.GameLogic.GameObjects.Miner
 
         }
 
-
-
-
-       
-
-        public bool UseTool(List<GameObject> gameObjects) {
-            _tool.Use(this, gameObjects);
+        /// <summary>
+        /// Uses the tool that the miner currenty has
+        /// </summary>
+        /// <returns>True iff 1==1</returns>
+        public bool UseTool(GameState gs) {
+            Tool.Use(this, gs);
 
             return true;
         }
+
+        public AxisAllignedBoundingBox InteractionBox()
+        {
+            Vector2 offset = new Vector2(50, 50);
+            return new AxisAllignedBoundingBox(Position - offset, Position + SpriteSize + offset);
+        }
+
+        public bool InteractWithCrate(GameState gs)
+        {
+            // picking up crate
+            if(!Holding)
+            {
+                List<GameObject> collisions = CollisionDetector.FindCollisions(InteractionBox(), gs.GetSolids());
+                foreach (GameObject c in collisions)
+                {
+                    if (c is Crate)
+                    {
+                        c.Position = new Vector2(c.Position.X, Position.Y);
+                        gs.AddNonSolid(c);
+                        gs.RemoveSolid(c);
+
+                        HeldObj = c;
+                        HeldObj.Falling = false;
+                        Holding = true;
+                        return true;
+                    }
+                }
+                return false;
+            }
+            else
+            {
+                HeldObj.Falling = true;
+                gs.AddSolid(HeldObj);
+                gs.RemoveNonSolid(HeldObj);
+
+                HeldObj = null;
+                Holding = false;
+                return true;
+            }
+        }
+
     }
 }

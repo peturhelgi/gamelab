@@ -1,14 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Project.GameLogic.GameObjects;
-using Project.GameLogic.Renderer;
-using Project.LevelManager;
+using TheGreatEscape.GameLogic.Renderer;
+using TheGreatEscape.LevelManager;
 using System;
+using TheGreatEscape.GameLogic.Util;
 
-namespace Project.GameLogic
-{
+namespace TheGreatEscape.GameLogic {
     class GameManager
     {
         GameController _controller;
@@ -18,12 +16,16 @@ namespace Project.GameLogic
         GraphicsDevice _graphicsDevice;
         ContentManager _content;
         GameRenderer _renderer;
-        
-        public GameManager(ContentManager content, GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics) {
+        public static bool RenderDark;
+        public GameEngine GameEngine { get; private set; }
+
+        public GameManager(ContentManager content, GraphicsDevice graphicsDevice, 
+                GraphicsDeviceManager graphics) {
             _content = content;
             _graphicsDevice = graphicsDevice;
             _graphics = graphics;
             _mapLoader = new MapLoader(content);
+            RenderDark = true;
         }
 
         public void LoadLevel(String path) {
@@ -31,7 +33,15 @@ namespace Project.GameLogic
             {
                 UnloadContent();
             }
-            _controller = new GameController(new GameEngine(_mapLoader.InitMap(path)), new Camera(0.8f, Vector2.Zero, new Vector2(_graphicsDevice.PresentationParameters.BackBufferWidth, _graphicsDevice.PresentationParameters.BackBufferHeight)));
+            GameEngine = new GameEngine(_mapLoader.InitMap(path));
+            _controller = new GameController(
+                GameEngine, 
+                new Camera(0.8f, 
+                    Vector2.Zero, 
+                    new Vector2(
+                        _graphicsDevice.PresentationParameters.BackBufferWidth, 
+                        _graphicsDevice.PresentationParameters.BackBufferHeight)
+                ));
             LoadContent();
         }
 
@@ -39,7 +49,8 @@ namespace Project.GameLogic
         {
             _mapLoader.LoadMapContent(_controller.GameEngine.GameState);
             // The render instance is create per level: Like this we don't need to worry about resetting global variables in the renderer (e.g. lightning)
-            _renderer = new GameRenderer(_graphicsDevice, _controller.GameEngine.GameState, _content);
+            _renderer = new GameRenderer(_graphicsDevice, 
+                _controller.GameEngine.GameState, _content);
         }
 
         //TODO remove public
@@ -57,7 +68,10 @@ namespace Project.GameLogic
 
         public void Draw(GameTime gameTime, int width, int height)
         {
-            _renderer.Draw(gameTime, width, height, Keyboard.GetState().IsKeyDown(Keys.P) ? GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, _controller.Camera.view); 
+            _renderer.Draw(gameTime, width, height,
+                MyDebugger.IsActive ? 
+                GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, 
+                _controller.Camera); 
         }
 
     }

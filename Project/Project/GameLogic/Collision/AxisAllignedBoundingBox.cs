@@ -1,12 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Project.GameLogic.Collision
-{
+namespace TheGreatEscape.GameLogic.Collision {
     public class AxisAllignedBoundingBox : PolygonalCollisionObject
     {
         public Vector2 Max;

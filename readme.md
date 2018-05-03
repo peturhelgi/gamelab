@@ -11,7 +11,7 @@
 ### Description
 Very cool and fun game everyone loves to play.
 
-# Rules (draft)
+# Rules
 
 ## Meetings
 We meet on Tuesday (after class) and on Friday (12-14). 

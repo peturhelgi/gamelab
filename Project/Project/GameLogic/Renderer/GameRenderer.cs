@@ -1,15 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Project.GameLogic.GameObjects;
-using Project.GameLogic.GameObjects.Miner;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TheGreatEscape.GameLogic.GameObjects;
 
-namespace Project.GameLogic.Renderer
+namespace TheGreatEscape.GameLogic.Renderer
 {
     class GameRenderer
     {
@@ -22,10 +17,10 @@ namespace Project.GameLogic.Renderer
         RenderTarget2D _renderTargetLights;
         Texture2D _shaderTexture;
         LightRenderer _lightRenderer;
+        public enum Mode { Normal, DebugView }
 
-        public enum Mode { Normal, DebugView}
-
-        public GameRenderer(GraphicsDevice graphicsDevice, GameState gameState, ContentManager content) {
+        public GameRenderer(GraphicsDevice graphicsDevice, GameState gameState, ContentManager content)
+        {
             _graphicsDevice = graphicsDevice;
             _gameState = gameState;
             _spriteBatch = new SpriteBatch(_graphicsDevice);
@@ -40,37 +35,52 @@ namespace Project.GameLogic.Renderer
 
 
             _lightRenderer = new LightRenderer(_graphicsDevice, content);
-
+            
         }
 
-        public void Draw(GameTime gameTime, int width, int height, Mode mode, Matrix camera)
+        public void Draw(GameTime gameTime, int width, int height, Mode mode, Camera camera)
         {
 
             List<Light> lights = new List<Light>();
+            Texture2D background = _gameState.GetBackground();
 
             // Render the scene
             _graphicsDevice.SetRenderTarget(_renderTargetScene);
             _graphicsDevice.Clear(Color.Gray);
-            
-            _spriteBatch.Begin(SpriteSortMode.Deferred, mode==Mode.DebugView?BlendState.Opaque:null, null, null, null, null, camera);
-            foreach (GameObject obj in _gameState.GetAll())
+            _spriteBatch.Begin(
+                SpriteSortMode.Deferred, 
+                mode == Mode.DebugView ? BlendState.Opaque : null, 
+                null, null, null, null, camera.view);
+
+            _spriteBatch.Draw(background, camera.GetCameraRectangle(background.Width, background.Height), Color.White);
+
+            foreach(GameObject obj in _gameState.GetAll())
             {
-                if (obj.Visible)
+                if(obj.Visible)
                 {
                     if (obj is Miner) {
                         Miner m = obj as Miner;
                         Rectangle source =  m.CurrMotion.SourceRectangle;
-                        Vector2 motionSize = new Vector2(source.Width, source.Height);
-                        Vector2 scale = new Vector2(obj.SpriteSize.X, obj.SpriteSize.Y) / motionSize;
-                        motionSize *= scale;
+                        Vector2 motionSize = obj.SpriteSize * new Vector2(m.CurrMotion.Scale.X, m.CurrMotion.Scale.Y);
                         _spriteBatch.Draw(m.CurrMotion.Image, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)motionSize.X, 
                             (int)motionSize.Y), source, Color.White, 0f, Vector2.Zero, m.Orientation , 0f);
                     }
                     else {
-                        _spriteBatch.Draw(mode == Mode.DebugView ? _debugBox : obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);
+                        if(obj?.Texture != null)
+                        {
+                            _spriteBatch.Draw(
+                                mode == Mode.DebugView ? _debugBox : obj.Texture,
+                                new Rectangle(
+                                    (int)obj.Position.X,
+                                    (int)obj.Position.Y,
+                                    (int)obj.SpriteSize.X,
+                                    (int)obj.SpriteSize.Y),
+                                Color.White);
+                        }
                     }
                 }
-                if (obj.Lights is List<Light>) {
+                if(obj.Lights is List<Light>)
+                {
                     lights.AddRange(obj.Lights);
                 }
             }
@@ -82,7 +92,7 @@ namespace Project.GameLogic.Renderer
             }
 
             // Render the Lights
-            _renderTargetLights = _lightRenderer.Draw(gameTime, width, height, lights, camera);
+            _renderTargetLights = _lightRenderer.Draw(gameTime, width, height, lights, camera.view);
 
             _graphicsDevice.SetRenderTarget(null);
 
@@ -90,7 +100,14 @@ namespace Project.GameLogic.Renderer
 
             _lightingEffect.CurrentTechnique.Passes[0].Apply();
 
-            _spriteBatch.Begin(effect: _lightingEffect);
+            if(GameManager.RenderDark)
+            {
+                _spriteBatch.Begin(effect: _lightingEffect);
+            }
+            else
+            {
+                _spriteBatch.Begin();
+            }
 
             _lightingEffect.Parameters["LightMask"].SetValue(_renderTargetLights);
 
