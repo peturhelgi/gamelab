@@ -1,16 +1,23 @@
 using System.Linq;
+using System.Reflection;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.LevelManager;
+using System;
+using TheGreatEscape.GameLogic.Util;
 
 namespace TheGreatEscape.GameLogic {
     public class GameState : Level
     {
+        public enum ExistingTools { pickaxe };
+
         public List<Miner> Actors;
         public List<GameObject> Solids;
         public List<GameObject> NonSolids;
         public List<GameObject> Collectibles;
+        public Dictionary<ExistingTools, Tool> Tools;
+
         public bool Completed;
         private Texture2D Background;
 
@@ -23,6 +30,8 @@ namespace TheGreatEscape.GameLogic {
             Solids = new List<GameObject>();
             NonSolids = new List<GameObject>();
             Collectibles = new List<GameObject>();
+            Tools = new Dictionary<ExistingTools, Tool>();
+
             CollisionDetector = new CollisionDetector();
             Completed = false;
         }
@@ -113,6 +122,18 @@ namespace TheGreatEscape.GameLogic {
         public void RemoveCollectible(GameObject collectible)
         {
             Collectibles.Remove(collectible);
+        }
+
+        public void InstantiateTools()
+        {
+
+            ToolFactory toolFactory = new ToolFactory();
+            Tool tool;
+            foreach (ExistingTools et in Enum.GetValues(typeof(ExistingTools)))
+            {
+                tool = toolFactory.Create(new Obj { Type = et.ToString() });
+                Tools.Add(et, tool);
+            }
         }
 
         public void SetBackground(Texture2D background) {

@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.GameObjects;
+using static TheGreatEscape.GameLogic.GameState;
+using System;
 
 namespace TheGreatEscape.LevelManager
 {
@@ -32,6 +34,15 @@ namespace TheGreatEscape.LevelManager
                 gameState.AddObject(gameObject);
             }
 
+            gameState.InstantiateTools();
+
+            Tool pickaxe;
+            gameState.Tools.TryGetValue(ExistingTools.pickaxe, out pickaxe);
+            foreach (Miner miner in gameState.GetActors())
+            {
+                miner.SetTool(pickaxe);
+            }
+
             return gameState;
         }
 
@@ -47,9 +58,21 @@ namespace TheGreatEscape.LevelManager
             }
 
             LoadMotionSheets(gameState);
+            LoadTools(gameState);
         }
 
-        public void LoadMotionSheets(GameState gameState) {
+        private void LoadTools(GameState gameState) {
+
+            String toolSpritePath = "Sprites/Tools/";
+            Tool tool;
+            foreach (ExistingTools et in Enum.GetValues(typeof(ExistingTools)))
+            {
+                Texture2D toolSprite = ContentManager.Load<Texture2D>(toolSpritePath + et.ToString());
+                gameState.Tools.TryGetValue(et, out tool);
+                tool.ToolSprite = toolSprite;
+            }
+        }
+        private void LoadMotionSheets(GameState gameState) {
 
             List<Miner> miners = gameState.GetActors();
             Miner miner;
