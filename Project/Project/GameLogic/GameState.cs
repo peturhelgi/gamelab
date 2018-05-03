@@ -146,19 +146,19 @@ namespace TheGreatEscape.GameLogic
             return Actors;
         }
 
-        public List<GameObject> GetObjects(GameObject.Handling handling)
+        public List<GameObject> GetObjects(Handling handling)
         {
             switch(handling)
             {
-                case GameObject.Handling.Collect:
+                case Handling.Collect:
                     return Collectibles;
-                case GameObject.Handling.Destroy:
+                case Handling.Destroy:
                     return Destroyables;
-                case GameObject.Handling.Interact:
+                case Handling.Interact:
                     return Interactables;
-                case GameObject.Handling.None:
+                case Handling.None:
                     return NonSolids;
-                case GameObject.Handling.Solid:
+                case Handling.Solid:
                     return Solids;
                 default:
                     return new List<GameObject>();
