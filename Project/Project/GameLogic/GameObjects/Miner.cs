@@ -21,7 +21,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public float xVel;
 
         ToolFactory factory = new ToolFactory();
-        Tool Tool;
+        public Tool Tool;
         public GameObject HeldObj;
         public bool Holding;
         public bool Climbing;
@@ -32,8 +32,6 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public Miner(Vector2 position, Vector2 spriteSize)
             :base(position, spriteSize)
         {
-
-            Tool = factory.Create(new Obj { Type = "pickaxe" });
 
             // Miner Lights
             Lights = new List<Light>
@@ -59,6 +57,10 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
         }
 
+        public void SetTool(Tool tool)
+        {
+            Tool = tool;
+        }
         private void InstantiateMotionSheets() {
             MotionSpriteSheet mss;
             Motion = new Dictionary<MotionType, MotionSpriteSheet>();
