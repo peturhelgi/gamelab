@@ -184,8 +184,6 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public bool UseTool(GameState gs) {
             this.Interacting = true;
             Tool.Use(this, gs);
-            //if (CurrMotion.LoopsPlayed >= 1)
-            //    this.Interacting = false;
             return true;
         }
 

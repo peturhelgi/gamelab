@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TheGreatEscape.GameLogic.Util;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
@@ -20,10 +21,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
             {
                 if (c is Rock)
                 {
+                    c.Mass -= PickaxeStrength;
                     if (c.Mass <= 0)
                         gamestate.RemoveSolid(c);
-                    else
-                        c.Mass -= PickaxeStrength;
                 }
                 if(c is Door)
                 {
