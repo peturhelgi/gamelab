@@ -15,7 +15,6 @@ namespace TheGreatEscape.GameLogic.GameObjects
             {
                 if (c is Rock)
                 {
-                    c.Visible = false;
                     gamestate.RemoveSolid(c);
                 }
                 if(c is Door)
