@@ -45,20 +45,20 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.SpriteSize);
                     instance.Speed = entity.Velocity;
                     instance.Mass = entity.Mass;
-                    instance.TextureString = entity.Texture;                    
+                    instance.TextureString = entity?.Texture;                    
                     break;
                 case "ground":
                     instance = new Ground(
                         entity.Position,
                         entity.SpriteSize,
                         entity.Texture);
-                    instance.TextureString = entity.Texture;                    
+                    instance.TextureString = entity?.Texture;                    
                     break;
                 case "rock":
                     instance = new Rock(
                         entity.Position,
                         entity.SpriteSize);
-                    instance.TextureString = entity.Texture;                    
+                    instance.TextureString = entity?.Texture;                    
                     break;
                 case "end":
                     instance = new Door(

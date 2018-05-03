@@ -35,10 +35,17 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Tool = factory.Create(new Obj { Type = "pickaxe" });
 
             // Miner Lights
+            float x = 0.5f, y = 0.15f, scale = 0.9f;
             Lights = new List<Light>
             {
-                new Light((SpriteSize * new Vector2(0.5f, 0.15f)), Vector2.Zero, LightRenderer.Lighttype.Circular, this),
-                new Light((SpriteSize * new Vector2(0.5f, 0.15f)), Vector2.Zero, LightRenderer.Lighttype.Directional, this)
+                new Light(
+                    (SpriteSize * new Vector2(x, y)), 
+                    Vector2.Zero, LightRenderer.Lighttype.Circular, this,
+                    Vector2.One, scale),
+                new Light(
+                    (SpriteSize * new Vector2(x, y)), 
+                    Vector2.Zero, LightRenderer.Lighttype.Directional, this,
+                    new Vector2(0.8f, 1.5f), scale)
             };
             Seed = SingleRandom.Instance.Next();
 
