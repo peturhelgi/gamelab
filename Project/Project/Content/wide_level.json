@@ -291,6 +291,24 @@
       "displacementy": 500,
       "activationkey": 0,
       "texture": "Sprites/Interactables/escalator_platform"
+    },
+    {
+      "dim": {
+        "x": 100,
+        "y": 100
+      },
+      "pos": {
+        "x": 2700,
+        "y": 700
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 20,
+      "type": "lever",
+      "activationkey": 0,
+      "texture": "Sprites/Interactables/lever_left"
     }
   ]
 }

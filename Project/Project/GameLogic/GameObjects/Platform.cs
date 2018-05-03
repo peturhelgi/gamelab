@@ -14,7 +14,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         private float _minHeight;
 
 
-        public Platform(Vector2 position, Vector2 spriteSize, string textureString, float displacementY, int ActivationId)
+        public Platform(Vector2 position, Vector2 spriteSize, string textureString, float displacementY, int actId)
             : base(position, spriteSize)
         {
 
@@ -30,6 +30,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Moveable = false;
             Activate = false;
             DisplacementY = displacementY;
+            ActivationId = actId;
             _maxHeight = Position.Y - DisplacementY;
             _minHeight = Position.Y;
         }

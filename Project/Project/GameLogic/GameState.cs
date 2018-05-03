@@ -78,6 +78,10 @@ namespace TheGreatEscape.GameLogic
             {
                 AddSolid(obj);
             }
+            else if (obj is Lever)
+            {
+                AddNonSolid(obj);
+            }
         }
 
         public void AddActor(Miner actor)

@@ -108,6 +108,7 @@
     <Compile Include="EditorLogic\Util\CircularSelector.cs" />
     <Compile Include="GameLogic\GameObjects\Door.cs" />
     <Compile Include="GameLogic\GameObjects\Factory.cs" />
+    <Compile Include="GameLogic\GameObjects\Lever.cs" />
     <Compile Include="GameLogic\GameObjects\Pickaxe.cs" />
     <Compile Include="GameLogic\GameObjects\Ground.cs" />
     <Compile Include="GameLogic\GameObjects\Platform.cs" />
@@ -198,6 +199,8 @@
     <Content Include="Content\Sprites\Interactables\escalator_platform.png" />
     <Content Include="Content\Sprites\Interactables\LadderLong.png" />
     <Content Include="Content\Sprites\Interactables\LadderShort.png" />
+    <Content Include="Content\Sprites\Interactables\lever_left.png" />
+    <Content Include="Content\Sprites\Interactables\lever_right.png" />
     <Content Include="Content\Sprites\Miners\MinerHandsInPants.png" />
     <Content Include="Content\Sprites\Miners\MinerPickaxe.png" />
     <Content Include="Content\Sprites\Miners\MinerRope.png" />

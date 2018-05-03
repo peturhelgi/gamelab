@@ -82,9 +82,16 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.Position,
                         entity.SpriteSize,
                         entity.Texture,
-                        entity.DisplacementY);
+                        entity.DisplacementY,
+                        entity.ActivationKey);
                     break;
                 case "lever":
+                    instance = new Lever(
+                        entity.Position,
+                        entity.SpriteSize,
+                        entity.Texture,
+                        entity.ActivationKey);
+                    break;
                 default:
                     instance = null;
                     MyDebugger.WriteLine(
