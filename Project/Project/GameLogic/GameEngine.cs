@@ -51,8 +51,9 @@ namespace TheGreatEscape.GameLogic {
                     posDiff = miner.Position;
                     CalculateAndSetNewPosition(miner, new Vector2(WalkSpeed, 0));
                     posDiff -= miner.Position;
-                    if (miner.Holding && (posDiff.Length() > 1e-6))
+                    if (miner.Holding && (Math.Abs(posDiff.X) > 1e-6))
                     {
+                        if (miner.HeldObj.Position.X < miner.Position.X) miner.pickUpCrateRightSide(miner.HeldObj, GameState);
                         CalculateAndSetNewPosition(miner.HeldObj, new Vector2(WalkSpeed, 0));
                     }
                     break;
@@ -61,8 +62,9 @@ namespace TheGreatEscape.GameLogic {
                     posDiff = miner.Position;
                     CalculateAndSetNewPosition(miner, new Vector2(-WalkSpeed, 0));
                     posDiff -= miner.Position;
-                    if (miner.Holding && (posDiff.Length() > 1e-6))
+                    if (miner.Holding && (Math.Abs(posDiff.X) > 1e-6))
                     {
+                        if (miner.HeldObj.Position.X > miner.Position.X) miner.pickUpCrateLeftSide(miner.HeldObj, GameState);
                         CalculateAndSetNewPosition(miner.HeldObj, new Vector2(-WalkSpeed, 0));
                     }
                     break;
@@ -75,6 +77,7 @@ namespace TheGreatEscape.GameLogic {
                     posDiff -= miner.Position;
                     if (miner.Holding && (posDiff.Length() > 1e-6))
                     {
+                        if (miner.HeldObj.Position.X < miner.Position.X) miner.pickUpCrateRightSide(miner.HeldObj, GameState);
                         CalculateAndSetNewPosition(miner.HeldObj, new Vector2(RunSpeed, 0));
                     }
                     break;
@@ -84,6 +87,7 @@ namespace TheGreatEscape.GameLogic {
                     posDiff -= miner.Position;
                     if (miner.Holding && (posDiff.Length() > 1e-6))
                     {
+                        if (miner.HeldObj.Position.X > miner.Position.X) miner.pickUpCrateLeftSide(miner.HeldObj, GameState);
                         CalculateAndSetNewPosition(miner.HeldObj, new Vector2(-RunSpeed, 0));
                     }
                     break;

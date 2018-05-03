@@ -185,14 +185,18 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 {
                     if (c is Crate)
                     {
-                        c.Position = new Vector2(c.Position.X, Position.Y);
-                        gs.AddNonSolid(c);
-                        gs.RemoveSolid(c);
-
-                        HeldObj = c;
-                        HeldObj.Falling = false;
-                        Holding = true;
-                        return true;
+                        bool worked = false;
+                        if (c.Position.X < Position.X)
+                        {
+                            worked = pickUpCrateLeftSide(c, gs);
+                            if (!worked) worked = pickUpCrateRightSide(c, gs);
+                        }
+                        else
+                        {
+                            worked = pickUpCrateRightSide(c, gs);
+                            if (!worked) worked = pickUpCrateLeftSide(c, gs);
+                        }
+                        if (worked) return true;
                     }
                 }
                 return false;
@@ -206,6 +210,58 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 HeldObj = null;
                 Holding = false;
                 return true;
+            }
+        }
+
+        public bool pickUpCrateRightSide(GameObject c, GameState gs)
+        {
+            AxisAllignedBoundingBox BBox = new AxisAllignedBoundingBox(
+                new Vector2(Position.X + SpriteSize.X, Position.Y), Position + c.SpriteSize);
+            List<GameObject> tmpSolids = gs.GetSolids();
+            tmpSolids.Remove(c);
+            List<GameObject> crateCollisions = CollisionDetector.FindCollisions(BBox, tmpSolids);
+            if (crateCollisions.Count == 0)
+            {
+                c.Position = new Vector2(Position.X + SpriteSize.X, Position.Y);
+                gs.AddNonSolid(c);
+                gs.RemoveSolid(c);
+
+                HeldObj = c;
+                HeldObj.Falling = false;
+                Holding = true;
+                return true;
+            }
+            else
+            {
+                gs.AddSolid(c);
+                MyDebugger.WriteLine("crate hits something as it is picked up");
+                return false;
+            }
+        }
+
+        public bool pickUpCrateLeftSide(GameObject c, GameState gs)
+        {
+            AxisAllignedBoundingBox BBox = new AxisAllignedBoundingBox(
+                new Vector2(Position.X - c.SpriteSize.X, Position.Y), Position + c.SpriteSize);
+            List<GameObject> tmpSolids = gs.GetSolids();
+            tmpSolids.Remove(c);
+            List<GameObject> crateCollisions = CollisionDetector.FindCollisions(BBox, tmpSolids);
+            if (crateCollisions.Count == 0)
+            {
+                c.Position = new Vector2(Position.X - c.SpriteSize.X, Position.Y);
+                gs.AddNonSolid(c);
+                gs.RemoveSolid(c);
+
+                HeldObj = c;
+                HeldObj.Falling = false;
+                Holding = true;
+                return true;
+            }
+            else
+            {
+                gs.AddSolid(c);
+                MyDebugger.WriteLine("crate hits something as it is picked up");
+                return false;
             }
         }
 
