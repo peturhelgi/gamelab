@@ -66,7 +66,17 @@ namespace TheGreatEscape.GameLogic.Renderer
                             (int)motionSize.Y), source, Color.White, 0f, Vector2.Zero, m.Orientation , 0f);
                     }
                     else {
-                        _spriteBatch.Draw(mode == Mode.DebugView ? _debugBox : obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);
+                        if(obj?.Texture != null)
+                        {
+                            _spriteBatch.Draw(
+                                mode == Mode.DebugView ? _debugBox : obj.Texture,
+                                new Rectangle(
+                                    (int)obj.Position.X,
+                                    (int)obj.Position.Y,
+                                    (int)obj.SpriteSize.X,
+                                    (int)obj.SpriteSize.Y),
+                                Color.White);
+                        }
                     }
                 }
                 if(obj.Lights is List<Light>)

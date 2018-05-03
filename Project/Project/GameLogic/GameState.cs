@@ -4,15 +4,23 @@ using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.LevelManager;
 
-namespace TheGreatEscape.GameLogic {
+namespace TheGreatEscape.GameLogic
+{
     public class GameState : Level
     {
         public List<Miner> Actors;
         public List<GameObject> Solids;
         public List<GameObject> NonSolids;
         public List<GameObject> Collectibles;
+        public enum State
+        {
+            Completed,
+            Paused,
+            Running
+        }
         public bool Completed;
         private Texture2D Background;
+        public float OutOfBounds;
 
         CollisionDetector CollisionDetector;
 
@@ -25,6 +33,7 @@ namespace TheGreatEscape.GameLogic {
             Collectibles = new List<GameObject>();
             CollisionDetector = new CollisionDetector();
             Completed = false;
+            OutOfBounds = float.MinValue;
         }
 
         public List<GameObject> GetAll() {
@@ -33,6 +42,10 @@ namespace TheGreatEscape.GameLogic {
 
         public void AddObject(GameObject obj)
         {
+            if(obj == null)
+            {
+                return;
+            }
             if(obj is Miner)
             {
                 AddActor(obj as Miner);
@@ -49,6 +62,10 @@ namespace TheGreatEscape.GameLogic {
             {
                 AddDoor(obj as Door);
             }
+            if(obj.BBox.Max.Y > OutOfBounds)
+            {
+                OutOfBounds = obj.BBox.Max.Y;
+            }
             else if(obj is Crate)
             {
                 AddSolid(obj);
@@ -57,7 +74,6 @@ namespace TheGreatEscape.GameLogic {
             {
                 AddNonSolid(obj);
             }
-
         }
 
         public void AddActor(Miner actor)
@@ -115,11 +131,13 @@ namespace TheGreatEscape.GameLogic {
             Collectibles.Remove(collectible);
         }
 
-        public void SetBackground(Texture2D background) {
+        public void SetBackground(Texture2D background)
+        {
             Background = background;
         }
-        
-        public Texture2D GetBackground() {
+
+        public Texture2D GetBackground()
+        {
             return Background;
         }
 
