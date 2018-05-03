@@ -142,6 +142,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
         public void ChangeCurrentMotion()
         {
+            //TODO: give a better name to this var
             MotionType m = GetCurrentState();
 
             //TODO: add check when this TryGetValue fails

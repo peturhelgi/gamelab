@@ -47,6 +47,8 @@ namespace TheGreatEscape.GameLogic {
             Vector2 posDiff = Vector2.Zero;
 
             switch (action) {
+                //TODO: add a Direction member to the miner and remove _right and _left 
+                // to simplify code
                 case (GameAction.walk_right):
                     posDiff = miner.Position;
                     CalculateAndSetNewPosition(miner, new Vector2(WalkSpeed, 0));
