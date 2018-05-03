@@ -44,14 +44,23 @@ namespace TheGreatEscape.GameLogic
             GameEngine.Update();
 
             // Handle the Camera
-            AxisAllignedBoundingBox frame = new AxisAllignedBoundingBox(new Vector2(float.MaxValue, float.MaxValue), new Vector2(float.MinValue, float.MinValue));
+            AxisAllignedBoundingBox frame = new AxisAllignedBoundingBox(new Vector2(float.MaxValue), new Vector2(float.MinValue));
             List<AxisAllignedBoundingBox> attentions = GameEngine.GetAttentions();
             foreach(AxisAllignedBoundingBox a in attentions)
             {
+                if(a == null)
+                {
+                    continue;
+                }
                 frame.Min = Vector2.Min(frame.Min, a.Min);
                 frame.Max = Vector2.Max(frame.Max, a.Max);
             }
-            Camera.SetCameraToRectangle(new Rectangle((int)frame.Min.X, (int)frame.Min.Y, (int)(frame.Max.X - frame.Min.X), (int)(frame.Max.Y - frame.Min.Y)));
+            Camera.SetCameraToRectangle(
+                new Rectangle(
+                    (int)frame.Min.X, 
+                    (int)frame.Min.Y, 
+                    (int)(frame.Max.X - frame.Min.X), 
+                    (int)(frame.Max.Y - frame.Min.Y)));
         }
 
         private void HandleMouse(MouseState ms)
@@ -65,14 +74,6 @@ namespace TheGreatEscape.GameLogic
 
         private void HandleKeyboard(KeyboardState state)
         {
-            /*// START Handle camera
-            if (state.IsKeyDown(Keys.A)) Camera.HandleAction(Camera.CameraAction.left);
-            if (state.IsKeyDown(Keys.D)) Camera.HandleAction(Camera.CameraAction.right);
-            if (state.IsKeyDown(Keys.W)) Camera.HandleAction(Camera.CameraAction.up);
-            if (state.IsKeyDown(Keys.S)) Camera.HandleAction(Camera.CameraAction.down);
-            if (state.IsKeyDown(Keys.Z)) Camera.HandleAction(Camera.CameraAction.zoom_out);
-            if (state.IsKeyDown(Keys.X)) Camera.HandleAction(Camera.CameraAction.zoom_in);
-            // END Handle camera*/
 
             // START Handle GameAction
             MyDebugger.IsActive = state.IsKeyDown(Keys.P);

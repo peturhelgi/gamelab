@@ -61,7 +61,10 @@ namespace TheGreatEscape.GameLogic
 
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
             Vector2 posDiff = Vector2.Zero;
-
+            if(!miner.Active)
+            {
+                return;
+            }
             switch(action)
             {
                 case (GameAction.walk_right):
@@ -118,13 +121,25 @@ namespace TheGreatEscape.GameLogic
             }
         }
 
+        public bool IsGameOver()
+        {
+            bool gameRunning = false;
+
+            foreach (var miner in GameState.GetActors())
+            {
+                gameRunning |= miner.Active;
+            }
+            
+            return !gameRunning;
+        }
+
         public void Update()
         {
             List<GameObject> allObjects = GameState.GetAll();
 
             foreach(GameObject c in allObjects)
             {
-                if(c.Moveable)
+                if(c.Active && c.Moveable)
                 {
                     if(c.LastUpdated != gameTime)
                     {
@@ -137,9 +152,21 @@ namespace TheGreatEscape.GameLogic
                 }
             }
 
-            for(var i = 0; i < _attentions.Count; i++)
+            if(IsGameOver())
             {
-                _attentions[i] = GameState.Actors[CurrentMiner[i]].BBox;
+                GameState.Mode = GameState.State.GameOver;
+            }
+
+            for(var i = _attentions.Count - 1; i >= 0; --i)
+            {
+                if(!GameState.Actors[CurrentMiner[i]].Active)
+                {
+                    _attentions[i] = null;
+                }
+                else
+                {
+                    _attentions[i] = GameState.Actors[CurrentMiner[i]].BBox;
+                }
             }
         }
 

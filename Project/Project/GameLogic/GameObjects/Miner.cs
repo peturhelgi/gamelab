@@ -13,6 +13,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
     public enum MotionType { idle, walk_left, walk_right, run_left, run_right, jump };
 
+
+    
     public class Miner : GameObject
     {
         public Dictionary<MotionType, MotionSpriteSheet> Motion;

@@ -20,7 +20,8 @@ namespace TheGreatEscape.GameLogic
         {
             Completed,
             Paused,
-            Running
+            Running,
+            GameOver
         }
 
         public enum Action
@@ -96,7 +97,8 @@ namespace TheGreatEscape.GameLogic
                     if(obj is Miner)
                     {
                         // TODO: make miner inactive instead of removing it.
-                        Actors.Remove(obj as Miner);
+                        obj.Disable();
+                        //Actors.Remove(obj as Miner);
                     }
                     break;
                 case Handling.Solid:
