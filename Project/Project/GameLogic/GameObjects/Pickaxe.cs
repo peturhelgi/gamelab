@@ -4,6 +4,11 @@ namespace TheGreatEscape.GameLogic.GameObjects
 {
     public class Pickaxe : Tool
     {
+        public int PickaxeStrength;
+        public Pickaxe() {
+
+            PickaxeStrength = 5;
+        }
         private CollisionDetector CollisionDetector = new CollisionDetector();
         public override void Use(Miner user, GameState gamestate)
         {
@@ -15,7 +20,10 @@ namespace TheGreatEscape.GameLogic.GameObjects
             {
                 if (c is Rock)
                 {
-                    gamestate.RemoveSolid(c);
+                    if (c.Mass <= 0)
+                        gamestate.RemoveSolid(c);
+                    else
+                        c.Mass -= PickaxeStrength;
                 }
                 if(c is Door)
                 {

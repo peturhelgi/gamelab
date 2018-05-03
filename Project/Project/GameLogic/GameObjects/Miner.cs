@@ -116,6 +116,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 else
                     return MotionType.walk_right;
             }
+
             if (this.xVel < 0)
             {
                 if (this.Speed.Y != 0)
@@ -125,10 +126,12 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 else
                     return MotionType.walk_left;
             }
+
             if (this.Speed.Y != 0)
             {
                 return MotionType.jump;
             }
+
             if (this.Interacting)
                 return MotionType.pickaxe;
 
@@ -140,6 +143,13 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public void ChangeCurrentMotion()
         {
             MotionType m = GetCurrentState();
+
+            //TODO: add check when this TryGetValue fails
+            Motion.TryGetValue(m, out CurrMotion);
+            if (CurrMotion.DifferentMotionType(m))
+            {
+                CurrMotion.ResetCurrentFrame();
+            }
 
             switch (m)
             {
@@ -155,14 +165,14 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 case MotionType.run_left:
                     this.Orientation = SpriteEffects.None;
                     break;
+                case MotionType.pickaxe:
+                    if (CurrMotion.LoopsPlayed >= 1)
+                    {
+                        this.Interacting = false;
+                        CurrMotion.ResetCurrentFrame();
+                    }
+                    break;
 
-            }
-           
-            //TODO: add check when this TryGetValue fails
-            Motion.TryGetValue(m, out CurrMotion);
-            if (CurrMotion.DifferentMotionType(m))
-            {
-                CurrMotion.ResetCurrentFrame();
             }
 
         }
@@ -174,6 +184,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public bool UseTool(GameState gs) {
             this.Interacting = true;
             Tool.Use(this, gs);
+            //if (CurrMotion.LoopsPlayed >= 1)
+            //    this.Interacting = false;
             return true;
         }
 

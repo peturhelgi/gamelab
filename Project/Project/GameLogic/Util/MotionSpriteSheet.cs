@@ -7,6 +7,7 @@ namespace TheGreatEscape.GameLogic.Util {
 
         public int FrameCounter;
         public int SwitchFrame;
+        public int LoopsPlayed;
         public Vector2 CurrentFrame;
         public Vector2 NumFrames;
         public Texture2D Image;
@@ -31,6 +32,7 @@ namespace TheGreatEscape.GameLogic.Util {
             NumFrames = new Vector2(NumberOfFrames, 1);
             CurrentFrame = new Vector2(0, 0);
             SwitchFrame = MotionFPS;
+            LoopsPlayed = 0;
             FrameCounter = 0;
             IsActive = true;
             SheetType = SpriteMotionType;
@@ -40,6 +42,7 @@ namespace TheGreatEscape.GameLogic.Util {
         public void ResetCurrentFrame() {
             CurrentFrame = new Vector2(0, 0);
             FrameCounter = 0;
+            LoopsPlayed = 0;
         }
 
         public bool DifferentMotionType(MotionType motion) {
@@ -55,6 +58,7 @@ namespace TheGreatEscape.GameLogic.Util {
 
                     if (CurrentFrame.X == NumFrames.X) {
                         CurrentFrame.X = 0;
+                        LoopsPlayed++;
                     }
                 }
             }
