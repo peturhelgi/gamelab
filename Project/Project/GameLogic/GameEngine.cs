@@ -141,13 +141,13 @@ namespace TheGreatEscape.GameLogic
             {
                 if(c.Active && c.Moveable)
                 {
+                    if(c.Position.Y > GameState.OutOfBounds)
+                    {
+                        GameState.SetObject(c, GameState.Action.Remove);
+                    }
                     if(c.LastUpdated != gameTime)
                     {
                         CalculateAndSetNewPosition(c, Vector2.Zero);
-                        if(c.Position.Y > GameState.OutOfBounds)
-                        {
-                            GameState.SetObject(c, GameState.Action.Remove);
-                        }
                     }
                 }
             }
