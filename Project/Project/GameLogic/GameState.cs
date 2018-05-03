@@ -41,6 +41,7 @@ namespace TheGreatEscape.GameLogic
         public bool Completed;
         private Texture2D Background;
         public float OutOfBounds;
+        public State Mode;
 
         CollisionDetector CollisionDetector;
 
@@ -55,6 +56,7 @@ namespace TheGreatEscape.GameLogic
             CollisionDetector = new CollisionDetector();
             Completed = false;
             OutOfBounds = float.MinValue;
+            Mode = State.Running;
         }
 
         public List<GameObject> GetAll()
