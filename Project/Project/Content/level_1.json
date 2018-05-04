@@ -39,7 +39,7 @@
       },
       "m": 80,
       "type": "miner",
-      "tool" : "pickaxe",
+      "tool" : "rope",
       "texture": "Sprites/Miners/MinerStatic"
     },
     {

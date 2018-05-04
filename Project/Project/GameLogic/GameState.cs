@@ -10,7 +10,7 @@ using TheGreatEscape.GameLogic.Util;
 namespace TheGreatEscape.GameLogic {
     public class GameState : Level
     {
-        public enum ExistingTools { pickaxe };
+        public enum ExistingTools { pickaxe, rope };
 
         public List<Miner> Actors;
         public List<GameObject> Solids;

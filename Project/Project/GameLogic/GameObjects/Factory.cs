@@ -22,6 +22,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     tool = new Pickaxe();
                     break;
                 case "rope":
+                    tool = new Rope();
+                    break;
                 default:
                     throw new NotImplementedException(
                         string.Format("Tool '{0}' cannot be created", entity.Type));

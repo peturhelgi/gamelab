@@ -68,6 +68,9 @@ namespace TheGreatEscape.LevelManager
                     case ExistingTools.pickaxe:
                         Pickaxe.ToolSprite = toolSprite;
                         break;
+                    case ExistingTools.rope:
+                        Rope.ToolSprite = toolSprite;
+                        break;
                     default:
                         MyDebugger.WriteLine(
                             string.Format("GameObject '{0}' cannot be created", true));
