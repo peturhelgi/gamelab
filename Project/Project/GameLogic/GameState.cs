@@ -16,6 +16,9 @@ namespace TheGreatEscape.GameLogic
         public List<GameObject> NonSolids;
         public List<GameObject> Solids;
 
+        /// <summary>
+        /// The state of the current game.
+        /// </summary>
         public enum State
         {
             Completed,
@@ -24,11 +27,10 @@ namespace TheGreatEscape.GameLogic
             GameOver
         }
 
-        public enum Action
-        {
-            Add,
-            Remove
-        }
+        /// <summary>
+        /// Determines how a game object is handled.
+        /// This allows to change the behaviour and role of the game object.
+        /// </summary>
         public enum Handling
         {
             Empty,
@@ -42,7 +44,7 @@ namespace TheGreatEscape.GameLogic
 
         public bool Completed;
         private Texture2D Background;
-        public float OutOfBounds;
+        public float OutOfBoundsBottom;
         public State Mode;
 
         CollisionDetector CollisionDetector;
@@ -52,42 +54,25 @@ namespace TheGreatEscape.GameLogic
             Actors = new List<Miner>();
             Collectibles = new List<GameObject>();
             Destroyables = new List<GameObject>();
-            NonSolids = new List<GameObject>();
             Interactables = new List<GameObject>();
+            NonSolids = new List<GameObject>();
             Solids = new List<GameObject>();
+
             CollisionDetector = new CollisionDetector();
             Completed = false;
-            OutOfBounds = float.MinValue;
+            OutOfBoundsBottom = float.MinValue;
             Mode = State.Running;
         }
 
         public List<GameObject> GetAll()
         {
             return Actors
-                .Concat(Solids)
                 .Concat(Collectibles)
+                .Concat(Destroyables)
+                .Concat(Interactables)
                 .Concat(NonSolids)
+                .Concat(Solids)
                 .ToList();
-        }
-
-        public void SetObject(GameObject obj, Action action = Action.Add)
-        {
-            if(obj == null)
-            {
-                return;
-            }
-            if(action == Action.Add)
-            {
-                if(obj.BBox.Max.Y > OutOfBounds)
-                {
-                    OutOfBounds = obj.BBox.Max.Y;
-                }
-                Add(obj);
-            }
-            else if(action == Action.Remove)
-            {
-                Remove(obj);
-            }
         }
 
         public void Remove(GameObject obj, Handling handling = Handling.Empty)
@@ -134,9 +119,9 @@ namespace TheGreatEscape.GameLogic
             {
                 return;
             }
-            if(obj.BBox.Max.Y > OutOfBounds)
+            if(obj.BBox.Max.Y > OutOfBoundsBottom)
             {
-                OutOfBounds = obj.BBox.Max.Y;
+                OutOfBoundsBottom = obj.BBox.Max.Y;
             }
             if(handling == Handling.Empty)
             {

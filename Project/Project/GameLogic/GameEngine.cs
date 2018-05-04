@@ -146,7 +146,7 @@ namespace TheGreatEscape.GameLogic
             {
                 if(c.Active && c.Moveable)
                 {
-                    if(c.Position.Y > GameState.OutOfBounds)
+                    if(c.Position.Y > GameState.OutOfBoundsBottom)
                     {
                         GameState.Remove(c);
                     }

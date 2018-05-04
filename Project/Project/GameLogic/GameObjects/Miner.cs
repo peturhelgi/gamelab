@@ -234,6 +234,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
             else
             {
                 HeldObj.Falling = true;
+
+                // Move HeldObj from NonSolids to Solids
                 gs.Remove(HeldObj, GameState.Handling.None);
                 gs.Add(HeldObj, GameState.Handling.Solid);
 
