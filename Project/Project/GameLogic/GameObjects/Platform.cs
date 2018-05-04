@@ -46,14 +46,18 @@ namespace TheGreatEscape.GameLogic.GameObjects
             {
                 actors.Add(miner as GameObject);
             }
-
             List<GameObject> collisions = CollisionDetector.FindCollisions(this.BBox, actors);
+
             if (!Activate)
             {
                 if (Position.Y < _minHeight)
                 {
                     Position = new Vector2(Position.X, Position.Y + _displacementStep);
-                    foreach(GameObject c in collisions) c.Position = new Vector2(c.Position.X, c.Position.Y + _displacementStep);
+                    foreach (GameObject c in collisions)
+                    {
+                        if(c.Position.Y+c.SpriteSize.Y  < Position.Y) 
+                            c.Position = new Vector2(c.Position.X, c.Position.Y + _displacementStep);
+                    }
                 }
             }
             else

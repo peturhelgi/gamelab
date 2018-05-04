@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.Util;
 
 namespace TheGreatEscape.GameLogic.GameObjects
@@ -9,6 +11,10 @@ namespace TheGreatEscape.GameLogic.GameObjects
     {
         public bool ON;
         public int ActivationId;
+        private string _leftLeverTexture;
+        public string RightleverTexture;
+        ContentManager ContentManager;
+        public Texture2D SecondTexture;
 
 
 
@@ -27,6 +33,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
             LastUpdated = new TimeSpan();
             Moveable = false;
             ON = false;
+            ActivationId = actId;
+            _leftLeverTexture = textureString;
 
         }
 
@@ -42,6 +50,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 foreach (Platform p in platforms)
                     if (p.ActivationId == ActivationId) p.Activate = false;
             }
+            Texture2D tmp = Texture;
+            Texture = SecondTexture;
+            SecondTexture = tmp;
             ON = !ON;
         }
     }

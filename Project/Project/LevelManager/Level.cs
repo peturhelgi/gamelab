@@ -44,5 +44,8 @@ namespace TheGreatEscape.LevelManager {
 
         [JsonProperty("activationkey")]
         public int ActivationKey;
+
+        [JsonProperty("leversecondtexture")]
+        public string SecondTexture;
     }
 }

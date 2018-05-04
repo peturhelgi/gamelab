@@ -91,6 +91,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.SpriteSize,
                         entity.Texture,
                         entity.ActivationKey);
+                    (instance as Lever).RightleverTexture = entity?.SecondTexture;
                     break;
                 default:
                     instance = null;

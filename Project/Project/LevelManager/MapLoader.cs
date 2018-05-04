@@ -48,6 +48,10 @@ namespace TheGreatEscape.LevelManager
                     continue;
                 }
                 obj.Texture = ContentManager.Load<Texture2D>(obj.TextureString);
+                if (obj is Lever)
+                {
+                    (obj as Lever).SecondTexture = ContentManager.Load<Texture2D>((obj as Lever).RightleverTexture);
+                }
             }
 
             LoadMotionSheets(gameState);
