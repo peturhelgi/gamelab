@@ -124,6 +124,28 @@ namespace TheGreatEscape.GameLogic {
             Collectibles.Remove(collectible);
         }
 
+        public void ChangeTool(Miner miner) 
+        {
+            int i;
+            for (i = 0; i < resources.Count(); ++i)
+            {
+                var ttl = resources.ElementAt(i);
+                if (ttl.Key.Equals(miner.Tool.ToString()))
+                    break;
+            }
+
+            int newToolIndex = (i + 1) % resources.Count();
+            var newTool = resources.ElementAt(newToolIndex);
+            var oldTool = resources.ElementAt(i);
+
+            if (newTool.Value == 0)
+                return;
+
+            resources[newTool.Key]--;
+            resources[oldTool.Key]++;
+            miner.Tool = (new ToolFactory()).Create(new Obj { Type = newTool.Key});
+        }
+
         //public void InstantiateTools()
         //{
 

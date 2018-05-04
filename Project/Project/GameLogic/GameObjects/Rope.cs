@@ -19,5 +19,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
         {
             return ToolSprite;
         }
+
+        public override string ToString() {
+            return "rope";
+        }
     }
 }

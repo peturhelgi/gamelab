@@ -86,6 +86,8 @@ namespace TheGreatEscape.GameLogic {
                     GameEngine.HandleInput(0, GameEngine.GameAction.run_right, 0);
                 if (state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Left))
                     GameEngine.HandleInput(0, GameEngine.GameAction.run_left, 0);
+                if (state.IsKeyDown(Keys.D1) && !_oldKeyboardState.IsKeyDown(Keys.D1))
+                    GameEngine.HandleInput(0, GameEngine.GameAction.change_tool, 0);
 
             }
 
@@ -100,6 +102,8 @@ namespace TheGreatEscape.GameLogic {
                     GameEngine.HandleInput(1, GameEngine.GameAction.run_right, 0);
                 if (state.IsKeyDown(Keys.LeftShift) && state.IsKeyDown(Keys.A))
                     GameEngine.HandleInput(1, GameEngine.GameAction.run_left, 0);
+                if (state.IsKeyDown(Keys.D2))
+                    GameEngine.HandleInput(1, GameEngine.GameAction.change_tool, 0);
             }
             // END Handle GameAction      
             _oldKeyboardState = state;
