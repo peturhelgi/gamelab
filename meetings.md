@@ -56,6 +56,8 @@ Make camera change smoother/slower when the miner is running towards the edge
 
 [] Add green/red above the door depending on whether it's unlocked or the key has been picked up by a miner
 
+[] Make the directional lights movable
+
 [] Create the game world as a graph (A World is comprised of more levels, as in what we currently have)
 
 **Nicolas**:
