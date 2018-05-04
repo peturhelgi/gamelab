@@ -14,6 +14,7 @@ namespace TheGreatEscape.LevelManager {
         public string background;
 
         public List<Obj> objects;
+        public Dictionary<string, int> resources;
     }
 
 
@@ -38,5 +39,8 @@ namespace TheGreatEscape.LevelManager {
 
         [JsonProperty("texture")]
         public string Texture;
+
+        [JsonProperty("tool")]
+        public string Tool;
     }
 }

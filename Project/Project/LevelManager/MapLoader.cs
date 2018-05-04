@@ -6,6 +6,7 @@ using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.GameObjects;
 using static TheGreatEscape.GameLogic.GameState;
 using System;
+using TheGreatEscape.GameLogic.Util;
 
 namespace TheGreatEscape.LevelManager
 {
@@ -27,21 +28,15 @@ namespace TheGreatEscape.LevelManager
             string text = ContentManager.Load<string>(levelName);
             Level level = JsonConvert.DeserializeObject<Level>(text);
             gameState.background = level.background;
-            
+            gameState.resources = level.resources;
+
             foreach (Obj obj in level.objects)
             {
                 GameObject gameObject = factory.Create(obj);
                 gameState.AddObject(gameObject);
             }
 
-            gameState.InstantiateTools();
-
-            Tool pickaxe;
-            gameState.Tools.TryGetValue(ExistingTools.pickaxe, out pickaxe);
-            foreach (Miner miner in gameState.GetActors())
-            {
-                miner.SetTool(pickaxe);
-            }
+            //gameState.InstantiateTools();
 
             return gameState;
         }
@@ -64,12 +59,20 @@ namespace TheGreatEscape.LevelManager
         private void LoadTools(GameState gameState) {
 
             String toolSpritePath = "Sprites/Tools/";
-            Tool tool;
+
             foreach (ExistingTools et in Enum.GetValues(typeof(ExistingTools)))
             {
                 Texture2D toolSprite = ContentManager.Load<Texture2D>(toolSpritePath + et.ToString());
-                gameState.Tools.TryGetValue(et, out tool);
-                tool.ToolSprite = toolSprite;
+                switch (et)
+                {
+                    case ExistingTools.pickaxe:
+                        Pickaxe.ToolSprite = toolSprite;
+                        break;
+                    default:
+                        MyDebugger.WriteLine(
+                            string.Format("GameObject '{0}' cannot be created", true));
+                        break;
+                }
             }
         }
         private void LoadMotionSheets(GameState gameState) {

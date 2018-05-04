@@ -45,7 +45,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.SpriteSize);
                     instance.Speed = entity.Velocity;
                     instance.Mass = entity.Mass;
-                    instance.TextureString = entity.Texture;                    
+                    instance.TextureString = entity.Texture;
+                    ToolFactory toolFactory = new ToolFactory();
+                    (instance as Miner).SetTool(toolFactory.Create(new Obj { Type = entity.Tool  } ));
                     break;
                 case "ground":
                     instance = new Ground(
@@ -58,6 +60,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     instance = new Rock(
                         entity.Position,
                         entity.SpriteSize);
+                    instance.Mass = entity.Mass;
                     instance.TextureString = entity.Texture;                    
                     break;
                 case "end":

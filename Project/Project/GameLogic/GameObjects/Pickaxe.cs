@@ -1,21 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using TheGreatEscape.GameLogic.Util;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
     public class Pickaxe : Tool
     {
+
+        public static Texture2D ToolSprite;
         public int PickaxeStrength;
         public Pickaxe() {
 
             PickaxeStrength = 5;
         }
         private CollisionDetector CollisionDetector = new CollisionDetector();
+
         public override void Use(Miner user, GameState gamestate)
         {
-
-
-
             List<GameObject> collisions = CollisionDetector.FindCollisions(user.InteractionBox(), gamestate.GetSolids());
             foreach (GameObject c in collisions)
             {
@@ -38,6 +39,11 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     continue;
                 }
             }
+        }
+
+        public override Texture2D GetTexture() 
+        {
+            return ToolSprite;
         }
     }
 }

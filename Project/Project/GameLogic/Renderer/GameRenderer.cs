@@ -68,10 +68,10 @@ namespace TheGreatEscape.GameLogic.Renderer
                         _spriteBatch.Draw(m.CurrMotion.Image, destination, source, Color.White, 0f, Vector2.Zero, m.Orientation , 0f);
 
                         Tool tool = m.Tool;
-                        destination.Width = tool.ToolSprite.Width / 20;
-                        destination.Height = tool.ToolSprite.Height / 20;
+                        destination.Width = tool.GetTexture().Width / 20;
+                        destination.Height = tool.GetTexture().Height / 20;
                         destination.Y -= 100;
-                        _spriteBatch.Draw(tool.ToolSprite, destination, Color.White);
+                        _spriteBatch.Draw(tool.GetTexture(), destination, Color.White);
                     }
                     else {
                         _spriteBatch.Draw(mode == Mode.DebugView ? _debugBox : obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);

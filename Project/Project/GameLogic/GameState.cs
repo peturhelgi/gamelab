@@ -124,17 +124,17 @@ namespace TheGreatEscape.GameLogic {
             Collectibles.Remove(collectible);
         }
 
-        public void InstantiateTools()
-        {
+        //public void InstantiateTools()
+        //{
 
-            ToolFactory toolFactory = new ToolFactory();
-            Tool tool;
-            foreach (ExistingTools et in Enum.GetValues(typeof(ExistingTools)))
-            {
-                tool = toolFactory.Create(new Obj { Type = et.ToString() });
-                Tools.Add(et, tool);
-            }
-        }
+        //    ToolFactory toolFactory = new ToolFactory();
+        //    Tool tool;
+        //    foreach (ExistingTools et in Enum.GetValues(typeof(ExistingTools)))
+        //    {
+        //        tool = toolFactory.Create(new Obj { Type = et.ToString() });
+        //        Tools.Add(et, tool);
+        //    }
+        //}
 
         public void SetBackground(Texture2D background) {
             Background = background;

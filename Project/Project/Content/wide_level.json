@@ -31,6 +31,7 @@
       },
       "m": 80,
       "type": "miner",
+      "tool": "pickaxe",
       "texture": "Sprites/Miners/MinerHandsInPants"
     },
     {
@@ -48,6 +49,7 @@
       },
       "m": 80,
       "type": "miner",
+      "tool": "pickaxe",
       "texture": "Sprites/Miners/MinerPickaxe"
     },
     {
