@@ -29,7 +29,7 @@ namespace TheGreatEscape.LevelManager
             foreach (Obj obj in level.objects)
             {
                 GameObject gameObject = factory.Create(obj);
-                gameState.SetObject(gameObject);
+                gameState.Add(gameObject);
             }
 
             return gameState;
@@ -72,6 +72,8 @@ namespace TheGreatEscape.LevelManager
                 miner.SetMotionSprite(motionSprite, MotionType.run_right);
                 motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/jump");
                 miner.SetMotionSprite(motionSprite, MotionType.jump);
+                motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/pickaxe");
+                miner.SetMotionSprite(motionSprite, MotionType.pickaxe);
 
             }
         }

@@ -124,7 +124,7 @@ namespace EditorLogic
                 foreach (GameObject obj in CurrentObjects)
                 {
                     obj.Position += (CursorPosition - MovingStartPosition);
-                    _engine.GameState.SetObject(obj);
+                    _engine.GameState.Add(obj);
                 }
                 CurrentObjects = null;
             }

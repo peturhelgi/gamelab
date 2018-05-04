@@ -31,6 +31,7 @@ namespace TheGreatEscape.GameLogic
         }
         public enum Handling
         {
+            Empty,
             None,
             Actor,
             Collect,
@@ -89,9 +90,18 @@ namespace TheGreatEscape.GameLogic
             }
         }
 
-        protected void Remove(GameObject obj)
+        public void Remove(GameObject obj, Handling handling = Handling.Empty)
         {
-            switch(obj.Handling)
+            if(obj == null)
+            {
+                return;
+            }
+            if(handling == Handling.Empty)
+            {
+                handling = obj.Handling;
+            }
+            obj.Handling = handling;
+            switch(handling)
             {
                 case Handling.Actor:
                     if(obj is Miner)
@@ -118,9 +128,22 @@ namespace TheGreatEscape.GameLogic
                     break;
             }
         }
-        protected void Add(GameObject obj)
+        public void Add(GameObject obj, Handling handling = Handling.Empty)
         {
-            switch(obj.Handling)
+            if(obj == null)
+            {
+                return;
+            }
+            if(obj.BBox.Max.Y > OutOfBounds)
+            {
+                OutOfBounds = obj.BBox.Max.Y;
+            }
+            if(handling == Handling.Empty)
+            {
+                handling = obj.Handling;
+            }
+            obj.Handling = handling;
+            switch(handling)
             {
                 case Handling.Actor:
                     if(obj is Miner)
