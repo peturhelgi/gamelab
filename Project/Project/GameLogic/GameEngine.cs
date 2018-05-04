@@ -14,6 +14,7 @@ namespace TheGreatEscape.GameLogic
         public const float WalkSpeed = 5.6f;
         public const float RunSpeed = 9.8f;
         public const float JumpForce = -800;
+        const float FatalSpeed = 6000.0f;
         public GameState GameState;
         public enum GameAction
         {
@@ -324,7 +325,7 @@ namespace TheGreatEscape.GameLogic
                     {
                         lowestPoint = Math.Min(lowestPoint, collision.BBox.Min.Y);
                     }
-                    float FatalSpeed = 10000.0f;
+                    
                     if(obj is Miner && obj.Speed.Y > FatalSpeed)
                     {
                         GameState.SetObject(obj, GameState.Action.Remove);
