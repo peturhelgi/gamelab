@@ -13,6 +13,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
     public enum MotionType { idle, walk_left, walk_right, run_left, run_right, jump, pickaxe };
 
+
+    
     public class Miner : GameObject
     {
         public Dictionary<MotionType, MotionSpriteSheet> Motion;
@@ -207,7 +209,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
             // picking up crate
             if(!Holding)
             {
-                List<GameObject> collisions = CollisionDetector.FindCollisions(InteractionBox(), gs.GetSolids());
+                List<GameObject> collisions = CollisionDetector.FindCollisions(
+                    InteractionBox(), gs.GetObjects(GameState.Handling.Solid));
                 foreach (GameObject c in collisions)
                 {
                     if (c is Crate)
@@ -231,8 +234,10 @@ namespace TheGreatEscape.GameLogic.GameObjects
             else
             {
                 HeldObj.Falling = true;
-                gs.AddSolid(HeldObj);
-                gs.RemoveNonSolid(HeldObj);
+
+                // Move HeldObj from NonSolids to Solids
+                gs.Remove(HeldObj, GameState.Handling.None);
+                gs.Add(HeldObj, GameState.Handling.Solid);
 
                 HeldObj = null;
                 Holding = false;
@@ -244,14 +249,14 @@ namespace TheGreatEscape.GameLogic.GameObjects
         {
             AxisAllignedBoundingBox BBox = new AxisAllignedBoundingBox(
                 new Vector2(Position.X + SpriteSize.X, Position.Y), Position + c.SpriteSize);
-            List<GameObject> tmpSolids = gs.GetSolids();
+            List<GameObject> tmpSolids = gs.GetObjects(GameState.Handling.Solid);
             tmpSolids.Remove(c);
             List<GameObject> crateCollisions = CollisionDetector.FindCollisions(BBox, tmpSolids);
             if (crateCollisions.Count == 0)
             {
                 c.Position = new Vector2(Position.X + SpriteSize.X, Position.Y);
-                gs.AddNonSolid(c);
-                gs.RemoveSolid(c);
+                gs.Add(c, GameState.Handling.None);
+                gs.Remove(c, GameState.Handling.Solid);
 
                 HeldObj = c;
                 HeldObj.Falling = false;
@@ -260,7 +265,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             }
             else
             {
-                gs.AddSolid(c);
+                gs.Add(c, GameState.Handling.Solid);
                 MyDebugger.WriteLine("crate hits something as it is picked up");
                 return false;
             }
@@ -270,14 +275,14 @@ namespace TheGreatEscape.GameLogic.GameObjects
         {
             AxisAllignedBoundingBox BBox = new AxisAllignedBoundingBox(
                 new Vector2(Position.X - c.SpriteSize.X, Position.Y), Position + c.SpriteSize);
-            List<GameObject> tmpSolids = gs.GetSolids();
+            List<GameObject> tmpSolids = gs.GetObjects(GameState.Handling.Solid);
             tmpSolids.Remove(c);
             List<GameObject> crateCollisions = CollisionDetector.FindCollisions(BBox, tmpSolids);
             if (crateCollisions.Count == 0)
             {
                 c.Position = new Vector2(Position.X - c.SpriteSize.X, Position.Y);
-                gs.AddNonSolid(c);
-                gs.RemoveSolid(c);
+                gs.Add(c, GameState.Handling.None);
+                gs.Remove(c, GameState.Handling.Solid);
 
                 HeldObj = c;
                 HeldObj.Falling = false;
@@ -286,7 +291,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             }
             else
             {
-                gs.AddSolid(c);
+                gs.Add(c, GameState.Handling.Solid);
                 MyDebugger.WriteLine("crate hits something as it is picked up");
                 return false;
             }

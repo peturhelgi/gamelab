@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,76 +10,148 @@ namespace TheGreatEscape.GameLogic
     public class GameState : Level
     {
         public List<Miner> Actors;
-        public List<GameObject> Solids;
-        public List<GameObject> NonSolids;
         public List<GameObject> Collectibles;
+        public List<GameObject> Destroyables;
+        public List<GameObject> Interactables;
+        public List<GameObject> NonSolids;
+        public List<GameObject> Solids;
+
+        /// <summary>
+        /// The state of the current game.
+        /// </summary>
         public enum State
         {
             Completed,
             Paused,
-            Running
+            Running,
+            GameOver
         }
+
+        /// <summary>
+        /// Determines how a game object is handled.
+        /// This allows to change the behaviour and role of the game object.
+        /// </summary>
+        public enum Handling
+        {
+            Empty,
+            None,
+            Actor,
+            Collect,
+            Destroy,
+            Interact,
+            Solid
+        }
+
         public bool Completed;
         private Texture2D Background;
-        public float OutOfBounds;
+        public float OutOfBoundsBottom;
+        public State Mode;
 
         CollisionDetector CollisionDetector;
-
 
         public GameState()
         {
             Actors = new List<Miner>();
-            Solids = new List<GameObject>();
-            NonSolids = new List<GameObject>();
             Collectibles = new List<GameObject>();
+            Destroyables = new List<GameObject>();
+            Interactables = new List<GameObject>();
+            NonSolids = new List<GameObject>();
+            Solids = new List<GameObject>();
+
             CollisionDetector = new CollisionDetector();
             Completed = false;
-            OutOfBounds = float.MinValue;
+            OutOfBoundsBottom = float.MinValue;
+            Mode = State.Running;
         }
 
-        public List<GameObject> GetAll() {
-            return Actors.Concat(Solids).Concat(Collectibles).Concat(NonSolids).ToList();
+        public List<GameObject> GetAll()
+        {
+            return Actors
+                .Concat(Collectibles)
+                .Concat(Destroyables)
+                .Concat(Interactables)
+                .Concat(NonSolids)
+                .Concat(Solids)
+                .ToList();
         }
 
-        public void AddObject(GameObject obj)
+        public void Remove(GameObject obj, Handling handling = Handling.Empty)
         {
             if(obj == null)
             {
                 return;
             }
-            if(obj is Miner)
+            if(handling == Handling.Empty)
             {
-                AddActor(obj as Miner);
+                handling = obj.Handling;
             }
-            else if(obj is Ground)
+            obj.Handling = handling;
+            switch(handling)
             {
-                AddSolid(obj);
-            }
-            else if(obj is Rock)
-            {
-                AddSolid(obj);
-            }
-            else if(obj is Door)
-            {
-                AddDoor(obj as Door);
-            }
-            if(obj.BBox.Max.Y > OutOfBounds)
-            {
-                OutOfBounds = obj.BBox.Max.Y;
-            }
-            else if(obj is Crate)
-            {
-                AddSolid(obj);
-            }
-            else if (obj is Ladder)
-            {
-                AddNonSolid(obj);
+                case Handling.Actor:
+                    if(obj is Miner)
+                    {
+                        // TODO: make miner inactive instead of removing it.
+                        obj.Disable();
+                        //Actors.Remove(obj as Miner);
+                    }
+                    break;
+                case Handling.Solid:
+                    Solids.Remove(obj);
+                    break;
+                case Handling.None:
+                    NonSolids.Remove(obj);
+                    break;
+                case Handling.Interact:
+                    Interactables.Remove(obj);
+                    break;
+                case Handling.Destroy:
+                    Destroyables.Remove(obj);
+                    break;
+                case Handling.Collect:
+                    Collectibles.Remove(obj);
+                    break;
             }
         }
-
-        public void AddActor(Miner actor)
+        public void Add(GameObject obj, Handling handling = Handling.Empty)
         {
-            Actors.Add(actor);
+            if(obj == null)
+            {
+                return;
+            }
+            if(obj.BBox.Max.Y > OutOfBoundsBottom)
+            {
+                OutOfBoundsBottom = obj.BBox.Max.Y;
+            }
+            if(handling == Handling.Empty)
+            {
+                handling = obj.Handling;
+            }
+            obj.Handling = handling;
+            switch(handling)
+            {
+                case Handling.Actor:
+                    if(obj is Miner)
+                    {
+                        Actors.Add(obj as Miner);
+                    }
+                    break;
+                case Handling.Solid:
+                    Solids.Add(obj);
+                    break;
+                case Handling.None:
+                    NonSolids.Add(obj);
+                    break;
+                case Handling.Interact:
+                    Interactables.Add(obj);
+                    break;
+                case Handling.Destroy:
+                    Destroyables.Add(obj);
+                    break;
+                case Handling.Collect:
+                    Collectibles.Add(obj);
+                    break;
+            }
         }
 
         public List<Miner> GetActors()
@@ -86,49 +159,23 @@ namespace TheGreatEscape.GameLogic
             return Actors;
         }
 
-
-        public void AddSolid(GameObject solid)
+        public List<GameObject> GetObjects(Handling handling)
         {
-            Solids.Add(solid);
-        }
-        public List<GameObject> GetSolids()
-        {
-            return Solids;
-        }
-        public void RemoveSolid(GameObject solid)
-        {
-            Solids.Remove(solid);
-        }
-
-        public void AddNonSolid(GameObject nonsolid)
-        {
-            NonSolids.Add(nonsolid);
-        }
-        public List<GameObject> GetNonSolids()
-        {
-            return NonSolids;
-        }
-        public void RemoveNonSolid(GameObject nonsolid)
-        {
-            NonSolids.Remove(nonsolid);
-        }
-
-        public void AddDoor(Door door)
-        {
-            Solids.Add(door);
-        }
-
-        public void AddCollectible(GameObject collectible)
-        {
-            Collectibles.Add(collectible);
-        }
-        public List<GameObject> GetCollectibles()
-        {
-            return Collectibles;
-        }
-        public void RemoveCollectible(GameObject collectible)
-        {
-            Collectibles.Remove(collectible);
+            switch(handling)
+            {
+                case Handling.Collect:
+                    return Collectibles;
+                case Handling.Destroy:
+                    return Destroyables;
+                case Handling.Interact:
+                    return Interactables;
+                case Handling.None:
+                    return NonSolids;
+                case Handling.Solid:
+                    return Solids;
+                default:
+                    return new List<GameObject>();
+            }
         }
 
         public void SetBackground(Texture2D background)

@@ -6,37 +6,54 @@ using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.GameLogic.Collision;
 using TheGreatEscape.GameLogic.Util;
 
-namespace TheGreatEscape.GameLogic {
+namespace TheGreatEscape.GameLogic
+{
 
     class GameEngine
     {
         public const float WalkSpeed = 5.6f;
         public const float RunSpeed = 9.8f;
         public const float JumpForce = -800;
+        const float FatalSpeed = 6000.0f;
         public GameState GameState;
-        public enum GameAction { walk_right, walk_left, jump, interact, collect, climb_up, climb_down, run_left, run_right };
+        public enum GameAction
+        {
+            walk_right,
+            walk_left,
+            jump,
+            interact,
+            collect,
+            climb_up,
+            climb_down,
+            run_left,
+            run_right
+        };
         public CollisionDetector CollisionDetector;
         List<AxisAllignedBoundingBox> _attentions;
 
-        int[] CurrentMiner = {0,1};
+        int[] CurrentMiner = { 0, 1 };
         public static Vector2 GRAVITY = new Vector2(0, 2000);
         public TimeSpan gameTime;
 
-        public GameEngine(GameState gameState) {
+        public GameEngine(GameState gameState)
+        {
             GameState = gameState;
             CollisionDetector = new CollisionDetector();
             _attentions = new List<AxisAllignedBoundingBox>();
 
-            for (var i = 0; i < GameState.Actors.Count; i++) {
+            for(var i = 0; i < GameState.Actors.Count; i++)
+            {
                 _attentions.Add(new AxisAllignedBoundingBox(Vector2.Zero, Vector2.Zero));
             }
         }
 
-        public List<AxisAllignedBoundingBox> GetAttentions() {
+        public List<AxisAllignedBoundingBox> GetAttentions()
+        {
             return _attentions;
         }
 
-        public void HandleInput(int player, GameAction action, float value) {
+        public void HandleInput(int player, GameAction action, float value)
+        {
 
             if(player < 0 || player >= GameState.Actors.Count)
             {
@@ -45,8 +62,12 @@ namespace TheGreatEscape.GameLogic {
 
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
             Vector2 posDiff = Vector2.Zero;
-
-            switch (action) {
+            if(!miner.Active)
+            {
+                return;
+            }
+            switch(action)
+            {
                 case (GameAction.walk_right):
                     posDiff = miner.Position;
                     CalculateAndSetNewPosition(miner, new Vector2(WalkSpeed, 0));
@@ -75,7 +96,7 @@ namespace TheGreatEscape.GameLogic {
                     posDiff = miner.Position;
                     CalculateAndSetNewPosition(miner, new Vector2(RunSpeed, 0));
                     posDiff -= miner.Position;
-                    if (miner.Holding && (posDiff.Length() > 1e-6))
+                    if(miner.Holding && (posDiff.Length() > 1e-6))
                     {
                         if (miner.HeldObj.Position.X < miner.Position.X) miner.pickUpCrateRightSide(miner.HeldObj, GameState);
                         CalculateAndSetNewPosition(miner.HeldObj, new Vector2(RunSpeed, 0));
@@ -85,7 +106,7 @@ namespace TheGreatEscape.GameLogic {
                     posDiff = miner.Position;
                     CalculateAndSetNewPosition(miner, new Vector2(-RunSpeed, 0));
                     posDiff -= miner.Position;
-                    if (miner.Holding && (posDiff.Length() > 1e-6))
+                    if(miner.Holding && (posDiff.Length() > 1e-6))
                     {
                         if (miner.HeldObj.Position.X > miner.Position.X) miner.pickUpCrateLeftSide(miner.HeldObj, GameState);
                         CalculateAndSetNewPosition(miner.HeldObj, new Vector2(-RunSpeed, 0));
@@ -105,14 +126,30 @@ namespace TheGreatEscape.GameLogic {
             }
         }
 
+        public bool IsGameOver()
+        {
+            bool gameRunning = false;
+
+            foreach (var miner in GameState.GetActors())
+            {
+                gameRunning |= miner.Active;
+            }
+            
+            return !gameRunning;
+        }
+
         public void Update()
         {
             List<GameObject> allObjects = GameState.GetAll();
-            
-            foreach (GameObject c in allObjects)
+
+            foreach(GameObject c in allObjects)
             {
-                if (c.Moveable)
-                { 
+                if(c.Active && c.Moveable)
+                {
+                    if(c.Position.Y > GameState.OutOfBoundsBottom)
+                    {
+                        GameState.Remove(c);
+                    }
                     if(c.LastUpdated != gameTime)
                     {
                         CalculateAndSetNewPosition(c, Vector2.Zero);
@@ -120,15 +157,28 @@ namespace TheGreatEscape.GameLogic {
                 }
             }
 
-            for (var i = 0; i < _attentions.Count; i++) {
-                _attentions[i] = GameState.Actors.ElementAt(CurrentMiner[i]).BBox;
+            if(IsGameOver())
+            {
+                GameState.Mode = GameState.State.GameOver;
             }
 
+            for(var i = _attentions.Count - 1; i >= 0; --i)
+            {
+                if(!GameState.Actors[CurrentMiner[i]].Active)
+                {
+                    _attentions[i] = null;
+                }
+                else
+                {
+                    _attentions[i] = GameState.Actors[CurrentMiner[i]].BBox;
+                }
+            }
         }
+
 
         void TryToInteract(Miner obj)
         {
-            if (obj.Holding)
+            if(obj.Holding)
             {
                 obj.InteractWithCrate(GameState);
             }
@@ -140,12 +190,13 @@ namespace TheGreatEscape.GameLogic {
         }
 
 
-        void TryToJump(Miner miner, Vector2 speed) 
+        void TryToJump(Miner miner, Vector2 speed)
         {
-            if (!miner.Falling && !miner.Climbing) {
+            if(!miner.Falling && !miner.Climbing)
+            {
                 miner.Speed = speed;
                 miner.Falling = true;
-                if (miner.Holding)
+                if(miner.Holding)
                 {
                     miner.HeldObj.Speed = speed;
                     miner.HeldObj.Falling = true;
@@ -156,11 +207,11 @@ namespace TheGreatEscape.GameLogic {
         void TryToClimb(Miner miner, Vector2 direction)
         {
             List<GameObject> ladders = new List<GameObject>();
-            foreach (GameObject c in GameState.NonSolids)
+            foreach(GameObject c in GameState.NonSolids)
             {
-                if (c is Ladder) ladders.Add(c);
+                if(c is Ladder) ladders.Add(c);
             }
-            if (ladders.Count == 0) return;
+            if(ladders.Count == 0) return;
 
             AxisAllignedBoundingBox Box = new AxisAllignedBoundingBox(
                    new Vector2(miner.BBox.Min.X, miner.BBox.Max.Y),
@@ -168,7 +219,7 @@ namespace TheGreatEscape.GameLogic {
                    );
 
             List<GameObject> onLadders = CollisionDetector.FindCollisions(Box, ladders);
-            if (onLadders.Count > 0)
+            if(onLadders.Count > 0)
             {
                 miner.Speed = Vector2.Zero;
                 miner.Climbing = true;
@@ -183,7 +234,7 @@ namespace TheGreatEscape.GameLogic {
         {
 
             // 1. calulate position without any obstacles
-            if (obj.Falling)
+            if(obj.Falling)
             {
                 obj.Speed += GRAVITY * (float)(gameTime - obj.LastUpdated).TotalSeconds;
             }
@@ -192,7 +243,8 @@ namespace TheGreatEscape.GameLogic {
             // 2. check for collisions in the X-axis, the Y-axis (falling and jumping against something) and the intersection of the movement
             AxisAllignedBoundingBox xBox, yBox;
 
-            if (direction.X > 0) // we are moving right
+            // TODO: Move into a separate function
+            if(direction.X > 0) // we are moving right
             {
                 xBox = new AxisAllignedBoundingBox(
                     new Vector2(obj.BBox.Max.X, obj.BBox.Min.Y),
@@ -208,7 +260,7 @@ namespace TheGreatEscape.GameLogic {
             }
 
 
-            if (direction.Y > 0) // we are moving downwards
+            if(direction.Y > 0) // we are moving downwards
             {
                 yBox = new AxisAllignedBoundingBox(
                     new Vector2(obj.BBox.Min.X, obj.BBox.Max.Y),
@@ -223,19 +275,20 @@ namespace TheGreatEscape.GameLogic {
                    );
             }
 
-
             // 3. check, if there are any collisions in the X-axis and correct position
-            List<GameObject> collisions = CollisionDetector.FindCollisions(xBox, GameState.Solids);
+            // TODO: Use GameState function instead
+            List<GameObject> collisions = CollisionDetector.FindCollisions(
+                xBox, GameState.Solids);
 
             // if obj is a miner holding an object, that object can also limit the miners movement
-            List<GameObject> boxCollisions;
+            List<GameObject> boxCollisions = new List<GameObject>();
             if(obj is Miner)
             {
-                if ((obj as Miner).Holding)
+                if((obj as Miner).Holding)
                 {
                     AxisAllignedBoundingBox xCrate;
                     Miner actor = obj as Miner;
-                    if (direction.X > 0) // we are moving right
+                    if(direction.X > 0) // we are moving right
                     {
                         xCrate = new AxisAllignedBoundingBox(
                             new Vector2(actor.HeldObj.BBox.Max.X, actor.HeldObj.BBox.Min.Y),
@@ -251,54 +304,61 @@ namespace TheGreatEscape.GameLogic {
                     }
                     boxCollisions = CollisionDetector.FindCollisions(xCrate, GameState.Solids);
                 }
-                else boxCollisions = new List<GameObject>();
             }
-            else boxCollisions = new List<GameObject>();
 
-            if (collisions.Count > 0 || boxCollisions.Count > 0)
+            if(collisions.Count > 0 || boxCollisions.Count > 0)
             {
                 MyDebugger.WriteLine("collided with x-axis");
                 direction.X = 0;
             }
 
             bool climbingMiner = false;
-            if (obj is Miner) climbingMiner = (obj as Miner).Climbing;
+            if(obj is Miner) climbingMiner = (obj as Miner).Climbing;
 
             // We only need to check things in y-axis (including intersection), if we are actually moving in it
-            if (obj.Falling || climbingMiner)
+            if(obj.Falling || climbingMiner)
             {
+                // TODO: Use GameState functions instead
                 collisions = CollisionDetector.FindCollisions(yBox, GameState.Solids);
-                if (collisions.Count > 0)
+                if(collisions.Count > 0)
                 {
                     MyDebugger.WriteLine("collided with y-axis");
 
                     float lowestPoint = float.MaxValue;
-                    foreach (GameObject collision in collisions)
+                    foreach(GameObject collision in collisions)
                     {
                         lowestPoint = Math.Min(lowestPoint, collision.BBox.Min.Y);
                     }
-
+                    
+                    if(obj is Miner && obj.Speed.Y > FatalSpeed)
+                    {
+                        GameState.Remove(obj);
+                    }
                     obj.Speed = Vector2.Zero;
-                    if (obj is Miner && (obj as Miner).Holding) (obj as Miner).HeldObj.Speed = Vector2.Zero;
-                    if (direction.Y > 0) // hitting floor
+
+                    // TODO: Perhaps move this to the Miner class
+                    if(obj is Miner && (obj as Miner).Holding) (obj as Miner).HeldObj.Speed = Vector2.Zero;
+                    if(direction.Y > 0) // hitting floor
                     {
                         direction.Y = (lowestPoint - obj.BBox.Max.Y) - 0.1f;
                         obj.Falling = false;
-                        if (obj is Miner && (obj as Miner).Holding) (obj as Miner).HeldObj.Falling = false;
+                        if(obj is Miner && (obj as Miner).Holding) (obj as Miner).HeldObj.Falling = false;
                     }
 
                     // if the object is being held by a miner and the objects has a collision, that miner drops the object
                     List<GameObject> allObjects = GameState.GetAll();
-                    foreach (GameObject c in allObjects)
+                    foreach(GameObject c in allObjects)
                     {
-                        if (c is Miner)
+                        if(c is Miner)
                         {
                             Miner miner = c as Miner;
-                            if (miner.Holding && miner.HeldObj == obj)
-                            { 
+                            if(miner.Holding && miner.HeldObj == obj)
+                            {
+                                GameState.Remove(miner.HeldObj);
+
                                 miner.HeldObj.Falling = true;
-                                GameState.AddSolid(miner.HeldObj);
-                                GameState.RemoveNonSolid(miner.HeldObj);
+                                GameState.Add(miner.HeldObj, GameState.Handling.Solid);
+
                                 miner.HeldObj = null;
                                 miner.Holding = false;
                             }
@@ -308,7 +368,7 @@ namespace TheGreatEscape.GameLogic {
             }
 
 
-            if (!obj.Falling)
+            if(!obj.Falling)
             {
                 // Next, we need to check if we are falling, i.e. walking over an edge to store it to the character, to calculate the difference in height for the next iteration
                 AxisAllignedBoundingBox tempBox = new AxisAllignedBoundingBox(
@@ -317,47 +377,47 @@ namespace TheGreatEscape.GameLogic {
                     );
 
                 collisions = CollisionDetector.FindCollisions(tempBox, GameState.Solids);
-                if (collisions.Count == 0)
+                if(collisions.Count == 0)
                 {
                     obj.Falling = true;
-                    
+
                     // do not drop if object is being held by a miner
                     List<GameObject> allObjects = GameState.GetAll();
-                    foreach (GameObject c in allObjects)
+                    foreach(GameObject c in allObjects)
                     {
-                        if (c is Miner)
+                        if(c is Miner)
                         {
                             Miner miner = c as Miner;
-                            if (miner.Holding && miner.HeldObj == obj)
+                            if(miner.Holding && miner.HeldObj == obj)
                             {
                                 obj.Falling = false;
-                                if (miner.Position.Y != obj.Position.Y) obj.Position = new Vector2(obj.Position.X, miner.Position.Y);
+                                if(miner.Position.Y != obj.Position.Y) obj.Position = new Vector2(obj.Position.X, miner.Position.Y);
                             }
                         }
                     }
 
                     // correct if object is miner and is climbing a ladder
-                    if (obj is Miner && (obj as Miner).Climbing)
-                    { 
+                    if(obj is Miner && (obj as Miner).Climbing)
+                    {
                         obj.Falling = false;
                     }
-                        
+
                 }
             }
 
             if(obj is Miner)
             {
                 List<GameObject> ladders = new List<GameObject>();
-                foreach (GameObject c in GameState.NonSolids)
+                foreach(GameObject c in GameState.NonSolids)
                 {
-                    if (c is Ladder) ladders.Add(c);
+                    if(c is Ladder) ladders.Add(c);
                 }
                 AxisAllignedBoundingBox Box = new AxisAllignedBoundingBox(
                                    new Vector2(obj.BBox.Min.X, obj.BBox.Max.Y),
                                    new Vector2(obj.BBox.Max.X, obj.BBox.Max.Y + 10)
                                    );
                 List<GameObject> onLadders = CollisionDetector.FindCollisions(Box, ladders);
-                if (onLadders.Count == 0) (obj as Miner).Climbing = false;
+                if(onLadders.Count == 0) (obj as Miner).Climbing = false;
                 else
                 {
                     (obj as Miner).Climbing = true;
