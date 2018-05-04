@@ -82,8 +82,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     Position = Position + _displacementStep;
                     foreach (GameObject c in collisions)
                     {
-                        if(c.Position.Y+c.SpriteSize.Y  < Position.Y + SpriteSize.Y) 
-                            c.Position = c.Position + _displacementStep;
+                        if (_movingInYdir && c.Position.Y + c.SpriteSize.Y < Position.Y + SpriteSize.Y) continue;
+                        if (!_movingInYdir && c.Position.X > Position.X + SpriteSize.X) continue;
+                        c.Position = c.Position + _displacementStep;
                     }
                 }
             }
@@ -95,8 +96,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     Position = Position - _displacementStep;
                     foreach (GameObject c in collisions)
                     {
-                        if (c.Position.Y + c.SpriteSize.Y < Position.Y + SpriteSize.Y)
-                            c.Position = c.Position - _displacementStep;
+                        if (_movingInYdir && c.Position.Y + c.SpriteSize.Y < Position.Y + SpriteSize.Y) continue;
+                        if (!_movingInYdir && c.Position.X + c.SpriteSize.X < Position.X) continue;
+                        c.Position = c.Position - _displacementStep;
                     }
                 }
             }

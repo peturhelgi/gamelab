@@ -289,7 +289,7 @@
       "m": 20,
       "type": "platform",
       "displacement": 500,
-      "direction":  "y",
+      "direction":  "x",
       "activationkey": 0,
       "texture": "Sprites/Interactables/escalator_platform"
     },
