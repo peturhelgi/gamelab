@@ -280,7 +280,7 @@
       },
       "pos": {
         "x": 2800,
-        "y": 700
+        "y": 650
       },
       "vel": {
         "x": 0,
@@ -289,7 +289,7 @@
       "m": 20,
       "type": "platform",
       "displacement": 500,
-      "direction":  "x",
+      "direction":  "y",
       "activationkey": 0,
       "texture": "Sprites/Interactables/escalator_platform"
     },

@@ -69,7 +69,10 @@ namespace TheGreatEscape.GameLogic.GameObjects
             {
                 actors.Add(miner as GameObject);
             }
-            List<GameObject> collisions = CollisionDetector.FindCollisions(this.BBox, actors);
+            AxisAllignedBoundingBox interactionBBox = new AxisAllignedBoundingBox(
+                new Vector2(BBox.Min.X, BBox.Min.Y - 0.5f),
+                new Vector2(BBox.Max.X, BBox.Max.Y));
+            List<GameObject> collisions = CollisionDetector.FindCollisions(interactionBBox, actors);
 
             if (!Activate)
             {
@@ -79,7 +82,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     Position = Position + _displacementStep;
                     foreach (GameObject c in collisions)
                     {
-                        if(c.Position.Y+c.SpriteSize.Y  < Position.Y) 
+                        if(c.Position.Y+c.SpriteSize.Y  < Position.Y + SpriteSize.Y) 
                             c.Position = c.Position + _displacementStep;
                     }
                 }
@@ -90,7 +93,11 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 if ((_movingInYdir && Position.Y > _maxHeight) || (!_movingInYdir && Position.X < _maxHeight))
                 {
                     Position = Position - _displacementStep;
-                    foreach (GameObject c in collisions) c.Position = c.Position - _displacementStep;
+                    foreach (GameObject c in collisions)
+                    {
+                        if (c.Position.Y + c.SpriteSize.Y < Position.Y + SpriteSize.Y)
+                            c.Position = c.Position - _displacementStep;
+                    }
                 }
             }
         }
