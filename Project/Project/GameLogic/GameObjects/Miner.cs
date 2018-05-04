@@ -38,7 +38,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Tool = factory.Create(new Obj { Type = "pickaxe" });
 
             // Miner Lights
-            float x = 0.5f, y = 0.15f, scale = 0.9f;
+            float x = 0.5f, y = 0.15f, scale = 2.9f;
             Lights = new List<Light>
             {
                 new Light(

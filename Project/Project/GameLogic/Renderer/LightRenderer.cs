@@ -49,7 +49,7 @@ namespace TheGreatEscape.GameLogic.Renderer
                 float pulse = 1 / (flicker / 5000 + 1.0f);
                 float brightness = 1 / (flicker / 1000 + 1.0f);
                 lightCenter = light.Center + light.Owner.Position
-                    - (_lightSize * light.Scale * pulse * light.Skew);
+                    - (_lightSize * light.Size * pulse * light.Skew);
                 switch (light.Type)
                 {
                     case Lighttype.Circular:
@@ -59,18 +59,18 @@ namespace TheGreatEscape.GameLogic.Renderer
                             Color.White * brightness, 
                             0f, 
                             Vector2.Zero, 
-                            light.Scale * 2.0f * pulse, 
+                            light.Size * pulse / _circularLight.Width, 
                             SpriteEffects.None, 0);
                         break;
-                    //new Vector2(0.8f, 1.5f)
+
                     case Lighttype.Directional:
                         _spriteBatch.Draw(_directionalLight, 
                             lightCenter, 
                             null, 
                             Color.White * brightness, 
-                            0f, 
+                            0.0f, 
                             Vector2.Zero,
-                            3.0f * light.Scale * pulse, 
+                            3.0f * light.Size * pulse, 
                             SpriteEffects.None, 0);
                         break;
                 }
@@ -87,7 +87,7 @@ namespace TheGreatEscape.GameLogic.Renderer
         public Vector2 Direction;
         public Vector2 Skew { private set; get; }
         public LightRenderer.Lighttype Type;
-        public float Scale { private set; get; }
+        public float Size { private set; get; }
         public GameObject Owner;
 
         public Light(Vector2 center, Vector2 direction, 
@@ -99,7 +99,7 @@ namespace TheGreatEscape.GameLogic.Renderer
             Type = type;
             Owner = owner;
             Skew = skew;
-            Scale = scale;
+            Size = scale;
         }
     }
 }
