@@ -71,6 +71,7 @@ namespace TheGreatEscape.GameLogic.Renderer
                         destination.Width = tool.GetTexture().Width / 20;
                         destination.Height = tool.GetTexture().Height / 20;
                         destination.Y -= 100;
+                        destination.X -= (destination.Width - (int)motionSize.X) / 2;
                         _spriteBatch.Draw(tool.GetTexture(), destination, Color.White);
                     }
                     else {
