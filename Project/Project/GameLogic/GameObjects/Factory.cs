@@ -82,7 +82,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.Position,
                         entity.SpriteSize,
                         entity.Texture,
-                        entity.DisplacementY,
+                        entity.Displacement,
+                        entity.Direction,
                         entity.ActivationKey);
                     break;
                 case "lever":

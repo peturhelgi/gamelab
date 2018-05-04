@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.Util;
 
@@ -13,7 +12,6 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public int ActivationId;
         private string _leftLeverTexture;
         public string RightleverTexture;
-        ContentManager ContentManager;
         public Texture2D SecondTexture;
 
 

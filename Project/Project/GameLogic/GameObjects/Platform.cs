@@ -10,14 +10,15 @@ namespace TheGreatEscape.GameLogic.GameObjects
     {
         public bool Activate;
         public int ActivationId;
-        public float DisplacementY;
-        private float _displacementStep = 5.0f;
+        public float Displacement;
+        private Vector2 _displacementStep;
         private float _maxHeight;
         private float _minHeight;
         public CollisionDetector CollisionDetector;
+        private bool _movingInYdir;
 
 
-        public Platform(Vector2 position, Vector2 spriteSize, string textureString, float displacementY, int actId)
+        public Platform(Vector2 position, Vector2 spriteSize, string textureString, float displacement, string dir, int actId)
             : base(position, spriteSize)
         {
 
@@ -32,11 +33,33 @@ namespace TheGreatEscape.GameLogic.GameObjects
             LastUpdated = new TimeSpan();
             Moveable = false;
             Activate = false;
-            DisplacementY = displacementY;
+            Displacement = displacement;
             ActivationId = actId;
-            _maxHeight = Position.Y - DisplacementY;
-            _minHeight = Position.Y;
             CollisionDetector = new CollisionDetector();
+
+            if (dir == "y")
+            {
+                _movingInYdir = true;
+                _displacementStep = new Vector2(0, 5);
+                _maxHeight = Position.Y - Displacement;
+                _minHeight = Position.Y;
+            }
+            else if (dir == "x")
+            {
+                _movingInYdir = false;
+                _displacementStep = new Vector2(-5, 0);
+                _maxHeight = Position.X + Displacement;
+                _minHeight = Position.X;
+            }
+        }
+
+        public override AxisAllignedBoundingBox BBox
+        {
+            get
+            {
+                return new AxisAllignedBoundingBox(
+                    new Vector2(Position.X, Position.Y + SpriteSize.Y*0.9f), Position + SpriteSize);
+            }
         }
 
         public void Move(GameState gamestate)
@@ -50,22 +73,24 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
             if (!Activate)
             {
-                if (Position.Y < _minHeight)
+                // moving down or left
+                if ((_movingInYdir && Position.Y < _minHeight) || (!_movingInYdir && Position.X > _minHeight))
                 {
-                    Position = new Vector2(Position.X, Position.Y + _displacementStep);
+                    Position = Position + _displacementStep;
                     foreach (GameObject c in collisions)
                     {
                         if(c.Position.Y+c.SpriteSize.Y  < Position.Y) 
-                            c.Position = new Vector2(c.Position.X, c.Position.Y + _displacementStep);
+                            c.Position = c.Position + _displacementStep;
                     }
                 }
             }
             else
             {
-                if (Position.Y > _maxHeight)
+                // moving up or right
+                if ((_movingInYdir && Position.Y > _maxHeight) || (!_movingInYdir && Position.X < _maxHeight))
                 {
-                    Position = new Vector2(Position.X, Position.Y - _displacementStep);
-                    foreach (GameObject c in collisions) c.Position = new Vector2(c.Position.X, c.Position.Y - _displacementStep);
+                    Position = Position - _displacementStep;
+                    foreach (GameObject c in collisions) c.Position = c.Position - _displacementStep;
                 }
             }
         }
