@@ -54,7 +54,8 @@ namespace TheGreatEscape.GameLogic.Renderer
 
             _spriteBatch.Draw(background, camera.GetCameraRectangle(background.Width, background.Height), Color.White);
 
-            foreach(GameObject obj in _gameState.GetAll())
+            
+            foreach (GameObject obj in _gameState.GetAll())
             {
                 if(obj.Visible)
                 {
@@ -85,6 +86,8 @@ namespace TheGreatEscape.GameLogic.Renderer
             }
             _spriteBatch.End();
 
+   
+
             foreach (Miner miner in _gameState.GetActors())
             {
                 miner.CurrMotion.Update(gameTime);
@@ -113,6 +116,10 @@ namespace TheGreatEscape.GameLogic.Renderer
 
             _spriteBatch.Draw(_renderTargetScene, new Rectangle(0, 0, width, height), Color.White);
 
+            _spriteBatch.End();
+
+            _spriteBatch.Begin();
+            _spriteBatch.DrawString(_gameState.GameFont, "1 2 3 4 5 6 7 8 9 0", new Vector2(100, 100), Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0f);
             _spriteBatch.End();
 
         }

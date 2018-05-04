@@ -54,6 +54,7 @@ namespace TheGreatEscape.LevelManager
 
             LoadMotionSheets(gameState);
             LoadTools(gameState);
+            gameState.GameFont = ContentManager.Load<SpriteFont>("Fonts/gameFont");
         }
 
         private void LoadTools(GameState gameState) {

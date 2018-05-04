@@ -17,6 +17,7 @@ namespace TheGreatEscape.GameLogic {
         public List<GameObject> NonSolids;
         public List<GameObject> Collectibles;
         public Dictionary<ExistingTools, Tool> Tools;
+        public SpriteFont GameFont;
 
         public bool Completed;
         private Texture2D Background;

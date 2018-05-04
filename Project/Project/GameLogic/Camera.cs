@@ -34,6 +34,10 @@ namespace TheGreatEscape.GameLogic {
             Refresh();
         }
 
+        public Vector2 GetCameraPosition()
+        {
+            return new Vector2(_position.X + 100, _position.Y + 200);
+        }
         public Rectangle GetCameraRectangle(int backgroundW, int backgroundH) {
             _rectangle.Height = Math.Max(backgroundH, _rectangle.Height);
             _rectangle.Width = Math.Max(backgroundW, _rectangle.Width);
