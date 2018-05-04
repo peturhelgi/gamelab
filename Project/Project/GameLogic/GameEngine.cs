@@ -14,7 +14,7 @@ namespace TheGreatEscape.GameLogic {
         public const float RunSpeed = 9.8f;
         public const float JumpForce = -800;
         public GameState GameState;
-        public enum GameAction { walk_right, walk_left, jump, interact, collect, climb_up, climb_down, run_left, run_right, movePlatform };
+        public enum GameAction { walk_right, walk_left, jump, interact, collect, climb_up, climb_down, run_left, run_right };
         public CollisionDetector CollisionDetector;
         List<AxisAllignedBoundingBox> _attentions;
 
@@ -100,9 +100,6 @@ namespace TheGreatEscape.GameLogic {
                 case (GameAction.climb_down):
                     TryToClimb(miner, new Vector2(0, 8));
                     break;
-                case (GameAction.movePlatform):
-                    TryToMovePlatform();
-                    break;
                 default:
                     break;
             }
@@ -114,6 +111,7 @@ namespace TheGreatEscape.GameLogic {
             
             foreach (GameObject c in allObjects)
             {
+                if (c is Platform) (c as Platform).Move(GameState);
                 if (c.Moveable)
                 { 
                     if(c.LastUpdated != gameTime)
@@ -140,6 +138,7 @@ namespace TheGreatEscape.GameLogic {
                 bool worked = obj.InteractWithCrate(GameState);
                 if(!worked) obj.UseTool(GameState);
             }
+            switchLever(obj);
         }
 
 
@@ -181,17 +180,21 @@ namespace TheGreatEscape.GameLogic {
             else miner.Climbing = false;
         }
 
-        void TryToMovePlatform()
+        private void switchLever(Miner miner)
         {
-            foreach(GameObject c in GameState.GetAll())
-            {
-                if (c is Platform)
-                {
-                    (c as Platform).Activate = true;
-                    (c as Platform).MoveUp();
-                }
-            }
+            List<Platform> platforms = new List<Platform>();
+            List<GameObject> levers = new List<GameObject>();
 
+            foreach (GameObject g in GameState.GetSolids())
+                if (g is Platform) platforms.Add((g as Platform));
+            foreach (GameObject g in GameState.GetNonSolids())
+                if (g is Lever) levers.Add(g);
+
+            List<GameObject> collisions = CollisionDetector.FindCollisions(miner.InteractionBox(), levers);
+            foreach(GameObject c in collisions)
+            {
+                (c as Lever).Interact(platforms);
+            }
         }
 
 
