@@ -123,6 +123,16 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     };
                     (instance as Lever).RightleverTexture = entity?.SecondTexture;
                     break;
+                case "button":
+                    instance = new Button(
+                        entity.Position,
+                        entity.SpriteSize,
+                        entity.Texture,
+                        entity.ActivationKey)
+                    {
+                        Handling = GameState.Handling.None
+                    };
+                    break;
                 default:
                     instance = null;
                     MyDebugger.WriteLine(

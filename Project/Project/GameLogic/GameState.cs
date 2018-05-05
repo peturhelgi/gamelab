@@ -170,6 +170,11 @@ namespace TheGreatEscape.GameLogic
             return Actors;
         }
 
+        /// <summary>
+        /// Remember: doesn't return actors
+        /// </summary>
+        /// <param name="handlings"></param>
+        /// <returns></returns>
         public List<GameObject> GetObjects(params Handling[] handlings)
         {
             List<GameObject> objects = new List<GameObject>();

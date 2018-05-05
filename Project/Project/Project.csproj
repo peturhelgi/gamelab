@@ -104,6 +104,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GameLogic\GameObjects\Button.cs" />
     <Compile Include="GameLogic\GameObjects\Ladder.cs" />
     <Compile Include="EditorLogic\Util\CircularSelector.cs" />
     <Compile Include="GameLogic\GameObjects\Door.cs" />
@@ -199,6 +200,7 @@
     <Content Include="Content\Sprites\Interactables\escalator_mechanismx.png" />
     <Content Include="Content\Sprites\Interactables\escalator_mechanismy.png" />
     <Content Include="Content\Sprites\Interactables\escalator_platform.png" />
+    <Content Include="Content\Sprites\Interactables\floor_button.png" />
     <Content Include="Content\Sprites\Interactables\LadderLong.png" />
     <Content Include="Content\Sprites\Interactables\LadderShort.png" />
     <Content Include="Content\Sprites\Interactables\lever_left.png" />
