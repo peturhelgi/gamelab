@@ -96,12 +96,9 @@ namespace TheGreatEscape.GameLogic
                 case Handling.Actor:
                     if(obj is Miner)
                     {
-                        // TODO: make miner inactive instead of removing it.
                         ResetMinersPosition();
                         if (ShouldRemoveMinerFromScreen(obj as Miner))
                             obj.Disable();
-                       
-                        //Actors.Remove(obj as Miner);
                     }
                     break;
                 case Handling.Solid:

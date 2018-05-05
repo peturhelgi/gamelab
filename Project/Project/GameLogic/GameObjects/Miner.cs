@@ -71,9 +71,12 @@ namespace TheGreatEscape.GameLogic.GameObjects
             // Motion sheets
             xVel = 0;
             InstantiateMotionSheets();
-            Directions = new Dictionary<int, SpriteEffects>();
-            Directions.Add(-1, SpriteEffects.None);
-            Directions.Add(1, SpriteEffects.FlipHorizontally);
+            Directions = new Dictionary<int, SpriteEffects>
+            {
+                { -1, SpriteEffects.None },
+                { 1, SpriteEffects.FlipHorizontally }
+            };
+
             Orientation = SpriteEffects.FlipHorizontally;
             //TODO: add a case when it fails to get that type of motion
             Motion.TryGetValue(MotionType.idle, out CurrMotion);
