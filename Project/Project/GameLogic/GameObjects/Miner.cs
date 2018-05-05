@@ -314,5 +314,15 @@ namespace TheGreatEscape.GameLogic.GameObjects
             }
         }
 
+        public override AxisAllignedBoundingBox BBox
+        {
+            get
+            {
+                return new AxisAllignedBoundingBox(Position, 
+                    new Vector2(Position.X + SpriteSize.X, Position.Y + SpriteSize.Y * 0.85f));
+            }
+        }
+
+     
     }
 }

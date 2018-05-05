@@ -71,12 +71,12 @@ namespace TheGreatEscape.GameLogic
 
         public List<GameObject> GetAll()
         {
-            return Actors
-                .Concat(Collectibles)
+            return (Collectibles)
                 .Concat(Destroyables)
                 .Concat(Interactables)
                 .Concat(NonSolids)
                 .Concat(Solids)
+                .Concat(Actors)
                 .ToList();
         }
 
