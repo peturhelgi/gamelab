@@ -280,7 +280,7 @@ namespace TheGreatEscape.Menu
                 (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start) && _manager.OldPlayerOneState.IsButtonUp(Buttons.Start)) ||
                 (GamePad.GetState(PlayerIndex.Two).IsButtonDown(Buttons.Start) && _manager.OldPlayerTwoState.IsButtonUp(Buttons.Start)))
             {
-                _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
+                _manager.CallAction(MenuManager.Action.ShowPauseMenu, null);
             }
 
             else if (Keyboard.GetState().IsKeyDown(Keys.Space)

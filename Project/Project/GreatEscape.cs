@@ -6,6 +6,7 @@ using TheGreatEscape.Menu;
 
 namespace TheGreatEscape
 {
+
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
@@ -15,7 +16,6 @@ namespace TheGreatEscape
         EditorManager _editorManager;
         MenuManager _menu;
         GraphicsDeviceManager _graphics;
-
 
         public GreatEscape()
         {

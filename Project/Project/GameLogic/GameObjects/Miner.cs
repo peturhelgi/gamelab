@@ -29,6 +29,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public MotionSpriteSheet CurrMotion;
         public SpriteEffects Orientation;
         public float xVel;
+        public float LookAt;
 
         ToolFactory factory = new ToolFactory();
         public Tool Tool;
@@ -46,17 +47,22 @@ namespace TheGreatEscape.GameLogic.GameObjects
         {
 
             // Miner Lights
-            float x = 0.5f, y = 0.15f, scale = 0.9f;
+            float x = 0.5f, y = 0.15f;
+            Vector2 center = new Vector2(x, y);
             Lights = new List<Light>
             {
                 new Light(
-                    (SpriteSize * new Vector2(x, y)), 
-                    Vector2.Zero, LightRenderer.Lighttype.Circular, this,
-                    Vector2.One, scale),
+                    (SpriteSize * center), // Offset
+                    LightRenderer.Lighttype.Circular, // type
+                    this, // owner
+                    2.0f * Vector2.One, // scale
+                    new Vector2(0.5f)), // origin
                 new Light(
-                    (SpriteSize * new Vector2(x, y)), 
-                    Vector2.Zero, LightRenderer.Lighttype.Directional, this,
-                    new Vector2(0.8f, 1.5f), scale)
+                    (SpriteSize * center), // Offset 
+                    LightRenderer.Lighttype.Directional, // type
+                    this, // Owner
+                    new Vector2(0.8f, 1.5f) * 2.0f, // scale
+                    new Vector2(0.1f, 0.5f)) // origin in proportion to light sprite
             };
             Seed = SingleRandom.Instance.Next();
 
@@ -67,6 +73,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Climbing = false;
             Moveable = true;
             Interacting = false;
+            LookAt = 0.0f;
 
             // Motion sheets
             xVel = 0;
