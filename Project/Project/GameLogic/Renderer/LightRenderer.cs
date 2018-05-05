@@ -50,8 +50,7 @@ namespace TheGreatEscape.GameLogic.Renderer
 
                 float pulse = 1 / (flicker / 5000 + 1.0f),
                     brightness = 1 / (flicker / 1000 + 1.0f),
-                    rotation = 0.0f,
-                    PI = 3.1415926535f;
+                    rotation = 0.0f;
 
                 Texture2D currentTexture = null;
                 bool render = true;
@@ -68,7 +67,7 @@ namespace TheGreatEscape.GameLogic.Renderer
                         if ((light.Owner as Miner).Orientation != SpriteEffects.FlipHorizontally)
                         {
                             
-                            rotation = PI - rotation;
+                            rotation = MathHelper.Pi - rotation;
                         }
                         break;
                     default:
@@ -99,17 +98,15 @@ namespace TheGreatEscape.GameLogic.Renderer
     {
         public Vector2 Offset;
         public Vector2 Origin;
-        public Vector2 Direction;
+
         public Vector2 Scale { private set; get; }
         public LightRenderer.Lighttype Type;
         public GameObject Owner;
 
-        public Light(Vector2 offset, Vector2 direction,
-            LightRenderer.Lighttype type, GameObject owner,
-            Vector2 scale, Vector2 origin)
+        public Light(Vector2 offset,  LightRenderer.Lighttype type,
+            GameObject owner, Vector2 scale, Vector2 origin)
         {
             Offset = offset;
-            Direction = direction;
             Type = type;
             Owner = owner;
             Scale = scale;

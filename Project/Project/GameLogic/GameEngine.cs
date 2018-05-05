@@ -7,6 +7,7 @@ using TheGreatEscape.GameLogic.Collision;
 using TheGreatEscape.GameLogic.Util;
 using Microsoft.Xna.Framework.Graphics;
 
+
 namespace TheGreatEscape.GameLogic
 {
 
@@ -17,6 +18,7 @@ namespace TheGreatEscape.GameLogic
         public const float JumpForce = -800;
         const float FatalSpeed = 6000.0f;
         public GameState GameState;
+                        
         public enum GameAction
         {
             walk,
@@ -110,31 +112,30 @@ namespace TheGreatEscape.GameLogic
                     break;
                 case (GameAction.look):
                     // TODO: Add looking
-                    float PI = 3.1415926535f,
-                        theta = value;
+                    float theta = value;
                     if (miner.Orientation != SpriteEffects.FlipHorizontally)
                     {
                         // Miner looks to the left,
                         // clamp theta to be in 3rd and 4th quarters
-                        if (0 <= theta && theta < 0.5f * PI)
+                        if (0 <= theta && theta < MathHelper.PiOver2)
                         {
-                            theta = 0.5f * PI;
+                            theta = MathHelper.PiOver2;
                         }
-                        else if (-0.5f * PI < theta && theta < 0.0f)
+                        else if (-MathHelper.PiOver2 < theta && theta < 0.0f)
                         {
-                            theta = -0.5f * PI;
+                            theta = -MathHelper.PiOver2;
                         }
-                        theta = PI - theta;
+                        theta = MathHelper.Pi - theta;
                     }
                     else
                     {
-                        if (theta < -0.5f * PI)
+                        if (theta < -MathHelper.PiOver2)
                         {
-                            theta = -0.5f * PI;
+                            theta = -MathHelper.PiOver2;
                         }
-                        else if (0.5f * PI < theta)
+                        else if (MathHelper.PiOver2 < theta)
                         {
-                            theta = 0.5f * PI;
+                            theta = MathHelper.PiOver2;
                         }
                     }
 
