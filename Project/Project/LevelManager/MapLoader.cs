@@ -34,6 +34,7 @@ namespace TheGreatEscape.LevelManager
             {
                 GameObject gameObject = factory.Create(obj);
                 gameState.Add(gameObject);
+                if (gameObject is Platform) gameState.Add((gameObject as Platform).Background, GameState.Handling.None);
             }
 
             //gameState.InstantiateTools();
@@ -54,6 +55,10 @@ namespace TheGreatEscape.LevelManager
                     continue;
                 }
                 obj.Texture = ContentManager.Load<Texture2D>(obj.TextureString);
+                if (obj is Lever)
+                {
+                    (obj as Lever).SecondTexture = ContentManager.Load<Texture2D>((obj as Lever).RightleverTexture);
+                }
             }
 
             LoadMotionSheets(gameState);

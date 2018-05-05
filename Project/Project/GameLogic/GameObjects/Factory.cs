@@ -56,8 +56,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 case "ground":
                     instance = new Ground(
                         entity.Position,
-                        entity.SpriteSize,
-                        entity.Texture)
+                        entity.SpriteSize)
                     {
                         TextureString = entity?.Texture,
                         Handling = GameState.Handling.Solid
@@ -100,8 +99,40 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         Handling = GameState.Handling.None
                     };
                     break;
-                case "lever":
                 case "platform":
+                    instance = new Platform(
+                        entity.Position,
+                        entity.SpriteSize,
+                        entity.Texture,
+                        entity.Displacement,
+                        entity.Direction,
+                        entity.ActivationKey,
+                        entity.SecondTexture)
+                    {
+                        Handling = GameState.Handling.Solid
+                    };
+                    break;
+                case "lever":
+                    instance = new Lever(
+                        entity.Position,
+                        entity.SpriteSize,
+                        entity.Texture,
+                        entity.ActivationKey)
+                    {
+                        Handling = GameState.Handling.None
+                    };
+                    (instance as Lever).RightleverTexture = entity?.SecondTexture;
+                    break;
+                case "button":
+                    instance = new Button(
+                        entity.Position,
+                        entity.SpriteSize,
+                        entity.Texture,
+                        entity.ActivationKey)
+                    {
+                        Handling = GameState.Handling.None
+                    };
+                    break;
                 default:
                     instance = null;
                     MyDebugger.WriteLine(
