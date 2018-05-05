@@ -14,17 +14,19 @@ namespace TheGreatEscape.GameLogic.GameObjects
     {
         public override Tool Create(Object obj)
         {
-            string type = "pickaxe";
+            Obj entity = obj as Obj;
             Tool tool;
-            switch(type)
+            switch(entity.Type)
             {
                 case "pickaxe":
                     tool = new Pickaxe();
                     break;
                 case "rope":
+                    tool = new Rope();
+                    break;
                 default:
                     throw new NotImplementedException(
-                        string.Format("Tool '{0}' cannot be created", type));
+                        string.Format("Tool '{0}' cannot be created", entity.Type));
             }
             return tool;
         }
@@ -47,9 +49,10 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         Speed = entity.Velocity,
                         Mass = entity.Mass,
                         TextureString = entity?.Texture,
-                        Handling = GameState.Handling.Actor
+                        Handling = GameState.Handling.Actor,
+                        Tool = (new ToolFactory()).Create(new Obj { Type = entity.Tool  })
                     };
-                    break;
+                  break;
                 case "ground":
                     instance = new Ground(
                         entity.Position,
@@ -65,6 +68,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.Position,
                         entity.SpriteSize)
                     {
+                        Mass = entity.Mass,
                         TextureString = entity?.Texture,
                         Handling = GameState.Handling.Solid
                     };

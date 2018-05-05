@@ -4,6 +4,9 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.GameObjects;
+using static TheGreatEscape.GameLogic.GameState;
+using System;
+using TheGreatEscape.GameLogic.Util;
 
 namespace TheGreatEscape.LevelManager
 {
@@ -25,12 +28,15 @@ namespace TheGreatEscape.LevelManager
             string text = ContentManager.Load<string>(levelName);
             Level level = JsonConvert.DeserializeObject<Level>(text);
             gameState.background = level.background;
-            
+            gameState.resources = level.resources;
+
             foreach (Obj obj in level.objects)
             {
                 GameObject gameObject = factory.Create(obj);
                 gameState.Add(gameObject);
             }
+
+            //gameState.InstantiateTools();
 
             return gameState;
         }
@@ -51,9 +57,33 @@ namespace TheGreatEscape.LevelManager
             }
 
             LoadMotionSheets(gameState);
+            LoadTools(gameState);
+            gameState.GameFont = ContentManager.Load<SpriteFont>("Fonts/gameFont");
         }
 
-        public void LoadMotionSheets(GameState gameState) {
+        private void LoadTools(GameState gameState) {
+
+            String toolSpritePath = "Sprites/Tools/";
+
+            foreach (ExistingTools et in Enum.GetValues(typeof(ExistingTools)))
+            {
+                Texture2D toolSprite = ContentManager.Load<Texture2D>(toolSpritePath + et.ToString());
+                switch (et)
+                {
+                    case ExistingTools.pickaxe:
+                        Pickaxe.ToolSprite = toolSprite;
+                        break;
+                    case ExistingTools.rope:
+                        Rope.ToolSprite = toolSprite;
+                        break;
+                    default:
+                        MyDebugger.WriteLine(
+                            string.Format("GameObject '{0}' cannot be created", true));
+                        break;
+                }
+            }
+        }
+        private void LoadMotionSheets(GameState gameState) {
 
             List<Miner> miners = gameState.GetActors();
             Miner miner;
@@ -65,11 +95,9 @@ namespace TheGreatEscape.LevelManager
                 motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/idle");
                 miner.SetMotionSprite(motionSprite, MotionType.idle);
                 motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/walk");
-                miner.SetMotionSprite(motionSprite, MotionType.walk_left);
-                miner.SetMotionSprite(motionSprite, MotionType.walk_right);
+                miner.SetMotionSprite(motionSprite, MotionType.walk);
                 motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/run");
-                miner.SetMotionSprite(motionSprite, MotionType.run_left);
-                miner.SetMotionSprite(motionSprite, MotionType.run_right);
+                miner.SetMotionSprite(motionSprite, MotionType.run);
                 motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/jump");
                 miner.SetMotionSprite(motionSprite, MotionType.jump);
                 motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/pickaxe");

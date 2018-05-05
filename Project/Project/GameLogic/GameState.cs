@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,12 +8,17 @@ namespace TheGreatEscape.GameLogic
 {
     public class GameState : Level
     {
+        public enum ExistingTools { pickaxe, rope };
+
+        public SpriteFont GameFont;
+
         public List<Miner> Actors;
         public List<GameObject> Collectibles;
         public List<GameObject> Destroyables;
         public List<GameObject> Interactables;
         public List<GameObject> NonSolids;
         public List<GameObject> Solids;
+        public Dictionary<ExistingTools, Tool> Tools;
 
         /// <summary>
         /// The state of the current game.
@@ -57,6 +61,7 @@ namespace TheGreatEscape.GameLogic
             Interactables = new List<GameObject>();
             NonSolids = new List<GameObject>();
             Solids = new List<GameObject>();
+            Tools = new Dictionary<ExistingTools, Tool>();
 
             CollisionDetector = new CollisionDetector();
             Completed = false;
@@ -178,13 +183,34 @@ namespace TheGreatEscape.GameLogic
             }
         }
 
+        public void ChangeTool(Miner miner) 
+        {
+            int i;
+            for (i = 0; i < resources.Count(); ++i)
+            {
+                var ttl = resources.ElementAt(i);
+                if (ttl.Key.Equals(miner.Tool.ToString()))
+                    break;
+            }
+
+            int newToolIndex = (i + 1) % resources.Count();
+            var newTool = resources.ElementAt(newToolIndex);
+            var oldTool = resources.ElementAt(i);
+
+            if (newTool.Value == 0)
+                return;
+
+            resources[newTool.Key]--;
+            resources[oldTool.Key]++;
+            miner.Tool = (new ToolFactory()).Create(new Obj { Type = newTool.Key});
+        }
+
         public void SetBackground(Texture2D background)
         {
             Background = background;
         }
 
-        public Texture2D GetBackground()
-        {
+        public Texture2D GetBackground() {
             return Background;
         }
 

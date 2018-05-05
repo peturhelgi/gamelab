@@ -54,24 +54,32 @@ namespace TheGreatEscape.GameLogic.Renderer
 
             _spriteBatch.Draw(background, camera.GetCameraRectangle(background.Width, background.Height), Color.White);
 
-            foreach(GameObject obj in _gameState.GetAll())
+
+            foreach (GameObject obj in _gameState.GetAll())
             {
-                if(!obj.Active || !obj.Visible)
+                if (!obj.Active || !obj.Visible)
                 {
                     continue;
                 }
-
-                if(obj is Miner)
+                if (obj is Miner)
                 {
                     Miner m = obj as Miner;
+                    Vector2 motionSize = obj.SpriteSize * new Vector2(m.CurrMotion.Scale.X, m.CurrMotion.Scale.Y);
                     Rectangle source = m.CurrMotion.SourceRectangle;
-                    Vector2 motionSize = obj.SpriteSize * m.CurrMotion.Scale;
-                    _spriteBatch.Draw(m.CurrMotion.Image, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)motionSize.X,
-                        (int)motionSize.Y), source, Color.White, 0f, Vector2.Zero, m.Orientation, 0f);
+                    Rectangle destination = new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)motionSize.X,
+                        (int)motionSize.Y);
+                    _spriteBatch.Draw(m.CurrMotion.Image, destination, source, Color.White, 0f, Vector2.Zero, m.Orientation, 0f);
+
+                    Tool tool = m.Tool;
+                    destination.Width = tool.GetTexture().Width / 20;
+                    destination.Height = tool.GetTexture().Height / 20;
+                    destination.Y -= 100;
+                    destination.X -= (destination.Width - (int)motionSize.X) / 2;
+                    _spriteBatch.Draw(tool.GetTexture(), destination, Color.White);
                 }
                 else
                 {
-                    if(obj?.Texture != null)
+                    if (obj?.Texture != null)
                     {
                         _spriteBatch.Draw(
                             mode == Mode.DebugView ? _debugBox : obj.Texture,
@@ -84,7 +92,7 @@ namespace TheGreatEscape.GameLogic.Renderer
                     }
                 }
 
-                if(obj.Lights is List<Light>)
+                if (obj.Lights is List<Light>)
                 {
                     lights.AddRange(obj.Lights);
                 }
@@ -92,9 +100,10 @@ namespace TheGreatEscape.GameLogic.Renderer
 
             _spriteBatch.End();
 
-            foreach(Miner miner in _gameState.GetActors())
+
+            foreach (Miner miner in _gameState.GetActors())
             {
-                if(miner.Active)
+                if (miner.Active)
                 {
                     miner.CurrMotion.Update(gameTime);
                 }
@@ -109,7 +118,7 @@ namespace TheGreatEscape.GameLogic.Renderer
 
             _lightingEffect.CurrentTechnique.Passes[0].Apply();
 
-            if(GameManager.RenderDark)
+            if (GameManager.RenderDark)
             {
                 _spriteBatch.Begin(effect: _lightingEffect);
             }
@@ -122,6 +131,23 @@ namespace TheGreatEscape.GameLogic.Renderer
 
 
             _spriteBatch.Draw(_renderTargetScene, new Rectangle(0, 0, width, height), Color.White);
+
+            _spriteBatch.End();
+
+            // Draw the UI interface that displays the number of miners still available in the game
+            _spriteBatch.Begin();
+            int i = 0;
+            int prevSprite = 0;
+            foreach (var miner in _gameState.resources)
+            {
+                var toolFontSize = _gameState.GameFont.MeasureString(miner.Key + ":  ");
+                _spriteBatch.DrawString(_gameState.GameFont, miner.Key + ":", new Vector2(100 + prevSprite, 100 + i)
+                    , Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                _spriteBatch.DrawString(_gameState.GameFont, miner.Value.ToString(), new Vector2(100 + prevSprite + toolFontSize.X, 100 + i)
+                    , Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                i += (int)toolFontSize.Y;
+                prevSprite += (int)toolFontSize.X / 4;
+            }
 
             _spriteBatch.End();
 
