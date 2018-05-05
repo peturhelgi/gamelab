@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.Linq;
 using TheGreatEscape.GameLogic.Util;
 
 namespace TheGreatEscape.GameLogic.GameObjects
@@ -17,10 +18,11 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
         public override void Use(Miner user, GameState gamestate)
         {
-
+            List<GameObject> SolidAndInteracts = gamestate.GetObjects(GameState.Handling.Solid,
+                GameState.Handling.Interact);
             List<GameObject> collisions = CollisionDetector.FindCollisions(
-                user.InteractionBox(), 
-                gamestate.GetObjects(GameState.Handling.Solid));
+                user.InteractionBox(),
+                SolidAndInteracts);
 
             foreach (GameObject c in collisions)
             {

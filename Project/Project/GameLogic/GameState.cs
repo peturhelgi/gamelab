@@ -164,23 +164,32 @@ namespace TheGreatEscape.GameLogic
             return Actors;
         }
 
-        public List<GameObject> GetObjects(Handling handling)
+        public List<GameObject> GetObjects(params Handling[] handlings)
         {
-            switch(handling)
+            List<GameObject> objects = new List<GameObject>();
+            foreach (var handling in handlings)
             {
-                case Handling.Collect:
-                    return Collectibles;
-                case Handling.Destroy:
-                    return Destroyables;
-                case Handling.Interact:
-                    return Interactables;
-                case Handling.None:
-                    return NonSolids;
-                case Handling.Solid:
-                    return Solids;
-                default:
-                    return new List<GameObject>();
+                switch (handling)
+                {
+                    case Handling.Collect:
+                        objects.AddRange(Collectibles);
+                        break;
+                    case Handling.Destroy:
+                        objects.AddRange(Destroyables);
+                        break;
+                    case Handling.Interact:
+                        objects.AddRange(Interactables);
+                        break;
+                    case Handling.None:
+                        objects.AddRange(NonSolids);
+                        break;
+                    case Handling.Solid:
+                        objects.AddRange(Solids);
+                        break;
+                }
             }
+
+            return objects;
         }
 
         /// <summary>
@@ -201,12 +210,12 @@ namespace TheGreatEscape.GameLogic
             }
         }
 
-/// <summary>
-/// Tries to change the tool of the miner upon request or if he dies
-/// </summary>
-/// <param name="miner"></param>
-/// <param name="ForRemoving">set to true if the method is called when trying to remove the miner</param>
-/// <returns></returns>
+        /// <summary>
+        /// Tries to change the tool of the miner upon request or if he dies
+        /// </summary>
+        /// <param name="miner"></param>
+        /// <param name="ForRemoving">set to true if the method is called when trying to remove the miner</param>
+        /// <returns></returns>
         public bool CanChangeTool(Miner miner, bool ForRemoving) 
         {
             int i;

@@ -14,12 +14,12 @@
   "objects": [
     {
       "dim": {
-        "x": 102,
+        "x": 270,
         "y": 370
       },
       "pos": {
         "x": 1952,
-        "y": -170        
+        "y": -150        
       },
       "type": "end",
       "texture": "Sprites/Interactables/Door"
