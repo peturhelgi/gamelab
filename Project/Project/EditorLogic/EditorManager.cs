@@ -132,7 +132,7 @@ namespace EditorLogic
             {
                 foreach (var obj in CurrentObjects)
                 {
-                    _engine.GameState.Solids.Add(obj);
+                    _engine.GameState.Add(obj);
                 }
             }
             CurrentObjects = null;
@@ -144,7 +144,7 @@ namespace EditorLogic
             {
                 foreach (var obj in CurrentObjects)
                 {
-                    _engine.GameState.Solids.Remove(obj);
+                    _engine.GameState.Remove(obj);
                 }
             }
             CurrentObjects = null;
@@ -175,7 +175,8 @@ namespace EditorLogic
 
         public void DuplicateObjectUnderCursor()
         {
-            List<GameObject> collisions = _engine.CollisionDetector.FindCollisions(new AxisAllignedBoundingBox(CursorPosition, CursorPosition + CursorSize), _engine.GameState.Solids);
+            List<GameObject> collisions = _engine.CollisionDetector.FindCollisions
+                (new AxisAllignedBoundingBox(CursorPosition, CursorPosition + CursorSize), _engine.GameState.GetAll());
             if (collisions.Count > 0)
             {
                 CurrentObjects = new List<GameObject>();
@@ -198,7 +199,7 @@ namespace EditorLogic
                 CursorPosition = new Vector2(float.MaxValue);
                 foreach (GameObject obj in collisions) {
                     CursorPosition = Vector2.Min(CursorPosition, obj.Position);
-                    _engine.GameState.Solids.Remove(obj);
+                    _engine.GameState.Remove(obj);
                 }
                 MovingStartPosition = CursorPosition;
                 CurrentIsNewObject = false;

@@ -97,7 +97,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.SpriteSize,
                         entity.Texture)
                     {
-                        Handling = GameState.Handling.None
+                        Handling = GameState.Handling.Interact
                     };
                     break;
                 case "lever":
