@@ -452,30 +452,6 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Rocks/TallGround.png
 
-#begin Sprites/Tools/Pickaxe.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Sprites/Tools/Pickaxe.png
-
-#begin Sprites/Tools/Rope.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Sprites/Tools/Rope.png
-
 #begin Lights/circular_light.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -533,6 +509,18 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Orbitron.spritefont
 
+#begin Sprites/Interactables/escalator_mechanismy.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Interactables/escalator_mechanismy.png
+
 #begin Sprites/Interactables/escalator_platform.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -544,6 +532,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Interactables/escalator_platform.png
+
+#begin Sprites/Interactables/escalator_mechanismx.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Interactables/escalator_mechanismx.png
 
 #begin Sprites/Interactables/lever_right.png
 /importer:TextureImporter
@@ -569,7 +569,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Interactables/lever_left.png
 
-#begin Sprites/Interactables/escalator_mechanismy.png
+#begin Sprites/Miner1/pickaxe.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -579,9 +579,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Interactables/escalator_mechanismy.png
+/build:Sprites/Miner1/pickaxe.png
 
-#begin Sprites/Interactables/escalator_mechanismx.png
+#begin Sprites/Miner2/pickaxe.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -591,5 +591,36 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Interactables/escalator_mechanismx.png
+/build:Sprites/Miner2/pickaxe.png
+
+#begin Sprites/Tools/Pickaxe.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Tools/Pickaxe.png
+
+#begin Sprites/Tools/Rope.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Tools/Rope.png
+
+#begin Fonts/gameFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/gameFont.spritefont
 

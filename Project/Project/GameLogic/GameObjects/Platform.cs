@@ -44,9 +44,10 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 DisplacementStep = new Vector2(0.0f, 5.0f);
                 MaxHeight = Position.Y - Displacement;
                 MinHeight = Position.Y;
-                Background = new PlatformBackground(new Vector2(Position.X, MaxHeight + SpriteSize.Y*0.8f), 
+                Background = new PlatformBackground(new Vector2(Position.X, MaxHeight + SpriteSize.Y * 0.8f),
                     new Vector2(SpriteSize.X, Displacement),
-                    secondTextureString);
+                    secondTextureString)
+                { Active = true };
             }
             else if (dir == "x")
             {
@@ -54,9 +55,10 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 DisplacementStep = new Vector2(-5.0f, 0.0f);
                 MaxHeight = Position.X + Displacement;
                 MinHeight = Position.X;
-                Background = new PlatformBackground(new Vector2(Position.X, Position.Y + SpriteSize.Y*0.5f),
+                Background = new PlatformBackground(new Vector2(Position.X, Position.Y + SpriteSize.Y * 0.5f),
                     new Vector2(Displacement + SpriteSize.X, SpriteSize.Y),
-                    secondTextureString);
+                    secondTextureString)
+                { Active = true };
             }
 
 

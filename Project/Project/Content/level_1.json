@@ -6,16 +6,20 @@
   "nextlvl" : 1,
   "nextlvlname" : "tbd",
   "background" : "Sprites/Backgrounds/Level1Background",
+  "resources": {
+    "pickaxe": 3,
+    "rope": 2
+  },
 
   "objects": [
     {
       "dim": {
-        "x": 102,
+        "x": 270,
         "y": 370
       },
       "pos": {
         "x": 1952,
-        "y": -170        
+        "y": -150        
       },
       "type": "end",
       "texture": "Sprites/Interactables/Door"
@@ -35,6 +39,7 @@
       },
       "m": 80,
       "type": "miner",
+      "tool" : "rope",
       "texture": "Sprites/Miners/MinerStatic"
     },
     {
@@ -52,6 +57,7 @@
       },
       "m": 80,
       "type": "miner",
+      "tool":  "pickaxe",
       "texture": "Sprites/Miners/MinerPickaxe"
     },
     {
@@ -67,7 +73,7 @@
         "x": 0,
         "y": 0
       },
-      "m": 50,
+      "m": 10,
       "type": "rock",
       "texture": "Sprites/Rocks/BareRock5"
 

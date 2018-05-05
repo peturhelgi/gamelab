@@ -113,6 +113,7 @@
     <Compile Include="GameLogic\GameObjects\Ground.cs" />
     <Compile Include="GameLogic\GameObjects\Platform.cs" />
     <Compile Include="GameLogic\GameObjects\Rock.cs" />
+    <Compile Include="GameLogic\GameObjects\Rope.cs" />
     <Compile Include="GameLogic\GameObjects\Tool.cs" />
     <Compile Include="GameLogic\GameObjects\GameObject.cs" />
     <Compile Include="GameLogic\GameObjects\Miner.cs" />
