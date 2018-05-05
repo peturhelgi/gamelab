@@ -108,10 +108,20 @@ namespace TheGreatEscape.GameLogic {
         public void Update()
         {
             List<GameObject> allObjects = GameState.GetAll();
+            List<Platform> platforms = new List<Platform>();
+            foreach(GameObject g in allObjects)
+            {
+                if(g is Platform)
+                {
+                    platforms.Add(g as Platform);
+                    // allObjects.Remove(g);
+                }
+            }
+
+            foreach (Platform p in platforms) MovePlatform(p);
             
             foreach (GameObject c in allObjects)
             {
-                if (c is Platform) (c as Platform).Move(GameState);
                 if (c.Moveable)
                 { 
                     if(c.LastUpdated != gameTime)
@@ -119,6 +129,7 @@ namespace TheGreatEscape.GameLogic {
                         CalculateAndSetNewPosition(c, Vector2.Zero);
                     }
                 }
+                
             }
 
             for (var i = 0; i < _attentions.Count; i++) {
@@ -138,7 +149,7 @@ namespace TheGreatEscape.GameLogic {
                 bool worked = obj.InteractWithCrate(GameState);
                 if(!worked) obj.UseTool(GameState);
             }
-            switchLever(obj);
+            SwitchLever(obj);
         }
 
 
@@ -180,7 +191,7 @@ namespace TheGreatEscape.GameLogic {
             else miner.Climbing = false;
         }
 
-        private void switchLever(Miner miner)
+        private void SwitchLever(Miner miner)
         {
             List<Platform> platforms = new List<Platform>();
             List<GameObject> levers = new List<GameObject>();
@@ -197,6 +208,70 @@ namespace TheGreatEscape.GameLogic {
             }
         }
 
+        public void MovePlatform(Platform platform)
+        {
+            float offset = 0.4f;
+            AxisAllignedBoundingBox interactionBBox = new AxisAllignedBoundingBox(
+                new Vector2(platform.BBox.Min.X, platform.BBox.Min.Y - offset),
+                new Vector2(platform.BBox.Max.X, platform.BBox.Min.Y));
+
+            List<GameObject> actorsAndSolids = new List<GameObject>();
+            foreach (GameObject g in GameState.GetSolids()) actorsAndSolids.Add(g);
+            foreach (Miner g in GameState.GetActors()) actorsAndSolids.Add(g as GameObject);
+
+            List<GameObject> collisions = CollisionDetector.FindCollisions(interactionBBox, actorsAndSolids);
+
+            if (!platform.Activate)
+            {
+                // moving down or left
+                if ((platform.IsMovingInY() && platform.Position.Y < platform.MinHeight) 
+                    || (!platform.IsMovingInY() && platform.Position.X > platform.MinHeight))
+                {
+                    platform.Position = platform.Position + platform.DisplacementStep;
+                    // CalculateAndSetNewPosition(platform as GameObject, platform.DisplacementStep);
+                    foreach (GameObject c in collisions)
+                    {
+                        if (c is Platform) continue;
+                        if (platform.IsMovingInY() && (c.Position.Y > platform.Position.Y + platform.SpriteSize.Y)) continue;
+                        if (!platform.IsMovingInY() && (c.Position.X > platform.Position.X + platform.SpriteSize.X)) continue;
+                        // c.Position = c.Position + platform.DisplacementStep;
+                        CalculateAndSetNewPosition(c, platform.DisplacementStep);
+                        // c.Falling = false;
+                        // c.Speed = Vector2.Zero;
+                        if ((c is Miner) && (c as Miner).Holding)
+                        {
+                            // (c as Miner).HeldObj.Position = (c as Miner).HeldObj.Position + platform.DisplacementStep;
+                            CalculateAndSetNewPosition((c as Miner).HeldObj, platform.DisplacementStep);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // moving up or right
+                if ((platform.IsMovingInY() && platform.Position.Y > platform.MaxHeight) 
+                    || (!platform.IsMovingInY() && platform.Position.X < platform.MaxHeight))
+                {
+                    platform.Position = platform.Position - platform.DisplacementStep;
+                    // CalculateAndSetNewPosition(platform as GameObject, -platform.DisplacementStep);
+                    foreach (GameObject c in collisions)
+                    {
+                        if (c is Platform) continue;
+                        if (platform.IsMovingInY() && (c.Position.Y > platform.Position.Y + platform.SpriteSize.Y)) continue;
+                        if (!platform.IsMovingInY() && (c.Position.X + c.SpriteSize.X < platform.Position.X)) continue;
+                         c.Position = c.Position - platform.DisplacementStep;
+                        // CalculateAndSetNewPosition(c, -platform.DisplacementStep);
+                        // c.Falling = false;
+                        // c.Speed = Vector2.Zero;
+                        if ((c is Miner) && (c as Miner).Holding)
+                        {
+                            //(c as Miner).HeldObj.Position = (c as Miner).HeldObj.Position - platform.DisplacementStep;
+                            CalculateAndSetNewPosition((c as Miner).HeldObj, -platform.DisplacementStep);
+                        }
+                    }
+                }
+            }
+        }
 
         void CalculateAndSetNewPosition(GameObject obj, Vector2 direction)
         {

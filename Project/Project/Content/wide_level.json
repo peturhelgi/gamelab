@@ -289,8 +289,28 @@
       "m": 20,
       "type": "platform",
       "displacement": 500,
-      "direction":  "x",
+      "direction": "x",
       "activationkey": 0,
+      "texture": "Sprites/Interactables/escalator_platform"
+    },
+    {
+      "dim": {
+        "x": 180,
+        "y": 116
+      },
+      "pos": {
+        "x": 3200,
+        "y": 1050
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 20,
+      "type": "platform",
+      "displacement": 500,
+      "direction": "y",
+      "activationkey": 1,
       "texture": "Sprites/Interactables/escalator_platform"
     },
     {
