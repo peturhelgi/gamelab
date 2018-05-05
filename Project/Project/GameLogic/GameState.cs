@@ -183,13 +183,14 @@ namespace TheGreatEscape.GameLogic
             }
         }
 
-        // removes a miner from the screen when there are no more available tools to switch to
+        /// <summary>
+        /// removes a miner from the screen when there are no more available tools to switch to
+        /// </summary>
+        /// <param name="miner"></param>
+        /// <returns>true if there are no more tools available</returns>
         public bool ShouldRemoveMinerFromScreen(Miner miner)
         {
-            if (CanChangeTool(miner, true))
-                return false;
-
-            return true;
+            return !CanChangeTool(miner, true);
         }
         
         public void ResetMinersPosition()
@@ -200,7 +201,12 @@ namespace TheGreatEscape.GameLogic
             }
         }
 
-        // second argument is if the method is called when trying to remove the miner
+/// <summary>
+/// Tries to change the tool of the miner upon request or if he dies
+/// </summary>
+/// <param name="miner"></param>
+/// <param name="ForRemoving">set to true if the method is called when trying to remove the miner</param>
+/// <returns></returns>
         public bool CanChangeTool(Miner miner, bool ForRemoving) 
         {
             int i;
