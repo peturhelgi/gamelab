@@ -25,13 +25,13 @@ namespace TheGreatEscape.GameLogic.Renderer
             _directionalLight = content.Load<Texture2D>("Lights/directional_light");
             _graphicsDevice = graphicsDevice;
             _renderTarget = new RenderTarget2D(
-                _graphicsDevice, 
-                _graphicsDevice.PresentationParameters.BackBufferWidth, 
+                _graphicsDevice,
+                _graphicsDevice.PresentationParameters.BackBufferWidth,
                 _graphicsDevice.PresentationParameters.BackBufferHeight);
             _spriteBatch = new SpriteBatch(_graphicsDevice);
         }
 
-        public RenderTarget2D Draw(GameTime gametime, int width, int height, 
+        public RenderTarget2D Draw(GameTime gametime, int width, int height,
             List<Light> lights, Matrix camera)
         {
             _graphicsDevice.SetRenderTarget(_renderTarget);
@@ -39,40 +39,52 @@ namespace TheGreatEscape.GameLogic.Renderer
 
             _spriteBatch.Begin(transformMatrix: camera);
             float offset = 0.8f;
-            Vector2 lightCenter;
+
             foreach (Light light in lights)
             {
                 Simplex.Noise.Seed = light.Owner.Seed;
-                float flicker = Simplex.Noise.CalcPixel1D(gametime.TotalGameTime.Milliseconds / 25, 0.1f);
+                float flicker = Simplex.Noise.CalcPixel1D(
+                    gametime.TotalGameTime.Milliseconds / 25, 0.1f);
                 flicker *= offset;
                 offset += 0.2f;
-                float pulse = 1 / (flicker / 5000 + 1.0f);
-                float brightness = 1 / (flicker / 1000 + 1.0f);
-                lightCenter = light.Center + light.Owner.Position
-                    - (_lightSize * light.Size * pulse * light.Skew);
+
+                float pulse = 1 / (flicker / 5000 + 1.0f),
+                    brightness = 1 / (flicker / 1000 + 1.0f),
+                    rotation = 0.0f;
+
+                Texture2D currentTexture = null;
+                bool render = true;
                 switch (light.Type)
                 {
                     case Lighttype.Circular:
-                        _spriteBatch.Draw(_circularLight, 
-                            lightCenter, 
-                            null, 
-                            Color.White * brightness, 
-                            0f, 
-                            Vector2.Zero, 
-                            light.Size * pulse / _circularLight.Width, 
-                            SpriteEffects.None, 0);
+                        currentTexture = _circularLight;
+                        rotation = 0.0f;
                         break;
 
                     case Lighttype.Directional:
-                        _spriteBatch.Draw(_directionalLight, 
-                            lightCenter, 
-                            null, 
-                            Color.White * brightness, 
-                            0.0f, 
-                            Vector2.Zero,
-                            3.0f * light.Size * pulse, 
-                            SpriteEffects.None, 0);
+                        currentTexture = _directionalLight;
+                        rotation = 0.0f;
+                        if ((light.Owner as Miner).Orientation != SpriteEffects.FlipHorizontally)
+                        {
+                            rotation = 3.1415926535f - rotation;
+                        }
                         break;
+                    default:
+                        render = false;
+                        break;
+                }
+                if (render)
+                {
+                    _spriteBatch.Draw(
+                            currentTexture,
+                            light.Owner.Position + light.Offset, // position,
+                            null, // source rectangle
+                            Color.White * brightness,
+                            rotation, // rotation in radians, positive is ccw
+                            _lightSize * light.Origin, // origin in image coords
+                            light.Scale, // scale of the image
+                            SpriteEffects.None,
+                            0); // layerdepth
                 }
             }
 
@@ -83,23 +95,23 @@ namespace TheGreatEscape.GameLogic.Renderer
 
     public class Light
     {
-        public Vector2 Center;
+        public Vector2 Offset;
+        public Vector2 Origin;
         public Vector2 Direction;
-        public Vector2 Skew { private set; get; }
+        public Vector2 Scale { private set; get; }
         public LightRenderer.Lighttype Type;
-        public float Size { private set; get; }
         public GameObject Owner;
 
-        public Light(Vector2 center, Vector2 direction, 
+        public Light(Vector2 offset, Vector2 direction,
             LightRenderer.Lighttype type, GameObject owner,
-            Vector2 skew, float scale = 1.0f)
+            Vector2 scale, Vector2 origin)
         {
-            Center = center;
+            Offset = offset;
             Direction = direction;
             Type = type;
             Owner = owner;
-            Skew = skew;
-            Size = scale;
+            Scale = scale;
+            Origin = origin;
         }
     }
 }
