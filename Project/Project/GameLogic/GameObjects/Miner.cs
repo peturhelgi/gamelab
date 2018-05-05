@@ -134,7 +134,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 return MotionType.jump;
             }
 
-            if (this.Interacting)
+            if (this.Interacting && Tool is Pickaxe)
                 return MotionType.pickaxe;
 
 
