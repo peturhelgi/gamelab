@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace TheGreatEscape.GameLogic.Util
 {
@@ -11,9 +6,9 @@ namespace TheGreatEscape.GameLogic.Util
     public static class MyDebugger
     {
         public static bool IsActive;
-        public static void WriteLine(object value)
+        public static void WriteLine(object value, bool forcePrint = false)
         {
-            if(IsActive)
+            if(forcePrint || IsActive)
             {
                 Debug.WriteLine(value);
             }

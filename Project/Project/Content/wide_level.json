@@ -6,6 +6,10 @@
   "nextlvl": 1,
   "nextlvlname": "tbd",
   "background": "Sprites/Backgrounds/Level3Background",
+  "resources": {
+    "pickaxe": 3,
+    "rope": 2
+  },
 
   "objects": [
     {
@@ -13,12 +17,13 @@
         "x": 210,
         "y": 250
       },
-      "type": "end"
+      "type": "end",
+      "texture": "Sprites/Interactables/Door"
     },
     {
       "dim": {
-        "x": 102,
-        "y": 370
+        "x": 51,
+        "y": 185
       },
       "pos": {
         "x": 100,
@@ -30,12 +35,13 @@
       },
       "m": 80,
       "type": "miner",
+      "tool": "pickaxe",
       "texture": "Sprites/Miners/MinerHandsInPants"
     },
     {
       "dim": {
-        "x": 102,
-        "y": 370
+        "x": 51,
+        "y": 185
       },
       "pos": {
         "x": 200,
@@ -47,6 +53,7 @@
       },
       "m": 80,
       "type": "miner",
+      "tool": "pickaxe",
       "texture": "Sprites/Miners/MinerPickaxe"
     },
     {
@@ -240,8 +247,8 @@
     },
     {
       "dim": {
-        "x": 150,
-        "y": 150
+        "x": 75,
+        "y": 75
       },
       "pos": {
         "x": 1500,
@@ -254,6 +261,23 @@
       "m": 20,
       "type": "crate",
       "texture": "Sprites/Interactables/crate"
+    },
+    {
+      "dim": {
+        "x": 150,
+        "y": 600
+      },
+      "pos": {
+        "x": 2500,
+        "y": 200
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 20,
+      "type": "ladder",
+      "texture": "Sprites/Interactables/LadderShort"
     }
   ]
 }

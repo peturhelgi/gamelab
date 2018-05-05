@@ -1,16 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Project.GameLogic.GameObjects;
-using Project.GameLogic.GameObjects.Miner;
-using System;
-using System.Collections.Generic;
-using TheGreatEscape.GameLogic.Util;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TheGreatEscape.GameLogic.GameObjects;
 
-namespace Project.GameLogic.Renderer
+namespace TheGreatEscape.GameLogic.Renderer
 {
     class GameRenderer
     {
@@ -41,7 +35,7 @@ namespace Project.GameLogic.Renderer
 
 
             _lightRenderer = new LightRenderer(_graphicsDevice, content);
-            
+
         }
 
         public void Draw(GameTime gameTime, int width, int height, Mode mode, Camera camera)
@@ -54,24 +48,66 @@ namespace Project.GameLogic.Renderer
             _graphicsDevice.SetRenderTarget(_renderTargetScene);
             _graphicsDevice.Clear(Color.Gray);
             _spriteBatch.Begin(
-                SpriteSortMode.Deferred, 
-                mode == Mode.DebugView ? BlendState.Opaque : null, 
+                SpriteSortMode.Deferred,
+                mode == Mode.DebugView ? BlendState.Opaque : null,
                 null, null, null, null, camera.view);
 
             _spriteBatch.Draw(background, camera.GetCameraRectangle(background.Width, background.Height), Color.White);
 
-            foreach(GameObject obj in _gameState.GetAll())
+
+            foreach (GameObject obj in _gameState.GetAll())
             {
-                if(obj.Visible)
+                if (!obj.Active || !obj.Visible)
                 {
-                    _spriteBatch.Draw(mode == Mode.DebugView ? _debugBox : obj.Texture, new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)obj.SpriteSize.X, (int)obj.SpriteSize.Y), Color.White);
+                    continue;
                 }
-                if(obj.Lights is List<Light>)
+                if (obj is Miner)
+                {
+                    Miner m = obj as Miner;
+                    Vector2 motionSize = obj.SpriteSize * new Vector2(m.CurrMotion.Scale.X, m.CurrMotion.Scale.Y);
+                    Rectangle source = m.CurrMotion.SourceRectangle;
+                    Rectangle destination = new Rectangle((int)obj.Position.X, (int)obj.Position.Y, (int)motionSize.X,
+                        (int)motionSize.Y);
+                    _spriteBatch.Draw(m.CurrMotion.Image, destination, source, Color.White, 0f, Vector2.Zero, m.Orientation, 0f);
+
+                    Tool tool = m.Tool;
+                    destination.Width = tool.GetTexture().Width / 20;
+                    destination.Height = tool.GetTexture().Height / 20;
+                    destination.Y -= 100;
+                    destination.X -= (destination.Width - (int)motionSize.X) / 2;
+                    _spriteBatch.Draw(tool.GetTexture(), destination, Color.White);
+                }
+                else
+                {
+                    if (obj?.Texture != null)
+                    {
+                        _spriteBatch.Draw(
+                            mode == Mode.DebugView ? _debugBox : obj.Texture,
+                            new Rectangle(
+                                (int)obj.Position.X,
+                                (int)obj.Position.Y,
+                                (int)obj.SpriteSize.X,
+                                (int)obj.SpriteSize.Y),
+                            Color.White);
+                    }
+                }
+
+                if (obj.Lights is List<Light>)
                 {
                     lights.AddRange(obj.Lights);
                 }
             }
+
             _spriteBatch.End();
+
+
+            foreach (Miner miner in _gameState.GetActors())
+            {
+                if (miner.Active)
+                {
+                    miner.CurrMotion.Update(gameTime);
+                }
+            }
 
             // Render the Lights
             _renderTargetLights = _lightRenderer.Draw(gameTime, width, height, lights, camera.view);
@@ -82,7 +118,7 @@ namespace Project.GameLogic.Renderer
 
             _lightingEffect.CurrentTechnique.Passes[0].Apply();
 
-            if(GameManager.RenderDark)
+            if (GameManager.RenderDark)
             {
                 _spriteBatch.Begin(effect: _lightingEffect);
             }
@@ -95,6 +131,23 @@ namespace Project.GameLogic.Renderer
 
 
             _spriteBatch.Draw(_renderTargetScene, new Rectangle(0, 0, width, height), Color.White);
+
+            _spriteBatch.End();
+
+            // Draw the UI interface that displays the number of miners still available in the game
+            _spriteBatch.Begin();
+            int i = 0;
+            int prevSprite = 0;
+            foreach (var miner in _gameState.resources)
+            {
+                var toolFontSize = _gameState.GameFont.MeasureString(miner.Key + ":  ");
+                _spriteBatch.DrawString(_gameState.GameFont, miner.Key + ":", new Vector2(100 + prevSprite, 100 + i)
+                    , Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                _spriteBatch.DrawString(_gameState.GameFont, miner.Value.ToString(), new Vector2(100 + prevSprite + toolFontSize.X, 100 + i)
+                    , Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                i += (int)toolFontSize.Y;
+                prevSprite += (int)toolFontSize.X / 4;
+            }
 
             _spriteBatch.End();
 

@@ -1,14 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
-namespace Project.LevelManager
-{
-    class Level
+namespace TheGreatEscape.LevelManager {
+    public class Level
     {
         public int levelnr;
         public string levelname;
@@ -19,11 +14,13 @@ namespace Project.LevelManager
         public string background;
 
         public List<Obj> objects;
+        //public Dictionary<string, int> resources;
+        public SortedDictionary<string, int> resources;
     }
 
 
 
-    class Obj
+    public class Obj
     {
 
         [JsonProperty("dim")]
@@ -43,5 +40,8 @@ namespace Project.LevelManager
 
         [JsonProperty("texture")]
         public string Texture;
+
+        [JsonProperty("tool")]
+        public string Tool;
     }
 }

@@ -1,16 +1,17 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using TheGreatEscape.GameLogic;
+using TheGreatEscape.GameLogic.GameObjects;
+using static TheGreatEscape.GameLogic.GameState;
 using System;
-using Newtonsoft.Json;
-using Project.GameLogic;
-using Project.GameLogic.GameObjects;
-using Project.GameLogic.GameObjects.Miner;
+using TheGreatEscape.GameLogic.Util;
 
-namespace Project.LevelManager
+namespace TheGreatEscape.LevelManager
 {
     class MapLoader
     {
-        public Texture2D background;
         public ContentManager ContentManager;
 
 
@@ -21,41 +22,21 @@ namespace Project.LevelManager
 
         public GameState InitMap(string levelName)
         {
+            GameObjectFactory factory = new GameObjectFactory();
             GameState gameState = new GameState();
 
             string text = ContentManager.Load<string>(levelName);
             Level level = JsonConvert.DeserializeObject<Level>(text);
             gameState.background = level.background;
-            
+            gameState.resources = level.resources;
+
             foreach (Obj obj in level.objects)
             {
-
-                switch (obj.Type)
-                {
-                    case "miner":
-                        Miner miner = new Miner(obj.Position, obj.SpriteSize, obj.Velocity, obj.Mass, obj.Texture);
-                        gameState.AddActor(miner);
-                        break;
-                    case "rock":
-                        Rock rock = new Rock(obj.Position, obj.SpriteSize, obj.Texture);
-                        gameState.AddSolid(rock);
-                        break;
-                    case "ground":
-                        Ground ground = new Ground(obj.Position, obj.SpriteSize, obj.Texture);
-                        gameState.AddSolid(ground);
-                        break;
-                    case "crate":
-                        Crate crate = new Crate(obj.Position, obj.SpriteSize, obj.Texture);
-                        gameState.AddSolid(crate);
-                        break;
-                    case "end":
-                        break;
-
-                    default:
-                        Console.WriteLine("Object of Type " + obj.Type + " not implemented.");
-                        break;
-                }
+                GameObject gameObject = factory.Create(obj);
+                gameState.Add(gameObject);
             }
+
+            //gameState.InstantiateTools();
 
             return gameState;
         }
@@ -68,9 +49,61 @@ namespace Project.LevelManager
             // TODO possibly add a hashed Map to only load every Texture once
             foreach (GameObject obj in gameState.GetAll())
             {
+                if(obj?.TextureString == null || obj.TextureString == "")
+                {
+                    continue;
+                }
                 obj.Texture = ContentManager.Load<Texture2D>(obj.TextureString);
             }
+
+            LoadMotionSheets(gameState);
+            LoadTools(gameState);
+            gameState.GameFont = ContentManager.Load<SpriteFont>("Fonts/gameFont");
         }
 
-    }
+        private void LoadTools(GameState gameState) {
+
+            String toolSpritePath = "Sprites/Tools/";
+
+            foreach (ExistingTools et in Enum.GetValues(typeof(ExistingTools)))
+            {
+                Texture2D toolSprite = ContentManager.Load<Texture2D>(toolSpritePath + et.ToString());
+                switch (et)
+                {
+                    case ExistingTools.pickaxe:
+                        Pickaxe.ToolSprite = toolSprite;
+                        break;
+                    case ExistingTools.rope:
+                        Rope.ToolSprite = toolSprite;
+                        break;
+                    default:
+                        MyDebugger.WriteLine(
+                            string.Format("GameObject '{0}' cannot be created", true));
+                        break;
+                }
+            }
+        }
+        private void LoadMotionSheets(GameState gameState) {
+
+            List<Miner> miners = gameState.GetActors();
+            Miner miner;
+            Texture2D motionSprite;
+            string minerPath = "Sprites/Miner";
+            for (int i = 1; i < miners.Count + 1; ++i)
+            {
+                miner = miners[i - 1];
+                motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/idle");
+                miner.SetMotionSprite(motionSprite, MotionType.idle);
+                motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/walk");
+                miner.SetMotionSprite(motionSprite, MotionType.walk);
+                motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/run");
+                miner.SetMotionSprite(motionSprite, MotionType.run);
+                motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/jump");
+                miner.SetMotionSprite(motionSprite, MotionType.jump);
+                motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/pickaxe");
+                miner.SetMotionSprite(motionSprite, MotionType.pickaxe);
+
+            }
+        }
+    }                                      
 }

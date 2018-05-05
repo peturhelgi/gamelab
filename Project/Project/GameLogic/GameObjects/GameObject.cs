@@ -1,15 +1,15 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Project.GameLogic.Collision;
-using Project.GameLogic.Renderer;
+﻿using System;
 using System.Collections.Generic;
-using System;
-using Newtonsoft.Json;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using TheGreatEscape.GameLogic.Collision;
+using TheGreatEscape.GameLogic.Renderer;
 
-namespace Project.GameLogic.GameObjects
+namespace TheGreatEscape.GameLogic.GameObjects
 {
-    interface IGameObject
+    public interface IGameObject
     {
+
         AxisAllignedBoundingBox BBox {
             get;
         }
@@ -69,7 +69,6 @@ namespace Project.GameLogic.GameObjects
             get;
             set;
         }
-
         TimeSpan LastUpdated
         {
             get;
@@ -82,13 +81,46 @@ namespace Project.GameLogic.GameObjects
             set;
         }
 
-
+        bool Active
+        {
+            get;
+            set;
+        }
     }
 
     public abstract class GameObject : IGameObject {
-
-
+        
+        /// <summary>
+        /// Describes how the game object should be handled
+        /// </summary>
+        public GameState.Handling Handling { get; set; }
+        public GameObject(Vector2 position, Vector2 spriteSize)
+        {
+            Position = position;
+            SpriteSize = spriteSize;
+            Handling = GameState.Handling.None;
+        }
         public bool Falling { get; set; }
+        public bool Active { get; set; }
+        public GameObject(Vector2 position, Vector2 spriteSize, string texture)
+        {
+            Position = position;
+            SpriteSize = spriteSize;
+            TextureString = texture;
+            Handling = GameState.Handling.None;
+        }
+
+        public void Enable()
+        {
+            Visible = true;
+            Active = true;
+        }
+
+        public void Disable()
+        {
+            Visible = false;
+            Active = false;
+        }
 
         public Vector2 Position { get; set; }
 
@@ -105,6 +137,8 @@ namespace Project.GameLogic.GameObjects
         public Texture2D Texture { get; set; }
 
         public bool Visible { get; set; }
+
+        public bool Movable { get; set; }
 
         public string TextureString { get; set; }
 

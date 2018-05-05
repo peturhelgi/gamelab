@@ -1,78 +1,258 @@
-﻿
-using Microsoft.Xna.Framework.Graphics;
-using Project.GameLogic.GameObjects;
-using Project.GameLogic.GameObjects.Miner;
-using Project.LevelManager;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
+using TheGreatEscape.GameLogic.GameObjects;
+using TheGreatEscape.LevelManager;
 
-namespace Project.GameLogic
+namespace TheGreatEscape.GameLogic
 {
-    class GameState : Level
+    public class GameState : Level
     {
+        public enum ExistingTools { pickaxe, rope };
+
+        public SpriteFont GameFont;
+
         public List<Miner> Actors;
-        public List<GameObject> Solids;
         public List<GameObject> Collectibles;
+        public List<GameObject> Destroyables;
+        public List<GameObject> Interactables;
+        public List<GameObject> NonSolids;
+        public List<GameObject> Solids;
+        public Dictionary<ExistingTools, Tool> Tools;
+
+        /// <summary>
+        /// The state of the current game.
+        /// </summary>
+        public enum State
+        {
+            Completed,
+            Paused,
+            Running,
+            GameOver
+        }
+
+        /// <summary>
+        /// Determines how a game object is handled.
+        /// This allows to change the behaviour and role of the game object.
+        /// </summary>
+        public enum Handling
+        {
+            Empty,
+            None,
+            Actor,
+            Collect,
+            Destroy,
+            Interact,
+            Solid
+        }
+
+        public bool Completed;
         private Texture2D Background;
+        public float OutOfBoundsBottom;
+        public State Mode;
+
         CollisionDetector CollisionDetector;
 
-
-        public GameState() {
-            Actors = new List<Miner>();
-            Solids = new List<GameObject>();
-            Collectibles = new List<GameObject>();
-            CollisionDetector = new CollisionDetector();
-        }
-
-        public List<GameObject> GetAll() {
-            return Actors.Concat(Solids).Concat(Collectibles).ToList();
-        }
-
-
-        public void AddActor(Miner actor)
+        public GameState()
         {
-            Actors.Add(actor);
+            Actors = new List<Miner>();
+            Collectibles = new List<GameObject>();
+            Destroyables = new List<GameObject>();
+            Interactables = new List<GameObject>();
+            NonSolids = new List<GameObject>();
+            Solids = new List<GameObject>();
+            Tools = new Dictionary<ExistingTools, Tool>();
+
+            CollisionDetector = new CollisionDetector();
+            Completed = false;
+            OutOfBoundsBottom = float.MinValue;
+            Mode = State.Running;
         }
 
-        public List<Miner> GetActors() {
+        public List<GameObject> GetAll()
+        {
+            return Actors
+                .Concat(Collectibles)
+                .Concat(Destroyables)
+                .Concat(Interactables)
+                .Concat(NonSolids)
+                .Concat(Solids)
+                .ToList();
+        }
+
+        public void Remove(GameObject obj, Handling handling = Handling.Empty)
+        {
+            if(obj == null)
+            {
+                return;
+            }
+            if(handling == Handling.Empty)
+            {
+                handling = obj.Handling;
+            }
+            obj.Handling = handling;
+            switch(handling)
+            {
+                case Handling.Actor:
+                    if(obj is Miner)
+                    {
+                        ResetMinersPosition();
+                        if (ShouldRemoveMinerFromScreen(obj as Miner))
+                            obj.Disable();
+                    }
+                    break;
+                case Handling.Solid:
+                    Solids.Remove(obj);
+                    break;
+                case Handling.None:
+                    NonSolids.Remove(obj);
+                    break;
+                case Handling.Interact:
+                    Interactables.Remove(obj);
+                    break;
+                case Handling.Destroy:
+                    Destroyables.Remove(obj);
+                    break;
+                case Handling.Collect:
+                    Collectibles.Remove(obj);
+                    break;
+            }
+        }
+        public void Add(GameObject obj, Handling handling = Handling.Empty)
+        {
+            if(obj == null)
+            {
+                return;
+            }
+            if(obj.BBox.Max.Y > OutOfBoundsBottom)
+            {
+                OutOfBoundsBottom = obj.BBox.Max.Y;
+            }
+            if(handling == Handling.Empty)
+            {
+                handling = obj.Handling;
+            }
+            obj.Handling = handling;
+            switch(handling)
+            {
+                case Handling.Actor:
+                    if(obj is Miner)
+                    {
+                        Actors.Add(obj as Miner);
+                    }
+                    break;
+                case Handling.Solid:
+                    Solids.Add(obj);
+                    break;
+                case Handling.None:
+                    NonSolids.Add(obj);
+                    break;
+                case Handling.Interact:
+                    Interactables.Add(obj);
+                    break;
+                case Handling.Destroy:
+                    Destroyables.Add(obj);
+                    break;
+                case Handling.Collect:
+                    Collectibles.Add(obj);
+                    break;
+            }
+        }
+
+        public List<Miner> GetActors()
+        {
             return Actors;
         }
 
+        public List<GameObject> GetObjects(params Handling[] handlings)
+        {
+            List<GameObject> objects = new List<GameObject>();
+            foreach (var handling in handlings)
+            {
+                switch (handling)
+                {
+                    case Handling.Collect:
+                        objects.AddRange(Collectibles);
+                        break;
+                    case Handling.Destroy:
+                        objects.AddRange(Destroyables);
+                        break;
+                    case Handling.Interact:
+                        objects.AddRange(Interactables);
+                        break;
+                    case Handling.None:
+                        objects.AddRange(NonSolids);
+                        break;
+                    case Handling.Solid:
+                        objects.AddRange(Solids);
+                        break;
+                }
+            }
 
-        public void AddSolid(GameObject solid)
-        {
-            Solids.Add(solid);
-        }
-        public List<GameObject> GetSolids()
-        {
-            return Solids;
-        }
-        public void RemoveSolid(GameObject solid)
-        {
-            Solids.Remove(solid);
+            return objects;
         }
 
-
-        public void AddCollectible(GameObject collectible)
+        /// <summary>
+        /// removes a miner from the screen when there are no more available tools to switch to
+        /// </summary>
+        /// <param name="miner"></param>
+        /// <returns>true if there are no more tools available</returns>
+        public bool ShouldRemoveMinerFromScreen(Miner miner)
         {
-            Collectibles.Add(collectible);
-        }
-        public List<GameObject> GetCollectibles()
-        {
-            return Collectibles;
-        }
-        public void RemoveCollectible(GameObject collectible)
-        {
-            Collectibles.Remove(collectible);
-        }
-
-        public void SetBackground(Texture2D background) {
-            Background = background;
+            return !CanChangeTool(miner, true);
         }
         
+        public void ResetMinersPosition()
+        {
+            foreach (Miner miner in Actors)
+            {
+                miner.ResetPosition();
+            }
+        }
+
+        /// <summary>
+        /// Tries to change the tool of the miner upon request or if he dies
+        /// </summary>
+        /// <param name="miner"></param>
+        /// <param name="ForRemoving">set to true if the method is called when trying to remove the miner</param>
+        /// <returns></returns>
+        public bool CanChangeTool(Miner miner, bool ForRemoving) 
+        {
+            int i;
+            for (i = 0; i < resources.Count(); ++i)
+            {
+                var ttl = resources.ElementAt(i);
+                if (ttl.Key.Equals(miner.Tool.ToString()))
+                    break;
+            }
+
+            int newToolIndex = (i + 1) % resources.Count();
+            var newTool = resources.ElementAt(newToolIndex);
+            var oldTool = resources.ElementAt(i);
+
+            // loop continuously through the tools until the next non-empty one is found
+            while (newTool.Value == 0 && newToolIndex != i)
+            {
+                newToolIndex = (newToolIndex + 1) % resources.Count();
+                newTool = resources.ElementAt(newToolIndex);
+            }
+
+            // if there is no tool available to switch just return
+            if (newToolIndex == i)
+                return false;
+
+            resources[newTool.Key]--;
+            if (!ForRemoving)
+                resources[oldTool.Key]++;
+            miner.Tool = (new ToolFactory()).Create(new Obj { Type = newTool.Key});
+            return true;
+        }
+
+        public void SetBackground(Texture2D background)
+        {
+            Background = background;
+        }
+
         public Texture2D GetBackground() {
             return Background;
         }

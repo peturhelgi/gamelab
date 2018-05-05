@@ -1,17 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Project.GameLogic;
-using Project.GameLogic.Collision;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.Util;
 
-namespace EditorLogic
-{
+namespace EditorLogic {
     class EditorController
     {
         public GameEngine GameEngine;

@@ -1,12 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Microsoft.Xna.Framework;
 
-namespace Project.GameLogic
-{
+namespace TheGreatEscape.GameLogic {
     class Camera
     {
         public Matrix view;
@@ -39,7 +34,8 @@ namespace Project.GameLogic
             Refresh();
         }
 
-        public Rectangle GetCameraRectangle(int backgroundW, int backgroundH) {
+        public Rectangle GetCameraRectangle(int backgroundW, int backgroundH)
+        {
             _rectangle.Height = Math.Max(backgroundH, _rectangle.Height);
             _rectangle.Width = Math.Max(backgroundW, _rectangle.Width);
             return _rectangle;

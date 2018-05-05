@@ -1,15 +1,13 @@
-﻿
-
+﻿using System;
+using System.Collections.Generic;
 using EditorLogic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Project.GameLogic;
-using System;
-using System.Collections.Generic;
+using TheGreatEscape.GameLogic;
 
-namespace Project.Menu
+namespace TheGreatEscape.Menu
 {
     class MenuManager
     {
@@ -210,6 +208,15 @@ namespace Project.Menu
             OldKeyboardState = Keyboard.GetState();
             OldPlayerOneState = GamePad.GetState(PlayerIndex.One);
             OldPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
+            if(_gameManager?.GameEngine?.GameState != null
+                && _gameManager.GameEngine.GameState.Completed) {
+                CallAction(MenuManager.Action.ShowLevelCompletedScreen, null);
+            }
+            if(_gameManager?.GameEngine?.GameState != null
+                && _gameManager.GameEngine.GameState.Mode == GameState.State.GameOver)
+            {
+                CallAction(Action.ShowGameOverScreen, null);
+            }
         }
 
         public void Draw(GameTime gameTime, int width, int height)
@@ -273,16 +280,9 @@ namespace Project.Menu
                 (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start) && _manager.OldPlayerOneState.IsButtonUp(Buttons.Start)) ||
                 (GamePad.GetState(PlayerIndex.Two).IsButtonDown(Buttons.Start) && _manager.OldPlayerTwoState.IsButtonUp(Buttons.Start)))
             {
-                _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
+                _manager.CallAction(MenuManager.Action.ShowPauseMenu, null);
             }
-            else if (Keyboard.GetState().IsKeyDown(Keys.F1))
-            {
-                _manager.CallAction(MenuManager.Action.ShowGameOverScreen, null);
-            }
-            else if (Keyboard.GetState().IsKeyDown(Keys.F2))
-            {
-                _manager.CallAction(MenuManager.Action.ShowLevelCompletedScreen, null);
-            }
+
             else if (Keyboard.GetState().IsKeyDown(Keys.Space)
                 && _manager.OldKeyboardState.IsKeyUp(Keys.Space))
             {
