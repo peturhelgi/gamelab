@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework;
 using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.GameLogic.Collision;
 using TheGreatEscape.GameLogic.Util;
+using Microsoft.Xna.Framework.Graphics;
+
 
 namespace TheGreatEscape.GameLogic
 {
@@ -16,6 +18,7 @@ namespace TheGreatEscape.GameLogic
         public const float JumpForce = -800;
         const float FatalSpeed = 6000.0f;
         public GameState GameState;
+                        
         public enum GameAction
         {
             walk,
@@ -26,6 +29,7 @@ namespace TheGreatEscape.GameLogic
             climb_up,
             climb_down,
             change_tool,
+            look
         };
 
         public CollisionDetector CollisionDetector;
@@ -105,6 +109,38 @@ namespace TheGreatEscape.GameLogic
                     break;
                 case (GameAction.climb_down):
                     TryToClimb(miner, new Vector2(0, 8));
+                    break;
+                case (GameAction.look):
+                    // TODO: Add looking
+                    float theta = value;
+                    if (miner.Orientation != SpriteEffects.FlipHorizontally)
+                    {
+                        // Miner looks to the left,
+                        // clamp theta to be in 3rd and 4th quarters
+                        if (0 <= theta && theta < MathHelper.PiOver2)
+                        {
+                            theta = MathHelper.PiOver2;
+                        }
+                        else if (-MathHelper.PiOver2 < theta && theta < 0.0f)
+                        {
+                            theta = -MathHelper.PiOver2;
+                        }
+                        theta = MathHelper.Pi - theta;
+                    }
+                    else
+                    {
+                        if (theta < -MathHelper.PiOver2)
+                        {
+                            theta = -MathHelper.PiOver2;
+                        }
+                        else if (MathHelper.PiOver2 < theta)
+                        {
+                            theta = MathHelper.PiOver2;
+                        }
+                    }
+
+
+                    miner.LookAt = theta;
                     break;
                 default:
                     break;
