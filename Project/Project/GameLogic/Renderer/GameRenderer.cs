@@ -74,7 +74,7 @@ namespace TheGreatEscape.GameLogic.Renderer
                                     (int)obj.Position.X,
                                     (int)obj.Position.Y,
                                     (int)obj.SpriteSize.X,
-                                    (int)obj.SpriteSize.Y),
+                                    (int)obj.SpriteSize.Y), null,
                                 Color.White);
                         }
                     }

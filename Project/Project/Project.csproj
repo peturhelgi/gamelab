@@ -195,7 +195,8 @@
     <Content Include="Content\Sprites\Backgrounds\Level3Background.png" />
     <Content Include="Content\Sprites\Interactables\crate.png" />
     <Content Include="Content\Sprites\Interactables\Door.png" />
-    <Content Include="Content\Sprites\Interactables\escalator_mechanism.png" />
+    <Content Include="Content\Sprites\Interactables\escalator_mechanismx.png" />
+    <Content Include="Content\Sprites\Interactables\escalator_mechanismy.png" />
     <Content Include="Content\Sprites\Interactables\escalator_platform.png" />
     <Content Include="Content\Sprites\Interactables\LadderLong.png" />
     <Content Include="Content\Sprites\Interactables\LadderShort.png" />

@@ -30,6 +30,7 @@ namespace TheGreatEscape.LevelManager
             {
                 GameObject gameObject = factory.Create(obj);
                 gameState.AddObject(gameObject);
+                if (gameObject is Platform) gameState.AddObject((gameObject as Platform).Background);
             }
 
             return gameState;

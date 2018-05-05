@@ -291,7 +291,8 @@
       "displacement": 500,
       "direction": "x",
       "activationkey": 0,
-      "texture": "Sprites/Interactables/escalator_platform"
+      "texture": "Sprites/Interactables/escalator_platform",
+      "secondtexture": "Sprites/Interactables/escalator_mechanismx"
     },
     {
       "dim": {
@@ -299,7 +300,7 @@
         "y": 116
       },
       "pos": {
-        "x": 3200,
+        "x": 3500,
         "y": 1050
       },
       "vel": {
@@ -308,10 +309,11 @@
       },
       "m": 20,
       "type": "platform",
-      "displacement": 500,
+      "displacement": 700,
       "direction": "y",
       "activationkey": 1,
-      "texture": "Sprites/Interactables/escalator_platform"
+      "texture": "Sprites/Interactables/escalator_platform",
+      "secondtexture": "Sprites/Interactables/escalator_mechanismy"
     },
     {
       "dim": {
@@ -330,7 +332,7 @@
       "type": "lever",
       "activationkey": 0,
       "texture": "Sprites/Interactables/lever_left",
-      "leversecondtexture": "Sprites/Interactables/lever_right"
+      "secondtexture": "Sprites/Interactables/lever_right"
     },
     {
       "dim": {
@@ -349,7 +351,7 @@
       "type": "lever",
       "activationkey": 1,
       "texture": "Sprites/Interactables/lever_left",
-      "leversecondtexture": "Sprites/Interactables/lever_right"
+      "secondtexture": "Sprites/Interactables/lever_right"
     }
   ]
 }

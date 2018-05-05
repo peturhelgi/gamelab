@@ -37,7 +37,7 @@ namespace TheGreatEscape.GameLogic
         }
 
         public List<GameObject> GetAll() {
-            return Actors.Concat(Solids).Concat(Collectibles).Concat(NonSolids).ToList();
+            return NonSolids.Concat(Actors).Concat(Collectibles).Concat(Solids).ToList();
         }
 
         public void AddObject(GameObject obj)
@@ -77,6 +77,10 @@ namespace TheGreatEscape.GameLogic
             else if (obj is Platform)
             {
                 AddSolid(obj);
+            }
+            else if(obj is PlatformBackground)
+            {
+                AddNonSolid(obj);
             }
             else if (obj is Lever)
             {

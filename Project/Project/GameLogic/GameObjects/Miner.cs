@@ -240,7 +240,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             }
             else
             {
-                // gs.AddSolid(c);
+                gs.AddSolid(c);
                 MyDebugger.WriteLine("crate hits something as it is picked up");
                 return false;
             }
@@ -266,7 +266,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             }
             else
             {
-                // gs.AddSolid(c);
+                gs.AddSolid(c);
                 MyDebugger.WriteLine("crate hits something as it is picked up");
                 return false;
             }

@@ -84,7 +84,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.Texture,
                         entity.Displacement,
                         entity.Direction,
-                        entity.ActivationKey);
+                        entity.ActivationKey,
+                        entity.SecondTexture);
                     break;
                 case "lever":
                     instance = new Lever(

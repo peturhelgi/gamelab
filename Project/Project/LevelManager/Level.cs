@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using Microsoft.Xna.Framework;
+using TheGreatEscape.GameLogic.GameObjects;
 
 namespace TheGreatEscape.LevelManager {
     public class Level
@@ -48,7 +49,7 @@ namespace TheGreatEscape.LevelManager {
         [JsonProperty("activationkey")]
         public int ActivationKey;
 
-        [JsonProperty("leversecondtexture")]
+        [JsonProperty("secondtexture")]
         public string SecondTexture;
     }
 }

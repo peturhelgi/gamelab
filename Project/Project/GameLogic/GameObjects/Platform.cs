@@ -14,11 +14,11 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public Vector2 DisplacementStep;
         public float MaxHeight;
         public float MinHeight;
-        public CollisionDetector CollisionDetector;
         private bool _movingInYdir;
+        private string _secondTextureString;
+        public PlatformBackground Background;
 
-
-        public Platform(Vector2 position, Vector2 spriteSize, string textureString, float displacement, string dir, int actId)
+        public Platform(Vector2 position, Vector2 spriteSize, string textureString, float displacement, string dir, int actId, string secondTextureString)
             : base(position, spriteSize)
         {
 
@@ -35,7 +35,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Activate = false;
             Displacement = displacement;
             ActivationId = actId;
-            CollisionDetector = new CollisionDetector();
+            _secondTextureString = secondTextureString;
+
 
             if (dir == "y")
             {
@@ -43,6 +44,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 DisplacementStep = new Vector2(0.0f, 5.0f);
                 MaxHeight = Position.Y - Displacement;
                 MinHeight = Position.Y;
+                Background = new PlatformBackground(new Vector2(Position.X, MaxHeight + SpriteSize.Y*0.8f), 
+                    new Vector2(SpriteSize.X, Displacement),
+                    secondTextureString);
             }
             else if (dir == "x")
             {
@@ -50,7 +54,12 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 DisplacementStep = new Vector2(-5.0f, 0.0f);
                 MaxHeight = Position.X + Displacement;
                 MinHeight = Position.X;
+                Background = new PlatformBackground(new Vector2(Position.X, Position.Y + SpriteSize.Y*0.5f),
+                    new Vector2(Displacement + SpriteSize.X, SpriteSize.Y),
+                    secondTextureString);
             }
+
+
         }
 
         public override AxisAllignedBoundingBox BBox
@@ -63,63 +72,24 @@ namespace TheGreatEscape.GameLogic.GameObjects
         }
 
         public bool IsMovingInY() { return _movingInYdir; }
+    }
 
-        /* public void Move(GameState gamestate)
+    class PlatformBackground : GameObject
+    {
+        public PlatformBackground(Vector2 position, Vector2 spriteSize, string textureString)
+             : base(position, spriteSize)
         {
-            //List<GameObject> actors = new List<GameObject>();
-            //foreach(Miner miner in gamestate.GetActors())
-            //{
-            //    actors.Add(miner as GameObject);
-            //}
-            float offset = 0.4f;
-            AxisAllignedBoundingBox interactionBBox = new AxisAllignedBoundingBox(
-                new Vector2(BBox.Min.X, BBox.Min.Y - offset),
-                new Vector2(BBox.Max.X, BBox.Min.Y));
-            List<GameObject> collisions = CollisionDetector.FindCollisions(interactionBBox, gamestate.GetAll());
+            TextureString = textureString;
+            Position = position;
+            SpriteSize = spriteSize;
+            Falling = false;
 
-            if (!Activate)
-            {
-                // moving down or left
-                if ((_movingInYdir && Position.Y < MinHeight) || (!_movingInYdir && Position.X > MinHeight))
-                {
-                    Position = Position + DisplacementStep;
-                    foreach (GameObject c in collisions)
-                    {
-                        if (c is Platform) continue;   
-                        if (_movingInYdir && (c.Position.Y + c.SpriteSize.Y> Position.Y + SpriteSize.Y)) continue;
-                        if (!_movingInYdir && (c.Position.X > Position.X + SpriteSize.X)) continue;
-                        c.Position = c.Position + DisplacementStep;
-                        c.Falling = false;
-                        c.Speed = Vector2.Zero;
-                        if ((c is Miner) && (c as Miner).Holding)
-                        {
-                            (c as Miner).HeldObj.Position = (c as Miner).HeldObj.Position + DisplacementStep;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                // moving up or right
-                if ((_movingInYdir && Position.Y > MaxHeight) || (!_movingInYdir && Position.X < MaxHeight))
-                {
-                    Position = Position - DisplacementStep;
-                    foreach (GameObject c in collisions)
-                    {
-                        if (c is Platform) continue;
-                        if (_movingInYdir && (c.Position.Y + c.SpriteSize.Y > Position.Y + SpriteSize.Y)) continue;
-                        if (!_movingInYdir && (c.Position.X + c.SpriteSize.X < Position.X)) continue;
-                        c.Position = c.Position - DisplacementStep;
-                        c.Falling = false;
-                        c.Speed = Vector2.Zero;
-                        if ((c is Miner) && (c as Miner).Holding)
-                        {
-                            (c as Miner).HeldObj.Position = (c as Miner).HeldObj.Position - DisplacementStep;
-                        }
-                    }
-                }
-            }
-        }*/
+            Speed = Vector2.Zero;
+            Mass = 10;
+            Visible = true;
+            LastUpdated = new TimeSpan();
+            Moveable = false;
+        }
     }
 }
 
