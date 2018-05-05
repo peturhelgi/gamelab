@@ -130,7 +130,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
         public double Mass { get; set; }
 
-        public AxisAllignedBoundingBox BBox { get {
+        public virtual AxisAllignedBoundingBox BBox { get {
                 return new AxisAllignedBoundingBox(Position, Position + SpriteSize);
             } }
 

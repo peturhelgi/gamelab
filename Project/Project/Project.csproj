@@ -108,8 +108,10 @@
     <Compile Include="EditorLogic\Util\CircularSelector.cs" />
     <Compile Include="GameLogic\GameObjects\Door.cs" />
     <Compile Include="GameLogic\GameObjects\Factory.cs" />
+    <Compile Include="GameLogic\GameObjects\Lever.cs" />
     <Compile Include="GameLogic\GameObjects\Pickaxe.cs" />
     <Compile Include="GameLogic\GameObjects\Ground.cs" />
+    <Compile Include="GameLogic\GameObjects\Platform.cs" />
     <Compile Include="GameLogic\GameObjects\Rock.cs" />
     <Compile Include="GameLogic\GameObjects\Rope.cs" />
     <Compile Include="GameLogic\GameObjects\Tool.cs" />
@@ -194,8 +196,13 @@
     <Content Include="Content\Sprites\Backgrounds\Level3Background.png" />
     <Content Include="Content\Sprites\Interactables\crate.png" />
     <Content Include="Content\Sprites\Interactables\Door.png" />
+    <Content Include="Content\Sprites\Interactables\escalator_mechanismx.png" />
+    <Content Include="Content\Sprites\Interactables\escalator_mechanismy.png" />
+    <Content Include="Content\Sprites\Interactables\escalator_platform.png" />
     <Content Include="Content\Sprites\Interactables\LadderLong.png" />
     <Content Include="Content\Sprites\Interactables\LadderShort.png" />
+    <Content Include="Content\Sprites\Interactables\lever_left.png" />
+    <Content Include="Content\Sprites\Interactables\lever_right.png" />
     <Content Include="Content\Sprites\Miners\MinerHandsInPants.png" />
     <Content Include="Content\Sprites\Miners\MinerPickaxe.png" />
     <Content Include="Content\Sprites\Miners\MinerRope.png" />
