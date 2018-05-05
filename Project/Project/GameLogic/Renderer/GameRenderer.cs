@@ -119,7 +119,7 @@ namespace TheGreatEscape.GameLogic.Renderer
             _spriteBatch.End();
 
             _spriteBatch.Begin();
-            _spriteBatch.DrawString(_gameState.GameFont, "1 2 3 4 5 6 7 8 9 0", new Vector2(100, 100), Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0f);
+            _spriteBatch.DrawString(_gameState.GameFont, "1 2 3 4 5 6 7 8 9 0", new Vector2(100, 100), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             _spriteBatch.End();
 
         }
