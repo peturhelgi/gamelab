@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.GameLogic.Collision;
 using TheGreatEscape.GameLogic.Util;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace TheGreatEscape.GameLogic
 {
@@ -26,6 +27,7 @@ namespace TheGreatEscape.GameLogic
             climb_up,
             climb_down,
             change_tool,
+            look
         };
 
         public CollisionDetector CollisionDetector;
@@ -106,6 +108,39 @@ namespace TheGreatEscape.GameLogic
                     break;
                 case (GameAction.climb_down):
                     TryToClimb(miner, new Vector2(0, 8));
+                    break;
+                case (GameAction.look):
+                    // TODO: Add looking
+                    float PI = 3.1415926535f,
+                        theta = value;
+                    if (miner.Orientation != SpriteEffects.FlipHorizontally)
+                    {
+                        // Miner looks to the left,
+                        // clamp theta to be in 3rd and 4th quarters
+                        if (0 <= theta && theta < 0.5f * PI)
+                        {
+                            theta = 0.5f * PI;
+                        }
+                        else if (-0.5f * PI < theta && theta < 0.0f)
+                        {
+                            theta = -0.5f * PI;
+                        }
+                        theta = PI - theta;
+                    }
+                    else
+                    {
+                        if (theta < -0.5f * PI)
+                        {
+                            theta = -0.5f * PI;
+                        }
+                        else if (0.5f * PI < theta)
+                        {
+                            theta = 0.5f * PI;
+                        }
+                    }
+
+
+                    miner.LookAt = theta;
                     break;
                 default:
                     break;

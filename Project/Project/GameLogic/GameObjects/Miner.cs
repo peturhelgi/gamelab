@@ -29,6 +29,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public MotionSpriteSheet CurrMotion;
         public SpriteEffects Orientation;
         public float xVel;
+        public float LookAt;
 
         ToolFactory factory = new ToolFactory();
         public Tool Tool;
@@ -71,6 +72,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Climbing = false;
             Moveable = true;
             Interacting = false;
+            LookAt = 0.0f;
 
             // Motion sheets
             xVel = 0;
