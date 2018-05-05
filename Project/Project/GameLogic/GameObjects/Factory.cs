@@ -73,7 +73,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         Handling = GameState.Handling.Solid
                     };
                     break;
-                case "end":
+                case "door":
                     instance = new Door(
                         entity.Position,
                         entity.SpriteSize,

@@ -16,7 +16,7 @@ namespace TheGreatEscape.GameLogic
         public const float WalkSpeed = 5.6f;
         public const float RunSpeed = 9.8f;
         public const float JumpForce = -800;
-        const float FatalSpeed = 6000.0f;
+        const float FatalSpeed = 2000.0f;
         public GameState GameState;
                         
         public enum GameAction

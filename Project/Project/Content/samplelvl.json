@@ -17,7 +17,7 @@
         "x": 210,
         "y": 250
       },
-      "type": "end"
+      "type": "door"
     },
     {
       "dim": {
@@ -52,7 +52,7 @@
       },
       "m": 50,
       "type": "rock",
-      "texture": "Sprites/Rocks/BareRock5"
+      "texture": "Sprites/Rocks/rock_5"
 
     },
     {
@@ -70,7 +70,7 @@
       },
       "m": 20,
       "type": "rock",
-      "texture": "Sprites/Rocks/BareRock1"
+      "texture": "Sprites/Rocks/rock_1"
 
     },
     {
@@ -88,7 +88,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/Ground1"
+      "texture": "Sprites/Grounds/ground_1"
     },
     {
       "dim": {
@@ -105,7 +105,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/Ground3"
+      "texture": "Sprites/Grounds/ground_3"
     }
   ]
 }

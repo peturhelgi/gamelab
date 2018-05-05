@@ -78,12 +78,34 @@ namespace EditorLogic {
 
 
             // when Y is pressed, open the picker wheel
-            if (gamePadState.IsButtonDown(Buttons.Y))
+            if (_manager.ObjectPickerOpen && gamePadState.ThumbSticks.Left.Length() > 0.5)
             {
-                _manager.ObjectPickerOpen = true;
-                if (gamePadState.ThumbSticks.Left.Length() > 0.5)
+                _manager.CircularSelector.Update(gamePadState.ThumbSticks.Left);
+            }
+
+            if (_manager.ObjectPickerOpen)
+            {
+                // go to the next category of GameObjects
+                if (gamePadState.IsButtonDown(Buttons.RightShoulder) && _oldGamePadState.IsButtonUp(Buttons.RightShoulder))
                 {
-                    _manager.CircularSelector.Update(gamePadState.ThumbSticks.Left);
+                    _manager.GetNextSelector();
+                }
+
+                if (gamePadState.IsButtonDown(Buttons.LeftShoulder) && _oldGamePadState.IsButtonUp(Buttons.LeftShoulder))
+                {
+                    _manager.GetPrevSelector();
+                }
+            }
+
+            if (gamePadState.IsButtonDown(Buttons.Y) && _oldGamePadState.IsButtonUp(Buttons.Y))
+            {
+                _manager.ObjectPickerOpen = !_manager.ObjectPickerOpen;
+
+                if (_manager.ObjectPickerOpen == false)
+                {
+                    int itemNumber = _manager.CircularSelector.SelectedElement %
+                           _manager.CircularSelector.NumberOfObjects();
+                    _manager.CreateNewGameObject(_manager.CircularSelector.GetObjectAtIndex(itemNumber));
                 }
             }
             else
@@ -162,13 +184,15 @@ namespace EditorLogic {
                 }
             }
 
-            //on release of Y, pick the current object of the selector
-            if (gamePadState.IsButtonUp(Buttons.Y) && _oldGamePadState.IsButtonDown(Buttons.Y))
-            {
-                _manager.ObjectPickerOpen = false;
-                int itemNumber = _manager.CircularSelector.SelectedElement % _manager.ObjectTemplates.Count;
-                _manager.CreateNewGameObject(_manager.ObjectTemplates[itemNumber]);
-            }
+            ////on release of Y, pick the current object of the selector
+            //if (gamePadState.IsButtonDown(Buttons.Y) && _oldGamePadState.IsButtonUp(Buttons.Y)
+            //    && _manager.ObjectPickerOpen == true)
+            //{
+            //    _manager.ObjectPickerOpen = false;
+            //    int itemNumber = _manager.CircularSelector.SelectedElement %
+            //                _manager.CircularSelector.NumberOfObjects();
+            //    _manager.CreateNewGameObject(_manager.CircularSelector.GetObjectAtIndex(itemNumber));
+            //}
 
 
 

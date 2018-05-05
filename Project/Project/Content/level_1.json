@@ -21,7 +21,7 @@
         "x": 1952,
         "y": -150        
       },
-      "type": "end",
+      "type": "door",
       "texture": "Sprites/Interactables/Door"
     },
     {
@@ -75,7 +75,7 @@
       },
       "m": 10,
       "type": "rock",
-      "texture": "Sprites/Rocks/BareRock5"
+      "texture": "Sprites/Rocks/rock_5"
 
     },
     {
@@ -93,7 +93,7 @@
       },
       "m": 20,
       "type": "rock",
-      "texture": "Sprites/Rocks/BareRock1"
+      "texture": "Sprites/Rocks/rock_1"
 
     },
     {
@@ -111,7 +111,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/TallGround"
+      "texture": "Sprites/Grounds/ground_tall"
     },
     {
       "dim": {
@@ -128,7 +128,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/LowGround"
+      "texture": "Sprites/Grounds/ground_low"
     },
     {
       "dim": {
@@ -145,7 +145,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/LowGround"
+      "texture": "Sprites/Grounds/ground_low"
     },
     {
       "dim": {
@@ -162,7 +162,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/LowGround"
+      "texture": "Sprites/Grounds/ground_low"
     },
     {
       "dim": {
@@ -179,7 +179,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/TallGround"
+      "texture": "Sprites/Grounds/ground_tall"
     },
     {
       "dim": {
@@ -196,7 +196,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/SuspendedGround1"
+      "texture": "Sprites/Grounds/ground_suspended_1"
     },
     {
       "dim": {
@@ -213,7 +213,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/SuspendedGround1"
+      "texture": "Sprites/Grounds/ground_suspended_1"
     },
     // ======== LAST PART OF CAVE ==========
     {
@@ -231,7 +231,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/SuspendedGround1"
+      "texture": "Sprites/Grounds/ground_suspended_1"
     },
     {
       "dim": {
@@ -248,7 +248,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/SuspendedGround1"
+      "texture": "Sprites/Grounds/ground_suspended_1"
     },
     {
       "dim": {
@@ -265,7 +265,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/SuspendedGround1"
+      "texture": "Sprites/Grounds/ground_suspended_1"
     },
     {
       "dim": {
@@ -282,7 +282,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/SuspendedGround1"
+      "texture": "Sprites/Grounds/ground_suspended_1"
     },
     {
       "dim": {
@@ -299,7 +299,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/SuspendedGround1"
+      "texture": "Sprites/Grounds/ground_suspended_1"
     },
     {
       "dim": {
@@ -316,7 +316,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/SuspendedGround2"
+      "texture": "Sprites/Grounds/ground_suspended_2"
     },
         {
       "dim": {
@@ -333,7 +333,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/LowGround"
+      "texture": "Sprites/Grounds/ground_low"
     },
     // =================================
     {
@@ -351,7 +351,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/SuspendedGround2"
+      "texture": "Sprites/Grounds/ground_suspended_2"
     },
     {
       "dim": {
@@ -368,7 +368,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/SuspendedGround2"
+      "texture": "Sprites/Grounds/ground_suspended_2"
     },
     {
       "dim": {
@@ -385,7 +385,7 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/SuspendedGround2"
+      "texture": "Sprites/Grounds/ground_suspended_2"
     }
   ]
 }

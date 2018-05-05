@@ -10,6 +10,7 @@ using TheGreatEscape.GameLogic.Renderer;
 using System;
 using System.Collections.Generic;
 using TheGreatEscape.EditorLogic.Util;
+using System.Linq;
 
 namespace EditorLogic
 {
@@ -39,9 +40,9 @@ namespace EditorLogic
         public bool CurrentIsNewObject;
         public bool ObjectPickerOpen;
 
-        public List<GameObject> ObjectTemplates;
+        public SortedList<String, CircularSelector> ObjectsSelector;
         public CircularSelector CircularSelector;
-
+        public Dictionary<string , Dictionary<string, Texture2D>> GameObjectTextures;
 
 
         public EditorManager(ContentManager content, GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics)
@@ -57,30 +58,72 @@ namespace EditorLogic
             _oldKeyboardState = Keyboard.GetState();
             _oldGamePadState = GamePad.GetState(PlayerIndex.One);
 
-
+            GameObjectTextures = new Dictionary<string, Dictionary<string, Texture2D>>();
+            ObjectsSelector = new SortedList<string, CircularSelector>();
+            LoadAllGameObjects();
+            CircularSelector = ObjectsSelector.First().Value;
             // TODO: Move to GameObject factory
             // Templates.Add(new Miner(Vector2.Zero, new Vector2(100, 150), Vector2.Zero, 80, "Sprites/Miners/MinerHandsInPants"));
-            GameObjectFactory factory = new GameObjectFactory();
-            Obj rock = new Obj
-            {
-                Type = "rock",
-                Position = Vector2.Zero,
-                SpriteSize = new Vector2(150, 100)
+           
+
+        }
+
+        public void LoadAllGameObjects()
+        {
+            List<String> DirNames = new List<String> {
+                "Interactables", "Grounds", "Rocks"
             };
 
-            ObjectTemplates = new List<GameObject>();
-            for(int i = 1; i <= 5; ++i)
+            GameObjectFactory factory = new GameObjectFactory();
+
+            foreach (String dirName in DirNames)
             {
-                rock.Texture = "Sprites/Rocks/BareRock" + i;
-                ObjectTemplates.Add(factory.Create(rock));
-            }
-            foreach (GameObject obj in ObjectTemplates) {
-                obj.Texture = content.Load<Texture2D>(obj.TextureString);
+                Dictionary<string, Texture2D> objectTextures = TextureContent.LoadListContent
+                    <Texture2D>(_content, dirName);
+                List<GameObject> ObjectTemplates = new List<GameObject>();
+
+                GameObjectTextures.Add(dirName, objectTextures);
+
+                foreach (var gameObj in objectTextures)
+                {
+                    // the type of the object to create is extracted from the 
+                    // sprite name
+                    string objType = gameObj.Key.Split('/').Last();
+                    // for more objects of the same type, the delimitor used is underscore
+                    objType = objType.Split('_').First().ToLower();
+
+                    Obj gobj = new Obj
+                    {
+                        Type = objType,
+                        Position = Vector2.Zero,
+                        SpriteSize = new Vector2(150, 100)
+                    };
+
+                    GameObject gameObject = factory.Create(gobj);
+                    gameObject.Texture = gameObj.Value;
+                    ObjectTemplates.Add(gameObject);
+                }
+
+                CircularSelector circSelector = new CircularSelector(_content, dirName);
+                circSelector.SetObjects(ObjectTemplates);
+                ObjectsSelector.Add(dirName, circSelector);
             }
 
-            CircularSelector = new CircularSelector(_content);
-            CircularSelector.SetObjects(ObjectTemplates);
+        }
 
+        public void GetNextSelector()
+        {
+            int indexOfNext = ObjectsSelector.IndexOfKey(CircularSelector.SelectableObjects) + 1;
+            indexOfNext %= ObjectsSelector.Count;
+            CircularSelector = ObjectsSelector.Values[indexOfNext];
+        }
+
+        public void GetPrevSelector()
+        {
+            int indexOfPrev = ObjectsSelector.IndexOfKey(CircularSelector.SelectableObjects) - 1;
+            if (indexOfPrev < 0)
+                indexOfPrev += ObjectsSelector.Count;
+            CircularSelector = ObjectsSelector.Values[indexOfPrev];
         }
 
         public void DeselectCurrentObjects()
@@ -148,7 +191,8 @@ namespace EditorLogic
         }
 
         public void PickObjectUnderCursor() {
-            List<GameObject> collisions = _engine.CollisionDetector.FindCollisions(new AxisAllignedBoundingBox(CursorPosition, CursorPosition+CursorSize), _engine.GameState.Solids);
+            List<GameObject> collisions = _engine.CollisionDetector.FindCollisions(
+                new AxisAllignedBoundingBox(CursorPosition, CursorPosition+CursorSize), _engine.GameState.GetAll());
             if (collisions.Count > 0) {
                 CurrentObjects = collisions;
                 CursorPosition = new Vector2(float.MaxValue);

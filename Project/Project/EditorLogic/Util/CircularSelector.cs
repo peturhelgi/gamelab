@@ -13,12 +13,22 @@ namespace TheGreatEscape.EditorLogic.Util {
         List<GameObject> _objects;
         float _selectorAngle;
         public int SelectedElement;
+        public string SelectableObjects;
 
-        public CircularSelector(ContentManager content)
+        public CircularSelector(ContentManager content, String selectableObjects)
         {
+            SelectableObjects = selectableObjects;
             _pickerWheel = content.Load<Texture2D>("Sprites/Misc/picker_wheel");
 
 
+        }
+        public int NumberOfObjects()
+        {
+            return _objects.Count;
+        }
+        public GameObject GetObjectAtIndex(int itemNumber)
+        {
+            return _objects[itemNumber];
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 size, Vector2 position)
