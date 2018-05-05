@@ -32,16 +32,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
         public void Interact(List<Platform> platforms)
         {
-            if (!ON)
-            {
-                foreach (Platform p in platforms)
-                    if (p.ActivationId == ActivationId) p.Activate = true;
-            }
-            else
-            {
-                foreach (Platform p in platforms)
-                    if (p.ActivationId == ActivationId) p.Activate = false;
-            }
+            foreach (Platform p in platforms)
+                if (p.ActivationId == ActivationId) p.Activate = !p.Activate;
             ON = !ON;
         }
     }
