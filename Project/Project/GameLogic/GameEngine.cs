@@ -114,7 +114,7 @@ namespace TheGreatEscape.GameLogic
 
         private void ChangeTool(Miner miner)
         {
-            GameState.ChangeTool(miner);
+            GameState.CanChangeTool(miner, false);
         }
 
         public bool IsGameOver()
