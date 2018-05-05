@@ -98,6 +98,10 @@ namespace TheGreatEscape.GameLogic
                 case Handling.Actor:
                     if(obj is Miner)
                     {
+                        Remove((obj as Miner).HeldObj);
+                        (obj as Miner).HeldObj = null;
+                        (obj as Miner).Holding = false;
+
                         ResetMinersPosition();
                         if (ShouldRemoveMinerFromScreen(obj as Miner))
                             obj.Disable();
@@ -144,10 +148,10 @@ namespace TheGreatEscape.GameLogic
                     }
                     break;
                 case Handling.Solid:
-                    Solids.Add(obj);
+                    if(!Solids.Contains(obj)) Solids.Add(obj);
                     break;
                 case Handling.None:
-                    NonSolids.Add(obj);
+                    if(!NonSolids.Contains(obj)) NonSolids.Add(obj);
                     break;
                 case Handling.Interact:
                     Interactables.Add(obj);

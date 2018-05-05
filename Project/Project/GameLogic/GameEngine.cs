@@ -83,7 +83,8 @@ namespace TheGreatEscape.GameLogic
                     posDiff -= miner.Position;
                     if (miner.Holding && (Math.Abs(posDiff.X) > 1e-6))
                     {
-                        if (miner.HeldObj.Position.X > miner.Position.X) miner.pickUpCrateLeftSide(miner.HeldObj, GameState);
+                        if (value == 1) miner.pickUpCrateRightSide(miner.HeldObj, GameState);
+                        else if (value == -1) miner.pickUpCrateLeftSide(miner.HeldObj, GameState);
                         CalculateAndSetNewPosition(miner.HeldObj, new Vector2(value * WalkSpeed, 0));
                     }
                     break;
@@ -95,9 +96,10 @@ namespace TheGreatEscape.GameLogic
                     posDiff = miner.Position;
                     CalculateAndSetNewPosition(miner, new Vector2(value * RunSpeed, 0));
                     posDiff -= miner.Position;
-                    if (miner.Holding && (posDiff.Length() > 1e-6))
+                    if (miner.Holding && (Math.Abs(posDiff.X) > 1e-6))
                     {
-                        if (miner.HeldObj.Position.X > miner.Position.X) miner.pickUpCrateLeftSide(miner.HeldObj, GameState);
+                        if (value == 1) miner.pickUpCrateRightSide(miner.HeldObj, GameState);
+                        else if (value == -1) miner.pickUpCrateLeftSide(miner.HeldObj, GameState);
                         CalculateAndSetNewPosition(miner.HeldObj, new Vector2(value * RunSpeed, 0));
                     }
                     break;
@@ -166,11 +168,15 @@ namespace TheGreatEscape.GameLogic
 
         public void Update()
         {
+            List<GameObject> actorsFirst = new List<GameObject>();
+            List<Miner> actors = GameState.GetActors();
             List<GameObject> allObjects = GameState.GetAll();
-
             List<Platform> platforms = new List<Platform>();
+
+            foreach (Miner m in GameState.GetActors()) actorsFirst.Add(m as GameObject);
             foreach(GameObject g in allObjects)
             {
+                if (!(g is Miner)) actorsFirst.Add(g);
                 if(g is Platform)
                 {
                     platforms.Add(g as Platform);
@@ -179,7 +185,7 @@ namespace TheGreatEscape.GameLogic
 
             foreach (Platform p in platforms) MovePlatform(p);
 
-            foreach (GameObject c in allObjects)
+            foreach (GameObject c in actorsFirst)
             {
                 if (c.Active && c.Moveable)
                 {
@@ -219,14 +225,16 @@ namespace TheGreatEscape.GameLogic
         {
             if (obj.Holding)
             {
+                if (SwitchLever(obj)) return;
                 obj.InteractWithCrate(GameState);
             }
             else
             {
-                bool worked = obj.InteractWithCrate(GameState);
-                if (!worked) obj.UseTool(GameState);
+                if(obj.InteractWithCrate(GameState)) return;
+                if (SwitchLever(obj)) return;
+                obj.UseTool(GameState);
             }
-            SwitchLever(obj);
+            
         }
 
 
@@ -269,7 +277,7 @@ namespace TheGreatEscape.GameLogic
             else miner.Climbing = false;
         }
 
-        private void SwitchLever(Miner miner)
+        private bool SwitchLever(Miner miner)
         {
             List<Platform> platforms = new List<Platform>();
             List<GameObject> levers = new List<GameObject>();
@@ -284,6 +292,7 @@ namespace TheGreatEscape.GameLogic
             {
                 (c as Lever).Interact(platforms);
             }
+            return (collisions.Count != 0);
         }
 
         public void MovePlatform(Platform platform)
@@ -433,8 +442,18 @@ namespace TheGreatEscape.GameLogic
             bool climbingMiner = false;
             if (obj is Miner) climbingMiner = (obj as Miner).Climbing;
 
+            bool heldObjFalling = false;
+            foreach (Miner m in GameState.GetActors())
+            {
+                if (m.Holding && m.HeldObj == obj)
+                {
+                    heldObjFalling = true;
+                    break;
+                }
+            }
+
             // We only need to check things in y-axis (including intersection), if we are actually moving in it
-            if (obj.Falling || climbingMiner)
+            if (obj.Falling || climbingMiner || heldObjFalling)
             {
                 // TODO: Use GameState functions instead
                 collisions = CollisionDetector.FindCollisions(yBox, GameState.Solids);
@@ -449,13 +468,14 @@ namespace TheGreatEscape.GameLogic
                     }
 
                     if (obj is Miner && obj.Speed.Y > FatalSpeed)
-                    {
+                    { 
                         GameState.Remove(obj);
                     }
-                    obj.Speed = Vector2.Zero;
 
+                    obj.Speed = Vector2.Zero;
                     // TODO: Perhaps move this to the Miner class
                     if (obj is Miner && (obj as Miner).Holding) (obj as Miner).HeldObj.Speed = Vector2.Zero;
+
                     if (direction.Y > 0) // hitting floor
                     {
                         direction.Y = (lowestPoint - obj.BBox.Max.Y) - 0.1f;
@@ -464,22 +484,18 @@ namespace TheGreatEscape.GameLogic
                     }
 
                     // if the object is being held by a miner and the objects has a collision, that miner drops the object
-                    List<GameObject> allObjects = GameState.GetAll();
-                    foreach (GameObject c in allObjects)
+                    foreach (Miner m in GameState.GetActors())
                     {
-                        if (c is Miner)
+                        if (m.Holding && m.HeldObj == obj)
                         {
-                            Miner miner = c as Miner;
-                            if (miner.Holding && miner.HeldObj == obj)
-                            {
-                                GameState.Remove(miner.HeldObj);
+                            MyDebugger.WriteLine("held object hits y axis");
+                            GameState.Remove(obj, GameState.Handling.None);
 
-                                miner.HeldObj.Falling = true;
-                                GameState.Add(miner.HeldObj, GameState.Handling.Solid);
+                            obj.Falling = true;
+                            GameState.Add(obj, GameState.Handling.Solid);
 
-                                miner.HeldObj = null;
-                                miner.Holding = false;
-                            }
+                            m.HeldObj = null;
+                            m.Holding = false;
                         }
                     }
                 }
@@ -501,16 +517,12 @@ namespace TheGreatEscape.GameLogic
 
                     // do not drop if object is being held by a miner
                     List<GameObject> allObjects = GameState.GetAll();
-                    foreach (GameObject c in allObjects)
+                    foreach (Miner c in GameState.GetActors())
                     {
-                        if (c is Miner)
+                        if (c.Holding && c.HeldObj == obj)
                         {
-                            Miner miner = c as Miner;
-                            if (miner.Holding && miner.HeldObj == obj)
-                            {
-                                obj.Falling = false;
-                                if (miner.Position.Y != obj.Position.Y) obj.Position = new Vector2(obj.Position.X, miner.Position.Y);
-                            }
+                            obj.Falling = false;
+                            if (c.Position.Y != obj.Position.Y) obj.Position = new Vector2(obj.Position.X, c.Position.Y);
                         }
                     }
 
