@@ -11,11 +11,19 @@ using TheGreatEscape.GameLogic.Renderer;
 namespace TheGreatEscape.GameLogic.GameObjects
 {
 
-    public enum MotionType { idle, walk_left, walk_right, run_left, run_right, jump, pickaxe };
+    public enum MotionType
+    {
+        idle,
+        walk,
+        run,
+        jump,
+        pickaxe
+    };
 
     public class Miner : GameObject
     {
         public Dictionary<MotionType, MotionSpriteSheet> Motion;
+        public Dictionary<int, SpriteEffects> Directions;
         public MotionSpriteSheet CurrMotion;
         public SpriteEffects Orientation;
         public float xVel;
@@ -30,7 +38,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         private CollisionDetector CollisionDetector = new CollisionDetector();
 
         public Miner(Vector2 position, Vector2 spriteSize)
-            :base(position, spriteSize)
+            : base(position, spriteSize)
         {
 
             // Miner Lights
@@ -51,17 +59,28 @@ namespace TheGreatEscape.GameLogic.GameObjects
             // Motion sheets
             xVel = 0;
             InstantiateMotionSheets();
+            Directions = new Dictionary<int, SpriteEffects>();
+            Directions.Add(-1, SpriteEffects.None);
+            Directions.Add(1, SpriteEffects.FlipHorizontally);
             Orientation = SpriteEffects.FlipHorizontally;
             //TODO: add a case when it fails to get that type of motion
             Motion.TryGetValue(MotionType.idle, out CurrMotion);
 
+
+
+        }
+
+        public void SetOrientation(int value)
+        {
+            Directions.TryGetValue(value, out Orientation);
         }
 
         public void SetTool(Tool tool)
         {
             Tool = tool;
         }
-        private void InstantiateMotionSheets() {
+        private void InstantiateMotionSheets()
+        {
             MotionSpriteSheet mss;
             Motion = new Dictionary<MotionType, MotionSpriteSheet>();
 
@@ -72,19 +91,13 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     case MotionType.idle:
                         mss = new MotionSpriteSheet(24, 42, MotionType.idle, new Vector2(1, 1));
                         break;
-                    case MotionType.walk_left:
-                        mss = new MotionSpriteSheet(12, 84, m, new Vector2(1.2f, 1));
-                        break;
-                    case MotionType.walk_right:
+                    case MotionType.walk:
                         mss = new MotionSpriteSheet(12, 84, m, new Vector2(1.2f, 1));
                         break;
                     case MotionType.jump:
                         mss = new MotionSpriteSheet(12, 84, m, new Vector2(1.5f, 1.12f));
                         break;
-                    case MotionType.run_left:
-                        mss = new MotionSpriteSheet(12, 64, m, new Vector2(1.4f, 1));
-                        break;
-                    case MotionType.run_right:
+                    case MotionType.run:
                         mss = new MotionSpriteSheet(12, 64, m, new Vector2(1.4f, 1));
                         break;
                     case MotionType.pickaxe:
@@ -99,7 +112,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             }
         }
 
-        public void SetMotionSprite(Texture2D sprite, MotionType m) 
+        public void SetMotionSprite(Texture2D sprite, MotionType m)
         {
             if (Motion.TryGetValue(m, out MotionSpriteSheet mss))
             {
@@ -107,16 +120,17 @@ namespace TheGreatEscape.GameLogic.GameObjects
             }
         }
 
-        private MotionType GetCurrentState() {
+        private MotionType GetCurrentState()
+        {
 
             if (this.xVel > 0)
             {
                 if (this.Speed.Y != 0f)
                     return MotionType.jump;
                 else if (this.xVel >= GameEngine.RunSpeed)
-                    return MotionType.run_right;
+                    return MotionType.run;
                 else
-                    return MotionType.walk_right;
+                    return MotionType.walk;
             }
 
             if (this.xVel < 0)
@@ -124,9 +138,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 if (this.Speed.Y != 0)
                     return MotionType.jump;
                 else if (this.xVel <= -GameEngine.RunSpeed)
-                    return MotionType.run_left;
+                    return MotionType.run;
                 else
-                    return MotionType.walk_left;
+                    return MotionType.walk;
             }
 
             if (this.Speed.Y != 0)
@@ -156,18 +170,6 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
             switch (m)
             {
-                case MotionType.walk_right:
-                    this.Orientation = SpriteEffects.FlipHorizontally;
-                    break;
-                case MotionType.walk_left:
-                    this.Orientation = SpriteEffects.None;
-                    break;
-                case MotionType.run_right:
-                    this.Orientation = SpriteEffects.FlipHorizontally;
-                    break;
-                case MotionType.run_left:
-                    this.Orientation = SpriteEffects.None;
-                    break;
                 case MotionType.pickaxe:
                     if (CurrMotion.LoopsPlayed >= 1)
                     {
@@ -184,7 +186,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
         /// Uses the tool that the miner currenty has
         /// </summary>
         /// <returns>True iff 1==1</returns>
-        public bool UseTool(GameState gs) {
+        public bool UseTool(GameState gs)
+        {
             this.Interacting = true;
             Tool.Use(this, gs);
             return true;
@@ -199,7 +202,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public bool InteractWithCrate(GameState gs)
         {
             // picking up crate
-            if(!Holding)
+            if (!Holding)
             {
                 List<GameObject> collisions = CollisionDetector.FindCollisions(InteractionBox(), gs.GetSolids());
                 foreach (GameObject c in collisions)

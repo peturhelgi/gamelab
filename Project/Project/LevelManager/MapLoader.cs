@@ -91,11 +91,9 @@ namespace TheGreatEscape.LevelManager
                 motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/idle");
                 miner.SetMotionSprite(motionSprite, MotionType.idle);
                 motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/walk");
-                miner.SetMotionSprite(motionSprite, MotionType.walk_left);
-                miner.SetMotionSprite(motionSprite, MotionType.walk_right);
+                miner.SetMotionSprite(motionSprite, MotionType.walk);
                 motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/run");
-                miner.SetMotionSprite(motionSprite, MotionType.run_left);
-                miner.SetMotionSprite(motionSprite, MotionType.run_right);
+                miner.SetMotionSprite(motionSprite, MotionType.run);
                 motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/jump");
                 miner.SetMotionSprite(motionSprite, MotionType.jump);
                 motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/pickaxe");

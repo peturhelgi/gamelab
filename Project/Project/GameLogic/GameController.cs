@@ -76,16 +76,16 @@ namespace TheGreatEscape.GameLogic {
             // Player 1
             if(_maxNumPlayers > 0)
             {
-                if(state.IsKeyDown(Keys.Right)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_right, 0);
-                if(state.IsKeyDown(Keys.Left)) GameEngine.HandleInput(0, GameEngine.GameAction.walk_left, 0);
+                if(state.IsKeyDown(Keys.Right)) GameEngine.HandleInput(0, GameEngine.GameAction.walk, 1);
+                if(state.IsKeyDown(Keys.Left)) GameEngine.HandleInput(0, GameEngine.GameAction.walk, -1);
                 if(state.IsKeyDown(Keys.Down) && !_oldKeyboardState.IsKeyDown(Keys.Down)) GameEngine.HandleInput(0, GameEngine.GameAction.interact, 0);
                 if (state.IsKeyDown(Keys.Up)) GameEngine.HandleInput(0, GameEngine.GameAction.jump, 0);
                 if (state.IsKeyDown(Keys.Z)) GameEngine.HandleInput(0, GameEngine.GameAction.climb_up, 0);
                 if (state.IsKeyDown(Keys.X)) GameEngine.HandleInput(0, GameEngine.GameAction.climb_down, 0);
                 if (state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Right))
-                    GameEngine.HandleInput(0, GameEngine.GameAction.run_right, 0);
+                    GameEngine.HandleInput(0, GameEngine.GameAction.run, 1);
                 if (state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Left))
-                    GameEngine.HandleInput(0, GameEngine.GameAction.run_left, 0);
+                    GameEngine.HandleInput(0, GameEngine.GameAction.run, -1);
                 if (state.IsKeyDown(Keys.D1) && !_oldKeyboardState.IsKeyDown(Keys.D1))
                     GameEngine.HandleInput(0, GameEngine.GameAction.change_tool, 0);
 
@@ -94,14 +94,14 @@ namespace TheGreatEscape.GameLogic {
             // Player 2
             if(_maxNumPlayers > 1)
             {
-                if(state.IsKeyDown(Keys.D)) GameEngine.HandleInput(1, GameEngine.GameAction.walk_right, 0);
-                if(state.IsKeyDown(Keys.A)) GameEngine.HandleInput(1, GameEngine.GameAction.walk_left, 0);
+                if(state.IsKeyDown(Keys.D)) GameEngine.HandleInput(1, GameEngine.GameAction.walk, 1);
+                if(state.IsKeyDown(Keys.A)) GameEngine.HandleInput(1, GameEngine.GameAction.walk, -1);
                 if(state.IsKeyDown(Keys.S) && !_oldKeyboardState.IsKeyDown(Keys.S)) GameEngine.HandleInput(1, GameEngine.GameAction.interact, 0);
                 if(state.IsKeyDown(Keys.W)) GameEngine.HandleInput(1, GameEngine.GameAction.jump, 0);
                 if (state.IsKeyDown(Keys.LeftShift) && state.IsKeyDown(Keys.D))
-                    GameEngine.HandleInput(1, GameEngine.GameAction.run_right, 0);
+                    GameEngine.HandleInput(1, GameEngine.GameAction.run, 1);
                 if (state.IsKeyDown(Keys.LeftShift) && state.IsKeyDown(Keys.A))
-                    GameEngine.HandleInput(1, GameEngine.GameAction.run_left, 0);
+                    GameEngine.HandleInput(1, GameEngine.GameAction.run, -1);
                 if (state.IsKeyDown(Keys.D2) && !_oldKeyboardState.IsKeyDown(Keys.D2))
                     GameEngine.HandleInput(1, GameEngine.GameAction.change_tool, 0);
             }
@@ -117,8 +117,8 @@ namespace TheGreatEscape.GameLogic {
             }
 
             // START Handle GameAction
-            if (gs.ThumbSticks.Left.X > 0.5f) GameEngine.HandleInput(player, GameEngine.GameAction.walk_right, 0);
-            if (gs.ThumbSticks.Left.X < -0.5) GameEngine.HandleInput(player, GameEngine.GameAction.walk_left, 0);
+            if (gs.ThumbSticks.Left.X > 0.5f) GameEngine.HandleInput(player, GameEngine.GameAction.walk, 1);
+            if (gs.ThumbSticks.Left.X < -0.5) GameEngine.HandleInput(player, GameEngine.GameAction.walk, -1);
             if (gs.ThumbSticks.Left.Y < -0.5) GameEngine.HandleInput(player, GameEngine.GameAction.climb_down, 0);
             if (gs.ThumbSticks.Left.Y > 0.5) GameEngine.HandleInput(player, GameEngine.GameAction.climb_up, 0);
             if (player == 0)

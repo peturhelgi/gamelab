@@ -17,15 +17,13 @@ namespace TheGreatEscape.GameLogic
         public GameState GameState;
         public enum GameAction
         {
-            walk_right,
-            walk_left,
+            walk,
+            run,
             jump,
             interact,
             collect,
             climb_up,
             climb_down,
-            run_left,
-            run_right,
             change_tool,
         };
 
@@ -71,44 +69,26 @@ namespace TheGreatEscape.GameLogic
                 case (GameAction.change_tool):
                     ChangeTool(miner);
                     break;
-                case (GameAction.walk_right):
+                case (GameAction.walk):
+                    miner.SetOrientation((int)value);
                     posDiff = miner.Position;
-                    CalculateAndSetNewPosition(miner, new Vector2(WalkSpeed, 0));
+                    CalculateAndSetNewPosition(miner, new Vector2(value * WalkSpeed, 0));
                     posDiff -= miner.Position;
                     if (miner.Holding && (posDiff.Length() > 1e-6))
                     {
-                        CalculateAndSetNewPosition(miner.HeldObj, new Vector2(WalkSpeed, 0));
-                    }
-                    break;
-
-                case (GameAction.walk_left):
-                    posDiff = miner.Position;
-                    CalculateAndSetNewPosition(miner, new Vector2(-WalkSpeed, 0));
-                    posDiff -= miner.Position;
-                    if (miner.Holding && (posDiff.Length() > 1e-6))
-                    {
-                        CalculateAndSetNewPosition(miner.HeldObj, new Vector2(-WalkSpeed, 0));
+                        CalculateAndSetNewPosition(miner.HeldObj, new Vector2(value * WalkSpeed, 0));
                     }
                     break;
                 case (GameAction.jump):
                     TryToJump(miner, new Vector2(0, JumpForce));
                     break;
-                case (GameAction.run_right):
+                case (GameAction.run):
                     posDiff = miner.Position;
-                    CalculateAndSetNewPosition(miner, new Vector2(RunSpeed, 0));
+                    CalculateAndSetNewPosition(miner, new Vector2(value * RunSpeed, 0));
                     posDiff -= miner.Position;
                     if (miner.Holding && (posDiff.Length() > 1e-6))
                     {
-                        CalculateAndSetNewPosition(miner.HeldObj, new Vector2(RunSpeed, 0));
-                    }
-                    break;
-                case (GameAction.run_left):
-                    posDiff = miner.Position;
-                    CalculateAndSetNewPosition(miner, new Vector2(-RunSpeed, 0));
-                    posDiff -= miner.Position;
-                    if (miner.Holding && (posDiff.Length() > 1e-6))
-                    {
-                        CalculateAndSetNewPosition(miner.HeldObj, new Vector2(-RunSpeed, 0));
+                        CalculateAndSetNewPosition(miner.HeldObj, new Vector2(value * RunSpeed, 0));
                     }
                     break;
                 case (GameAction.interact):
