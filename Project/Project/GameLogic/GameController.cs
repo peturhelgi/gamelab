@@ -102,7 +102,7 @@ namespace TheGreatEscape.GameLogic {
                     GameEngine.HandleInput(1, GameEngine.GameAction.run_right, 0);
                 if (state.IsKeyDown(Keys.LeftShift) && state.IsKeyDown(Keys.A))
                     GameEngine.HandleInput(1, GameEngine.GameAction.run_left, 0);
-                if (state.IsKeyDown(Keys.D2))
+                if (state.IsKeyDown(Keys.D2) && !_oldKeyboardState.IsKeyDown(Keys.D2))
                     GameEngine.HandleInput(1, GameEngine.GameAction.change_tool, 0);
             }
             // END Handle GameAction      

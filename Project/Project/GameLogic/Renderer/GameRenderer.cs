@@ -118,8 +118,21 @@ namespace TheGreatEscape.GameLogic.Renderer
 
             _spriteBatch.End();
 
+            // Draw the UI interface that displays the number of miners still available in the game
             _spriteBatch.Begin();
-            _spriteBatch.DrawString(_gameState.GameFont, "1 2 3 4 5 6 7 8 9 0", new Vector2(100, 100), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            int i = 0;
+            int prevSprite = 0;
+            foreach (var miner in _gameState.resources)
+            {
+                var toolFontSize = _gameState.GameFont.MeasureString(miner.Key + ":  ");
+                _spriteBatch.DrawString(_gameState.GameFont, miner.Key + ":", new Vector2(100 + prevSprite, 100 + i)
+                    , Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                _spriteBatch.DrawString(_gameState.GameFont, miner.Value.ToString(), new Vector2(100 + prevSprite + toolFontSize.X, 100 + i)
+                    , Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                i += (int)toolFontSize.Y;
+                prevSprite += (int)toolFontSize.X / 4;
+            }
+
             _spriteBatch.End();
 
         }
