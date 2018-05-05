@@ -15,7 +15,6 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public float MaxHeight;
         public float MinHeight;
         private bool _movingInYdir;
-        private string _secondTextureString;
         public PlatformBackground Background;
 
         public Platform(Vector2 position, Vector2 spriteSize, string textureString, float displacement, string dir, int actId, string secondTextureString)
@@ -35,7 +34,6 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Activate = false;
             Displacement = displacement;
             ActivationId = actId;
-            _secondTextureString = secondTextureString;
 
 
             if (dir == "y")
