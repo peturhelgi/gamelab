@@ -96,9 +96,9 @@ namespace TheGreatEscape.GameLogic
                 case Handling.Actor:
                     if(obj is Miner)
                     {
-                        // TODO: make miner inactive instead of removing it.
-                        obj.Disable();
-                        //Actors.Remove(obj as Miner);
+                        ResetMinersPosition();
+                        if (ShouldRemoveMinerFromScreen(obj as Miner))
+                            obj.Disable();
                     }
                     break;
                 case Handling.Solid:
@@ -183,7 +183,31 @@ namespace TheGreatEscape.GameLogic
             }
         }
 
-        public void ChangeTool(Miner miner) 
+        /// <summary>
+        /// removes a miner from the screen when there are no more available tools to switch to
+        /// </summary>
+        /// <param name="miner"></param>
+        /// <returns>true if there are no more tools available</returns>
+        public bool ShouldRemoveMinerFromScreen(Miner miner)
+        {
+            return !CanChangeTool(miner, true);
+        }
+        
+        public void ResetMinersPosition()
+        {
+            foreach (Miner miner in Actors)
+            {
+                miner.ResetPosition();
+            }
+        }
+
+/// <summary>
+/// Tries to change the tool of the miner upon request or if he dies
+/// </summary>
+/// <param name="miner"></param>
+/// <param name="ForRemoving">set to true if the method is called when trying to remove the miner</param>
+/// <returns></returns>
+        public bool CanChangeTool(Miner miner, bool ForRemoving) 
         {
             int i;
             for (i = 0; i < resources.Count(); ++i)
@@ -197,12 +221,22 @@ namespace TheGreatEscape.GameLogic
             var newTool = resources.ElementAt(newToolIndex);
             var oldTool = resources.ElementAt(i);
 
-            if (newTool.Value == 0)
-                return;
+            // loop continuously through the tools until the next non-empty one is found
+            while (newTool.Value == 0 && newToolIndex != i)
+            {
+                newToolIndex = (newToolIndex + 1) % resources.Count();
+                newTool = resources.ElementAt(newToolIndex);
+            }
+
+            // if there is no tool available to switch just return
+            if (newToolIndex == i)
+                return false;
 
             resources[newTool.Key]--;
-            resources[oldTool.Key]++;
+            if (!ForRemoving)
+                resources[oldTool.Key]++;
             miner.Tool = (new ToolFactory()).Create(new Obj { Type = newTool.Key});
+            return true;
         }
 
         public void SetBackground(Texture2D background)

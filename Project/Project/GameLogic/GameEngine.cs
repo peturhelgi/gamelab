@@ -79,7 +79,6 @@ namespace TheGreatEscape.GameLogic
                     posDiff -= miner.Position;
                     if (miner.Holding && (Math.Abs(posDiff.X) > 1e-6))
                     {
-                        //CalculateAndSetNewPosition(miner.HeldObj, new Vector2(value * WalkSpeed, 0));
                         if (miner.HeldObj.Position.X > miner.Position.X) miner.pickUpCrateLeftSide(miner.HeldObj, GameState);
                         CalculateAndSetNewPosition(miner.HeldObj, new Vector2(value * WalkSpeed, 0));
                     }
@@ -114,7 +113,7 @@ namespace TheGreatEscape.GameLogic
 
         private void ChangeTool(Miner miner)
         {
-            GameState.ChangeTool(miner);
+            GameState.CanChangeTool(miner, false);
         }
 
         public bool IsGameOver()

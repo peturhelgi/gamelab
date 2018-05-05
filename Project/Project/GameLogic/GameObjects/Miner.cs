@@ -37,6 +37,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public bool Climbing;
         public bool Interacting;
 
+        public readonly Vector2 InitialPosition;
+
         private CollisionDetector CollisionDetector = new CollisionDetector();
 
         public Miner(Vector2 position, Vector2 spriteSize)
@@ -58,6 +60,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             };
             Seed = SingleRandom.Instance.Next();
 
+            InitialPosition = position;
             LastUpdated = new TimeSpan();
             HeldObj = null;
             Holding = false;
@@ -68,9 +71,12 @@ namespace TheGreatEscape.GameLogic.GameObjects
             // Motion sheets
             xVel = 0;
             InstantiateMotionSheets();
-            Directions = new Dictionary<int, SpriteEffects>();
-            Directions.Add(-1, SpriteEffects.None);
-            Directions.Add(1, SpriteEffects.FlipHorizontally);
+            Directions = new Dictionary<int, SpriteEffects>
+            {
+                { -1, SpriteEffects.None },
+                { 1, SpriteEffects.FlipHorizontally }
+            };
+
             Orientation = SpriteEffects.FlipHorizontally;
             //TODO: add a case when it fails to get that type of motion
             Motion.TryGetValue(MotionType.idle, out CurrMotion);
@@ -195,6 +201,11 @@ namespace TheGreatEscape.GameLogic.GameObjects
             this.Interacting = true;
             Tool.Use(this, gs);
             return true;
+        }
+
+        public void ResetPosition()
+        {
+            this.Position = InitialPosition;
         }
 
         public AxisAllignedBoundingBox InteractionBox()
