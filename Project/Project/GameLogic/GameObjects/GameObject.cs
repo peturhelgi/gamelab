@@ -80,21 +80,46 @@ namespace TheGreatEscape.GameLogic.GameObjects
             get;
             set;
         }
+
+        bool Active
+        {
+            get;
+            set;
+        }
     }
 
     public abstract class GameObject : IGameObject {
         
+        /// <summary>
+        /// Describes how the game object should be handled
+        /// </summary>
+        public GameState.Handling Handling { get; set; }
         public GameObject(Vector2 position, Vector2 spriteSize)
         {
             Position = position;
             SpriteSize = spriteSize;
+            Handling = GameState.Handling.None;
         }
         public bool Falling { get; set; }
+        public bool Active { get; set; }
         public GameObject(Vector2 position, Vector2 spriteSize, string texture)
         {
             Position = position;
             SpriteSize = spriteSize;
             TextureString = texture;
+            Handling = GameState.Handling.None;
+        }
+
+        public void Enable()
+        {
+            Visible = true;
+            Active = true;
+        }
+
+        public void Disable()
+        {
+            Visible = false;
+            Active = false;
         }
 
         public Vector2 Position { get; set; }

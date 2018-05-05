@@ -14,6 +14,7 @@ namespace TheGreatEscape.GameLogic
         public const float WalkSpeed = 5.6f;
         public const float RunSpeed = 9.8f;
         public const float JumpForce = -800;
+        const float FatalSpeed = 6000.0f;
         public GameState GameState;
         public enum GameAction
         {
@@ -62,10 +63,12 @@ namespace TheGreatEscape.GameLogic
             Miner miner = GameState.Actors.ElementAt(CurrentMiner[player]);
             Vector2 posDiff = Vector2.Zero;
 
+            if (!miner.Active)
+            {
+                return;
+            }
             switch (action)
             {
-                //TODO: add a Direction member to the miner and remove _right and _left 
-                // to simplify code
                 case (GameAction.change_tool):
                     ChangeTool(miner);
                     break;
@@ -74,8 +77,10 @@ namespace TheGreatEscape.GameLogic
                     posDiff = miner.Position;
                     CalculateAndSetNewPosition(miner, new Vector2(value * WalkSpeed, 0));
                     posDiff -= miner.Position;
-                    if (miner.Holding && (posDiff.Length() > 1e-6))
+                    if (miner.Holding && (Math.Abs(posDiff.X) > 1e-6))
                     {
+                        //CalculateAndSetNewPosition(miner.HeldObj, new Vector2(value * WalkSpeed, 0));
+                        if (miner.HeldObj.Position.X > miner.Position.X) miner.pickUpCrateLeftSide(miner.HeldObj, GameState);
                         CalculateAndSetNewPosition(miner.HeldObj, new Vector2(value * WalkSpeed, 0));
                     }
                     break;
@@ -88,6 +93,7 @@ namespace TheGreatEscape.GameLogic
                     posDiff -= miner.Position;
                     if (miner.Holding && (posDiff.Length() > 1e-6))
                     {
+                        if (miner.HeldObj.Position.X > miner.Position.X) miner.pickUpCrateLeftSide(miner.HeldObj, GameState);
                         CalculateAndSetNewPosition(miner.HeldObj, new Vector2(value * RunSpeed, 0));
                     }
                     break;
@@ -110,14 +116,31 @@ namespace TheGreatEscape.GameLogic
             GameState.ChangeTool(miner);
         }
 
+        public bool IsGameOver()
+        {
+            bool gameRunning = false;
+
+            foreach (var miner in GameState.GetActors())
+            {
+                gameRunning |= miner.Active;
+            }
+
+            return !gameRunning;
+        }
+
         public void Update()
         {
             List<GameObject> allObjects = GameState.GetAll();
 
+
             foreach (GameObject c in allObjects)
             {
-                if (c.Moveable)
+                if (c.Active && c.Moveable)
                 {
+                    if (c.Position.Y > GameState.OutOfBoundsBottom)
+                    {
+                        GameState.Remove(c);
+                    }
                     if (c.LastUpdated != gameTime)
                     {
                         CalculateAndSetNewPosition(c, Vector2.Zero);
@@ -125,12 +148,25 @@ namespace TheGreatEscape.GameLogic
                 }
             }
 
-            for (var i = 0; i < _attentions.Count; i++)
+
+            if (IsGameOver())
             {
-                _attentions[i] = GameState.Actors.ElementAt(CurrentMiner[i]).BBox;
+                GameState.Mode = GameState.State.GameOver;
             }
 
+            for (var i = _attentions.Count - 1; i >= 0; --i)
+            {
+                if (!GameState.Actors[CurrentMiner[i]].Active)
+                {
+                    _attentions[i] = null;
+                }
+                else
+                {
+                    _attentions[i] = GameState.Actors[CurrentMiner[i]].BBox;
+                }
+            }
         }
+
 
         void TryToInteract(Miner obj)
         {
@@ -199,6 +235,7 @@ namespace TheGreatEscape.GameLogic
             // 2. check for collisions in the X-axis, the Y-axis (falling and jumping against something) and the intersection of the movement
             AxisAllignedBoundingBox xBox, yBox;
 
+            // TODO: Move into a separate function
             if (direction.X > 0) // we are moving right
             {
                 xBox = new AxisAllignedBoundingBox(
@@ -230,12 +267,13 @@ namespace TheGreatEscape.GameLogic
                    );
             }
 
-
             // 3. check, if there are any collisions in the X-axis and correct position
-            List<GameObject> collisions = CollisionDetector.FindCollisions(xBox, GameState.Solids);
+            // TODO: Use GameState function instead
+            List<GameObject> collisions = CollisionDetector.FindCollisions(
+                xBox, GameState.Solids);
 
             // if obj is a miner holding an object, that object can also limit the miners movement
-            List<GameObject> boxCollisions;
+            List<GameObject> boxCollisions = new List<GameObject>();
             if (obj is Miner)
             {
                 if ((obj as Miner).Holding)
@@ -258,9 +296,7 @@ namespace TheGreatEscape.GameLogic
                     }
                     boxCollisions = CollisionDetector.FindCollisions(xCrate, GameState.Solids);
                 }
-                else boxCollisions = new List<GameObject>();
             }
-            else boxCollisions = new List<GameObject>();
 
             if (collisions.Count > 0 || boxCollisions.Count > 0)
             {
@@ -274,6 +310,7 @@ namespace TheGreatEscape.GameLogic
             // We only need to check things in y-axis (including intersection), if we are actually moving in it
             if (obj.Falling || climbingMiner)
             {
+                // TODO: Use GameState functions instead
                 collisions = CollisionDetector.FindCollisions(yBox, GameState.Solids);
                 if (collisions.Count > 0)
                 {
@@ -285,7 +322,13 @@ namespace TheGreatEscape.GameLogic
                         lowestPoint = Math.Min(lowestPoint, collision.BBox.Min.Y);
                     }
 
+                    if (obj is Miner && obj.Speed.Y > FatalSpeed)
+                    {
+                        GameState.Remove(obj);
+                    }
                     obj.Speed = Vector2.Zero;
+
+                    // TODO: Perhaps move this to the Miner class
                     if (obj is Miner && (obj as Miner).Holding) (obj as Miner).HeldObj.Speed = Vector2.Zero;
                     if (direction.Y > 0) // hitting floor
                     {
@@ -303,9 +346,11 @@ namespace TheGreatEscape.GameLogic
                             Miner miner = c as Miner;
                             if (miner.Holding && miner.HeldObj == obj)
                             {
+                                GameState.Remove(miner.HeldObj);
+
                                 miner.HeldObj.Falling = true;
-                                GameState.AddSolid(miner.HeldObj);
-                                GameState.RemoveNonSolid(miner.HeldObj);
+                                GameState.Add(miner.HeldObj, GameState.Handling.Solid);
+
                                 miner.HeldObj = null;
                                 miner.Holding = false;
                             }
@@ -369,6 +414,7 @@ namespace TheGreatEscape.GameLogic
                 {
                     (obj as Miner).Climbing = true;
                     (obj as Miner).Falling = false;
+                    obj.Speed = Vector2.Zero;
                 }
 
                 (obj as Miner).xVel = direction.X;

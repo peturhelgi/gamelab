@@ -44,44 +44,60 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 case "miner":
                     instance = new Miner(
                         entity.Position,
-                        entity.SpriteSize);
-                    instance.Speed = entity.Velocity;
-                    instance.Mass = entity.Mass;
-                    instance.TextureString = entity.Texture;
-                    ToolFactory toolFactory = new ToolFactory();
-                    (instance as Miner).SetTool(toolFactory.Create(new Obj { Type = entity.Tool  } ));
-                    break;
+                        entity.SpriteSize)
+                    {
+                        Speed = entity.Velocity,
+                        Mass = entity.Mass,
+                        TextureString = entity?.Texture,
+                        Handling = GameState.Handling.Actor,
+                        Tool = (new ToolFactory()).Create(new Obj { Type = entity.Tool  })
+                    };
+                  break;
                 case "ground":
                     instance = new Ground(
                         entity.Position,
                         entity.SpriteSize,
-                        entity.Texture);
-                    instance.TextureString = entity.Texture;                    
+                        entity.Texture)
+                    {
+                        TextureString = entity?.Texture,
+                        Handling = GameState.Handling.Solid
+                    };
                     break;
                 case "rock":
                     instance = new Rock(
                         entity.Position,
-                        entity.SpriteSize);
-                    instance.Mass = entity.Mass;
-                    instance.TextureString = entity.Texture;                    
+                        entity.SpriteSize)
+                    {
+                        TextureString = entity?.Texture,
+                        Handling = GameState.Handling.Solid
+                    };
                     break;
                 case "end":
                     instance = new Door(
-                        entity.Position, 
-                        entity.SpriteSize, 
-                        entity.Texture);
+                        entity.Position,
+                        entity.SpriteSize,
+                        entity.Texture)
+                    {
+                        Handling = GameState.Handling.Interact
+                    };
                     break;
                 case "crate":
                     instance = new Crate(
                         entity.Position,
                         entity.SpriteSize,
-                        entity.Texture);
+                        entity.Texture)
+                    {
+                        Handling = GameState.Handling.Solid
+                    };
                     break;
                 case "ladder":
                     instance = new Ladder(
                         entity.Position,
                         entity.SpriteSize,
-                        entity.Texture);
+                        entity.Texture)
+                    {
+                        Handling = GameState.Handling.None
+                    };
                     break;
                 case "lever":
                 case "platform":
@@ -95,6 +111,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             if(instance != null)
             {
                 instance.Visible = true;
+                instance.Active = true;
             }
             return instance;
         }

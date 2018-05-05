@@ -68,14 +68,6 @@ namespace EditorLogic
                 SpriteSize = new Vector2(150, 100)
             };
 
-            /*ObjectTemplates = new List<GameObject>
-            {
-                new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock1"),
-                new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock2"),
-                new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock3"),
-                new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock4"),
-                new Rock(Vector2.Zero, new Vector2(150, 100), "Sprites/Rocks/BareRock5")
-            };*/
             ObjectTemplates = new List<GameObject>();
             for(int i = 1; i <= 5; ++i)
             {
@@ -132,7 +124,7 @@ namespace EditorLogic
                 foreach (GameObject obj in CurrentObjects)
                 {
                     obj.Position += (CursorPosition - MovingStartPosition);
-                    _engine.GameState.AddSolid(obj);
+                    _engine.GameState.Add(obj);
                 }
                 CurrentObjects = null;
             }

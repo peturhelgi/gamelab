@@ -1,78 +1,164 @@
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.LevelManager;
-using System;
-using TheGreatEscape.GameLogic.Util;
 
-namespace TheGreatEscape.GameLogic {
+namespace TheGreatEscape.GameLogic
+{
     public class GameState : Level
     {
         public enum ExistingTools { pickaxe, rope };
 
-        public List<Miner> Actors;
-        public List<GameObject> Solids;
-        public List<GameObject> NonSolids;
-        public List<GameObject> Collectibles;
-        public Dictionary<ExistingTools, Tool> Tools;
         public SpriteFont GameFont;
+
+        public List<Miner> Actors;
+        public List<GameObject> Collectibles;
+        public List<GameObject> Destroyables;
+        public List<GameObject> Interactables;
+        public List<GameObject> NonSolids;
+        public List<GameObject> Solids;
+        public Dictionary<ExistingTools, Tool> Tools;
+
+        /// <summary>
+        /// The state of the current game.
+        /// </summary>
+        public enum State
+        {
+            Completed,
+            Paused,
+            Running,
+            GameOver
+        }
+
+        /// <summary>
+        /// Determines how a game object is handled.
+        /// This allows to change the behaviour and role of the game object.
+        /// </summary>
+        public enum Handling
+        {
+            Empty,
+            None,
+            Actor,
+            Collect,
+            Destroy,
+            Interact,
+            Solid
+        }
 
         public bool Completed;
         private Texture2D Background;
+        public float OutOfBoundsBottom;
+        public State Mode;
 
         CollisionDetector CollisionDetector;
-
 
         public GameState()
         {
             Actors = new List<Miner>();
-            Solids = new List<GameObject>();
-            NonSolids = new List<GameObject>();
             Collectibles = new List<GameObject>();
+            Destroyables = new List<GameObject>();
+            Interactables = new List<GameObject>();
+            NonSolids = new List<GameObject>();
+            Solids = new List<GameObject>();
             Tools = new Dictionary<ExistingTools, Tool>();
 
             CollisionDetector = new CollisionDetector();
             Completed = false;
+            OutOfBoundsBottom = float.MinValue;
+            Mode = State.Running;
         }
 
-        public List<GameObject> GetAll() {
-            return Actors.Concat(Solids).Concat(Collectibles).Concat(NonSolids).ToList();
-        }
-
-        public void AddObject(GameObject obj)
+        public List<GameObject> GetAll()
         {
-            if(obj is Miner)
-            {
-                AddActor(obj as Miner);
-            }
-            else if(obj is Ground)
-            {
-                AddSolid(obj);
-            }
-            else if(obj is Rock)
-            {
-                AddSolid(obj);
-            }
-            else if(obj is Door)
-            {
-                AddDoor(obj as Door);
-            }
-            else if(obj is Crate)
-            {
-                AddSolid(obj);
-            }
-            else if (obj is Ladder)
-            {
-                AddNonSolid(obj);
-            }
-
+            return Actors
+                .Concat(Collectibles)
+                .Concat(Destroyables)
+                .Concat(Interactables)
+                .Concat(NonSolids)
+                .Concat(Solids)
+                .ToList();
         }
 
-        public void AddActor(Miner actor)
+        public void Remove(GameObject obj, Handling handling = Handling.Empty)
         {
-            Actors.Add(actor);
+            if(obj == null)
+            {
+                return;
+            }
+            if(handling == Handling.Empty)
+            {
+                handling = obj.Handling;
+            }
+            obj.Handling = handling;
+            switch(handling)
+            {
+                case Handling.Actor:
+                    if(obj is Miner)
+                    {
+                        // TODO: make miner inactive instead of removing it.
+                        obj.Disable();
+                        //Actors.Remove(obj as Miner);
+                    }
+                    break;
+                case Handling.Solid:
+                    Solids.Remove(obj);
+                    break;
+                case Handling.None:
+                    NonSolids.Remove(obj);
+                    break;
+                case Handling.Interact:
+                    Interactables.Remove(obj);
+                    break;
+                case Handling.Destroy:
+                    Destroyables.Remove(obj);
+                    break;
+                case Handling.Collect:
+                    Collectibles.Remove(obj);
+                    break;
+            }
+        }
+        public void Add(GameObject obj, Handling handling = Handling.Empty)
+        {
+            if(obj == null)
+            {
+                return;
+            }
+            if(obj.BBox.Max.Y > OutOfBoundsBottom)
+            {
+                OutOfBoundsBottom = obj.BBox.Max.Y;
+            }
+            if(handling == Handling.Empty)
+            {
+                handling = obj.Handling;
+            }
+            obj.Handling = handling;
+            switch(handling)
+            {
+                case Handling.Actor:
+                    if(obj is Miner)
+                    {
+                        Actors.Add(obj as Miner);
+                    }
+                    break;
+                case Handling.Solid:
+                    Solids.Add(obj);
+                    break;
+                case Handling.None:
+                    NonSolids.Add(obj);
+                    break;
+                case Handling.Interact:
+                    Interactables.Add(obj);
+                    break;
+                case Handling.Destroy:
+                    Destroyables.Add(obj);
+                    break;
+                case Handling.Collect:
+                    Collectibles.Add(obj);
+                    break;
+            }
         }
 
         public List<Miner> GetActors()
@@ -80,46 +166,25 @@ namespace TheGreatEscape.GameLogic {
             return Actors;
         }
 
-
-        public void AddSolid(GameObject solid)
+        public List<GameObject> GetObjects(Handling handling)
         {
-            Solids.Add(solid);
-        }
-        public List<GameObject> GetSolids()
-        {
-            return Solids;
-        }
-        public void RemoveSolid(GameObject solid)
-        {
-            Solids.Remove(solid);
-        }
-
-        public void AddNonSolid(GameObject nonsolid)
-        {
-            NonSolids.Add(nonsolid);
-        }
-        public List<GameObject> GetNonSolids()
-        {
-            return NonSolids;
-        }
-        public void RemoveNonSolid(GameObject nonsolid)
-        {
-            NonSolids.Remove(nonsolid);
+            switch(handling)
+            {
+                case Handling.Collect:
+                    return Collectibles;
+                case Handling.Destroy:
+                    return Destroyables;
+                case Handling.Interact:
+                    return Interactables;
+                case Handling.None:
+                    return NonSolids;
+                case Handling.Solid:
+                    return Solids;
+                default:
+                    return new List<GameObject>();
+            }
         }
 
-        public void AddDoor(Door door)
-        {
-            Solids.Add(door);
-        }
-
-        public void AddCollectible(GameObject collectible)
-        {
-            Collectibles.Add(collectible);
-        }
-        public List<GameObject> GetCollectibles()
-        {
-            return Collectibles;
-        }
         public void RemoveCollectible(GameObject collectible)
         {
             Collectibles.Remove(collectible);
@@ -147,22 +212,11 @@ namespace TheGreatEscape.GameLogic {
             miner.Tool = (new ToolFactory()).Create(new Obj { Type = newTool.Key});
         }
 
-        //public void InstantiateTools()
-        //{
-
-        //    ToolFactory toolFactory = new ToolFactory();
-        //    Tool tool;
-        //    foreach (ExistingTools et in Enum.GetValues(typeof(ExistingTools)))
-        //    {
-        //        tool = toolFactory.Create(new Obj { Type = et.ToString() });
-        //        Tools.Add(et, tool);
-        //    }
-        //}
-
-        public void SetBackground(Texture2D background) {
+        public void SetBackground(Texture2D background)
+        {
             Background = background;
         }
-        
+
         public Texture2D GetBackground() {
             return Background;
         }
