@@ -1,6 +1,4 @@
-using System;
 using System.Linq;
-using System.Reflection;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.GameObjects;
@@ -183,11 +181,6 @@ namespace TheGreatEscape.GameLogic
                 default:
                     return new List<GameObject>();
             }
-        }
-
-        public void RemoveCollectible(GameObject collectible)
-        {
-            Collectibles.Remove(collectible);
         }
 
         public void ChangeTool(Miner miner) 

@@ -88,6 +88,7 @@ namespace TheGreatEscape.GameLogic
                     TryToJump(miner, new Vector2(0, JumpForce));
                     break;
                 case (GameAction.run):
+                    miner.SetOrientation((int)value);
                     posDiff = miner.Position;
                     CalculateAndSetNewPosition(miner, new Vector2(value * RunSpeed, 0));
                     posDiff -= miner.Position;

@@ -163,17 +163,16 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
         public void ChangeCurrentMotion()
         {
-            //TODO: give a better name to this var
-            MotionType m = GetCurrentState();
+            MotionType motion = GetCurrentState();
 
             //TODO: add check when this TryGetValue fails
-            Motion.TryGetValue(m, out CurrMotion);
-            if (CurrMotion.DifferentMotionType(m))
+            Motion.TryGetValue(motion, out CurrMotion);
+            if (CurrMotion.DifferentMotionType(motion))
             {
                 CurrMotion.ResetCurrentFrame();
             }
 
-            switch (m)
+            switch (motion)
             {
                 case MotionType.pickaxe:
                     if (CurrMotion.LoopsPlayed >= 1)

@@ -78,9 +78,11 @@ namespace TheGreatEscape.GameLogic
             // START Handle GameAction
             MyDebugger.IsActive = state.IsKeyDown(Keys.P);
             GameManager.RenderDark = state.IsKeyUp(Keys.L);
+
             // Player 1
             if(_maxNumPlayers > 0)
             {
+                // last parameter is the encoding for the direction the miner is walking/running in
                 if(state.IsKeyDown(Keys.Right)) GameEngine.HandleInput(0, GameEngine.GameAction.walk, 1);
                 if(state.IsKeyDown(Keys.Left)) GameEngine.HandleInput(0, GameEngine.GameAction.walk, -1);
                 if(state.IsKeyDown(Keys.Down) && !_oldKeyboardState.IsKeyDown(Keys.Down)) GameEngine.HandleInput(0, GameEngine.GameAction.interact, 0);
@@ -93,6 +95,7 @@ namespace TheGreatEscape.GameLogic
                     GameEngine.HandleInput(0, GameEngine.GameAction.run, 1);
                 if (state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Left))
                     GameEngine.HandleInput(0, GameEngine.GameAction.run, -1);
+
                 if (state.IsKeyDown(Keys.D1) && !_oldKeyboardState.IsKeyDown(Keys.D1))
                     GameEngine.HandleInput(0, GameEngine.GameAction.change_tool, 0);
 
@@ -110,6 +113,7 @@ namespace TheGreatEscape.GameLogic
                     GameEngine.HandleInput(1, GameEngine.GameAction.run, 1);
                 if (state.IsKeyDown(Keys.LeftShift) && state.IsKeyDown(Keys.A))
                     GameEngine.HandleInput(1, GameEngine.GameAction.run, -1);
+
                 if (state.IsKeyDown(Keys.D2) && !_oldKeyboardState.IsKeyDown(Keys.D2))
                     GameEngine.HandleInput(1, GameEngine.GameAction.change_tool, 0);
             }
@@ -125,6 +129,7 @@ namespace TheGreatEscape.GameLogic
             }
 
             // START Handle GameAction
+            // last parameter is the encoding for the direction the miner is walking/running in
             if (gs.ThumbSticks.Left.X > 0.5f) GameEngine.HandleInput(player, GameEngine.GameAction.walk, 1);
             if (gs.ThumbSticks.Left.X < -0.5) GameEngine.HandleInput(player, GameEngine.GameAction.walk, -1);
             if (gs.ThumbSticks.Left.Y < -0.5) GameEngine.HandleInput(player, GameEngine.GameAction.climb_down, 0);

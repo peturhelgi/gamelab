@@ -68,6 +68,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.Position,
                         entity.SpriteSize)
                     {
+                        Mass = entity.Mass,
                         TextureString = entity?.Texture,
                         Handling = GameState.Handling.Solid
                     };

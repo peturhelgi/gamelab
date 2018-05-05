@@ -29,8 +29,6 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     c.Mass -= PickaxeStrength;
                     if (c.Mass <= 0)
                         gamestate.Remove(c);
-                    else
-                        c.Mass -= PickaxeStrength;
                 }
 
                 if(c is Door)
