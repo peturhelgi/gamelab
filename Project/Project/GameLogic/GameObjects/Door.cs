@@ -74,5 +74,10 @@ namespace TheGreatEscape.GameLogic.GameObjects {
                 }
             }
         }
+
+        public override string ToString()
+        {
+            return "door";
+        }
     }
 }

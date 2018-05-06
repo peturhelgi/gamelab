@@ -74,10 +74,10 @@ namespace TheGreatEscape.GameLogic
         {
             return NonSolids
                 .Concat(Interactables)
-                .Concat(Actors)
                 .Concat(Collectibles)
                 .Concat(Destroyables)
                 .Concat(Solids)
+                .Concat(Actors)
                 .ToList();
         }
 

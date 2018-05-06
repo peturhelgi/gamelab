@@ -48,20 +48,21 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
             // Miner Lights
             float x = 0.5f, y = 0.15f;
-            Vector2 center = new Vector2(x, y);
+            Vector2 center = new Vector2(x, y),
+                size = 3.0f * new Vector2(SpriteSize.Y);
             Lights = new List<Light>
             {
                 new Light(
                     (SpriteSize * center), // Offset
                     LightRenderer.Lighttype.Circular, // type
                     this, // owner
-                    2.0f * Vector2.One, // scale
+                    size, // size
                     new Vector2(0.5f)), // origin
                 new Light(
                     (SpriteSize * center), // Offset 
                     LightRenderer.Lighttype.Directional, // type
                     this, // Owner
-                    new Vector2(0.8f, 1.5f) * 2.0f, // scale
+                    new Vector2(1.3f, 1.1f) * size, // size
                     new Vector2(0.1f, 0.5f)) // origin in proportion to light sprite
             };
             Seed = SingleRandom.Instance.Next();
@@ -312,6 +313,15 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 // gs.Add(c, GameState.Handling.Solid);
                 MyDebugger.WriteLine("crate hits something as it is picked up");
                 return false;
+            }
+        }
+
+        public override AxisAllignedBoundingBox BBox
+        {
+            get
+            {
+                return new AxisAllignedBoundingBox(Position, 
+                    new Vector2(Position.X + SpriteSize.X, Position.Y + SpriteSize.Y * 0.85f));
             }
         }
     }

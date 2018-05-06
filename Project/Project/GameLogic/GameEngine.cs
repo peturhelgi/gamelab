@@ -305,6 +305,7 @@ namespace TheGreatEscape.GameLogic
             foreach (GameObject c in GameState.NonSolids)
             {
                 if (c is Ladder) ladders.Add(c);
+                else if (c is HangingRope) ladders.Add(c);
             }
             if (ladders.Count == 0) return;
 
@@ -588,6 +589,7 @@ namespace TheGreatEscape.GameLogic
                 foreach (GameObject c in GameState.NonSolids)
                 {
                     if (c is Ladder) ladders.Add(c);
+                    else if (c is HangingRope) ladders.Add(c);
                 }
                 AxisAllignedBoundingBox Box = new AxisAllignedBoundingBox(
                                    new Vector2(obj.BBox.Min.X, obj.BBox.Max.Y),

@@ -61,5 +61,7 @@ namespace TheGreatEscape.LevelManager {
 
         [JsonProperty("requirement")]
         public bool Requirement;
+        [JsonProperty("ropelength")]
+        public float RopeLength;
     }
 }
