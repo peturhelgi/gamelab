@@ -56,7 +56,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             get
             {
                 return new AxisAllignedBoundingBox(
-                    new Vector2(Position.X + SpriteSize.X * 0.25f, Position.Y),
+                    new Vector2(Position.X + SpriteSize.X * 0.25f, Position.Y + 210),
                     new Vector2(Position.X + SpriteSize.X * 0.75f, Position.Y + SpriteSize.Y));
             }
         }
