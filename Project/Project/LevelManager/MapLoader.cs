@@ -34,6 +34,14 @@ namespace TheGreatEscape.LevelManager
             {
                 GameObject gameObject = factory.Create(obj);
                 gameState.Add(gameObject);
+                if (gameObject is Platform) gameState.Add((gameObject as Platform).Background, GameState.Handling.None);
+                if(gameObject is Door)
+                {
+                    var lockedLight = (gameObject as Door).LockedLight;
+                    var unlockedLight = (gameObject as Door).UnlockedLight;
+                    gameState.Add(lockedLight, GameState.Handling.None);
+                    gameState.Add(unlockedLight, GameState.Handling.None);
+                }
             }
 
             //gameState.InstantiateTools();
@@ -54,6 +62,10 @@ namespace TheGreatEscape.LevelManager
                     continue;
                 }
                 obj.Texture = ContentManager.Load<Texture2D>(obj.TextureString);
+                if (obj is Lever)
+                {
+                    (obj as Lever).SecondTexture = ContentManager.Load<Texture2D>((obj as Lever).RightleverTexture);
+                }
             }
 
             LoadMotionSheets(gameState);

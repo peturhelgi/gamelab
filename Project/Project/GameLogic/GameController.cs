@@ -92,6 +92,7 @@ namespace TheGreatEscape.GameLogic
                 if (state.IsKeyDown(Keys.Z)) GameEngine.HandleInput(0, GameEngine.GameAction.climb_up, 0);
                 if (state.IsKeyDown(Keys.X)) GameEngine.HandleInput(0, GameEngine.GameAction.climb_down, 0);
 
+
                 if (state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Right))
                     GameEngine.HandleInput(0, GameEngine.GameAction.run, 1);
                 if (state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Left))

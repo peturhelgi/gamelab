@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TheGreatEscape.GameLogic.Collision;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
@@ -23,6 +24,16 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Visible = true;
             LastUpdated = new TimeSpan();
             Moveable = false;
+        }
+
+        public override AxisAllignedBoundingBox BBox
+        {
+            get
+            {
+                return new AxisAllignedBoundingBox(
+                    new Vector2(Position.X + SpriteSize.X*0.1f, Position.Y),
+                    new Vector2(Position.X + SpriteSize.X * 0.75f, Position.Y + SpriteSize.Y));
+            }
         }
     }
 }

@@ -278,6 +278,122 @@
       "m": 20,
       "type": "ladder",
       "texture": "Sprites/Interactables/LadderShort"
+    },
+    {
+      "dim": {
+        "x": 180,
+        "y": 116
+      },
+      "pos": {
+        "x": 2800,
+        "y": 650
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 20,
+      "type": "platform",
+      "displacement": 500,
+      "direction": "x",
+      "activationkey": 0,
+      "texture": "Sprites/Interactables/escalator_platform",
+      "secondtexture": "Sprites/Interactables/escalator_mechanismx"
+    },
+    {
+      "dim": {
+        "x": 180,
+        "y": 116
+      },
+      "pos": {
+        "x": 3500,
+        "y": 1050
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 20,
+      "type": "platform",
+      "displacement": 700,
+      "direction": "y",
+      "activationkey": 1,
+      "texture": "Sprites/Interactables/escalator_platform",
+      "secondtexture": "Sprites/Interactables/escalator_mechanismy"
+    },
+    {
+      "dim": {
+        "x": 112,
+        "y": 145
+      },
+      "pos": {
+        "x": 2650,
+        "y": 650
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 20,
+      "type": "lever",
+      "activationkey": 0,
+      "texture": "Sprites/Interactables/lever_left",
+      "secondtexture": "Sprites/Interactables/lever_right"
+    },
+    {
+      "dim": {
+        "x": 112,
+        "y": 145
+      },
+      "pos": {
+        "x": 2400,
+        "y": 650
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 20,
+      "type": "lever",
+      "activationkey": 1,
+      "texture": "Sprites/Interactables/lever_left",
+      "secondtexture": "Sprites/Interactables/lever_right"
+    },
+    {
+      "dim": {
+        "x": 131,
+        "y": 23
+      },
+      "pos": {
+        "x": 3700,
+        "y": 1185
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 20,
+      "type": "button",
+      "activationkey": 1,
+      "texture": "Sprites/Interactables/floor_button"
+    },
+    {
+      "dim": {
+        "x": 131,
+        "y": 23
+      },
+      "pos": {
+        "x": 3200,
+        "y": 1185
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 20,
+      "type": "button",
+      "activationkey": 1,
+      "texture": "Sprites/Interactables/floor_button"
     }
   ]
 }

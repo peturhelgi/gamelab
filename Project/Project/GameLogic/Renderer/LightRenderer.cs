@@ -74,6 +74,7 @@ namespace TheGreatEscape.GameLogic.Renderer
                         render = false;
                         break;
                 }
+                Vector2 scale = light.Size / currentTexture.Bounds.Size.ToVector2();
                 if (render)
                 {
                     _spriteBatch.Draw(
@@ -83,7 +84,7 @@ namespace TheGreatEscape.GameLogic.Renderer
                             Color.White * brightness,
                             rotation, // rotation in radians, positive is cw
                             _lightSize * light.Origin, // origin in image coords
-                            light.Scale, // scale of the image
+                            scale, // scale of the image
                             SpriteEffects.None,
                             0); // layerdepth
                 }
@@ -99,17 +100,17 @@ namespace TheGreatEscape.GameLogic.Renderer
         public Vector2 Offset;
         public Vector2 Origin;
 
-        public Vector2 Scale { private set; get; }
+        public Vector2 Size { private set; get; }
         public LightRenderer.Lighttype Type;
         public GameObject Owner;
 
         public Light(Vector2 offset,  LightRenderer.Lighttype type,
-            GameObject owner, Vector2 scale, Vector2 origin)
+            GameObject owner, Vector2 size, Vector2 origin)
         {
             Offset = offset;
             Type = type;
             Owner = owner;
-            Scale = scale;
+            Size = size;
             Origin = origin;
         }
     }
