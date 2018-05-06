@@ -278,5 +278,28 @@ namespace TheGreatEscape.GameLogic
             return Background;
         }
 
+        public Level GetPureLevel()
+        {
+            Level level = new Level();
+
+            level.levelnr = levelnr;
+            level.levelname = levelname;
+            level.prevlvl = prevlvl;
+            level.prevlvlname = prevlvlname;
+            level.nextlvl = nextlvl;
+            level.nextlvlname = nextlvlname;
+            level.background = background;
+
+            level.objects = new List<Obj>();
+            foreach (GameObject go in GetAll())
+            {
+                level.objects.Add(go.GetObj());
+            }
+
+            level.resources = resources;
+
+            return level;
+        }
+
     }
 }

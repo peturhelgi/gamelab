@@ -159,5 +159,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         {
             return (GameObject) source.MemberwiseClone();
         }
+
+        public abstract LevelManager.Obj GetObj();
     }
 }
