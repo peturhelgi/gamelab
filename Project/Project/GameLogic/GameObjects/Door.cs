@@ -10,6 +10,7 @@ namespace TheGreatEscape.GameLogic.GameObjects {
         public bool RequiresKey { get; private set; }
         public int KeyId { get; private set; }
         public bool Unlocked { get; private set; }
+        public PlatformBackground LockedLight, UnlockedLight;
         public Door(Vector2 position, Vector2 spriteSize, string texture,
             object requiresKey = null, object keyId = null, object isExit = null,
             Tuple<int, int> outEdge = null)
@@ -21,7 +22,7 @@ namespace TheGreatEscape.GameLogic.GameObjects {
             KeyId = keyId == null ? 0 : (int)keyId;
             IsExit = isExit == null ? true : (bool)isExit;
             RequiresKey = requiresKey == null ? false : (bool)requiresKey;
-            Unlocked = !RequiresKey;
+            Unlocked = !RequiresKey;          
         }
 
         public bool Open(params int[] keys)
@@ -31,6 +32,13 @@ namespace TheGreatEscape.GameLogic.GameObjects {
                 Unlocked = true;
             }
             return Unlocked;
+        }
+
+        public void Unlock()
+        {
+            Unlocked = true;
+            LockedLight.Active = false;
+            UnlockedLight.Active = true;
         }
     }
 }

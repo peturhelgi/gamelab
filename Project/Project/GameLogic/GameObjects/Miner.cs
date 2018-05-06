@@ -48,20 +48,21 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
             // Miner Lights
             float x = 0.5f, y = 0.15f;
-            Vector2 center = new Vector2(x, y);
+            Vector2 center = new Vector2(x, y),
+                size = 3.0f * new Vector2(SpriteSize.Y);
             Lights = new List<Light>
             {
                 new Light(
                     (SpriteSize * center), // Offset
                     LightRenderer.Lighttype.Circular, // type
                     this, // owner
-                    2.0f * Vector2.One, // scale
+                    size, // size
                     new Vector2(0.5f)), // origin
                 new Light(
                     (SpriteSize * center), // Offset 
                     LightRenderer.Lighttype.Directional, // type
                     this, // Owner
-                    new Vector2(0.8f, 1.5f) * 2.0f, // scale
+                    new Vector2(1.3f, 1.1f) * size, // size
                     new Vector2(0.1f, 0.5f)) // origin in proportion to light sprite
             };
             Seed = SingleRandom.Instance.Next();
@@ -262,12 +263,13 @@ namespace TheGreatEscape.GameLogic.GameObjects
             }
         }
 
+
         public bool pickUpCrateRightSide(GameObject c, GameState gs)
         {
             AxisAllignedBoundingBox BBox = new AxisAllignedBoundingBox(
                 new Vector2(Position.X + SpriteSize.X, Position.Y), Position + c.SpriteSize);
             List<GameObject> tmpSolids = gs.GetObjects(GameState.Handling.Solid);
-            tmpSolids.Remove(c);
+            // tmpSolids.Remove(c);
             List<GameObject> crateCollisions = CollisionDetector.FindCollisions(BBox, tmpSolids);
             if (crateCollisions.Count == 0)
             {
@@ -282,7 +284,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             }
             else
             {
-                gs.Add(c, GameState.Handling.Solid);
+                // gs.Add(c, GameState.Handling.Solid);
                 MyDebugger.WriteLine("crate hits something as it is picked up");
                 return false;
             }
@@ -293,7 +295,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             AxisAllignedBoundingBox BBox = new AxisAllignedBoundingBox(
                 new Vector2(Position.X - c.SpriteSize.X, Position.Y), Position + c.SpriteSize);
             List<GameObject> tmpSolids = gs.GetObjects(GameState.Handling.Solid);
-            tmpSolids.Remove(c);
+            // tmpSolids.Remove(c);
             List<GameObject> crateCollisions = CollisionDetector.FindCollisions(BBox, tmpSolids);
             if (crateCollisions.Count == 0)
             {
@@ -308,11 +310,19 @@ namespace TheGreatEscape.GameLogic.GameObjects
             }
             else
             {
-                gs.Add(c, GameState.Handling.Solid);
+                // gs.Add(c, GameState.Handling.Solid);
                 MyDebugger.WriteLine("crate hits something as it is picked up");
                 return false;
             }
         }
 
+        public override AxisAllignedBoundingBox BBox
+        {
+            get
+            {
+                return new AxisAllignedBoundingBox(Position, 
+                    new Vector2(Position.X + SpriteSize.X, Position.Y + SpriteSize.Y * 0.85f));
+            }
+        }
     }
 }
