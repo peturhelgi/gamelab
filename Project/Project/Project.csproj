@@ -162,9 +162,6 @@
     <None Include="Content\Sprites\VisualAssets_PS\Pickaxe.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Rock.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Rope.psd" />
-    <None Include="Content\Levels\wide_level.json" />
-    <None Include="Content\Levels\more_platforms.json" />
-    <None Include="Content\Levels\samplelvl.json" />
     <None Include="Content\Lights\circular_light.psd" />
     <None Include="Content\Lights\directional_light.psd" />
   </ItemGroup>
