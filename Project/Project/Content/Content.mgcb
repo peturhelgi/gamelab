@@ -482,30 +482,9 @@
 /processorParam:DebugMode=Auto
 /build:Lights/Lighting.fx
 
-#begin level_1.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:level_1.json
-
-#begin more_platforms.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:more_platforms.json
-
-#begin samplelvl.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:samplelvl.json
-
-#begin wide_level.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:wide_level.json
-
 #begin Fonts/Orbitron.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Orbitron.spritefont
 
@@ -620,7 +599,6 @@
 #begin Fonts/gameFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/gameFont.spritefont
 
@@ -683,4 +661,234 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Misc/green_light.png
+
+#begin Sprites/Misc/Menus/GameOver.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Misc/Menus/GameOver.png
+
+#begin Sprites/Misc/Menus/GamePaused.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Misc/Menus/GamePaused.png
+
+#begin Sprites/Misc/Menus/LevelComplete.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Misc/Menus/LevelComplete.png
+
+#begin Sprites/Misc/Menus/LevelSelector.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Misc/Menus/LevelSelector.png
+
+#begin Sprites/Misc/Menus/MenuImage.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Misc/Menus/MenuImage.png
+
+#begin Sprites/Menus/GameOver.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Menus/GameOver.png
+
+#begin Sprites/Menus/GamePaused.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Menus/GamePaused.png
+
+#begin Sprites/Menus/LevelComplete.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Menus/LevelComplete.png
+
+#begin Sprites/Menus/LevelSelector.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Menus/LevelSelector.png
+
+#begin Sprites/Menus/MenuImage.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Menus/MenuImage.png
+
+#begin Levels/level_1.json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/level_1.json
+
+#begin Levels/more_platforms.json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/more_platforms.json
+
+#begin Levels/samplelvl.json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/samplelvl.json
+
+#begin Levels/wide_level.json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/wide_level.json
+
+#begin Levels/zdummy - Copy (10).json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy - Copy (10).json
+
+#begin Levels/zdummy - Copy (11).json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy - Copy (11).json
+
+#begin Levels/zdummy - Copy (12).json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy - Copy (12).json
+
+#begin Levels/zdummy - Copy (13).json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy - Copy (13).json
+
+#begin Levels/zdummy - Copy (14).json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy - Copy (14).json
+
+#begin Levels/zdummy - Copy (15).json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy - Copy (15).json
+
+#begin Levels/zdummy - Copy (16).json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy - Copy (16).json
+
+#begin Levels/zdummy - Copy (17).json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy - Copy (17).json
+
+#begin Levels/zdummy - Copy (2).json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy - Copy (2).json
+
+#begin Levels/zdummy - Copy (3).json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy - Copy (3).json
+
+#begin Levels/zdummy - Copy (4).json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy - Copy (4).json
+
+#begin Levels/zdummy - Copy (5).json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy - Copy (5).json
+
+#begin Levels/zdummy - Copy (6).json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy - Copy (6).json
+
+#begin Levels/zdummy - Copy (7).json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy - Copy (7).json
+
+#begin Levels/zdummy - Copy (8).json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy - Copy (8).json
+
+#begin Levels/zdummy - Copy (9).json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy - Copy (9).json
+
+#begin Levels/zdummy - Copy.json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy - Copy.json
+
+#begin Levels/zdummy.json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/zdummy.json
 
