@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using TheGreatEscape.GameLogic.Collision;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
@@ -11,6 +12,14 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Moveable = false;
             Visible = true;
             // this.TextureString = textureString;
+        }
+
+        public override AxisAllignedBoundingBox BBox
+        {
+            get
+            {
+                return new AxisAllignedBoundingBox(new Vector2(Position.X, Position.Y + 25), Position + SpriteSize);
+            }
         }
     }
 }
