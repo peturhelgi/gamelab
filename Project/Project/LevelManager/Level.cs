@@ -56,5 +56,8 @@ namespace TheGreatEscape.LevelManager {
 
         [JsonProperty("tool")]
         public string Tool;
+
+        [JsonProperty("ropelength")]
+        public float RopeLength;
     }
 }
