@@ -6,7 +6,7 @@ using TheGreatEscape.GameLogic.Util;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
-    class Platform : GameObject
+    public class Platform : GameObject
     {
         public bool Activate;
         public readonly int ActivationId;

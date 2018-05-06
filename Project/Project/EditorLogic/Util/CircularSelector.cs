@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 
 namespace TheGreatEscape.EditorLogic.Util {
-    class CircularSelector
+    public class CircularSelector
     {
 
         Texture2D _pickerWheel;

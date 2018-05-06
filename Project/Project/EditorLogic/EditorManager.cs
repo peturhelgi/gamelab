@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace EditorLogic
 {
-    class EditorManager
+    public class EditorManager
     {
         EditorController _editorController;
         GameController _gameController;

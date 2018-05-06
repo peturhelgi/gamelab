@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace TheGreatEscape.GameLogic
 {
 
-    class GameEngine
+    public class GameEngine
     {
         public const float WalkSpeed = 5.6f;
         public const float RunSpeed = 9.8f;

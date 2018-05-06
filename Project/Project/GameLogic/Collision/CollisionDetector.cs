@@ -5,7 +5,7 @@ using TheGreatEscape.GameLogic.GameObjects;
 namespace TheGreatEscape.GameLogic
 {
 
-    class CollisionDetector
+   public class CollisionDetector
     {
 
         public List<GameObject> FindCollisions(PolygonalCollisionObject collidable, List<GameObject> objects)

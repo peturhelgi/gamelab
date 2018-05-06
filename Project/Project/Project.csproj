@@ -104,6 +104,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EditorLogic\ParameterMenu.cs" />
     <Compile Include="EditorLogic\Util\TextureContent.cs" />
     <Compile Include="GameLogic\GameObjects\Button.cs" />
     <Compile Include="GameLogic\GameObjects\Key.cs" />

@@ -7,7 +7,7 @@ using System;
 using TheGreatEscape.GameLogic.Util;
 
 namespace TheGreatEscape.GameLogic {
-    class GameManager
+    public class GameManager
     {
         GameController _controller;
         MapLoader _mapLoader;

@@ -9,7 +9,7 @@ using TheGreatEscape.GameLogic;
 
 namespace TheGreatEscape.Menu
 {
-    class MenuManager
+    public class MenuManager
     {
         Screen _currentScreen;
         Screen _prevScreen;
@@ -43,14 +43,55 @@ namespace TheGreatEscape.Menu
         GraphicsDevice _graphicsDevice;
         ContentManager _content;
 
-        public KeyboardState OldKeyboardState;
-        public GamePadState OldPlayerOneState;
-        public GamePadState OldPlayerTwoState;
+        public KeyboardState OldKeyboardState, CurrKeyboardState;
+        public GamePadState OldPlayerOneState, CurrPlayerOneState;
+        public GamePadState OldPlayerTwoState, CurrPlayerTwoState;
         // TODO: move to renderer
         // Assets for the Menu
         public SpriteFont MenuFont;
 
+        public bool ButtonDown(int player, params Buttons[] buttons)
+        {
+            var currpadState = player == 0 ? CurrPlayerOneState : CurrPlayerTwoState;
+            foreach (var button in buttons)
+            {
+                if (currpadState.IsButtonDown(button))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
+        public bool ButtonPressed(int player, params Buttons[] buttons)
+        {
+            var oldpadState = player == 0 ? OldPlayerOneState : OldPlayerTwoState;
+            var currpadState = player == 0 ? CurrPlayerOneState : CurrPlayerTwoState;
+            foreach (var button in buttons)
+            {
+                if (currpadState.IsButtonDown(button)
+                    && oldpadState.IsButtonUp(button))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ButtonReleased(int player, params Buttons[] buttons)
+        {
+            var oldpadState = player == 0 ? OldPlayerOneState : OldPlayerTwoState;
+            var currpadState = player == 0 ? CurrPlayerOneState : CurrPlayerTwoState;
+            foreach (var button in buttons)
+            {
+                if (currpadState.IsButtonUp(button)
+                    && oldpadState.IsButtonDown(button))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public MenuManager(ContentManager content, GraphicsDevice graphicsDevice,
             GraphicsDeviceManager graphics, GameManager gameManager, EditorManager editorManager)
@@ -104,6 +145,7 @@ namespace TheGreatEscape.Menu
 
             _editor = new EditorScreen(_editorManager, _graphicsDevice, this);
 
+            CurrKeyboardState = Keyboard.GetState();
             OldKeyboardState = Keyboard.GetState();
             OldPlayerOneState = GamePad.GetState(PlayerIndex.One);
             OldPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
@@ -205,9 +247,14 @@ namespace TheGreatEscape.Menu
         public void Update(GameTime gameTime)
         {
             _currentScreen.Update(gameTime);
-            OldKeyboardState = Keyboard.GetState();
-            OldPlayerOneState = GamePad.GetState(PlayerIndex.One);
-            OldPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
+            OldKeyboardState = CurrKeyboardState;
+            CurrKeyboardState = Keyboard.GetState();
+
+            OldPlayerOneState = CurrPlayerOneState;
+            OldPlayerTwoState = CurrPlayerTwoState;
+
+            CurrPlayerOneState = GamePad.GetState(PlayerIndex.One);
+            CurrPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
             if(_gameManager?.GameEngine?.GameState != null
                 && _gameManager.GameEngine.GameState.Completed) {
                 CallAction(MenuManager.Action.ShowLevelCompletedScreen, null);
@@ -225,7 +272,7 @@ namespace TheGreatEscape.Menu
         }
     }
 
-    abstract class Screen
+    public abstract class Screen
     {
         protected MenuManager _manager;
         protected GraphicsDevice _graphicsDevice;
@@ -276,7 +323,7 @@ namespace TheGreatEscape.Menu
         public override void Update(GameTime gameTime)
         {
 
-            if ((Keyboard.GetState().IsKeyDown(Keys.Escape) && _manager.OldKeyboardState.IsKeyUp(Keys.Escape)) ||
+            if ((_manager.CurrKeyboardState.IsKeyDown(Keys.Escape) && _manager.OldKeyboardState.IsKeyUp(Keys.Escape)) ||
                 (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start) && _manager.OldPlayerOneState.IsButtonUp(Buttons.Start)) ||
                 (GamePad.GetState(PlayerIndex.Two).IsButtonDown(Buttons.Start) && _manager.OldPlayerTwoState.IsButtonUp(Buttons.Start)))
             {
