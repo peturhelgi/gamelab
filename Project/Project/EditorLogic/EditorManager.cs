@@ -39,6 +39,7 @@ namespace EditorLogic
         public List<GameObject> CurrentObjects;
         public bool CurrentIsNewObject;
         public bool ObjectPickerOpen;
+        public Rectangle InitialRectangle;
 
         public SortedList<String, CircularSelector> ObjectsSelector;
         public CircularSelector CircularSelector;
@@ -53,6 +54,7 @@ namespace EditorLogic
             _mapLoader = new MapLoader(content);
             CursorPosition = Vector2.Zero;
             CursorSize = new Vector2(10);
+            InitialRectangle = new Rectangle(0, 0, 2000, 2000);
             
 
             _oldKeyboardState = Keyboard.GetState();
@@ -62,9 +64,6 @@ namespace EditorLogic
             ObjectsSelector = new SortedList<string, CircularSelector>();
             LoadAllGameObjects();
             CircularSelector = ObjectsSelector.First().Value;
-            // TODO: Move to GameObject factory
-            // Templates.Add(new Miner(Vector2.Zero, new Vector2(100, 150), Vector2.Zero, 80, "Sprites/Miners/MinerHandsInPants"));
-           
 
         }
 
@@ -268,6 +267,15 @@ namespace EditorLogic
                 _editorRenderer.Draw(gameTime, width, height, _editorController.Camera.view);
             }
             
+        }
+
+        public void CheckCursorInsideScreen(Vector2 cursorDisplacement, Vector2 cursorPosition) 
+        {
+            if (!InitialRectangle.Contains(cursorPosition))
+            {
+                InitialRectangle.Offset(cursorDisplacement);
+                _camera.SetCameraToRectangle(InitialRectangle);
+            }
         }
 
     }

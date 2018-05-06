@@ -27,10 +27,6 @@ namespace EditorLogic {
 
         public void Draw(GameTime gameTime, int width, int height, Matrix camera)
         {
-
-
-
-
             if (_manager.ObjectPickerOpen)
             {
                 Vector2 dimensions = new Vector2(width, height);

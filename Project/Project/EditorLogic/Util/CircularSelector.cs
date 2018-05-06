@@ -34,6 +34,8 @@ namespace TheGreatEscape.EditorLogic.Util {
         public void Draw(SpriteBatch spriteBatch, Vector2 size, Vector2 position)
         {
 
+            //TODO: change itemSize so the items will look like a scaled down
+            // version of the sprites and not skewed
             Vector2 itemSize = size / 6;
             Vector2 itemPosition = position + (size / 2) - (itemSize / 2);
 

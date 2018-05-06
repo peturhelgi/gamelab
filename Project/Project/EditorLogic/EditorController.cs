@@ -91,16 +91,19 @@ namespace EditorLogic {
                     _manager.GetNextSelector();
                 }
 
+                // go to the previous category of GameObjects
                 if (gamePadState.IsButtonDown(Buttons.LeftShoulder) && _oldGamePadState.IsButtonUp(Buttons.LeftShoulder))
                 {
                     _manager.GetPrevSelector();
                 }
             }
 
+            // On pressing Y, toggle between displaying ObjectPicker
             if (gamePadState.IsButtonDown(Buttons.Y) && _oldGamePadState.IsButtonUp(Buttons.Y))
             {
                 _manager.ObjectPickerOpen = !_manager.ObjectPickerOpen;
 
+                // when closing the ObjectPicker, choose the last selected GameObject
                 if (_manager.ObjectPickerOpen == false)
                 {
                     int itemNumber = _manager.CircularSelector.SelectedElement %
@@ -111,9 +114,11 @@ namespace EditorLogic {
             else
             {
                 // Handle Cursor movement
-                _manager.CursorPosition += (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
-                _manager.CursorPosition += (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
+                Vector2 cursorDisplacement = new Vector2(50, -50) * 
+                    new Vector2(gamePadState.ThumbSticks.Left.X, gamePadState.ThumbSticks.Left.Y);
+                _manager.CursorPosition += cursorDisplacement;
 
+                _manager.CheckCursorInsideScreen(cursorDisplacement, _manager.CursorPosition);
 
 
                 // enable object size changes, if we only select one object
