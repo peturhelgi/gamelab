@@ -154,6 +154,7 @@
     </MonoGameContentReference>
     <None Include="Content\Fonts\Orbitron.spritefont" />
     <None Include="Content\level_1.json" />
+    <None Include="Content\level_2.json" />
     <None Include="Content\Sprites\VisualAssets_PS\Background.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Ground.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Miner.psd" />

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.LevelManager;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
@@ -35,6 +36,26 @@ namespace TheGreatEscape.GameLogic.GameObjects
             foreach (Platform p in platforms)
                 if (p.ActivationId == ActivationId) p.Activate = !p.Activate;
             ON = !ON;
+        }
+
+        public override Obj GetObj()
+        {
+            Obj obj = new Obj();
+            obj.SpriteSize = SpriteSize;
+            obj.Position = Position;
+            obj.Velocity = Speed;
+            obj.Mass = (float)Mass;
+            obj.Type = "button";
+            obj.Texture = TextureString;
+            obj.Displacement = 0;
+            obj.Direction = "-1";
+            obj.ActivationKey = ActivationId;
+            obj.SecondTexture = "-1";
+            obj.Tool = "-1";
+            obj.Id = -1;
+            obj.Requirement = false;
+            obj.RopeLength = -1f;
+            return obj;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using TheGreatEscape.LevelManager;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
@@ -32,6 +33,26 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public override string ToString()
         {
             return "key";
+        }
+
+        public override Obj GetObj()
+        {
+            Obj obj = new Obj();
+            obj.SpriteSize = SpriteSize;
+            obj.Position = Position;
+            obj.Velocity = Speed;
+            obj.Mass = (float)Mass;
+            obj.Type = "key";
+            obj.Texture = TextureString;
+            obj.Displacement = 0;
+            obj.Direction = "-1";
+            obj.ActivationKey = -1;
+            obj.SecondTexture = "-1";
+            obj.Tool = "-1";
+            obj.Id = Id;
+            obj.Requirement = false;
+            obj.RopeLength = -1f;
+            return obj;
         }
     }
 

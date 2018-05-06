@@ -66,9 +66,9 @@ namespace TheGreatEscape.Menu
             // create the screens
             _currentScreen = _mainMenu = new SelectionMenu(
                 "Main Menu", _graphicsDevice, this);
-            _mainMenu.AddSelection("play", Action.StartGame, "Level_1");
+            _mainMenu.AddSelection("play", Action.StartGame, "level_1");
             _mainMenu.AddSelection("choose level", Action.ShowLevelSelector, null);
-            _mainMenu.AddSelection("level editor", Action.ShowLevelEditor, "Level_1");
+            _mainMenu.AddSelection("level editor", Action.ShowLevelEditor, "level_1");
 
 
             _levelSelector = new SelectionMenu(

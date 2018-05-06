@@ -482,11 +482,6 @@
 /processorParam:DebugMode=Auto
 /build:Lights/Lighting.fx
 
-#begin level_1.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:level_1.json
-
 #begin more_platforms.json
 /importer:ContentImporter1
 /processor:ContentProcessor1
@@ -505,7 +500,6 @@
 #begin Fonts/Orbitron.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Orbitron.spritefont
 
@@ -620,7 +614,6 @@
 #begin Fonts/gameFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/gameFont.spritefont
 
@@ -695,4 +688,14 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Interactables/key.png
+
+#begin level_1.json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:level_1.json
+
+#begin level_2.json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:level_2.json
 
