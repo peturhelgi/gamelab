@@ -173,6 +173,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     };
                     break;
                 case "rockandhook":
+                    entity.SecondTexture = "Sprites/Misc/Rope";
                     instance = new RockHook(
                         entity.Position,
                         entity.SpriteSize,

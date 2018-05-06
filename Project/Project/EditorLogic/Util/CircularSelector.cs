@@ -33,11 +33,6 @@ namespace TheGreatEscape.EditorLogic.Util {
             set => _objects[i] = value;
         }
 
-        public GameObject GetObjectAtIndex(int itemNumber)
-        {
-            return _objects[itemNumber];
-        }
-
         public void Draw(SpriteBatch spriteBatch, Vector2 size, Vector2 position)
         {
 
@@ -101,7 +96,7 @@ namespace TheGreatEscape.EditorLogic.Util {
         {
             direction.Normalize();
 
-            _selectorAngle = (float)Math.Atan2(-direction.Y , direction.X);
+            _selectorAngle = (float)Math.Atan(-direction.Y / direction.X);
 
             if (direction.X >= 0)
             {

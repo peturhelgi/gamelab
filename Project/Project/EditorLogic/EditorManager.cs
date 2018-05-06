@@ -38,6 +38,7 @@ namespace EditorLogic
         public bool Editing = true;
         public List<GameObject> CurrentObjects;
         public GameObject AuxiliaryObject;
+        public GameObject AuxObjLink;
         public bool CurrentIsNewObject;
         public bool ObjectPickerOpen;
         public Rectangle InitialRectangle;
@@ -69,11 +70,15 @@ namespace EditorLogic
 
             GameObjectTextures = new Dictionary<string, Dictionary<string, Texture2D>>();
             ObjectsSelector = new SortedList<string, CircularSelector>();
+            LoadMiscTextures();
             LoadAllGameObjects();
             CircularSelector = ObjectsSelector.First().Value;
 
         }
-
+        public void LoadMiscTextures()
+        {
+            GameObjectTextures.Add("Misc", TextureContent.LoadListContent<Texture2D>(_content, "Misc"));
+        }
         public void LoadAllGameObjects()
         {
             List<String> DirNames = new List<String> {
@@ -112,7 +117,11 @@ namespace EditorLogic
                         gobj.Id = -1;
                         GameObjectFactory.currentKey--;
                     }
+
+                        
                     GameObject gameObject = factory.Create(gobj);
+                    if (objType == "rockandhook")
+                        (gameObject as RockHook).Rope.Texture = GameObjectTextures["Misc"]["Rope"];
                     gameObject.Texture = gameObj.Value;
                     ObjectTemplates.Add(gameObject);
 
@@ -210,10 +219,21 @@ namespace EditorLogic
             (CurrentObjects.First() as Door).AddKey((AuxiliaryObject as Key).Id);
         }
 
+        public void CreateRope(Vector2 spriteSize)
+        {
+            GameObject Rope = new HangingRope(CursorPosition + new Vector2(120.0f / 282.0f * spriteSize.X, 153.0f / 168.0f * spriteSize.Y),
+                    new Vector2(44, 200), "Sprites/Misc/Rope")
+            {
+                Texture = GameObjectTextures["Misc"]["Rope"]
+            };
+            AuxiliaryObject = Rope;
+        }
+
         public void PlaceCurrentObjects()
         {
             if (CurrentObjects != null)
             {
+                // Corner case for adding a door and asociating it with a key
                 if (CurrentObjects.First() is Door && CurrentIsNewObject)
                 {
                     CreateDoorKey();
@@ -225,9 +245,26 @@ namespace EditorLogic
                     return;
 
                 }
-                foreach (GameObject obj in CurrentObjects)
+
+                if (CurrentObjects.First() is RockHook && CurrentIsNewObject)
+                {
+                    RockHook rockHook = CurrentObjects.First() as RockHook;
+                    CreateRope(rockHook.SpriteSize);
+                    rockHook.Position += (CursorPosition - MovingStartPosition);
+                    MovingStartPosition = CursorPosition;
+                    _engine.GameState.Add(rockHook);
+                    AuxObjLink = rockHook;
+                    CurrentObjects = null;
+                    return;
+                }
+
+                    foreach (GameObject obj in CurrentObjects)
                 {
                     obj.Position += (CursorPosition - MovingStartPosition);
+                    if (obj is RockHook)
+                    {
+                        (obj as RockHook).UpdateRope();
+                    }
                     if (!(obj is Miner))
                         _engine.GameState.Add(obj);
                 }
@@ -239,6 +276,15 @@ namespace EditorLogic
         {
             if (AuxiliaryObject != null)
             {
+                if (AuxiliaryObject is HangingRope)
+                {
+                    AuxiliaryObject.SpriteSize = new Vector2(44, AuxiliaryObject.SpriteSize.Y);
+                    AuxiliaryObject.Active = true;
+                    (AuxObjLink as RockHook).Rope = AuxiliaryObject as HangingRope;
+                    AuxiliaryObject = null;
+
+                    return;
+                }
                 AuxiliaryObject.Position += (CursorPosition - MovingStartPosition);
                 _engine.GameState.Add(AuxiliaryObject);
             }

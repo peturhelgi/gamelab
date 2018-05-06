@@ -164,7 +164,7 @@ namespace EditorLogic
                 {
                     int itemNumber = _manager.CircularSelector.SelectedElement %
                            _manager.CircularSelector.NumberOfObjects();
-                    _manager.CreateNewGameObject(_manager.CircularSelector.GetObjectAtIndex(itemNumber));
+                    _manager.CreateNewGameObject(_manager.CircularSelector[itemNumber]);
                 }
             }
             else

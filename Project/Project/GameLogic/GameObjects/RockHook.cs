@@ -10,6 +10,32 @@ namespace TheGreatEscape.GameLogic.GameObjects
         // public string SecondTextureString;
         public HangingRope Rope;
         public bool isRope;
+        //public override Vector2 Position
+        //{
+        //    set
+        //    {
+        //        //if (Rope != null)
+        //        //    Rope.Position = value + new Vector2(120.0f / 282.0f * SpriteSize.X, 153.0f / 168.0f * SpriteSize.Y);
+        //        Position = value;
+        //    }
+        //    get
+        //    {
+        //        return Position;
+        //    }
+        //}
+        //public override Vector2 SpriteSize
+        //{
+        //    set
+        //    {
+        //        if (Rope != null)
+        //            Rope.Position = Position + new Vector2(120.0f / 282.0f * value.X, 153.0f / 168.0f * value.Y);
+        //        SpriteSize = value;
+        //    }
+        //    get
+        //    {
+        //        return SpriteSize;
+        //    }
+        //}
 
         public RockHook(Vector2 position, Vector2 spriteSize, string textureString, string secondTextureString, float ropeLength)
          : base(position, spriteSize)
@@ -21,12 +47,24 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 Moveable = false;
                 TextureString = textureString;
                 isRope = false;
+                if (ropeLength == 0)
+                    ropeLength = 200;
 
 
                 Rope = new HangingRope(position + new Vector2(120.0f / 282.0f * spriteSize.X, 153.0f / 168.0f * spriteSize.Y),
                     new Vector2(44, ropeLength), secondTextureString)
                 { Active = true };
             }
+        }
+
+        public void SetRope(HangingRope rope)
+        {
+            this.Rope = rope;
+        }
+
+        public void UpdateRope()
+        {
+            Rope.Position = Position + new Vector2(120.0f / 282.0f * SpriteSize.X, 153.0f / 168.0f * SpriteSize.Y);
         }
 
         public void HangOrTakeRope(GameState gs)
