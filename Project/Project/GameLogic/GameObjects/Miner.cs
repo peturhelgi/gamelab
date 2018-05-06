@@ -316,5 +316,25 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 return false;
             }
         }
+
+        public override Obj GetObj()
+        {
+            Obj obj = new Obj();
+            obj.SpriteSize = SpriteSize;
+            obj.Position = Position;
+            obj.Velocity = Speed;
+            obj.Mass = (float)Mass;
+            obj.Type = "miner";
+            obj.Texture = TextureString;
+            obj.Displacement = 0;
+            obj.Direction = "-1";
+            obj.ActivationKey = -1;
+            obj.SecondTexture = "-1";
+            obj.Tool = Tool.ToString();
+            obj.Id = -1;
+            obj.Requirement = false;
+            obj.RopeLength = -1f;
+            return obj;
+        }
     }
 }
