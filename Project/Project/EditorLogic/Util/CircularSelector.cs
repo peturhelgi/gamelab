@@ -26,6 +26,13 @@ namespace TheGreatEscape.EditorLogic.Util {
         {
             return _objects.Count;
         }
+
+        public GameObject this[int i]
+        {
+            get => _objects[i];
+            set => _objects[i] = value;
+        }
+
         public GameObject GetObjectAtIndex(int itemNumber)
         {
             return _objects[itemNumber];
@@ -48,8 +55,8 @@ namespace TheGreatEscape.EditorLogic.Util {
                    Color.Gray);
 
             int i = 0;
-
-            float offsetAngle = (float)(2 * Math.PI / _objects.Count);
+            
+            float offsetAngle = (float)(MathHelper.TwoPi / _objects.Count);
             SelectedElement = (int)Math.Floor((_selectorAngle/(2*Math.PI)) * _objects.Count);
 
 
@@ -94,7 +101,7 @@ namespace TheGreatEscape.EditorLogic.Util {
         {
             direction.Normalize();
 
-            _selectorAngle = (float)Math.Atan(-direction.Y / direction.X);
+            _selectorAngle = (float)Math.Atan2(-direction.Y , direction.X);
 
             if (direction.X >= 0)
             {

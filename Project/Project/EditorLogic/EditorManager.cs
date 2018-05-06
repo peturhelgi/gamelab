@@ -257,20 +257,20 @@ namespace EditorLogic
             }
 
             _oldKeyboardState = Keyboard.GetState();
-            _oldGamePadState = GamePad.GetState(PlayerIndex.One);
+            _oldGamePadState = GamePad.GetState(0);
         }
 
         public void Draw(GameTime gameTime, int width, int height)
         {
+
+            _gameRenderer.Draw(gameTime, width, height, 
+                Keyboard.GetState().IsKeyDown(Keys.P) ? 
+                GameRenderer.Mode.DebugView : 
+                GameRenderer.Mode.Normal, _editorController.Camera);
+
             if (Editing)
             {
                 GameManager.RenderDark = false;
-            }
-
-            _gameRenderer.Draw(gameTime, width, height, Keyboard.GetState().IsKeyDown(Keys.P) ? GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, _editorController.Camera);
-
-            if (Editing)
-            {
                 _editorRenderer.Draw(gameTime, width, height, _editorController.Camera.view);
             }
             

@@ -29,6 +29,7 @@ namespace EditorLogic {
 
         internal void HandleUpdate(GameTime gameTime)
         {
+            
             GameEngine.gameTime = gameTime.TotalGameTime;
 
             _oldGamePadState = _currGamePadState;
@@ -50,8 +51,8 @@ namespace EditorLogic {
         {
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
-                MyDebugger.Write("("+_mouseState.Position.X + ", ");
-                MyDebugger.WriteLine(_mouseState.Position.Y + ")");
+                MyDebugger.Write("("+_mouseState.Position.X + ", ", true);
+                MyDebugger.WriteLine(_mouseState.Position.Y + ")", true);
             }
         }
 
