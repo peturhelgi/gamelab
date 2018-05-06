@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using TheGreatEscape.GameLogic.Util;
 
 namespace TheGreatEscape.GameLogic {
     class Camera

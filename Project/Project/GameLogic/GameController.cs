@@ -56,7 +56,6 @@ namespace TheGreatEscape.GameLogic
                 frame.Min = Vector2.Min(frame.Min, a.Min);
                 frame.Max = Vector2.Max(frame.Max, a.Max);
             }
-
             Camera.SetCameraToRectangle(
                 new Rectangle(
                     (int)frame.Min.X,
