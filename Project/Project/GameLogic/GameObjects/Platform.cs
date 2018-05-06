@@ -74,7 +74,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public bool IsMovingInY() { return _movingInYdir; }
     }
 
-    class PlatformBackground : GameObject
+    public class PlatformBackground : GameObject
     {
         public PlatformBackground(Vector2 position, Vector2 spriteSize, string textureString)
              : base(position, spriteSize)

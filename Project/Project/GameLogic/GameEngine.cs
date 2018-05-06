@@ -198,7 +198,24 @@ namespace TheGreatEscape.GameLogic
                         CalculateAndSetNewPosition(c, Vector2.Zero);
                     }
                 }
-                
+
+                if (c is Button)
+                {
+                    List<GameObject> possibleObjs = new List<GameObject>();
+                    foreach (GameObject q in actorsFirst)
+                        if (!(q is Ground)) possibleObjs.Add(q);
+
+                    List<GameObject> touchingButtons = CollisionDetector.FindCollisions(c.BBox, possibleObjs);
+                    if (touchingButtons.Count > 0)
+                    {
+                        if (!(c as Button).ON) (c as Button).Interact(platforms);
+                    }
+                    else
+                    {
+                        if ((c as Button).ON) (c as Button).Interact(platforms);
+                    }
+                }
+
             }
 
 
