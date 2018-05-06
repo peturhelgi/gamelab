@@ -214,7 +214,7 @@ namespace EditorLogic
                 else
                 {
                     // let A go > place Object or Pick Object(s)
-                    if (KeyPressed(Buttons.A))
+                    if (KeyReleased(Buttons.A))
                     {
                         if (_manager.ObjectsAreSelected)
                         {
@@ -228,7 +228,7 @@ namespace EditorLogic
                     }
 
                     // let X go > place Object or duplicate Object(s)
-                    if (KeyPressed(Buttons.X))
+                    if (KeyReleased(Buttons.X))
                     {
                         if (_manager.ObjectsAreSelected)
                         {
