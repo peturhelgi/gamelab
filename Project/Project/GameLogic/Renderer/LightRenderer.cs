@@ -27,13 +27,14 @@ namespace TheGreatEscape.GameLogic.Renderer
             _renderTarget = new RenderTarget2D(
                 _graphicsDevice,
                 _graphicsDevice.PresentationParameters.BackBufferWidth,
-                _graphicsDevice.PresentationParameters.BackBufferHeight);
+                _graphicsDevice.PresentationParameters.BackBufferHeight/2);
             _spriteBatch = new SpriteBatch(_graphicsDevice);
         }
 
         public RenderTarget2D Draw(GameTime gametime, int width, int height,
-            List<Light> lights, Matrix camera)
+            List<Light> lights, Matrix camera, ref RenderTarget2D renderTarget)
         {
+            _renderTarget = renderTarget;
             _graphicsDevice.SetRenderTarget(_renderTarget);
             _graphicsDevice.Clear(Color.Black);
 

@@ -40,6 +40,11 @@ namespace TheGreatEscape.GameLogic {
                     Vector2.Zero, 
                     new Vector2(
                         _graphicsDevice.PresentationParameters.BackBufferWidth, 
+                        _graphicsDevice.PresentationParameters.BackBufferHeight)),
+                new Camera(0.8f,
+                    Vector2.Zero,
+                    new Vector2(
+                        _graphicsDevice.PresentationParameters.BackBufferWidth,
                         _graphicsDevice.PresentationParameters.BackBufferHeight)
                 ));
             LoadContent();
@@ -68,10 +73,15 @@ namespace TheGreatEscape.GameLogic {
 
         public void Draw(GameTime gameTime, int width, int height)
         {
-            _renderer.Draw(gameTime, width, height,
-                MyDebugger.IsActive ? 
-                GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, 
-                _controller.Camera); 
+            //_renderer.Draw(gameTime, width, height/2,
+            //    MyDebugger.IsActive ? 
+            //    GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, 
+            //    _controller.Camera,
+            //    0);
+            _renderer.Draw(gameTime, width, height / 2,
+                MyDebugger.IsActive ?
+                GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal,
+                _controller.Camera);
         }
 
     }

@@ -14,19 +14,21 @@ namespace TheGreatEscape.GameLogic
         private KeyboardState _oldKeyboardState;
         private GamePadState _oldPlayerOneState;
         private GamePadState _oldPlayerTwoState;
-        public Camera Camera;
+        public Camera[] Camera;
         public bool DebugView { private set; get; }
 
         int _maxNumPlayers;
 
-        public GameController(GameEngine gameEngine, Camera camera)
+        public GameController(GameEngine gameEngine, params Camera[] camera)
         {
             GameEngine = gameEngine;
-            Camera = camera;
             _oldKeyboardState = Keyboard.GetState();
             _oldPlayerOneState = GamePad.GetState(PlayerIndex.One);
             _oldPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
             _maxNumPlayers = 2;
+            Camera = camera;
+            //Camera = new Camera[_maxNumPlayers];
+            //for (int i = 0; i < _maxNumPlayers; i++) Camera[i] = camera[i];
             DebugView = false;
         }
 
@@ -45,23 +47,41 @@ namespace TheGreatEscape.GameLogic
             GameEngine.Update();
 
             // Handle the Camera
-            AxisAllignedBoundingBox frame = new AxisAllignedBoundingBox(new Vector2(float.MaxValue), new Vector2(float.MinValue));
+            //AxisAllignedBoundingBox frame = new AxisAllignedBoundingBox(new Vector2(float.MaxValue), new Vector2(float.MinValue));
+            //List<AxisAllignedBoundingBox> attentions = GameEngine.GetAttentions();
+            //foreach (AxisAllignedBoundingBox a in attentions)
+            //{
+            //    if (a == null)
+            //    {
+            //        continue;
+            //    }
+            //    frame.Min = Vector2.Min(frame.Min, a.Min);
+            //    frame.Max = Vector2.Max(frame.Max, a.Max);
+            //}
+            //Camera.SetCameraToRectangle(
+            //    new Rectangle(
+            //        (int)frame.Min.X,
+            //        (int)frame.Min.Y,
+            //        (int)(frame.Max.X - frame.Min.X),
+            //        (int)(frame.Max.Y - frame.Min.Y)));
+            //Camera2.SetCameraToRectangle(
+            //    new Rectangle(
+            //        (int)frame.Min.X,
+            //        (int)frame.Min.Y,
+            //        (int)(frame.Max.X - frame.Min.X),
+            //        (int)(frame.Max.Y - frame.Min.Y)));
+            int size = 500;
             List<AxisAllignedBoundingBox> attentions = GameEngine.GetAttentions();
-            foreach (AxisAllignedBoundingBox a in attentions)
+            for(int i = 0; i < Camera.Length; i++)
             {
-                if (a == null)
-                {
-                    continue;
-                }
-                frame.Min = Vector2.Min(frame.Min, a.Min);
-                frame.Max = Vector2.Max(frame.Max, a.Max);
+                if (attentions.Count == 0 || attentions[i].Equals(null)) continue;
+                Camera[i].SetCameraToRectangle(
+                    new Rectangle(
+                        (int)attentions[i].Min.X - size,
+                        (int)attentions[i].Min.Y - size,
+                        (int)(attentions[i].Max.X - attentions[i].Min.X) + 2 * size,
+                        (int)(attentions[i].Max.Y - attentions[i].Min.Y) + 2 * size));
             }
-            Camera.SetCameraToRectangle(
-                new Rectangle(
-                    (int)frame.Min.X,
-                    (int)frame.Min.Y,
-                    (int)(frame.Max.X - frame.Min.X),
-                    (int)(frame.Max.Y - frame.Min.Y)));
         }
 
         private void HandleMouse(MouseState ms)
