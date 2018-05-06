@@ -1,7 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Storage;
+using Newtonsoft.Json;
+using System;
+using System.IO;
 using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.LevelManager;
 
 namespace EditorLogic {
     class EditorController
@@ -52,6 +57,33 @@ namespace EditorLogic {
             }
         }
 
+        private void HandleSave()
+        {
+            string path = "Content\\" + GameEngine.GameState.levelname + ".json";
+            Level level = GameEngine.GameState.GetPureLevel();
+            String text = JsonConvert.SerializeObject(level);
+            
+            //TODO: Put the text into the file
+
+            /*
+            IAsyncResult result1 = StorageDevice.BeginShowSelector(PlayerIndex.One, null, null);
+            StorageDevice device = StorageDevice.EndShowSelector(result1);
+
+            IAsyncResult result = device.BeginOpenContainer("LevelSaver", null, null);
+            result.AsyncWaitHandle.WaitOne();
+            StorageContainer container = device.EndOpenContainer(result);
+            result.AsyncWaitHandle.Dispose();
+
+            if (container.FileExists(filename)) container.DeleteFile(filename);
+            Stream stream = container.CreateFile(filename);
+            TextWriter writer = new StreamWriter(stream);
+            writer.Write(level);
+
+            writer.Dispose();
+            stream.Dispose();
+            container.Dispose();*/
+        }
+
         private void HandleKeyboard(KeyboardState state)
         {
             // Handle camera
@@ -65,6 +97,9 @@ namespace EditorLogic {
             if (state.IsKeyDown(Keys.Left)) _manager.CursorPosition += new Vector2(-20, 0);
             if (state.IsKeyDown(Keys.Down)) _manager.CursorPosition += new Vector2(0, 20);
             if (state.IsKeyDown(Keys.Up)) _manager.CursorPosition += new Vector2(0, -20);
+
+            // Handle saving changes
+            if (state.IsKeyDown(Keys.J)) HandleSave();
 
         }
 

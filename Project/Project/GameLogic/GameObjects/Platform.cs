@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using TheGreatEscape.GameLogic.Collision;
 using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.LevelManager;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
@@ -72,6 +73,27 @@ namespace TheGreatEscape.GameLogic.GameObjects
         }
 
         public bool IsMovingInY() { return _movingInYdir; }
+
+        public override Obj GetObj()
+        {
+            Obj obj = new Obj();
+            obj.SpriteSize = SpriteSize;
+            obj.Position = Position;
+            obj.Velocity = Speed;
+            obj.Mass = (float)Mass;
+            obj.Type = "platform";
+            obj.Texture = TextureString;
+            obj.Displacement = Displacement;
+            if (_movingInYdir) obj.Direction = "y";
+            else obj.Direction = "x";
+            obj.ActivationKey = ActivationId;
+            obj.SecondTexture = Background.TextureString;
+            obj.Tool = "-1";
+            obj.Id = -1;
+            obj.Requirement = false;
+            obj.RopeLength = -1f;
+            return obj;
+        }
     }
 
     public class PlatformBackground : GameObject
@@ -89,6 +111,26 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Visible = true;
             LastUpdated = new TimeSpan();
             Moveable = false;
+        }
+
+        public override Obj GetObj()
+        {
+            Obj obj = new Obj();
+            obj.SpriteSize = SpriteSize;
+            obj.Position = Position;
+            obj.Velocity = Speed;
+            obj.Mass = (float)Mass;
+            obj.Type = "secondary";
+            obj.Texture = TextureString;
+            obj.Displacement = 0;
+            obj.Direction = "-1";
+            obj.ActivationKey = -1;
+            obj.SecondTexture = "-1";
+            obj.Tool = "-1";
+            obj.Id = -1;
+            obj.Requirement = false;
+            obj.RopeLength = -1f;
+            return obj;
         }
     }
 }
