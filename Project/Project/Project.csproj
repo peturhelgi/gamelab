@@ -152,18 +152,19 @@
     <MonoGameContentReference Include="Content\Content.mgcb">
       <SubType>Designer</SubType>
     </MonoGameContentReference>
+    <Content Include="Content\Fonts\CHAMPGNE.TTF" />
     <None Include="Content\Fonts\Orbitron.spritefont" />
-    <None Include="Content\level_1.json" />
-    <None Include="Content\level_2.json" />
+    <None Include="Content\Levels\level_1.json" />
+    <None Include="Content\Levels\zdummy.json" />
     <None Include="Content\Sprites\VisualAssets_PS\Background.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Ground.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Miner.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Pickaxe.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Rock.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Rope.psd" />
-    <None Include="Content\wide_level.json" />
-    <None Include="Content\more_platforms.json" />
-    <None Include="Content\samplelvl.json" />
+    <None Include="Content\Levels\wide_level.json" />
+    <None Include="Content\Levels\more_platforms.json" />
+    <None Include="Content\Levels\samplelvl.json" />
     <None Include="Content\Lights\circular_light.psd" />
     <None Include="Content\Lights\directional_light.psd" />
   </ItemGroup>
@@ -210,6 +211,11 @@
     <Content Include="Content\Sprites\Interactables\lever_right.png" />
     <Content Include="Content\Sprites\Interactables\Rope.png" />
     <Content Include="Content\Sprites\Interactables\suspended_rock_hook.png" />
+    <Content Include="Content\Sprites\Menus\GameOver.png" />
+    <Content Include="Content\Sprites\Menus\GamePaused.png" />
+    <Content Include="Content\Sprites\Menus\LevelComplete.png" />
+    <Content Include="Content\Sprites\Menus\LevelSelector.png" />
+    <Content Include="Content\Sprites\Menus\MenuImage.png" />
     <Content Include="Content\Sprites\Miners\MinerHandsInPants.png" />
     <Content Include="Content\Sprites\Miners\MinerPickaxe.png" />
     <Content Include="Content\Sprites\Miners\MinerRope.png" />
