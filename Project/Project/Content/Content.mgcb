@@ -485,6 +485,7 @@
 #begin Fonts/Orbitron.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Orbitron.spritefont
 
@@ -599,6 +600,7 @@
 #begin Fonts/gameFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/gameFont.spritefont
 
@@ -799,109 +801,83 @@
 /processor:ContentProcessor1
 /build:Levels/level_1.json
 
-#begin Levels/more_platforms.json
+#begin Levels/level_10.json
 /importer:ContentImporter1
 /processor:ContentProcessor1
-/build:Levels/more_platforms.json
+/build:Levels/level_10.json
 
-#begin Levels/samplelvl.json
+#begin Levels/level_11.json
 /importer:ContentImporter1
 /processor:ContentProcessor1
-/build:Levels/samplelvl.json
+/build:Levels/level_11.json
 
-#begin Levels/wide_level.json
+#begin Levels/level_12.json
 /importer:ContentImporter1
 /processor:ContentProcessor1
-/build:Levels/wide_level.json
+/build:Levels/level_12.json
 
-#begin Levels/zdummy - Copy (10).json
+#begin Levels/level_13.json
 /importer:ContentImporter1
 /processor:ContentProcessor1
-/build:Levels/zdummy - Copy (10).json
+/build:Levels/level_13.json
 
-#begin Levels/zdummy - Copy (11).json
+#begin Levels/level_2.json
 /importer:ContentImporter1
 /processor:ContentProcessor1
-/build:Levels/zdummy - Copy (11).json
+/build:Levels/level_2.json
 
-#begin Levels/zdummy - Copy (12).json
+#begin Levels/level_3.json
 /importer:ContentImporter1
 /processor:ContentProcessor1
-/build:Levels/zdummy - Copy (12).json
+/build:Levels/level_3.json
 
-#begin Levels/zdummy - Copy (13).json
+#begin Levels/level_4.json
 /importer:ContentImporter1
 /processor:ContentProcessor1
-/build:Levels/zdummy - Copy (13).json
+/build:Levels/level_4.json
 
-#begin Levels/zdummy - Copy (14).json
+#begin Levels/level_5.json
 /importer:ContentImporter1
 /processor:ContentProcessor1
-/build:Levels/zdummy - Copy (14).json
+/build:Levels/level_5.json
 
-#begin Levels/zdummy - Copy (15).json
+#begin Levels/level_6.json
 /importer:ContentImporter1
 /processor:ContentProcessor1
-/build:Levels/zdummy - Copy (15).json
+/build:Levels/level_6.json
 
-#begin Levels/zdummy - Copy (16).json
+#begin Levels/level_7.json
 /importer:ContentImporter1
 /processor:ContentProcessor1
-/build:Levels/zdummy - Copy (16).json
+/build:Levels/level_7.json
 
-#begin Levels/zdummy - Copy (17).json
+#begin Levels/level_8.json
 /importer:ContentImporter1
 /processor:ContentProcessor1
-/build:Levels/zdummy - Copy (17).json
+/build:Levels/level_8.json
 
-#begin Levels/zdummy - Copy (2).json
+#begin Levels/level_9.json
 /importer:ContentImporter1
 /processor:ContentProcessor1
-/build:Levels/zdummy - Copy (2).json
-
-#begin Levels/zdummy - Copy (3).json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/zdummy - Copy (3).json
-
-#begin Levels/zdummy - Copy (4).json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/zdummy - Copy (4).json
-
-#begin Levels/zdummy - Copy (5).json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/zdummy - Copy (5).json
-
-#begin Levels/zdummy - Copy (6).json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/zdummy - Copy (6).json
-
-#begin Levels/zdummy - Copy (7).json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/zdummy - Copy (7).json
-
-#begin Levels/zdummy - Copy (8).json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/zdummy - Copy (8).json
-
-#begin Levels/zdummy - Copy (9).json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/zdummy - Copy (9).json
-
-#begin Levels/zdummy - Copy.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/zdummy - Copy.json
+/build:Levels/level_9.json
 
 #begin Levels/zdummy.json
 /importer:ContentImporter1
 /processor:ContentProcessor1
 /build:Levels/zdummy.json
 
+#begin Levels/level_1_more_platforms.json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/level_1_more_platforms.json
+
+#begin Levels/level_2_samplelvl.json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/level_2_samplelvl.json
+
+#begin Levels/level_3_wide_level.json
+/importer:ContentImporter1
+/processor:ContentProcessor1
+/build:Levels/level_3_wide_level.json
 
