@@ -138,7 +138,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.Position,
                         entity.SpriteSize,
                         entity.Texture,
-                        entity.SecondTexture)
+                        entity.SecondTexture,
+                        entity.RopeLength)
                     {
                         Handling = GameState.Handling.Solid
                     };

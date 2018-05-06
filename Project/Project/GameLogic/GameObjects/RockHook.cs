@@ -11,7 +11,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public HangingRope Rope;
         public bool isRope;
 
-        public RockHook(Vector2 position, Vector2 spriteSize, string textureString, string secondTextureString)
+        public RockHook(Vector2 position, Vector2 spriteSize, string textureString, string secondTextureString, float ropeLength)
          : base(position, spriteSize)
         {
             {
@@ -24,7 +24,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
 
                 Rope = new HangingRope(position + new Vector2(120.0f / 282.0f * spriteSize.X, 153.0f / 168.0f * spriteSize.Y),
-                    new Vector2(44, 748), secondTextureString)
+                    new Vector2(44, ropeLength), secondTextureString)
                 { Active = true };
             }
         }

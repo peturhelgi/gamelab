@@ -411,7 +411,8 @@
       "m": 80,
       "type": "rockandhook",
       "texture": "Sprites/Interactables/suspended_rock_hook",
-      "secondtexture": "Sprites/Interactables/Rope"
+      "secondtexture": "Sprites/Interactables/Rope",
+      "ropelength":  1750
     }
       ]
     }

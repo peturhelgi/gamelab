@@ -208,7 +208,6 @@
     <Content Include="Content\Sprites\Interactables\lever_right.png" />
     <Content Include="Content\Sprites\Interactables\Rope.png" />
     <Content Include="Content\Sprites\Interactables\suspended_rock_hook.png" />
-    <Content Include="Content\Sprites\Interactables\suspended_rock_hook_rope.png" />
     <Content Include="Content\Sprites\Miners\MinerHandsInPants.png" />
     <Content Include="Content\Sprites\Miners\MinerPickaxe.png" />
     <Content Include="Content\Sprites\Miners\MinerRope.png" />
