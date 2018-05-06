@@ -133,7 +133,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.SpriteSize,
                         entity.Texture)
                     {
-                        Handling = GameState.Handling.Interact
+                        Handling = GameState.Handling.None
                     };
                     break;
                 case "platform":
