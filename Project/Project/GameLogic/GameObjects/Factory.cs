@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using TheGreatEscape.GameLogic.Util;
 using TheGreatEscape.LevelManager;
@@ -34,7 +35,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
     }
     public class GameObjectFactory : Factory<GameObject>
     {
-
+        ToolFactory _toolFactory = new ToolFactory();
+        int currentKey = 0;
+        int currentDoor = 0;
         public override GameObject Create(
             Object obj)
         {
@@ -51,7 +54,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         Mass = entity.Mass,
                         TextureString = entity?.Texture,
                         Handling = GameState.Handling.Actor,
-                        Tool = (new ToolFactory()).Create(new Obj { Type = entity.Tool })
+                        Tool = _toolFactory.Create(new Obj { Type = entity.Tool })
                     };
                     break;
                 case "ground":
@@ -79,9 +82,12 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.SpriteSize,
                         entity.Texture)
                     {
-                        Handling = GameState.Handling.Interact
+                        Handling = GameState.Handling.Interact,
+                        RequiresKey = entity.Requirement,
+                        KeyId = entity.Id
                     };
-                    bool unlocked = (instance as Door).Unlocked;
+                    
+                    bool unlocked = !entity.Requirement;
                     Vector2 size = new Vector2(entity.SpriteSize.Y) * 0.1f,
                         pos = instance.Position
                         + new Vector2(0.5f, -0.1f) * entity.SpriteSize
@@ -104,6 +110,10 @@ namespace TheGreatEscape.GameLogic.GameObjects
                             SpriteSize = size,
                             Texture = "Sprites/Misc/green_light"
                         }) as PlatformBackground;
+                    if (entity.Requirement)
+                    {
+                        (instance as Door).AddKey(entity.Id);
+                    }
 
                     (instance as Door).LockedLight.Active = !unlocked;
                     (instance as Door).UnlockedLight.Active = unlocked;
@@ -146,9 +156,10 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.Texture,
                         entity.ActivationKey)
                     {
-                        Handling = GameState.Handling.None
+                        Handling = GameState.Handling.None,
+                        RightleverTexture = entity?.SecondTexture
                     };
-                    (instance as Lever).RightleverTexture = entity?.SecondTexture;
+                    //(instance as Lever).RightleverTexture = entity?.SecondTexture;
                     break;
                 case "button":
                     instance = new Button(
@@ -176,6 +187,17 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.Position,
                         entity.SpriteSize,
                         entity.Texture);
+                    break;
+                case "key":
+                    instance = new Key(
+                        entity.Position,
+                        entity.SpriteSize)
+                    {
+                        TextureString = entity.Texture,
+                        Handling = GameState.Handling.Collect,
+                        Id = currentKey++
+                    };
+
                     break;
                 default:
                     instance = null;

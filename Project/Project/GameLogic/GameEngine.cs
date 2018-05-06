@@ -18,7 +18,7 @@ namespace TheGreatEscape.GameLogic
         public const float JumpForce = -800;
         const float FatalSpeed = 6000.0f;
         public GameState GameState;
-                        
+
         public enum GameAction
         {
             walk,
@@ -166,6 +166,23 @@ namespace TheGreatEscape.GameLogic
             return !gameRunning;
         }
 
+        public void CollectItems(Miner miner)
+        {
+            List<GameObject> collectedItems = CollisionDetector
+                .FindCollisions(miner.InteractionBox(),
+                GameState.GetObjects(GameState.Handling.Collect));
+            var interactables = GameState.GetObjects(
+                GameState.Handling.Interact);
+            foreach (var item in collectedItems)
+            {
+                if (item is Key)
+                {
+                    (item as Key).Collect(interactables);
+                }
+                GameState.Remove(item);
+            }
+        }
+
         public void Update()
         {
             List<GameObject> actorsFirst = new List<GameObject>();
@@ -174,13 +191,18 @@ namespace TheGreatEscape.GameLogic
             List<Platform> platforms = new List<Platform>();
 
             foreach (Miner m in GameState.GetActors()) actorsFirst.Add(m as GameObject);
-            foreach(GameObject g in allObjects)
+            foreach (GameObject g in allObjects)
             {
                 if (!(g is Miner)) actorsFirst.Add(g);
-                if(g is Platform)
+                if (g is Platform)
                 {
                     platforms.Add(g as Platform);
                 }
+            }
+
+            foreach (var miner in actors)
+            {
+                CollectItems(miner);
             }
 
             foreach (Platform p in platforms) MovePlatform(p);
@@ -247,11 +269,19 @@ namespace TheGreatEscape.GameLogic
             }
             else
             {
-                if(obj.InteractWithCrate(GameState)) return;
+                if (obj.InteractWithCrate(GameState)) return;
                 if (SwitchLever(obj)) return;
+                var interactingItems =
+                    CollisionDetector.FindCollisions(
+                        obj.InteractionBox(),
+                        GameState.GetObjects(GameState.Handling.Interact));
+                foreach(var item in interactingItems)
+                {
+                    item.Interact(GameState);
+                }
                 obj.UseTool(GameState);
             }
-            
+
         }
 
 
@@ -306,7 +336,7 @@ namespace TheGreatEscape.GameLogic
                 if (g is Lever) levers.Add(g);
 
             List<GameObject> collisions = CollisionDetector.FindCollisions(miner.InteractionBox(), levers);
-            foreach(GameObject c in collisions)
+            foreach (GameObject c in collisions)
             {
                 (c as Lever).Interact(platforms);
             }
@@ -329,7 +359,7 @@ namespace TheGreatEscape.GameLogic
             if (!platform.Activate)
             {
                 // moving down or left
-                if ((platform.IsMovingInY() && platform.Position.Y < platform.MinHeight) 
+                if ((platform.IsMovingInY() && platform.Position.Y < platform.MinHeight)
                     || (!platform.IsMovingInY() && platform.Position.X > platform.MinHeight))
                 {
                     platform.Position = platform.Position + platform.DisplacementStep;
@@ -352,7 +382,7 @@ namespace TheGreatEscape.GameLogic
             else
             {
                 // moving up or right
-                if ((platform.IsMovingInY() && platform.Position.Y > platform.MaxHeight) 
+                if ((platform.IsMovingInY() && platform.Position.Y > platform.MaxHeight)
                     || (!platform.IsMovingInY() && platform.Position.X < platform.MaxHeight))
                 {
                     platform.Position = platform.Position - platform.DisplacementStep;
@@ -486,7 +516,7 @@ namespace TheGreatEscape.GameLogic
                     }
 
                     if (obj is Miner && obj.Speed.Y > FatalSpeed)
-                    { 
+                    {
                         GameState.Remove(obj);
                     }
 

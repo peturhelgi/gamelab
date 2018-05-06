@@ -5,10 +5,13 @@ using Microsoft.Xna.Framework;
 namespace TheGreatEscape.GameLogic.GameObjects {
     public class Door : GameObject
     {
+        /// <summary>
+        /// Specifies the edge (level, door)  which the current door leads to.
+        /// </summary>
         public Tuple<int, int> OutEdge;
         public bool IsExit { get; private set; }
-        public bool RequiresKey { get; private set; }
-        public int KeyId { get; private set; }
+        public bool RequiresKey { get; set; }
+        public int KeyId { get; set; }
         public bool Unlocked { get; private set; }
         public PlatformBackground LockedLight, UnlockedLight;
         public Door(Vector2 position, Vector2 spriteSize, string texture,
@@ -29,7 +32,7 @@ namespace TheGreatEscape.GameLogic.GameObjects {
         {
             if(!Unlocked && keys.Contains(KeyId))
             {
-                Unlocked = true;
+                Unlock();
             }
             return Unlocked;
         }
@@ -39,6 +42,42 @@ namespace TheGreatEscape.GameLogic.GameObjects {
             Unlocked = true;
             LockedLight.Active = false;
             UnlockedLight.Active = true;
+        }
+
+        public void Lock()
+        {
+            Unlocked = false;
+            LockedLight.Active = true;
+            UnlockedLight.Active = false;
+        }
+
+        public void AddKey(int key)
+        {
+            KeyId = key;
+            Lock();
+        }
+
+        public override void Interact(GameState gameState)
+        {
+            base.Interact(gameState);
+            {
+                if (Unlocked)
+                {
+                    if (IsExit)
+                    {
+                        gameState.Completed = true;
+                    }
+                    else
+                    {
+                        // TODO: Set some other level
+                    }
+                }
+            }
+        }
+
+        public override string ToString()
+        {
+            return "door";
         }
     }
 }

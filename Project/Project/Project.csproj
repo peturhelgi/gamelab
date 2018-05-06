@@ -105,6 +105,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="GameLogic\GameObjects\Button.cs" />
+    <Compile Include="GameLogic\GameObjects\Key.cs" />
     <Compile Include="GameLogic\GameObjects\Ladder.cs" />
     <Compile Include="EditorLogic\Util\CircularSelector.cs" />
     <Compile Include="GameLogic\GameObjects\Door.cs" />
