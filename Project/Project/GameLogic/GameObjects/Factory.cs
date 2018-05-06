@@ -133,6 +133,16 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         Handling = GameState.Handling.None
                     };
                     break;
+                case "rockandhook":
+                    instance = new RockHook(
+                        entity.Position,
+                        entity.SpriteSize,
+                        entity.Texture,
+                        entity.SecondTexture)
+                    {
+                        Handling = GameState.Handling.Solid
+                    };
+                    break;
                 default:
                     instance = null;
                     MyDebugger.WriteLine(

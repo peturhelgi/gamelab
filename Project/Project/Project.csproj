@@ -114,6 +114,7 @@
     <Compile Include="GameLogic\GameObjects\Ground.cs" />
     <Compile Include="GameLogic\GameObjects\Platform.cs" />
     <Compile Include="GameLogic\GameObjects\Rock.cs" />
+    <Compile Include="GameLogic\GameObjects\RockHook.cs" />
     <Compile Include="GameLogic\GameObjects\Rope.cs" />
     <Compile Include="GameLogic\GameObjects\Tool.cs" />
     <Compile Include="GameLogic\GameObjects\GameObject.cs" />
@@ -205,6 +206,9 @@
     <Content Include="Content\Sprites\Interactables\LadderShort.png" />
     <Content Include="Content\Sprites\Interactables\lever_left.png" />
     <Content Include="Content\Sprites\Interactables\lever_right.png" />
+    <Content Include="Content\Sprites\Interactables\Rope.png" />
+    <Content Include="Content\Sprites\Interactables\suspended_rock_hook.png" />
+    <Content Include="Content\Sprites\Interactables\suspended_rock_hook_rope.png" />
     <Content Include="Content\Sprites\Miners\MinerHandsInPants.png" />
     <Content Include="Content\Sprites\Miners\MinerPickaxe.png" />
     <Content Include="Content\Sprites\Miners\MinerRope.png" />
