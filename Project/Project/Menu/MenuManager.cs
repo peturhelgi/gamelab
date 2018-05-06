@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using EditorLogic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -34,7 +35,8 @@ namespace TheGreatEscape.Menu
             ShowGameOverScreen,
             ShowPauseMenu,
             ResumeGame,
-            ShowLevelEditor
+            ShowLevelEditor,
+            ExitGame
         };
 
         GameManager _gameManager;
@@ -42,6 +44,10 @@ namespace TheGreatEscape.Menu
         GraphicsDeviceManager _graphics;
         GraphicsDevice _graphicsDevice;
         ContentManager _content;
+        String _currentLevel;
+        int _currentLevelIdx;
+        List<String> _allLevels;
+        GreatEscape _theGame;
 
         public KeyboardState OldKeyboardState;
         public GamePadState OldPlayerOneState;
@@ -53,7 +59,7 @@ namespace TheGreatEscape.Menu
 
 
         public MenuManager(ContentManager content, GraphicsDevice graphicsDevice,
-            GraphicsDeviceManager graphics, GameManager gameManager, EditorManager editorManager)
+            GraphicsDeviceManager graphics, GameManager gameManager, EditorManager editorManager, GreatEscape game)
 
         {
             _content = content;
@@ -62,41 +68,57 @@ namespace TheGreatEscape.Menu
             _gameManager = gameManager;
             _editorManager = editorManager;
             _popOver = null;
+            _theGame = game;
+
+            string[] files = Directory.GetFiles("Content\\Levels");
+            _allLevels = new List<String>();
+            foreach (String file in files)
+            {
+                _allLevels.Add(System.IO.Path.GetFileNameWithoutExtension(file));
+            }
+
+            Texture2D selector = _content.Load<Texture2D>("Sprites/Tools/Pickaxe");
 
             // create the screens
             _currentScreen = _mainMenu = new SelectionMenu(
-                "Main Menu", _graphicsDevice, this);
-            _mainMenu.AddSelection("play", Action.StartGame, "Level_1");
-            _mainMenu.AddSelection("choose level", Action.ShowLevelSelector, null);
-            _mainMenu.AddSelection("level editor", Action.ShowLevelEditor, "Level_1");
+                "Main Menu", _content.Load<Texture2D>("Sprites/Menus/MenuImage"), selector, false, _graphicsDevice, this);
+            string firstLvl = System.IO.Path.GetFileNameWithoutExtension(files[0]);
+            _currentLevel = firstLvl;
+            _currentLevelIdx = 0;
+            _mainMenu.AddSelection("play", Action.StartGame, "Levels/" + _currentLevel, new Rectangle(71, 313, 458, 101));
+            _mainMenu.AddSelection("choose level", Action.ShowLevelSelector, null, new Rectangle(82, 434, 471, 112));
+            _mainMenu.AddSelection("level editor", Action.ShowLevelEditor, "Levels/" + _currentLevel, new Rectangle(220, 530, 349, 102));
+            _mainMenu.AddSelection("exit game", Action.ExitGame, null, new Rectangle(152, 636, 185, 94));
 
 
             _levelSelector = new SelectionMenu(
-                "Select a Level", _graphicsDevice, this);
+                "Select a Level", _content.Load<Texture2D>("Sprites/Menus/LevelSelector"), selector, true, _graphicsDevice, this);
 
-            _levelSelector.AddSelection("Level 1", Action.StartGame, "Level_1");
-            _levelSelector.AddSelection(
-                "wide_level", Action.StartGame, "wide_level");
-            _levelSelector.AddSelection(
-                "more_platforms", Action.StartGame, "more_platforms");
-            _levelSelector.AddSelection("samplelvl", Action.StartGame, "samplelvl");
+            
+            for (int i = 0; i < files.Length; i++)
+            {
+                string file = System.IO.Path.GetFileNameWithoutExtension(files[i]);
+                int size = file.Length;
+                _levelSelector.AddSelection(file, Action.StartGame, "Levels/" + file, new Rectangle(120, 100+120*i, 35*size, 100));
+            }
+
             _gameOver = new PopOverMenu(
-                "Game Over", _graphicsDevice, this);
-
-            _gameOver.AddSelection("Retry", Action.StartGame, "");
-            _gameOver.AddSelection("Main Menu", Action.ShowMainMenu, "");
+                "Game Over", _content.Load<Texture2D>("Sprites/Menus/GameOver"), selector, false, _graphicsDevice, this);
+            _gameOver.AddSelection("Retry", Action.StartGame, "", new Rectangle(166, 157, 549, 193));
+            _gameOver.AddSelection("Select Level", Action.ShowLevelSelector, null, new Rectangle(182, 328, 561, 133));
+            _gameOver.AddSelection("Main Menu", Action.ShowMainMenu, "", new Rectangle(205, 518, 551, 165));
 
             _levelCompleted = new PopOverMenu(
-                "Level Completed!", _graphicsDevice, this);
-            _levelCompleted.AddSelection("Next Level", Action.StartGame, "");
-            _levelCompleted.AddSelection("Replay Level", Action.StartGame, "");
-            _levelCompleted.AddSelection("Main Menu", Action.ShowMainMenu, "");
+                "Level Completed!", _content.Load<Texture2D>("Sprites/Menus/LevelComplete"), selector, false, _graphicsDevice, this);
+            _levelCompleted.AddSelection("Next Level", Action.StartGame, "", new Rectangle(184, 145, 522, 166));
+            _levelCompleted.AddSelection("Replay Level", Action.StartGame, "", new Rectangle(159, 313, 617, 196));
+            _levelCompleted.AddSelection("Main Menu", Action.ShowMainMenu, "", new Rectangle(197, 512, 539, 170));
 
             _pauseGame = new PopOverMenu(
-                "Game Paused", _graphicsDevice, this);
-            _pauseGame.AddSelection("Resume Game", Action.ResumeGame, "");
-            _pauseGame.AddSelection("Restart Level", Action.StartGame, "");
-            _pauseGame.AddSelection("Main Menu", Action.ShowMainMenu, "");
+                "Game Paused", _content.Load<Texture2D>("Sprites/Menus/GamePaused"), selector, false, _graphicsDevice, this);
+            _pauseGame.AddSelection("Resume Game", Action.ResumeGame, "", new Rectangle(171, 194, 684, 167));
+            _pauseGame.AddSelection("Restart Level", Action.StartGame, "", new Rectangle(171, 371, 687, 171));
+            _pauseGame.AddSelection("Main Menu", Action.ShowMainMenu, "", new Rectangle(204, 537, 544, 149));
             
             _loading = new LoadingScreen(_graphicsDevice, this);
 
@@ -121,9 +143,17 @@ namespace TheGreatEscape.Menu
                     _currentScreen = _game;
                     break;
                 case Action.ShowLevelSelector:
+                    if (_gameManager != null && _gameManager.GameEngine != null)
+                    {
+                        _gameManager.GameEngine.GameState = null;
+                    }
                     _currentScreen = _levelSelector;
                     break;
                 case Action.ShowMainMenu:
+                    if (_gameManager != null && _gameManager.GameEngine != null)
+                    {
+                        _gameManager.GameEngine.GameState = null;
+                    }
                     _currentScreen = _mainMenu;
                     break;
 
@@ -148,8 +178,9 @@ namespace TheGreatEscape.Menu
                     _popOver = _levelCompleted;
                     nextLvl = _popOver.GetSelection(0);
 
-                    // TODO: Get next level from previous level
-                    nextLvl.Value = "more_platforms";
+                    // Get next level from previous level
+                    int nextIdx = (_currentLevelIdx + 1) % _allLevels.Count;
+                    nextLvl.Value = _allLevels[nextIdx];
                     _popOver.SetSelection(0, nextLvl);
 
                     retry = _popOver.GetSelection(1);
@@ -184,6 +215,9 @@ namespace TheGreatEscape.Menu
                         _prevScreen = null;
                     }
 
+                    break;
+                case Action.ExitGame:
+                    _theGame.Exit();
                     break;
                 default:
                     break;
@@ -246,11 +280,13 @@ namespace TheGreatEscape.Menu
         public string Text;
         public MenuManager.Action Action;
         public object Value;
-        public Selection(string text, MenuManager.Action action, object value)
+        public Rectangle Position;
+        public Selection(string text, MenuManager.Action action, object value, Rectangle position)
         {
             Text = text;
             Action = action;
             Value = value;
+            Position = position;
         }
     }
 
@@ -357,19 +393,25 @@ namespace TheGreatEscape.Menu
         int _lastSelection = -1;
         protected SpriteBatch _spriteBatch;
         protected String _title;
+        protected Texture2D _background;
+        protected Texture2D _selector;
+        protected Boolean _isDynamic;
 
 
-        public SelectionMenu(string title, GraphicsDevice graphicsDevice,
+        public SelectionMenu(string title, Texture2D background, Texture2D selector, Boolean isDynamic, GraphicsDevice graphicsDevice,
             MenuManager manager) : base(graphicsDevice, manager)
         {
             _selections = new List<Selection>();
             _spriteBatch = new SpriteBatch(_graphicsDevice);
             _title = title;
+            _background = background;
+            _selector = selector;
+            _isDynamic = isDynamic;
         }
 
-        public void AddSelection(string text, MenuManager.Action action, object value)
+        public void AddSelection(string text, MenuManager.Action action, object value, Rectangle position)
         {
-            _selections.Add(new Selection(text, action, value));
+            _selections.Add(new Selection(text, action, value, position));
         }
 
         public void AddSelection(Selection selection)
@@ -473,18 +515,82 @@ namespace TheGreatEscape.Menu
         {
             _graphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin();
+            _spriteBatch.Draw(_background, new Rectangle(0, 0, width, height), Color.White);
 
-            _spriteBatch.DrawString(_manager.MenuFont, _title, 
-                new Vector2(50f, 50f), Color.White, 0f, new Vector2(), 0.5f, 
-                new SpriteEffects(), 0f);
-            for(var i = 0; i < _selections.Count; i++)
+            float stretchX = (float)width/1920f;
+            float stretchY = (float)height/1080f;
+            Selection sel = _selections[_currentPosition];
+
+            if(!_isDynamic)
             {
-                _spriteBatch.DrawString(_manager.MenuFont, _selections[i].Text, 
-                    new Vector2(i == _currentPosition ? 100 : 50, 
-                    (i * 100.0f) + 150), 
-                    Color.White, 0f, new Vector2(), 
-                    i == _currentPosition ? 1f : 0.75f, new SpriteEffects(), 0f);
+                _spriteBatch.Draw(_selector, new Rectangle((int)((float)sel.Position.Right * stretchX), (int)((float)sel.Position.Top * stretchY), (int)(140f * stretchX), (int)(100f * stretchY)), Color.White);
             }
+            //Draw some level names
+            else
+            {
+                int[] levelsToDraw;
+                if (_currentPosition == 0 || _currentPosition == 1 || _currentPosition == 2)
+                {
+                    levelsToDraw = new int[] { 0, 1, 2, 3, 4, 5, 6 };
+                }
+                else if (_currentPosition == _selections.Count-1 || _currentPosition == _selections.Count-2 || _currentPosition == _selections.Count - 3)
+                {
+                    int i = _selections.Count;
+                    levelsToDraw = new int[] {i - 7, i - 6, i - 5, i - 4, i - 3, i - 2, i - 1 };
+                }
+                else
+                {
+                    int i = _currentPosition;
+                    levelsToDraw = new int[] {i - 3, i - 2, i - 1, i, i + 1, i + 2, i + 3};
+                }
+                
+                for (var i = 0; i < 7; i++)
+                {
+                    int idx = levelsToDraw[i];
+                    if (idx < _selections.Count) //If level exists
+                    {
+                        _spriteBatch.DrawString(_manager.MenuFont, _selections[idx].Text,
+                        new Vector2((int)((float)_selections[idx].Position.Left * stretchX),
+                        (int)((float)(_selections[i].Position.Top - 20)*stretchY)),
+                        Color.White, 0f, new Vector2(),
+                        stretchY, new SpriteEffects(), 0f);
+                    }
+                }
+
+                sel = _selections[_currentPosition];
+                int total = _selections.Count;
+                if (_currentPosition == 0)
+                {
+                    _spriteBatch.Draw(_selector, new Rectangle((int)((float)sel.Position.Right * stretchX), (int)(100f * stretchY), (int)(140f * stretchX), (int)(100f * stretchY)), Color.White);
+                }
+                else if (_currentPosition == 1)
+                {
+                    _spriteBatch.Draw(_selector, new Rectangle((int)((float)sel.Position.Right * stretchX), (int)(220f * stretchY), (int)(140f * stretchX), (int)(100f * stretchY)), Color.White);
+                }
+                else if (_currentPosition == 2)
+                {
+                    _spriteBatch.Draw(_selector, new Rectangle((int)((float)sel.Position.Right * stretchX), (int)(340f * stretchY), (int)(140f * stretchX), (int)(100f * stretchY)), Color.White);
+                }
+                else if (_currentPosition == total - 1)
+                {
+                    _spriteBatch.Draw(_selector, new Rectangle((int)((float)sel.Position.Right * stretchX), (int)(820f * stretchY), (int)(140f * stretchX), (int)(100f * stretchY)), Color.White);
+                }
+                else if (_currentPosition == total - 2)
+                {
+                    _spriteBatch.Draw(_selector, new Rectangle((int)((float)sel.Position.Right * stretchX), (int)(700f * stretchY), (int)(140f * stretchX), (int)(100f * stretchY)), Color.White);
+                }
+                else if (_currentPosition == total - 3)
+                {
+                    _spriteBatch.Draw(_selector, new Rectangle((int)((float)sel.Position.Right * stretchX), (int)(580f * stretchY), (int)(140f * stretchX), (int)(100f * stretchY)), Color.White);
+                }
+                else
+                {
+                    _spriteBatch.Draw(_selector, new Rectangle((int)((float)sel.Position.Right * stretchX), (int)(460f * stretchY), (int)(140f * stretchX), (int)(100f * stretchY)), Color.White);
+                }
+                
+                
+            }
+
             _spriteBatch.End();
         }
 
@@ -494,16 +600,16 @@ namespace TheGreatEscape.Menu
         float _ratioX;
         float _ratioY;
         float _alpha;
-        public PopOverMenu(string title, GraphicsDevice graphicsDevice,
+        public PopOverMenu(string title, Texture2D background, Texture2D selector, Boolean isDynamic, GraphicsDevice graphicsDevice,
             MenuManager manager, float ratioX = 1.0f, float ratioY = 1.0f,
             float alpha = 1.0f) : 
-            base(title, graphicsDevice, manager)
+            base(title, background, selector, isDynamic, graphicsDevice, manager)
         {
             _ratioX = ratioX;
             _ratioY = ratioY;
             _alpha = alpha;
         }
-
+        /*
         public override void Draw(GameTime gameTime, int width, int height)
         {
             _graphicsDevice.Clear(Color.Black);
@@ -522,6 +628,6 @@ namespace TheGreatEscape.Menu
             }
             _spriteBatch.End();
             base.Draw(gameTime, (int)(width * _ratioX), (int)(height * _ratioY));
-        }
+        }*/
     }
 }
