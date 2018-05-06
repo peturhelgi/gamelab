@@ -131,6 +131,8 @@ namespace EditorLogic
             {
                 foreach (var obj in CurrentObjects)
                 {
+                    if (obj is Miner)
+                        continue;
                     _engine.GameState.Add(obj);
                 }
             }
@@ -183,10 +185,9 @@ namespace EditorLogic
                 CursorPosition = new Vector2(float.MaxValue);
                 foreach (GameObject obj in collisions)
                 {
-                    if (obj is Miner)
-                        continue;
+                    if (!(obj is Miner))
+                        CurrentObjects.Add(GameObject.Clone(obj));
                     CursorPosition = Vector2.Min(CursorPosition, obj.Position);
-                    CurrentObjects.Add(GameObject.Clone(obj));
                 }
                 MovingStartPosition = CursorPosition;
                 CurrentIsNewObject = true;
