@@ -78,7 +78,6 @@ namespace TheGreatEscape.GameLogic
                 .Concat(Collectibles)
                 .Concat(Destroyables)
                 .Concat(Solids)
-                .Concat(Actors)
                 .ToList();
         }
 
