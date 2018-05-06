@@ -96,6 +96,10 @@ namespace EditorLogic {
                 {
                     _manager.GetPrevSelector();
                 }
+
+                if (gamePadState.IsButtonDown(Buttons.RightTrigger) && _oldGamePadState.IsButtonUp(Buttons.RightTrigger))
+                    _manager.ObjectPickerOpen = false;
+                    
             }
 
             // On pressing Y, toggle between displaying ObjectPicker
