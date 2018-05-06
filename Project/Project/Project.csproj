@@ -212,7 +212,9 @@
     <Content Include="Content\Sprites\Miners\MinerPickaxe.png" />
     <Content Include="Content\Sprites\Miners\MinerRope.png" />
     <Content Include="Content\Sprites\Misc\box.png" />
+    <Content Include="Content\Sprites\Misc\green_light.png" />
     <Content Include="Content\Sprites\Misc\picker_wheel.png" />
+    <Content Include="Content\Sprites\Misc\red_light.png" />
     <Content Include="Content\Sprites\Rocks\BareRock1.png" />
     <Content Include="Content\Sprites\Rocks\BareRock2.png" />
     <Content Include="Content\Sprites\Rocks\BareRock3.png" />

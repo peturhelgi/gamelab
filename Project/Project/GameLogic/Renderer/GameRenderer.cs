@@ -80,7 +80,7 @@ namespace TheGreatEscape.GameLogic.Renderer
                 else
                 {
                     if (obj?.Texture != null)
-                    {
+                    {                        
                         _spriteBatch.Draw(
                             mode == Mode.DebugView ? _debugBox : obj.Texture,
                             new Rectangle(
