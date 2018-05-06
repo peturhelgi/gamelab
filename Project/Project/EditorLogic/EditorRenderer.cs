@@ -43,17 +43,19 @@ namespace EditorLogic {
                 _spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, null, null, camera);
 
                 // Cursor
-                Vector2 cursorMin = Vector2.Min(_manager.CursorPosition, _manager.CursorPosition + _manager.CursorSize);
-                Vector2 cursorMax = Vector2.Max(_manager.CursorPosition, _manager.CursorPosition + _manager.CursorSize);
+                Vector2 cursorMin = Vector2.Min(
+                    _manager.CursorPosition, 
+                    _manager.CursorPosition + _manager.CursorSize);
+                Vector2 cursorMax = Vector2.Max(
+                    _manager.CursorPosition, 
+                    _manager.CursorPosition + _manager.CursorSize);
+
                 // Draws cursor on screen
                 _spriteBatch.Draw(
                     _debugBox,
-                    new Rectangle(
-                        (int)cursorMin.X,
-                        (int)cursorMin.Y,
-                        (int)(cursorMax.X - cursorMin.X),
-                        (int)(cursorMax.Y - cursorMin.Y)
-                        ),
+                    new Rectangle( 
+                        cursorMin.ToPoint(), 
+                        (cursorMax - cursorMin).ToPoint()),           
                     Color.White
                     );
 
@@ -64,13 +66,14 @@ namespace EditorLogic {
                     // Current GameObjects
                     foreach (GameObject obj in _manager.CurrentObjects)
                     {
+                        var size = obj.SpriteSize.ToPoint();
+                        var pos = (obj.Position
+                            + _manager.CursorPosition
+                            - _manager.MovingStartPosition).ToPoint();
+
                         _spriteBatch.Draw(
                            obj.Texture,
-                           new Rectangle(
-                               (int)(obj.Position.X + (_manager.CursorPosition.X - _manager.MovingStartPosition.X)),
-                               (int)(obj.Position.Y + (_manager.CursorPosition.Y - _manager.MovingStartPosition.Y)),
-                               (int)obj.SpriteSize.X,
-                               (int)obj.SpriteSize.Y),
+                           new Rectangle(pos, size),
                            Color.White);
                     }
                 }
