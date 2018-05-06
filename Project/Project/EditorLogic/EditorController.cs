@@ -117,12 +117,15 @@ namespace EditorLogic {
             }
             else
             {
-                // Handle Cursor movement
-                Vector2 cursorDisplacement = new Vector2(50, -50) * 
-                    new Vector2(gamePadState.ThumbSticks.Left.X, gamePadState.ThumbSticks.Left.Y);
-                _manager.CursorPosition += cursorDisplacement;
+                if (!_manager.ObjectPickerOpen)
+                {
+                    // Handle Cursor movement
+                    Vector2 cursorDisplacement = new Vector2(50, -50) * 
+                        new Vector2(gamePadState.ThumbSticks.Left.X, gamePadState.ThumbSticks.Left.Y);
+                    _manager.CursorPosition += cursorDisplacement;
 
-                _manager.CheckCursorInsideScreen(cursorDisplacement, _manager.CursorPosition);
+                    _manager.CheckCursorInsideScreen(cursorDisplacement, _manager.CursorPosition);
+                }
 
 
                 // enable object size changes, if we only select one object

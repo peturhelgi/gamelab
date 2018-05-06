@@ -298,7 +298,7 @@
       "direction": "x",
       "activationkey": 0,
       "texture": "Sprites/Interactables/platform_escalator",
-      "secondtexture": "Sprites/Interactables/platform_mechanismx"
+      "secondtexture": "Sprites/Misc/platform_mechanismx"
     },
     {
       "dim": {
@@ -319,7 +319,7 @@
       "direction": "y",
       "activationkey": 1,
       "texture": "Sprites/Interactables/platform_escalator",
-      "secondtexture": "Sprites/Interactables/platform_mechanismy"
+      "secondtexture": "Sprites/Misc/platform_mechanismy"
     },
     {
       "dim": {

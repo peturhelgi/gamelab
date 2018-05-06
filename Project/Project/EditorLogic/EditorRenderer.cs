@@ -45,6 +45,7 @@ namespace EditorLogic {
                 // Cursor
                 Vector2 cursorMin = Vector2.Min(_manager.CursorPosition, _manager.CursorPosition + _manager.CursorSize);
                 Vector2 cursorMax = Vector2.Max(_manager.CursorPosition, _manager.CursorPosition + _manager.CursorSize);
+                // Draws cursor on screen
                 _spriteBatch.Draw(
                     _debugBox,
                     new Rectangle(

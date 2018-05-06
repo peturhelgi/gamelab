@@ -99,6 +99,8 @@ namespace EditorLogic
                     };
 
                     GameObject gameObject = factory.Create(gobj);
+                    if (objType == "platform")
+                        gameObj.ToString();
                     gameObject.Texture = gameObj.Value;
                     ObjectTemplates.Add(gameObject);
                 }
