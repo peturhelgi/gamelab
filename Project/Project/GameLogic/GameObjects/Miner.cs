@@ -267,7 +267,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public bool pickUpCrateRightSide(GameObject c, GameState gs)
         {
             AxisAllignedBoundingBox BBox = new AxisAllignedBoundingBox(
-                new Vector2(Position.X + SpriteSize.X, Position.Y), Position + c.SpriteSize);
+                new Vector2(Position.X + SpriteSize.X, Position.Y), 
+                new Vector2(Position.X + SpriteSize.X, Position.Y) + c.SpriteSize);
             List<GameObject> tmpSolids = gs.GetObjects(GameState.Handling.Solid);
             // tmpSolids.Remove(c);
             List<GameObject> crateCollisions = CollisionDetector.FindCollisions(BBox, tmpSolids);
@@ -293,7 +294,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public bool pickUpCrateLeftSide(GameObject c, GameState gs)
         {
             AxisAllignedBoundingBox BBox = new AxisAllignedBoundingBox(
-                new Vector2(Position.X - c.SpriteSize.X, Position.Y), Position + c.SpriteSize);
+                new Vector2(Position.X - c.SpriteSize.X, Position.Y), new Vector2(Position.X, Position.Y + c.SpriteSize.Y));
             List<GameObject> tmpSolids = gs.GetObjects(GameState.Handling.Solid);
             // tmpSolids.Remove(c);
             List<GameObject> crateCollisions = CollisionDetector.FindCollisions(BBox, tmpSolids);
@@ -313,15 +314,6 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 // gs.Add(c, GameState.Handling.Solid);
                 MyDebugger.WriteLine("crate hits something as it is picked up");
                 return false;
-            }
-        }
-
-        public override AxisAllignedBoundingBox BBox
-        {
-            get
-            {
-                return new AxisAllignedBoundingBox(Position, 
-                    new Vector2(Position.X + SpriteSize.X, Position.Y + SpriteSize.Y * 0.85f));
             }
         }
     }
