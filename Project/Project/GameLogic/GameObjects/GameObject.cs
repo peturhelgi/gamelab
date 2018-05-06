@@ -116,6 +116,10 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Active = true;
         }
 
+        public virtual void Interact(GameState gameState)
+        {
+
+        }
         public void Disable()
         {
             Visible = false;

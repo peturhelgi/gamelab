@@ -19,10 +19,24 @@
       },
       "pos": {
         "x": 1952,
-        "y": -150        
+        "y": -150
       },
+      "requirement": true,
+      "id": 0,
       "type": "end",
       "texture": "Sprites/Interactables/Door"
+    },
+    {
+      "dim": {
+        "x": 94,
+        "y": 31
+      },
+      "pos": {
+        "x": 1932,
+        "y": -90
+      },
+      "type": "key",
+      "texture": "Sprites/Interactables/key"
     },
     {
       "dim": {

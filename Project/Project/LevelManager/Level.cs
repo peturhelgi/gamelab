@@ -18,8 +18,7 @@ namespace TheGreatEscape.LevelManager {
         //public Dictionary<string, int> resources;
         public SortedDictionary<string, int> resources;
     }
-
-
+    
 
     public class Obj
     {
@@ -56,5 +55,11 @@ namespace TheGreatEscape.LevelManager {
 
         [JsonProperty("tool")]
         public string Tool;
+
+        [JsonProperty("id")]
+        public int Id;
+
+        [JsonProperty("requirement")]
+        public bool Requirement;
     }
 }

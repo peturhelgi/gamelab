@@ -32,19 +32,6 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     if (c.Mass <= 0)
                         gamestate.Remove(c);
                 }
-
-                if(c is Door)
-                {
-                    if((c as Door).Open())
-                    {
-                        if((c as Door).IsExit)
-                        {
-                            gamestate.Completed = true;
-                        }
-                        //TODO: load new scene if not exit
-                    }
-                    continue;
-                }
             }
         }
 

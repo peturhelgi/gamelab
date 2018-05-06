@@ -165,6 +165,16 @@ namespace TheGreatEscape.GameLogic
             }
         }
 
+        public void ChangeHandling(GameObject obj, Handling before,
+            Handling after)
+        {
+            if (GetObjects(before).Contains(obj))
+            {
+                Remove(obj, before);
+                Add(obj, after);
+            }
+        }
+
         public List<Miner> GetActors()
         {
             return Actors;
