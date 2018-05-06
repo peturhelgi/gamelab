@@ -37,15 +37,23 @@ namespace EditorLogic
         public Vector2 MovingStartPosition;
         public bool Editing = true;
         public List<GameObject> CurrentObjects;
+        public GameObject AuxiliaryObject;
+        public GameObject AuxObjLink;
         public bool CurrentIsNewObject;
         public bool ObjectPickerOpen;
         public Rectangle InitialRectangle;
 
         public SortedList<String, CircularSelector> ObjectsSelector;
         public CircularSelector CircularSelector;
-        public Dictionary<string , Dictionary<string, Texture2D>> GameObjectTextures;
+        public Dictionary<string, Dictionary<string, Texture2D>> GameObjectTextures;
 
-
+        public bool ObjectsAreSelected
+        {
+            get
+            {
+                return ((CurrentObjects != null) || (AuxiliaryObject != null));
+            }
+        }
         public EditorManager(ContentManager content, GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics)
         {
             _content = content;
@@ -55,18 +63,22 @@ namespace EditorLogic
             CursorPosition = Vector2.Zero;
             CursorSize = new Vector2(10);
             InitialRectangle = new Rectangle(0, 0, 2000, 2000);
-            
+
 
             _oldKeyboardState = Keyboard.GetState();
             _oldGamePadState = GamePad.GetState(PlayerIndex.One);
 
             GameObjectTextures = new Dictionary<string, Dictionary<string, Texture2D>>();
             ObjectsSelector = new SortedList<string, CircularSelector>();
+            LoadMiscTextures();
             LoadAllGameObjects();
             CircularSelector = ObjectsSelector.First().Value;
 
         }
-
+        public void LoadMiscTextures()
+        {
+            GameObjectTextures.Add("Misc", TextureContent.LoadListContent<Texture2D>(_content, "Misc"));
+        }
         public void LoadAllGameObjects()
         {
             List<String> DirNames = new List<String> {
@@ -98,11 +110,23 @@ namespace EditorLogic
                         SpriteSize = new Vector2(150, 100)
                     };
 
+                    // the dummy instance of the key shouldn't affect
+                    // the total number of keys in the GameState
+                    if (objType == "key")
+                    {
+                        gobj.Id = -1;
+                        GameObjectFactory.currentKey--;
+                    }
+
+                        
                     GameObject gameObject = factory.Create(gobj);
-                    if (objType == "platform")
-                        gameObj.ToString();
+                    if (objType == "rockandhook")
+                        (gameObject as RockHook).Rope.Texture = GameObjectTextures["Misc"]["Rope"];
                     gameObject.Texture = gameObj.Value;
                     ObjectTemplates.Add(gameObject);
+
+                    //if (objType == "key")
+                    //    gameObj.ToString();
                 }
 
                 CircularSelector circSelector = new CircularSelector(_content, dirName);
@@ -112,6 +136,18 @@ namespace EditorLogic
 
         }
 
+        public List<GameObject> GetAllObjectsOfType(Type ObjType)
+        {
+            List<GameObject> desiredObjects = new List<GameObject>();
+            foreach (GameObject gameObj in _engine.GameState.GetAll())
+            {
+                if (gameObj.GetType() == ObjType)
+                {
+                    desiredObjects.Add(gameObj);
+                }
+            }
+            return desiredObjects;
+        }
         public void GetNextSelector()
         {
             int indexOfNext = ObjectsSelector.IndexOfKey(CircularSelector.SelectableObjects) + 1;
@@ -153,28 +189,117 @@ namespace EditorLogic
             CurrentObjects = null;
         }
 
+        // Called only when placing an object from the PickerWheel
         public void CreateNewGameObject(GameObject newObject)
         {
             CurrentObjects = new List<GameObject>
             {
                 GameObject.Clone(newObject)
             };
-            
+
             CurrentIsNewObject = true;
-            MovingStartPosition =  Vector2.Zero;
+            MovingStartPosition = Vector2.Zero;
 
         }
 
-        public void PlaceCurrentObjects() {
-            if (CurrentObjects != null) {
-                foreach (GameObject obj in CurrentObjects)
+        public void CreateDoorKey()
+        {
+            Obj gobj = new Obj
+            {
+                Type = "key",
+                Position = CursorPosition,
+                SpriteSize = new Vector2(150, 100),
+                Id = GameObjectFactory.currentKey
+            };
+            GameObjectFactory factory = new GameObjectFactory();
+            AuxiliaryObject = factory.Create(gobj);
+            GameObjectTextures.TryGetValue("Interactables", out Dictionary<string, Texture2D> keyTexDict);
+            AuxiliaryObject.Texture = keyTexDict["key"];
+
+            (CurrentObjects.First() as Door).AddKey((AuxiliaryObject as Key).Id);
+        }
+
+        public void CreateRope(Vector2 spriteSize)
+        {
+            GameObject Rope = new HangingRope(CursorPosition + new Vector2(120.0f / 282.0f * spriteSize.X, 153.0f / 168.0f * spriteSize.Y),
+                    new Vector2(44, 200), "Sprites/Misc/Rope")
+            {
+                Texture = GameObjectTextures["Misc"]["Rope"]
+            };
+            AuxiliaryObject = Rope;
+        }
+
+        public void PlaceCurrentObjects()
+        {
+            if (CurrentObjects != null)
+            {
+                // Corner case for adding a door and asociating it with a key
+                if (CurrentObjects.First() is Door && CurrentIsNewObject)
+                {
+                    CreateDoorKey();
+                    Door door = CurrentObjects.First() as Door;
+                    door.Position += (CursorPosition - MovingStartPosition);
+                    MovingStartPosition = CursorPosition;
+                    _engine.GameState.Add(door);
+                    CurrentObjects = null;
+                    return;
+
+                }
+
+                if (CurrentObjects.First() is RockHook && CurrentIsNewObject)
+                {
+                    RockHook rockHook = CurrentObjects.First() as RockHook;
+                    CreateRope(rockHook.SpriteSize);
+                    rockHook.Position += (CursorPosition - MovingStartPosition);
+                    MovingStartPosition = CursorPosition;
+                    _engine.GameState.Add(rockHook);
+                    AuxObjLink = rockHook;
+                    CurrentObjects = null;
+                    return;
+                }
+
+                    foreach (GameObject obj in CurrentObjects)
                 {
                     obj.Position += (CursorPosition - MovingStartPosition);
+                    if (obj is RockHook)
+                    {
+                        (obj as RockHook).UpdateRope();
+                    }
                     if (!(obj is Miner))
                         _engine.GameState.Add(obj);
                 }
                 CurrentObjects = null;
             }
+        }
+
+        public void PlaceAuxiliaryObject()
+        {
+            if (AuxiliaryObject != null)
+            {
+                if (AuxiliaryObject is HangingRope)
+                {
+                    AuxiliaryObject.SpriteSize = new Vector2(44, AuxiliaryObject.SpriteSize.Y);
+                    AuxiliaryObject.Active = true;
+                    (AuxObjLink as RockHook).Rope = AuxiliaryObject as HangingRope;
+                    AuxiliaryObject = null;
+
+                    return;
+                }
+                AuxiliaryObject.Position += (CursorPosition - MovingStartPosition);
+                _engine.GameState.Add(AuxiliaryObject);
+            }
+            AuxiliaryObject = null;
+        }
+
+        public void RemoveAuxiliaryObject()
+        {
+            List<GameObject> doors = GetAllObjectsOfType(typeof(Door));
+            foreach (Door door in doors)
+            {
+                if (door.KeyId == (AuxiliaryObject as Key).Id)
+                    door.RemoveKey(door.KeyId);
+            }
+            AuxiliaryObject = null;
         }
 
         public void DuplicateObjectUnderCursor()
@@ -196,13 +321,16 @@ namespace EditorLogic
             }
         }
 
-        public void PickObjectUnderCursor() {
+        public void PickObjectUnderCursor()
+        {
             List<GameObject> collisions = _engine.CollisionDetector.FindCollisions(
-                new AxisAllignedBoundingBox(CursorPosition, CursorPosition+CursorSize), _engine.GameState.GetAll());
-            if (collisions.Count > 0) {
+                new AxisAllignedBoundingBox(CursorPosition, CursorPosition + CursorSize), _engine.GameState.GetAll());
+            if (collisions.Count > 0)
+            {
                 CurrentObjects = collisions;
                 CursorPosition = new Vector2(float.MaxValue);
-                foreach (GameObject obj in collisions) {
+                foreach (GameObject obj in collisions)
+                {
                     CursorPosition = Vector2.Min(CursorPosition, obj.Position);
                     if (!(obj is Miner))
                         _engine.GameState.Remove(obj);
@@ -257,7 +385,7 @@ namespace EditorLogic
             }
 
             _oldKeyboardState = Keyboard.GetState();
-            _oldGamePadState = GamePad.GetState(0);
+            _oldGamePadState = GamePad.GetState(PlayerIndex.One);
         }
 
         public void Draw(GameTime gameTime, int width, int height)
@@ -273,10 +401,10 @@ namespace EditorLogic
                 GameManager.RenderDark = false;
                 _editorRenderer.Draw(gameTime, width, height, _editorController.Camera.view);
             }
-            
+
         }
 
-        public void CheckCursorInsideScreen(Vector2 cursorDisplacement, Vector2 cursorPosition) 
+        public void CheckCursorInsideScreen(Vector2 cursorDisplacement, Vector2 cursorPosition)
         {
             if (!InitialRectangle.Contains(cursorPosition))
             {

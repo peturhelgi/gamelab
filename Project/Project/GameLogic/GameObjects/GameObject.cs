@@ -126,9 +126,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Active = false;
         }
 
-        public Vector2 Position { get; set; }
+        public virtual Vector2 Position { get; set; }
 
-        public Vector2 SpriteSize { get; set; }
+        public virtual Vector2 SpriteSize { get; set; }
 
         public Vector2 Speed { get; set; }
 

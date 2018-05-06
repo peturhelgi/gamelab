@@ -36,8 +36,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
     public class GameObjectFactory : Factory<GameObject>
     {
         ToolFactory _toolFactory = new ToolFactory();
-        int currentKey = 0;
-        int currentDoor = 0;
+        public static int currentKey = 0;
+        public static int currentDoor = 0;
         public override GameObject Create(
             Object obj)
         {
@@ -84,7 +84,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     {
                         Handling = GameState.Handling.Interact,
                         RequiresKey = entity.Requirement,
-                        KeyId = entity.Id
+                        KeyId = entity.Id,
+                        Id = currentDoor++
                     };
                     
                     bool unlocked = !entity.Requirement;
@@ -172,6 +173,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     };
                     break;
                 case "rockandhook":
+                    entity.SecondTexture = "Sprites/Misc/Rope";
                     instance = new RockHook(
                         entity.Position,
                         entity.SpriteSize,
@@ -195,9 +197,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     {
                         TextureString = entity.Texture,
                         Handling = GameState.Handling.Collect,
-                        Id = currentKey++
+                        Id = entity.Id
                     };
-
+                    currentKey++;
                     break;
                 default:
                     instance = null;
