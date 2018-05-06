@@ -9,7 +9,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
     class Lever : GameObject
     {
         public bool ON;
-        public int ActivationId;
+        public readonly int ActivationId;
         private string _leftLeverTexture;
         public string RightleverTexture;
         public Texture2D SecondTexture;

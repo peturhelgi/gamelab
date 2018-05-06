@@ -63,9 +63,9 @@ namespace TheGreatEscape.LevelManager
                 }
                 obj.Texture = ContentManager.Load<Texture2D>(obj.TextureString);
                 if (obj is Lever)
-                {
                     (obj as Lever).SecondTexture = ContentManager.Load<Texture2D>((obj as Lever).RightleverTexture);
-                }
+                if (obj is RockHook)
+                    (obj as RockHook).Rope.Texture = ContentManager.Load<Texture2D>((obj as RockHook).Rope.TextureString);
             }
 
             LoadMotionSheets(gameState);

@@ -636,7 +636,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Interactables/button_floor.png
 
-#begin Sprites/Misc/platform_mechanismx.png
+#begin Sprites/Interactables/rockandhook.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -646,9 +646,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Misc/platform_mechanismx.png
+/build:Sprites/Interactables/rockandhook.png
 
-#begin Sprites/Misc/platform_mechanismy.png
+#begin Sprites/Misc/Rope.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -658,5 +658,17 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Misc/platform_mechanismy.png
+/build:Sprites/Misc/Rope.png
+
+#begin Sprites/Interactables/key.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Interactables/key.png
 

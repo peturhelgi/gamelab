@@ -9,7 +9,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
     class Button : GameObject
     {
         public bool ON;
-        public int ActivationId;
+        public readonly int ActivationId;
 
         public Button(Vector2 position, Vector2 spriteSize, string textureString, int actId)
             : base(position, spriteSize)

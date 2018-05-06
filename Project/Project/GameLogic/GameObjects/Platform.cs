@@ -9,7 +9,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
     class Platform : GameObject
     {
         public bool Activate;
-        public int ActivationId;
+        public readonly int ActivationId;
         public float Displacement;
         public Vector2 DisplacementStep;
         public float MaxHeight;
