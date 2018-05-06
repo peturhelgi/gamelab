@@ -77,6 +77,21 @@ namespace EditorLogic {
                            Color.White);
                     }
                 }
+
+                if (_manager.AuxiliaryObject != null)
+                {
+                    GameObject auxObj = _manager.AuxiliaryObject;
+                        _spriteBatch.Draw(
+                           auxObj.Texture,
+                           new Rectangle(
+                               (int)(auxObj.Position.X + (_manager.CursorPosition.X - _manager.MovingStartPosition.X)),
+                               (int)(auxObj.Position.Y + (_manager.CursorPosition.Y - _manager.MovingStartPosition.Y)),
+                               (int)auxObj.SpriteSize.X,
+                               (int)auxObj.SpriteSize.Y),
+                           Color.White);
+                }
+
+
                 _spriteBatch.End();
 
             }

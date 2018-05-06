@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 using TheGreatEscape.GameLogic;
+using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.GameLogic.Util;
 
 namespace EditorLogic {
@@ -171,11 +173,10 @@ namespace EditorLogic {
                     _manager.CheckCursorInsideScreen(cursorDisplacement, _manager.CursorPosition);
                 }
 
-
                 // enable object size changes, if we only select one object
                 if (_manager.CurrentObjects != null)
                 {
-                    if (_manager.CurrentObjects.Count == 1)
+                    if (_manager.CurrentObjects.Count == 1 )
                     {
                         _manager.CurrentObjects[0].SpriteSize
                             += rightThumb * new Vector2(5, -5);
@@ -188,11 +189,17 @@ namespace EditorLogic {
                     }
                 }
 
+                // enable auxiliary object size change
+                if (_manager.AuxiliaryObject != null)
+                {
+                    _manager.AuxiliaryObject.SpriteSize += gamePadState.ThumbSticks.Right * new Vector2(5, -5);
+                }
+
 
                 // let A go > place Object or Pick Object(s)
                 if (KeyReleased(Buttons.A))
                 {
-                    if (_manager.CurrentObjects != null)
+                    if (_manager.ObjectsAreSelected)
                     {
                         _manager.PlaceCurrentObjects();
                     }
@@ -206,10 +213,11 @@ namespace EditorLogic {
                 // let X go > place Object or duplicate Object(s)
                 if (KeyPressed(Buttons.X))
                 {
-                    if (_manager.CurrentObjects != null)
+                    if (_manager.ObjectsAreSelected)
                     {
                         _manager.PlaceCurrentObjects();
                     }
+
                     else
                     {
                         _manager.DuplicateObjectUnderCursor();
@@ -217,10 +225,27 @@ namespace EditorLogic {
                     }
                 }
 
+                if (_manager.AuxiliaryObject != null)
+                {
+                    // Remove the key
+                    if (gamePadState.IsButtonDown(Buttons.RightTrigger) &&
+                        _oldGamePadState.IsButtonUp(Buttons.RightTrigger))
+                    {
+                        _manager.RemoveAuxiliaryObject();
+                    }
+                    else if (gamePadState.IsButtonDown(Buttons.X) && _oldGamePadState.IsButtonUp(Buttons.X) ||
+                        gamePadState.IsButtonDown(Buttons.A) && _oldGamePadState.IsButtonUp(Buttons.A))
+
+                    {
+                        _manager.PlaceAuxiliaryObject();
+                    }
+
+                }
+
 
                 if (KeyDown(Buttons.A, Buttons.X))
                 {
-                    if (_manager.CurrentObjects == null)
+                    if (!_manager.ObjectsAreSelected)
                     {
                         // We are in selector mode
 

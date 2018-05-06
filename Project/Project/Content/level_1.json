@@ -35,6 +35,7 @@
         "x": 1932,
         "y": -90
       },
+      "id": 0,
       "type": "key",
       "texture": "Sprites/Interactables/key"
     },

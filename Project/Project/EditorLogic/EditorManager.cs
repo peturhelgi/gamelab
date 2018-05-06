@@ -37,15 +37,22 @@ namespace EditorLogic
         public Vector2 MovingStartPosition;
         public bool Editing = true;
         public List<GameObject> CurrentObjects;
+        public GameObject AuxiliaryObject;
         public bool CurrentIsNewObject;
         public bool ObjectPickerOpen;
         public Rectangle InitialRectangle;
 
         public SortedList<String, CircularSelector> ObjectsSelector;
         public CircularSelector CircularSelector;
-        public Dictionary<string , Dictionary<string, Texture2D>> GameObjectTextures;
+        public Dictionary<string, Dictionary<string, Texture2D>> GameObjectTextures;
 
-
+        public bool ObjectsAreSelected
+        {
+            get
+            {
+                return ((CurrentObjects != null) || (AuxiliaryObject != null));
+            }
+        }
         public EditorManager(ContentManager content, GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics)
         {
             _content = content;
@@ -55,7 +62,7 @@ namespace EditorLogic
             CursorPosition = Vector2.Zero;
             CursorSize = new Vector2(10);
             InitialRectangle = new Rectangle(0, 0, 2000, 2000);
-            
+
 
             _oldKeyboardState = Keyboard.GetState();
             _oldGamePadState = GamePad.GetState(PlayerIndex.One);
@@ -98,11 +105,19 @@ namespace EditorLogic
                         SpriteSize = new Vector2(150, 100)
                     };
 
+                    // the dummy instance of the key shouldn't affect
+                    // the total number of keys in the GameState
+                    if (objType == "key")
+                    {
+                        gobj.Id = -1;
+                        GameObjectFactory.currentKey--;
+                    }
                     GameObject gameObject = factory.Create(gobj);
-                    if (objType == "platform")
-                        gameObj.ToString();
                     gameObject.Texture = gameObj.Value;
                     ObjectTemplates.Add(gameObject);
+
+                    //if (objType == "key")
+                    //    gameObj.ToString();
                 }
 
                 CircularSelector circSelector = new CircularSelector(_content, dirName);
@@ -112,6 +127,18 @@ namespace EditorLogic
 
         }
 
+        public List<GameObject> GetAllObjectsOfType(Type ObjType)
+        {
+            List<GameObject> desiredObjects = new List<GameObject>();
+            foreach (GameObject gameObj in _engine.GameState.GetAll())
+            {
+                if (gameObj.GetType() == ObjType)
+                {
+                    desiredObjects.Add(gameObj);
+                }
+            }
+            return desiredObjects;
+        }
         public void GetNextSelector()
         {
             int indexOfNext = ObjectsSelector.IndexOfKey(CircularSelector.SelectableObjects) + 1;
@@ -153,20 +180,51 @@ namespace EditorLogic
             CurrentObjects = null;
         }
 
+        // Called only when placing an object from the PickerWheel
         public void CreateNewGameObject(GameObject newObject)
         {
             CurrentObjects = new List<GameObject>
             {
                 GameObject.Clone(newObject)
             };
-            
+
             CurrentIsNewObject = true;
-            MovingStartPosition =  Vector2.Zero;
+            MovingStartPosition = Vector2.Zero;
 
         }
 
-        public void PlaceCurrentObjects() {
-            if (CurrentObjects != null) {
+        public void CreateDoorKey()
+        {
+            Obj gobj = new Obj
+            {
+                Type = "key",
+                Position = CursorPosition,
+                SpriteSize = new Vector2(150, 100),
+                Id = GameObjectFactory.currentKey
+            };
+            GameObjectFactory factory = new GameObjectFactory();
+            AuxiliaryObject = factory.Create(gobj);
+            GameObjectTextures.TryGetValue("Interactables", out Dictionary<string, Texture2D> keyTexDict);
+            AuxiliaryObject.Texture = keyTexDict["key"];
+
+            (CurrentObjects.First() as Door).AddKey((AuxiliaryObject as Key).Id);
+        }
+
+        public void PlaceCurrentObjects()
+        {
+            if (CurrentObjects != null)
+            {
+                if (CurrentObjects.First() is Door)
+                {
+                    CreateDoorKey();
+                    Door door = CurrentObjects.First() as Door;
+                    door.Position += (CursorPosition - MovingStartPosition);
+                    MovingStartPosition = CursorPosition;
+                    _engine.GameState.Add(door);
+                    CurrentObjects = null;
+                    return;
+
+                }
                 foreach (GameObject obj in CurrentObjects)
                 {
                     obj.Position += (CursorPosition - MovingStartPosition);
@@ -175,6 +233,27 @@ namespace EditorLogic
                 }
                 CurrentObjects = null;
             }
+        }
+
+        public void PlaceAuxiliaryObject()
+        {
+            if (AuxiliaryObject != null)
+            {
+                AuxiliaryObject.Position += (CursorPosition - MovingStartPosition);
+                _engine.GameState.Add(AuxiliaryObject);
+            }
+            AuxiliaryObject = null;
+        }
+
+        public void RemoveAuxiliaryObject()
+        {
+            List<GameObject> doors = GetAllObjectsOfType(typeof(Door));
+            foreach (Door door in doors)
+            {
+                if (door.KeyId == (AuxiliaryObject as Key).Id)
+                    door.RemoveKey(door.KeyId);
+            }
+            AuxiliaryObject = null;
         }
 
         public void DuplicateObjectUnderCursor()
@@ -196,13 +275,16 @@ namespace EditorLogic
             }
         }
 
-        public void PickObjectUnderCursor() {
+        public void PickObjectUnderCursor()
+        {
             List<GameObject> collisions = _engine.CollisionDetector.FindCollisions(
-                new AxisAllignedBoundingBox(CursorPosition, CursorPosition+CursorSize), _engine.GameState.GetAll());
-            if (collisions.Count > 0) {
+                new AxisAllignedBoundingBox(CursorPosition, CursorPosition + CursorSize), _engine.GameState.GetAll());
+            if (collisions.Count > 0)
+            {
                 CurrentObjects = collisions;
                 CursorPosition = new Vector2(float.MaxValue);
-                foreach (GameObject obj in collisions) {
+                foreach (GameObject obj in collisions)
+                {
                     CursorPosition = Vector2.Min(CursorPosition, obj.Position);
                     if (!(obj is Miner))
                         _engine.GameState.Remove(obj);
@@ -273,10 +355,10 @@ namespace EditorLogic
                 GameManager.RenderDark = false;
                 _editorRenderer.Draw(gameTime, width, height, _editorController.Camera.view);
             }
-            
+
         }
 
-        public void CheckCursorInsideScreen(Vector2 cursorDisplacement, Vector2 cursorPosition) 
+        public void CheckCursorInsideScreen(Vector2 cursorDisplacement, Vector2 cursorPosition)
         {
             if (!InitialRectangle.Contains(cursorPosition))
             {
