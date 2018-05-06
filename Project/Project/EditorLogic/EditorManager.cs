@@ -214,7 +214,7 @@ namespace EditorLogic
         {
             if (CurrentObjects != null)
             {
-                if (CurrentObjects.First() is Door)
+                if (CurrentObjects.First() is Door && CurrentIsNewObject)
                 {
                     CreateDoorKey();
                     Door door = CurrentObjects.First() as Door;
@@ -339,7 +339,7 @@ namespace EditorLogic
             }
 
             _oldKeyboardState = Keyboard.GetState();
-            _oldGamePadState = GamePad.GetState(0);
+            _oldGamePadState = GamePad.GetState(PlayerIndex.One);
         }
 
         public void Draw(GameTime gameTime, int width, int height)

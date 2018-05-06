@@ -81,14 +81,15 @@ namespace EditorLogic {
                 if (_manager.AuxiliaryObject != null)
                 {
                     GameObject auxObj = _manager.AuxiliaryObject;
-                        _spriteBatch.Draw(
-                           auxObj.Texture,
-                           new Rectangle(
-                               (int)(auxObj.Position.X + (_manager.CursorPosition.X - _manager.MovingStartPosition.X)),
-                               (int)(auxObj.Position.Y + (_manager.CursorPosition.Y - _manager.MovingStartPosition.Y)),
-                               (int)auxObj.SpriteSize.X,
-                               (int)auxObj.SpriteSize.Y),
-                           Color.White);
+                    var size = auxObj.SpriteSize.ToPoint();
+                    var pos = (auxObj.Position
+                        + _manager.CursorPosition
+                        - _manager.MovingStartPosition).ToPoint();
+
+                    _spriteBatch.Draw(
+                       auxObj.Texture,
+                       new Rectangle(pos, size),
+                       Color.White);
                 }
 
 

@@ -5,7 +5,8 @@ using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.GameLogic.Util;
 
-namespace EditorLogic {
+namespace EditorLogic
+{
     class EditorController
     {
         public GameEngine GameEngine;
@@ -26,12 +27,13 @@ namespace EditorLogic {
 
             _mouseState = Mouse.GetState();
             _currKeyboardState = Keyboard.GetState();
-            _currGamePadState = GamePad.GetState(0);
+            _currGamePadState = GamePad.GetState(PlayerIndex.One);
         }
+
 
         internal void HandleUpdate(GameTime gameTime)
         {
-            
+
             GameEngine.gameTime = gameTime.TotalGameTime;
 
             _oldGamePadState = _currGamePadState;
@@ -47,13 +49,14 @@ namespace EditorLogic {
             HandleMouse();
 
             GameEngine.Update();
+
         }
 
         private void HandleMouse()
         {
             if (_mouseState.LeftButton == ButtonState.Pressed)
             {
-                MyDebugger.Write("("+_mouseState.Position.X + ", ", true);
+                MyDebugger.Write("(" + _mouseState.Position.X + ", ", true);
                 MyDebugger.WriteLine(_mouseState.Position.Y + ")", true);
             }
         }
@@ -74,8 +77,9 @@ namespace EditorLogic {
 
         }
 
-        private bool KeyPressed(params Buttons[] buttons) {
-            foreach(var button in buttons)
+        private bool KeyPressed(params Buttons[] buttons)
+        {
+            foreach (var button in buttons)
             {
                 if (_oldGamePadState.IsButtonUp(button)
                     && _currGamePadState.IsButtonDown(button))
@@ -85,8 +89,9 @@ namespace EditorLogic {
             }
             return false;
         }
-        private bool KeyReleased(params Buttons[] buttons) {
-            foreach(var button in buttons)
+        private bool KeyReleased(params Buttons[] buttons)
+        {
+            foreach (var button in buttons)
             {
                 if (_oldGamePadState.IsButtonDown(button)
                     && _currGamePadState.IsButtonUp(button))
@@ -134,7 +139,7 @@ namespace EditorLogic {
             if (_manager.ObjectPickerOpen)
             {
                 // go to the next category of GameObjects
-                  if(KeyPressed(Buttons.RightShoulder))
+                if (KeyPressed(Buttons.RightShoulder))
                 {
                     _manager.GetNextSelector();
                 }
@@ -146,7 +151,7 @@ namespace EditorLogic {
                 }
 
                 if (KeyPressed(Buttons.RightTrigger))
-                    _manager.ObjectPickerOpen = false;                    
+                    _manager.ObjectPickerOpen = false;
             }
 
             // On pressing Y, toggle between displaying ObjectPicker
@@ -173,79 +178,74 @@ namespace EditorLogic {
                     _manager.CheckCursorInsideScreen(cursorDisplacement, _manager.CursorPosition);
                 }
 
+
                 // enable object size changes, if we only select one object
                 if (_manager.CurrentObjects != null)
                 {
-                    if (_manager.CurrentObjects.Count == 1 )
+                    if (_manager.CurrentObjects.Count == 1)
                     {
                         _manager.CurrentObjects[0].SpriteSize
                             += rightThumb * new Vector2(5, -5);
                         float x = _manager.CurrentObjects[0].SpriteSize.X,
                             y = _manager.CurrentObjects[0].SpriteSize.Y;
+                        //make sure that object doesn't get negative size
                         if (x < 0) { x = 0; }
                         if (y < 0) { y = 0; }
-                        _manager.CurrentObjects[0].SpriteSize = 
+                        _manager.CurrentObjects[0].SpriteSize =
                             new Vector2(x, y);
                     }
                 }
 
-                // enable auxiliary object size change
-                if (_manager.AuxiliaryObject != null)
-                {
-                    _manager.AuxiliaryObject.SpriteSize += gamePadState.ThumbSticks.Right * new Vector2(5, -5);
-                }
-
-
-                // let A go > place Object or Pick Object(s)
-                if (KeyReleased(Buttons.A))
-                {
-                    if (_manager.ObjectsAreSelected)
-                    {
-                        _manager.PlaceCurrentObjects();
-                    }
-                    else
-                    {
-                        _manager.PickObjectUnderCursor();
-                        _manager.CursorSize = new Vector2(10);
-                    }
-                }
-
-                // let X go > place Object or duplicate Object(s)
-                if (KeyPressed(Buttons.X))
-                {
-                    if (_manager.ObjectsAreSelected)
-                    {
-                        _manager.PlaceCurrentObjects();
-                    }
-
-                    else
-                    {
-                        _manager.DuplicateObjectUnderCursor();
-                        _manager.CursorSize = new Vector2(10);
-                    }
-                }
 
                 if (_manager.AuxiliaryObject != null)
                 {
+                    _manager.AuxiliaryObject.SpriteSize += rightThumb * new Vector2(5, -5);
                     // Remove the key
-                    if (gamePadState.IsButtonDown(Buttons.RightTrigger) &&
-                        _oldGamePadState.IsButtonUp(Buttons.RightTrigger))
+                    if (KeyPressed(Buttons.RightTrigger))
                     {
                         _manager.RemoveAuxiliaryObject();
                     }
-                    else if (gamePadState.IsButtonDown(Buttons.X) && _oldGamePadState.IsButtonUp(Buttons.X) ||
-                        gamePadState.IsButtonDown(Buttons.A) && _oldGamePadState.IsButtonUp(Buttons.A))
-
+                    else if (KeyPressed(Buttons.X, Buttons.A))
                     {
                         _manager.PlaceAuxiliaryObject();
                     }
 
                 }
+                else
+                {
+                    // let A go > place Object or Pick Object(s)
+                    if (KeyPressed(Buttons.A))
+                    {
+                        if (_manager.ObjectsAreSelected)
+                        {
+                            _manager.PlaceCurrentObjects();
+                        }
+                        else
+                        {
+                            _manager.PickObjectUnderCursor();
+                            _manager.CursorSize = new Vector2(10);
+                        }
+                    }
 
+                    // let X go > place Object or duplicate Object(s)
+                    if (KeyPressed(Buttons.X))
+                    {
+                        if (_manager.ObjectsAreSelected)
+                        {
+                            _manager.PlaceCurrentObjects();
+                        }
+
+                        else
+                        {
+                            _manager.DuplicateObjectUnderCursor();
+                            _manager.CursorSize = new Vector2(10);
+                        }
+                    }
+                }
 
                 if (KeyDown(Buttons.A, Buttons.X))
                 {
-                    if (!_manager.ObjectsAreSelected)
+                    if (_manager.CurrentObjects == null)
                     {
                         // We are in selector mode
 
