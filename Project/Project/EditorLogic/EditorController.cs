@@ -218,7 +218,8 @@ namespace EditorLogic
             // enable object size changes, if we only select one object
             if (_manager.CurrentObjects != null)
             {
-                if (_manager.CurrentObjects.Count == 1)
+                // Only call this method if the right thumb is actually used
+                if (_manager.CurrentObjects.Count == 1 && rightThumb.Length() > 0.25f)
                 {
                     _manager.CurrentObjects[0].SpriteSize
                         += rightThumb * new Vector2(5, -5);
