@@ -34,7 +34,7 @@ namespace TheGreatEscape
 
             _gameManager = new GameManager(Content, GraphicsDevice, _graphics);
             _editorManager = new EditorManager(Content, GraphicsDevice, _graphics);
-            _menu = new MenuManager(Content, GraphicsDevice, _graphics, _gameManager, _editorManager);
+            _menu = new MenuManager(Content, GraphicsDevice, _graphics, _gameManager, _editorManager, this);
             
             IsMouseVisible = true;
             base.Initialize();

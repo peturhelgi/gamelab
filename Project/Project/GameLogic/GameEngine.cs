@@ -405,8 +405,31 @@ namespace TheGreatEscape.GameLogic
             }
         }
 
+        private float DistBetweenMiners()
+        {
+            List<Miner> actors = GameState.GetActors();
+            if(actors.Count == 2)
+            {
+                if (!actors[0].Active || !actors[1].Active) return 0.0f;
+                return Math.Abs(actors[0].Position.X - actors[1].Position.X);
+            }
+            else return 0.0f;
+        }
+
         void CalculateAndSetNewPosition(GameObject obj, Vector2 direction)
         {
+            int leftrightminer = 0; // rightminer then 1, leftminer then -1, not a miner(or they are close) then 0
+            if (obj is Miner && (DistBetweenMiners() > 2500))
+            {
+                foreach (Miner m in GameState.GetActors())
+                {
+                    if(obj != m)
+                    {
+                        if (obj.Position.X < m.Position.X) leftrightminer = -1;
+                        else leftrightminer = 1;
+                    }
+                }
+            }
 
             // 1. calulate position without any obstacles
             if (obj.Falling)
@@ -425,6 +448,7 @@ namespace TheGreatEscape.GameLogic
                     new Vector2(obj.BBox.Max.X, obj.BBox.Min.Y),
                     new Vector2(obj.BBox.Max.X + direction.X, obj.BBox.Max.Y)
                     );
+                if (leftrightminer == 1) direction.X = 0;
             }
             else
             {
@@ -432,6 +456,7 @@ namespace TheGreatEscape.GameLogic
                     new Vector2(obj.BBox.Min.X + direction.X, obj.BBox.Min.Y),
                     new Vector2(obj.BBox.Min.X, obj.BBox.Max.Y)
                     );
+                if (leftrightminer == -1) direction.X = 0;
             }
 
 

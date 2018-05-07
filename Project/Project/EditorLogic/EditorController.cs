@@ -1,9 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using System;
+using System.IO;
+
 using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.LevelManager;
 
 namespace EditorLogic
 {
@@ -60,6 +65,32 @@ namespace EditorLogic
                 MyDebugger.WriteLine(_mouseState.Position.Y + ")", true);
             }
         }
+        private void HandleSave()
+        {
+            string path = "Content\\" + GameEngine.GameState.levelname + ".json";
+            Level level = GameEngine.GameState.GetPureLevel();
+            String text = JsonConvert.SerializeObject(level);
+            
+            //TODO: Put the text into the file
+
+            /*
+            IAsyncResult result1 = StorageDevice.BeginShowSelector(PlayerIndex.One, null, null);
+            StorageDevice device = StorageDevice.EndShowSelector(result1);
+
+            IAsyncResult result = device.BeginOpenContainer("LevelSaver", null, null);
+            result.AsyncWaitHandle.WaitOne();
+            StorageContainer container = device.EndOpenContainer(result);
+            result.AsyncWaitHandle.Dispose();
+
+            if (container.FileExists(filename)) container.DeleteFile(filename);
+            Stream stream = container.CreateFile(filename);
+            TextWriter writer = new StreamWriter(stream);
+            writer.Write(level);
+
+            writer.Dispose();
+            stream.Dispose();
+            container.Dispose();*/
+        }
 
         private void HandleKeyboard()
         {
@@ -74,6 +105,9 @@ namespace EditorLogic
             if (_currKeyboardState.IsKeyDown(Keys.Left)) _manager.CursorPosition += new Vector2(-20, 0);
             if (_currKeyboardState.IsKeyDown(Keys.Down)) _manager.CursorPosition += new Vector2(0, 20);
             if (_currKeyboardState.IsKeyDown(Keys.Up)) _manager.CursorPosition += new Vector2(0, -20);
+
+            // Handle saving changes
+            if (_currKeyboardState.IsKeyDown(Keys.J)) HandleSave();
 
         }
 

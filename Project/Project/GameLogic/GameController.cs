@@ -162,14 +162,16 @@ namespace TheGreatEscape.GameLogic
             if (player == 0)
             {
                 if (gs.IsButtonDown(Buttons.RightTrigger) && !_oldPlayerOneState.IsButtonDown(Buttons.RightTrigger))
-                {
                     GameEngine.HandleInput(player, GameEngine.GameAction.interact, 0);
-                }
+                if (gs.IsButtonDown(Buttons.RightShoulder) && !_oldPlayerOneState.IsButtonDown(Buttons.RightShoulder))
+                    GameEngine.HandleInput(player, GameEngine.GameAction.change_tool, 0);
             }
             else
             {
                 if (gs.IsButtonDown(Buttons.RightTrigger) && !_oldPlayerTwoState.IsButtonDown(Buttons.RightTrigger))
                     GameEngine.HandleInput(player, GameEngine.GameAction.interact, 0);
+                if (gs.IsButtonDown(Buttons.RightShoulder) && !_oldPlayerTwoState.IsButtonDown(Buttons.RightShoulder))
+                    GameEngine.HandleInput(player, GameEngine.GameAction.change_tool, 0);
             }
             if (gs.IsButtonDown(Buttons.A)) GameEngine.HandleInput(player, GameEngine.GameAction.jump, 0);
             // END Handle GameAction
