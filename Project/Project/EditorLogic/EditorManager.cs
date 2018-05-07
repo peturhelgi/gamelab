@@ -9,6 +9,8 @@ using TheGreatEscape.LevelManager;
 using TheGreatEscape.GameLogic.Renderer;
 using System;
 using System.Collections.Generic;
+
+using System.Reflection;
 using TheGreatEscape.EditorLogic.Util;
 using System.Linq;
 
@@ -115,6 +117,13 @@ namespace EditorLogic
                         continue;
 
                     GameObject gameObject = factory.Create(gobj);
+                    if (objType == "door")
+                    {
+                        (gameObject as Door).LockedLight.Texture = GameObjectTextures["Misc"]["red_light"];
+                        (gameObject as Door).UnlockedLight.Texture = GameObjectTextures["Misc"]["green_light"];
+                        (gameObject as Door).LockedLight.Active = (gameObject as Door).RequiresKey;
+                        (gameObject as Door).UnlockedLight.Active = !(gameObject as Door).RequiresKey;
+                    }
                     if (objType == "rockandhook")
                         (gameObject as RockHook).Rope.Texture = GameObjectTextures["Misc"]["Rope"];
                     gameObject.Texture = gameObj.Value;
@@ -188,10 +197,19 @@ namespace EditorLogic
         // Called only when placing an object from the PickerWheel
         public void CreateNewGameObject(GameObject newObject)
         {
-            CurrentObjects = new List<GameObject>
+            GameObject obj = GameObject.Clone(newObject);
+            CurrentObjects = new List<GameObject>();
+            if(newObject is Door)
             {
-                GameObject.Clone(newObject)
-            };
+                obj = GameObject.Clone(newObject);
+                (obj as Door).LockedLight = new PlatformBackground(Vector2.Zero, Vector2.Zero, "");
+                (obj as Door).UnlockedLight = new PlatformBackground(Vector2.Zero, Vector2.Zero, "");
+                (obj as Door).LockedLight.Texture = GameObjectTextures["Misc"]["red_light"];
+                (obj as Door).UnlockedLight.Texture = GameObjectTextures["Misc"]["green_light"];
+                (obj as Door).SetLights();
+            }
+
+            CurrentObjects.Add(obj);
 
             CurrentIsNewObject = true;
             MovingStartPosition = Vector2.Zero;
@@ -234,7 +252,10 @@ namespace EditorLogic
                     CreateDoorKey();
                     Door door = CurrentObjects.First() as Door;
                     door.Position += (CursorPosition - MovingStartPosition);
+                    door.SetLights();
                     MovingStartPosition = CursorPosition;
+                    _engine.GameState.Add(door.UnlockedLight);
+                    _engine.GameState.Add(door.LockedLight);
                     _engine.GameState.Add(door);
                     CurrentObjects = null;
                     return;
