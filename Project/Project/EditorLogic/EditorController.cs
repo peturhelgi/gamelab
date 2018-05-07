@@ -131,13 +131,15 @@ namespace EditorLogic
 
 
             // when Y is pressed, open the picker wheel
-            if (_manager.ObjectPickerOpen && leftThumb.Length() > 0.5)
-            {
-                _manager.CircularSelector.Update(leftThumb);
-            }
 
             if (_manager.ObjectPickerOpen)
             {
+
+                if (leftThumb.Length() > 0.5)
+                {
+                    _manager.CircularSelector.Update(leftThumb);
+                }
+
                 // go to the next category of GameObjects
                 if (KeyPressed(Buttons.RightShoulder))
                 {
@@ -167,106 +169,105 @@ namespace EditorLogic
                     _manager.CreateNewGameObject(_manager.CircularSelector[itemNumber]);
                 }
             }
-            else
+
+            if (!_manager.ObjectPickerOpen)
             {
-                if (!_manager.ObjectPickerOpen)
+                // Handle Cursor movement
+                Vector2 cursorDisplacement = new Vector2(50, -50) * leftThumb;
+                _manager.CursorPosition += cursorDisplacement;
+
+                _manager.CheckCursorInsideScreen(cursorDisplacement, _manager.CursorPosition);
+            }
+
+
+            // enable object size changes, if we only select one object
+            if (_manager.CurrentObjects != null)
+            {
+                if (_manager.CurrentObjects.Count == 1)
                 {
-                    // Handle Cursor movement
-                    Vector2 cursorDisplacement = new Vector2(50, -50) * leftThumb;
-                    _manager.CursorPosition += cursorDisplacement;
-
-                    _manager.CheckCursorInsideScreen(cursorDisplacement, _manager.CursorPosition);
-                }
-
-
-                // enable object size changes, if we only select one object
-                if (_manager.CurrentObjects != null)
-                {
-                    if (_manager.CurrentObjects.Count == 1)
-                    {
-                        _manager.CurrentObjects[0].SpriteSize
-                            += rightThumb * new Vector2(5, -5);
-                        float x = _manager.CurrentObjects[0].SpriteSize.X,
-                            y = _manager.CurrentObjects[0].SpriteSize.Y;
-                        //make sure that object doesn't get negative size
-                        if (x < 0) { x = 0; }
-                        if (y < 0) { y = 0; }
-                        _manager.CurrentObjects[0].SpriteSize =
-                            new Vector2(x, y);
-                    }
-                }
-
-
-                if (_manager.AuxiliaryObject != null)
-                {
-                    _manager.AuxiliaryObject.SpriteSize += rightThumb * new Vector2(5, -5);
-                    // Remove the key
-                    if (KeyPressed(Buttons.RightTrigger))
-                    {
-                        _manager.RemoveAuxiliaryObject();
-                    }
-                    else if (KeyPressed(Buttons.X, Buttons.A))
-                    {
-                        _manager.PlaceAuxiliaryObject();
-                    }
-
-                }
-                else
-                {
-                    // let A go > place Object or Pick Object(s)
-                    if (KeyReleased(Buttons.A))
-                    {
-                        if (_manager.ObjectsAreSelected)
-                        {
-                            _manager.PlaceCurrentObjects();
-                        }
-                        else
-                        {
-                            _manager.PickObjectUnderCursor();
-                            _manager.CursorSize = new Vector2(10);
-                        }
-                    }
-
-                    // let X go > place Object or duplicate Object(s)
-                    if (KeyReleased(Buttons.X))
-                    {
-                        if (_manager.ObjectsAreSelected)
-                        {
-                            _manager.PlaceCurrentObjects();
-                        }
-
-                        else
-                        {
-                            _manager.DuplicateObjectUnderCursor();
-                            _manager.CursorSize = new Vector2(10);
-                        }
-                    }
-                }
-
-                if (KeyDown(Buttons.A, Buttons.X))
-                {
-                    if (_manager.CurrentObjects == null)
-                    {
-                        // We are in selector mode
-
-                        _manager.CursorSize += (new Vector2(50, -50) * leftThumb);
-                        _manager.CursorPosition -= (new Vector2(50, -50) * leftThumb);
-                    }
-
-                }
-
-                // remove current selection
-                if (KeyPressed(Buttons.LeftTrigger))
-                {
-                    _manager.DeselectCurrentObjects();
-                }
-
-                // delete current object
-                if (KeyPressed(Buttons.RightTrigger))
-                {
-                    _manager.DeleteCurrentObject();
+                    _manager.CurrentObjects[0].SpriteSize
+                        += rightThumb * new Vector2(5, -5);
+                    float x = _manager.CurrentObjects[0].SpriteSize.X,
+                        y = _manager.CurrentObjects[0].SpriteSize.Y;
+                    //make sure that object doesn't get negative size
+                    if (x < 0) { x = 0; }
+                    if (y < 0) { y = 0; }
+                    _manager.CurrentObjects[0].SpriteSize =
+                        new Vector2(x, y);
                 }
             }
+
+
+            if (_manager.AuxiliaryObject != null)
+            {
+                _manager.AuxiliaryObject.SpriteSize += rightThumb * new Vector2(5, -5);
+                // Remove the key
+                if (KeyPressed(Buttons.RightTrigger))
+                {
+                    _manager.RemoveAuxiliaryObject();
+                }
+                else if (KeyPressed(Buttons.X, Buttons.A))
+                {
+                    _manager.PlaceAuxiliaryObject();
+                }
+
+            }
+            else
+            {
+                // let A go > place Object or Pick Object(s)
+                if (KeyReleased(Buttons.A))
+                {
+                    if (_manager.ObjectsAreSelected)
+                    {
+                        _manager.PlaceCurrentObjects();
+                    }
+                    else
+                    {
+                        _manager.PickObjectUnderCursor();
+                        _manager.CursorSize = new Vector2(10);
+                    }
+                }
+
+                // let X go > place Object or duplicate Object(s)
+                if (KeyReleased(Buttons.X))
+                {
+                    if (_manager.ObjectsAreSelected)
+                    {
+                        _manager.PlaceCurrentObjects();
+                    }
+
+                    else
+                    {
+                        _manager.DuplicateObjectUnderCursor();
+                        _manager.CursorSize = new Vector2(10);
+                    }
+                }
+            }
+
+            if (KeyDown(Buttons.A, Buttons.X))
+            {
+                if (_manager.CurrentObjects == null)
+                {
+                    // We are in selector mode
+
+                    _manager.CursorSize += (new Vector2(50, -50) * leftThumb);
+                    _manager.CursorPosition -= (new Vector2(50, -50) * leftThumb);
+                }
+
+            }
+
+            // remove current selection
+            if (KeyPressed(Buttons.LeftTrigger))
+            {
+                _manager.DeselectCurrentObjects();
+            }
+
+            // delete current object
+            if (KeyPressed(Buttons.RightTrigger))
+            {
+                _manager.DeleteCurrentObject();
+            }
+
 
             if (KeyPressed(Buttons.Back))
                 // TODO: Ask the user to save the level

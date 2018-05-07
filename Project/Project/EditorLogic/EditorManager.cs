@@ -283,6 +283,10 @@ namespace EditorLogic
                     }
                     if (!(obj is Miner))
                         _engine.GameState.Add(obj);
+                    if(obj is Door)
+                    {
+                        (obj as Door).SetLights();
+                    }
                 }
                 CurrentObjects = null;
             }
