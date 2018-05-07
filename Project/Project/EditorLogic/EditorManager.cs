@@ -224,6 +224,19 @@ namespace EditorLogic
             AuxiliaryObject = Rope;
         }
 
+        public void CreateButton(int activationKey)
+        {
+            Obj gobj = new Obj
+            {
+                Type = "button",
+                Position = CursorPosition,
+                SpriteSize = new Vector2(150, 100),
+                ActivationKey = activationKey
+            };
+            GameObjectFactory factory = new GameObjectFactory();
+            AuxiliaryObject = factory.Create(gobj);
+            AuxiliaryObject.Texture = GameObjectTextures["Interactables"]["button_floor"];
+        }
         public void PlaceCurrentObjects()
         {
             if (CurrentObjects != null)
@@ -249,6 +262,17 @@ namespace EditorLogic
                     MovingStartPosition = CursorPosition;
                     _engine.GameState.Add(rockHook);
                     AuxObjLink = rockHook;
+                    CurrentObjects = null;
+                    return;
+                }
+                if (CurrentObjects.First() is Platform && CurrentIsNewObject)
+                {
+                    Platform platform = CurrentObjects.First() as Platform;
+                    CreateButton(1);
+                    platform.ActivationId = 1;
+                    platform.Position += (CursorPosition - MovingStartPosition);
+                    MovingStartPosition = CursorPosition;
+                    _engine.GameState.Add(platform);
                     CurrentObjects = null;
                     return;
                 }

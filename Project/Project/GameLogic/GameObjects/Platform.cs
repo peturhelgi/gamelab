@@ -9,7 +9,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
     class Platform : GameObject
     {
         public bool Activate;
-        public readonly int ActivationId;
+        public int ActivationId;
         public float Displacement;
         public Vector2 DisplacementStep;
         public float MaxHeight;
@@ -40,7 +40,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             {
                 dir = "y";
                 secondTextureString = "Sprites/Misc/platform_mechanismy";
-                displacement = 200;
+                Displacement = 200;
             }
 
             if (dir == "y")
