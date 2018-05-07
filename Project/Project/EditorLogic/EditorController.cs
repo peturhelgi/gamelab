@@ -70,7 +70,8 @@ namespace EditorLogic
             string path = "Content\\" + GameEngine.GameState.levelname + ".json";
             Level level = GameEngine.GameState.GetPureLevel();
             String text = JsonConvert.SerializeObject(level);
-            
+
+            MyDebugger.WriteLine(text, true);
             //TODO: Put the text into the file
 
             /*
@@ -210,7 +211,7 @@ namespace EditorLogic
                 Vector2 cursorDisplacement = new Vector2(50, -50) * leftThumb;
                 _manager.CursorPosition += cursorDisplacement;
 
-                _manager.CheckCursorInsideScreen(cursorDisplacement, _manager.CursorPosition);
+                //_manager.CheckCursorInsideScreen(cursorDisplacement, _manager.CursorPosition);
             }
 
 

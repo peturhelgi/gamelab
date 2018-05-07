@@ -109,15 +109,15 @@ namespace TheGreatEscape.GameLogic.GameObjects {
             obj.Position = Position;
             obj.Velocity = Speed;
             obj.Mass = (float)Mass;
-            obj.Type = "end";
+            obj.Type = ToString();
             obj.Texture = TextureString;
             obj.Displacement = 0;
             obj.Direction = "-1";
             obj.ActivationKey = -1;
             obj.SecondTexture = "-1";
             obj.Tool = "-1";
-            obj.Id = -1;
-            obj.Requirement = false;
+            obj.Id = KeyId;
+            obj.Requirement = true;
             obj.RopeLength = -1f;
             return obj;
         }

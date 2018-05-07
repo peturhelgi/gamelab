@@ -801,26 +801,6 @@
 /processor:ContentProcessor1
 /build:Levels/level_1.json
 
-#begin Levels/level_10.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_10.json
-
-#begin Levels/level_11.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_11.json
-
-#begin Levels/level_12.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_12.json
-
-#begin Levels/level_13.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_13.json
-
 #begin Levels/level_2.json
 /importer:ContentImporter1
 /processor:ContentProcessor1
@@ -860,21 +840,6 @@
 /importer:ContentImporter1
 /processor:ContentProcessor1
 /build:Levels/level_9.json
-
-#begin Levels/zdummy.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/zdummy.json
-
-#begin Levels/level_1_more_platforms.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_1_more_platforms.json
-
-#begin Levels/level_2_samplelvl.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_2_samplelvl.json
 
 #begin Levels/level_3_wide_level.json
 /importer:ContentImporter1
