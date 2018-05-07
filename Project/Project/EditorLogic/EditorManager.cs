@@ -426,7 +426,7 @@ namespace EditorLogic
 
         public void CheckCursorInsideScreen(Vector2 cursorDisplacement, Vector2 cursorPosition)
         {
-            if (!InitialRectangle.Contains(cursorPosition))
+            if (!_camera.GetCameraRectangle(0,0).Contains(cursorPosition))
             {
                 InitialRectangle.Offset(cursorDisplacement);
                 _camera.SetCameraToRectangle(InitialRectangle);

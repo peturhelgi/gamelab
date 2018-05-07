@@ -211,7 +211,7 @@ namespace EditorLogic
                 Vector2 cursorDisplacement = new Vector2(50, -50) * leftThumb;
                 _manager.CursorPosition += cursorDisplacement;
 
-                //_manager.CheckCursorInsideScreen(cursorDisplacement, _manager.CursorPosition);
+                _manager.CheckCursorInsideScreen(cursorDisplacement, _manager.CursorPosition);
             }
 
 
