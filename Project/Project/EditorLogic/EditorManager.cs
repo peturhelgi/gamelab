@@ -110,23 +110,19 @@ namespace EditorLogic
                         SpriteSize = new Vector2(150, 100)
                     };
 
-                    // the dummy instance of the key shouldn't affect
-                    // the total number of keys in the GameState
+                    // don't add the key to the placeable gameObjects
                     if (objType == "key")
-                    {
-                        gobj.Id = -1;
-                        GameObjectFactory.currentKey--;
-                    }
+                        continue;
 
-                        
                     GameObject gameObject = factory.Create(gobj);
                     if (objType == "rockandhook")
                         (gameObject as RockHook).Rope.Texture = GameObjectTextures["Misc"]["Rope"];
                     gameObject.Texture = gameObj.Value;
-                    ObjectTemplates.Add(gameObject);
 
-                    //if (objType == "key")
-                    //    gameObj.ToString();
+                    //TODO: remove this ugly hardcoding
+                    if (objType != "lever" && objType != "button")
+                        ObjectTemplates.Add(gameObject);
+
                 }
 
                 CircularSelector circSelector = new CircularSelector(_content, dirName);
@@ -213,8 +209,7 @@ namespace EditorLogic
             };
             GameObjectFactory factory = new GameObjectFactory();
             AuxiliaryObject = factory.Create(gobj);
-            GameObjectTextures.TryGetValue("Interactables", out Dictionary<string, Texture2D> keyTexDict);
-            AuxiliaryObject.Texture = keyTexDict["key"];
+            AuxiliaryObject.Texture = GameObjectTextures["Interactables"]["key"];
 
             (CurrentObjects.First() as Door).AddKey((AuxiliaryObject as Key).Id);
         }
