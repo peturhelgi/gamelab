@@ -10,23 +10,63 @@ namespace TheGreatEscape.GameLogic
 {
     class GameController
     {
+
+        enum Command
+        {
+            Up,
+            Down,
+            Left,
+            Right,
+            Jump,
+            ChangeTool,
+            Pause,
+            Sprint,
+            UseTool,
+            Interact
+        }
+
+        Dictionary<Command, List<Buttons>> _buttons = new Dictionary<Command, List<Buttons>>();
+
         public GameEngine GameEngine;
         private KeyboardState _oldKeyboardState;
-        private GamePadState _oldPlayerOneState;
-        private GamePadState _oldPlayerTwoState;
+        private List<GamePadState> _oldPadStates, _newPadStates;
         public Camera Camera;
         public bool DebugView { private set; get; }
 
-        int _maxNumPlayers;
+        int _maxNumPlayers, _direction;
 
         public GameController(GameEngine gameEngine, Camera camera)
         {
+            _buttons[Command.Up] = new List<Buttons> { Buttons.DPadUp, Buttons.LeftThumbstickUp };
+            _buttons[Command.Down] = new List<Buttons> { Buttons.DPadDown, Buttons.LeftThumbstickDown };
+            _buttons[Command.Right] = new List<Buttons> { Buttons.DPadRight, Buttons.LeftThumbstickRight };
+            _buttons[Command.Left] = new List<Buttons> { Buttons.DPadLeft, Buttons.LeftThumbstickLeft };
+
+            _buttons[Command.Pause] = new List<Buttons> { Buttons.Start };
+
+            _buttons[Command.Jump] = new List<Buttons> { Buttons.A };
+            _buttons[Command.Interact] = new List<Buttons> { Buttons.X, Buttons.B};
+
+            _buttons[Command.ChangeTool] = new List<Buttons> { Buttons.RightShoulder };
+            _buttons[Command.Sprint] = new List<Buttons> { Buttons.LeftTrigger };
+            _buttons[Command.UseTool] = new List<Buttons> { Buttons.RightTrigger };
+
+            _maxNumPlayers = 2;
+
             GameEngine = gameEngine;
             Camera = camera;
+            _oldPadStates = new List<GamePadState>();
+            _newPadStates = new List<GamePadState>();
+
             _oldKeyboardState = Keyboard.GetState();
-            _oldPlayerOneState = GamePad.GetState(PlayerIndex.One);
-            _oldPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
-            _maxNumPlayers = 2;
+            for (int i = 0; i < _maxNumPlayers; ++i)
+            {
+                _oldPadStates.Add(GamePad.GetState(i));
+                _newPadStates.Add(GamePad.GetState(i));
+            }
+
+            _direction = 1;
+
             DebugView = false;
         }
 
@@ -37,7 +77,9 @@ namespace TheGreatEscape.GameLogic
 
             for (int i = 0; i < _maxNumPlayers; ++i)
             {
-                HandleGamePad(GamePad.GetState(i), i);
+                _oldPadStates[i] = _newPadStates[i];
+                _newPadStates[i] = GamePad.GetState(i);
+                HandleGamePad(i);
             }
 
             HandleKeyboard(Keyboard.GetState());
@@ -73,6 +115,54 @@ namespace TheGreatEscape.GameLogic
             }
         }
 
+        private bool ButtonPressed(GamePadState old, GamePadState curr, List<Buttons> buttons)
+        {
+            foreach (var button in buttons)
+            {
+                if (old.IsButtonUp(button) && curr.IsButtonDown(button))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool ButtonDown(GamePadState curr, List<Buttons> buttons)
+        {
+            foreach (var button in buttons)
+            {
+                if (curr.IsButtonDown(button))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool ButtonReleased(GamePadState old, GamePadState curr, List<Buttons> buttons)
+        {
+            foreach (var button in buttons)
+            {
+                if (old.IsButtonDown(button) && curr.IsButtonUp(button))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+        private bool ButtonUp(GamePadState curr, List<Buttons> buttons)
+        {
+            foreach (var button in buttons)
+            {
+                if (curr.IsButtonDown(button))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         private void HandleKeyboard(KeyboardState state)
         {
 
@@ -80,78 +170,132 @@ namespace TheGreatEscape.GameLogic
             MyDebugger.IsActive = state.IsKeyDown(Keys.P);
             GameManager.RenderDark = state.IsKeyUp(Keys.L);
 
+            bool running = false;
             // Player 1
             if (_maxNumPlayers > 0)
             {
+                running = state.IsKeyDown(Keys.RightShift);
                 // last parameter is the encoding for the direction the miner is walking/running in
-                if (state.IsKeyDown(Keys.Right)) GameEngine.HandleInput(0, GameEngine.GameAction.walk, 1);
-                if (state.IsKeyDown(Keys.Left)) GameEngine.HandleInput(0, GameEngine.GameAction.walk, -1);
-                if (state.IsKeyDown(Keys.Down) && !_oldKeyboardState.IsKeyDown(Keys.Down)) GameEngine.HandleInput(0, GameEngine.GameAction.interact, 0);
+                if (state.IsKeyDown(Keys.Down) && !_oldKeyboardState.IsKeyDown(Keys.Down))
+                {
+                    GameEngine.HandleInput(0, GameEngine.GameAction.interact, 0);
+                    GameEngine.HandleInput(0, GameEngine.GameAction.use_tool, 0);
+                }
 
                 if (state.IsKeyDown(Keys.Up)) GameEngine.HandleInput(0, GameEngine.GameAction.jump, 0);
-                if (state.IsKeyDown(Keys.Z)) GameEngine.HandleInput(0, GameEngine.GameAction.climb_up, 0);
-                if (state.IsKeyDown(Keys.X)) GameEngine.HandleInput(0, GameEngine.GameAction.climb_down, 0);
+                if (state.IsKeyDown(Keys.OemComma)) GameEngine.HandleInput(0, GameEngine.GameAction.climb, -1);
+                if (state.IsKeyDown(Keys.OemPeriod)) GameEngine.HandleInput(0, GameEngine.GameAction.climb, 1);
 
+                if (state.IsKeyDown(Keys.Left))
+                {
+                    GameEngine.HandleInput(0,
+                        running
+                        ? GameEngine.GameAction.run
+                        : GameEngine.GameAction.walk, -1);
+                }
 
-                if (state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Right))
-                    GameEngine.HandleInput(0, GameEngine.GameAction.run, 1);
-                if (state.IsKeyDown(Keys.RightShift) && state.IsKeyDown(Keys.Left))
-                    GameEngine.HandleInput(0, GameEngine.GameAction.run, -1);
+                if (state.IsKeyDown(Keys.Right))
+                {
+                    GameEngine.HandleInput(0,
+                        running
+                        ? GameEngine.GameAction.run
+                        : GameEngine.GameAction.walk, 1);
+                }
 
                 if (state.IsKeyDown(Keys.D1) && !_oldKeyboardState.IsKeyDown(Keys.D1))
                     GameEngine.HandleInput(0, GameEngine.GameAction.change_tool, 0);
-
             }
 
             // Player 2
             if (_maxNumPlayers > 1)
             {
-                if (state.IsKeyDown(Keys.D)) GameEngine.HandleInput(1, GameEngine.GameAction.walk, 1);
-                if (state.IsKeyDown(Keys.A)) GameEngine.HandleInput(1, GameEngine.GameAction.walk, -1);
-                if (state.IsKeyDown(Keys.S) && !_oldKeyboardState.IsKeyDown(Keys.S)) GameEngine.HandleInput(1, GameEngine.GameAction.interact, 0);
-                if (state.IsKeyDown(Keys.W)) GameEngine.HandleInput(1, GameEngine.GameAction.jump, 0);
+                running = state.IsKeyDown(Keys.LeftShift);
 
-                if (state.IsKeyDown(Keys.LeftShift) && state.IsKeyDown(Keys.D))
-                    GameEngine.HandleInput(1, GameEngine.GameAction.run, 1);
-                if (state.IsKeyDown(Keys.LeftShift) && state.IsKeyDown(Keys.A))
-                    GameEngine.HandleInput(1, GameEngine.GameAction.run, -1);
+                if (state.IsKeyDown(Keys.S) && !_oldKeyboardState.IsKeyDown(Keys.S))
+                {
+                    GameEngine.HandleInput(1, GameEngine.GameAction.interact, 0);
+                    GameEngine.HandleInput(1, GameEngine.GameAction.use_tool, 0);
+                }
+                if (state.IsKeyDown(Keys.W))
+                {
+                    GameEngine.HandleInput(1, GameEngine.GameAction.jump, 0);
+                }
+
+                if (state.IsKeyDown(Keys.D))
+                {
+                    GameEngine.HandleInput(1,
+                        running
+                        ? GameEngine.GameAction.run
+                        : GameEngine.GameAction.walk, 1);
+                }
+
+                if (state.IsKeyDown(Keys.A))
+                {
+                    GameEngine.HandleInput(1,
+                        running
+                        ? GameEngine.GameAction.run
+                        : GameEngine.GameAction.walk, -1);
+                }
 
                 if (state.IsKeyDown(Keys.D2) && !_oldKeyboardState.IsKeyDown(Keys.D2))
                     GameEngine.HandleInput(1, GameEngine.GameAction.change_tool, 0);
+
+                if (state.IsKeyDown(Keys.Z))
+                {
+                    GameEngine.HandleInput(1, GameEngine.GameAction.climb, -1);
+                }
+                if (state.IsKeyDown(Keys.X))
+                {
+                    GameEngine.HandleInput(1, GameEngine.GameAction.climb, 1);
+                }
             }
             // END Handle GameAction      
             _oldKeyboardState = state;
         }
 
-        private void HandleGamePad(GamePadState gs, int player)
+        private void HandleGamePad(int player)
         {
-            if (!gs.IsConnected)
+            if (!_newPadStates[player].IsConnected)
             {
                 return;
             }
 
             // START Handle GameAction
             // last parameter is the encoding for the direction the miner is walking/running in
-            // if (gs.ThumbSticks.Left.X > 0.5f) GameEngine.HandleInput(player, GameEngine.GameAction.walk, 1);
-            // if (gs.ThumbSticks.Left.X < -0.5) GameEngine.HandleInput(player, GameEngine.GameAction.walk, -1);
-            if (gs.ThumbSticks.Left.Y < -0.5) GameEngine.HandleInput(player, GameEngine.GameAction.climb_down, 0);
-            if (gs.ThumbSticks.Left.Y > 0.5) GameEngine.HandleInput(player, GameEngine.GameAction.climb_up, 0);
-
-            if (gs.ThumbSticks.Left.X > 0.5f)
+            if (_newPadStates[player].ThumbSticks.Left.Y < -0.5
+                || _newPadStates[player].IsButtonDown(Buttons.DPadDown))
             {
-                GameEngine.HandleInput(player,
-                    (gs.IsButtonUp(Buttons.LeftStick) && gs.IsButtonUp(Buttons.LeftTrigger)) ? GameEngine.GameAction.walk
-                    : GameEngine.GameAction.run, 1);
+                GameEngine.HandleInput(player, GameEngine.GameAction.climb, 1);
             }
-            if (gs.ThumbSticks.Left.X < -0.5)
+            if (_newPadStates[player].ThumbSticks.Left.Y > 0.5
+                || _newPadStates[player].IsButtonDown(Buttons.DPadUp))
             {
-                GameEngine.HandleInput(player,
-                    gs.IsButtonUp(Buttons.LeftStick) && gs.IsButtonUp(Buttons.LeftTrigger) ? GameEngine.GameAction.walk
-                    : GameEngine.GameAction.run, -1);
+                GameEngine.HandleInput(player, GameEngine.GameAction.climb, -1);
             }
 
-            float x = gs.ThumbSticks.Right.X,
-                y = gs.ThumbSticks.Right.Y;
+            if (_newPadStates[player].ThumbSticks.Left.X > 0.5f
+                || _newPadStates[player].IsButtonDown(Buttons.DPadRight))
+            {
+                _direction = 1;
+            }
+
+            if (_newPadStates[player].ThumbSticks.Left.X < -0.5
+                || _newPadStates[player].IsButtonDown(Buttons.DPadLeft))
+            {
+                _direction = -1;
+            }
+
+            if (Math.Abs(_newPadStates[player].ThumbSticks.Left.X) > 0.5f)
+            {
+                GameEngine.HandleInput(player,
+                    ButtonUp(_newPadStates[player], _buttons[Command.Left])
+                    && ButtonUp(_newPadStates[player], _buttons[Command.Sprint])
+                    ? GameEngine.GameAction.walk
+                    : GameEngine.GameAction.run, _direction);
+            }
+            float x = _newPadStates[player].ThumbSticks.Right.X,
+                y = _newPadStates[player].ThumbSticks.Right.Y;
+
             if (x * x + y * y >= 0.5f)
             {
                 // Atan2 returns a value -PI < theta <= PI
@@ -159,26 +303,25 @@ namespace TheGreatEscape.GameLogic
                     (float)Math.Atan2(-y, x));
             }
 
-            if (player == 0)
+            if (ButtonPressed(_oldPadStates[player], _newPadStates[player], _buttons[Command.Interact]))
             {
-                if (gs.IsButtonDown(Buttons.RightTrigger) && !_oldPlayerOneState.IsButtonDown(Buttons.RightTrigger))
-                    GameEngine.HandleInput(player, GameEngine.GameAction.interact, 0);
-                if (gs.IsButtonDown(Buttons.RightShoulder) && !_oldPlayerOneState.IsButtonDown(Buttons.RightShoulder))
-                    GameEngine.HandleInput(player, GameEngine.GameAction.change_tool, 0);
+                GameEngine.HandleInput(player, GameEngine.GameAction.interact, 0);
             }
-            else
-            {
-                if (gs.IsButtonDown(Buttons.RightTrigger) && !_oldPlayerTwoState.IsButtonDown(Buttons.RightTrigger))
-                    GameEngine.HandleInput(player, GameEngine.GameAction.interact, 0);
-                if (gs.IsButtonDown(Buttons.RightShoulder) && !_oldPlayerTwoState.IsButtonDown(Buttons.RightShoulder))
-                    GameEngine.HandleInput(player, GameEngine.GameAction.change_tool, 0);
-            }
-            if (gs.IsButtonDown(Buttons.A)) GameEngine.HandleInput(player, GameEngine.GameAction.jump, 0);
-            // END Handle GameAction
 
-            if (player == 0) _oldPlayerOneState = gs;
-            else _oldPlayerTwoState = gs;
+            if (ButtonPressed(_oldPadStates[player], _newPadStates[player], _buttons[Command.UseTool]))
+            {
+                GameEngine.HandleInput(player, GameEngine.GameAction.use_tool, 0);
+            }
+
+            if (ButtonPressed(_oldPadStates[player], _newPadStates[player], _buttons[Command.ChangeTool]))
+            {
+                GameEngine.HandleInput(player, GameEngine.GameAction.change_tool, 0);
+            }
+
+            if (ButtonPressed(_oldPadStates[player], _newPadStates[player], _buttons[Command.Jump]))
+            {
+                GameEngine.HandleInput(player, GameEngine.GameAction.jump, 0);
+            }
         }
-
     }
 }
