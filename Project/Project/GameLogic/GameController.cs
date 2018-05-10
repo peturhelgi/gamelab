@@ -13,16 +13,16 @@ namespace TheGreatEscape.GameLogic
 
         enum Command
         {
-            Up,
-            Down,
-            Left,
-            Right,
-            Jump,
             ChangeTool,
+            Down,
+            Interact,
+            Jump,
+            Left,
             Pause,
+            Right,
             Sprint,
-            UseTool,
-            Interact
+            Up,
+            UseTool
         }
 
         Dictionary<Command, List<Buttons>> _buttons = new Dictionary<Command, List<Buttons>>();
@@ -87,7 +87,8 @@ namespace TheGreatEscape.GameLogic
             GameEngine.Update();
 
             // Handle the Camera
-            AxisAllignedBoundingBox frame = new AxisAllignedBoundingBox(new Vector2(float.MaxValue), new Vector2(float.MinValue));
+            AxisAllignedBoundingBox frame = new AxisAllignedBoundingBox(
+                new Vector2(float.MaxValue), new Vector2(float.MinValue));
             List<AxisAllignedBoundingBox> attentions = GameEngine.GetAttentions();
             foreach (AxisAllignedBoundingBox a in attentions)
             {
