@@ -104,6 +104,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EditorLogic\ParameterMenu.cs" />
+    <Compile Include="EditorLogic\Util\TextureContent.cs" />
     <Compile Include="GameLogic\GameObjects\Button.cs" />
     <Compile Include="GameLogic\GameObjects\Key.cs" />
     <Compile Include="GameLogic\GameObjects\Ladder.cs" />
@@ -213,16 +215,8 @@
     <Content Include="Content\Sprites\Backgrounds\Level3Background.png" />
     <Content Include="Content\Sprites\Interactables\crate.png" />
     <Content Include="Content\Sprites\Interactables\Door.png" />
-    <Content Include="Content\Sprites\Interactables\escalator_mechanismx.png" />
-    <Content Include="Content\Sprites\Interactables\escalator_mechanismy.png" />
-    <Content Include="Content\Sprites\Interactables\escalator_platform.png" />
-    <Content Include="Content\Sprites\Interactables\floor_button.png" />
-    <Content Include="Content\Sprites\Interactables\LadderLong.png" />
-    <Content Include="Content\Sprites\Interactables\LadderShort.png" />
     <Content Include="Content\Sprites\Interactables\lever_left.png" />
     <Content Include="Content\Sprites\Interactables\lever_right.png" />
-    <Content Include="Content\Sprites\Interactables\Rope.png" />
-    <Content Include="Content\Sprites\Interactables\suspended_rock_hook.png" />
     <Content Include="Content\Sprites\Menus\GameOver.png" />
     <Content Include="Content\Sprites\Menus\GamePaused.png" />
     <Content Include="Content\Sprites\Menus\LevelComplete.png" />
@@ -235,21 +229,6 @@
     <Content Include="Content\Sprites\Misc\green_light.png" />
     <Content Include="Content\Sprites\Misc\picker_wheel.png" />
     <Content Include="Content\Sprites\Misc\red_light.png" />
-    <Content Include="Content\Sprites\Rocks\BareRock1.png" />
-    <Content Include="Content\Sprites\Rocks\BareRock2.png" />
-    <Content Include="Content\Sprites\Rocks\BareRock3.png" />
-    <Content Include="Content\Sprites\Rocks\BareRock4.png" />
-    <Content Include="Content\Sprites\Rocks\BareRock5.png" />
-    <Content Include="Content\Sprites\Rocks\Ground1.png" />
-    <Content Include="Content\Sprites\Rocks\Ground2.png" />
-    <Content Include="Content\Sprites\Rocks\Ground3.png" />
-    <Content Include="Content\Sprites\Rocks\Ground4.png" />
-    <Content Include="Content\Sprites\Rocks\LowGround.png" />
-    <Content Include="Content\Sprites\Rocks\SlidingGround.png" />
-    <Content Include="Content\Sprites\Rocks\SuspendedGround1.png" />
-    <Content Include="Content\Sprites\Rocks\SuspendedGround2.png" />
-    <Content Include="Content\Sprites\Rocks\SuspendedRock.png" />
-    <Content Include="Content\Sprites\Rocks\TallGround.png" />
     <Content Include="Content\Sprites\Tools\Pickaxe.png" />
     <Content Include="Content\Sprites\Tools\Rope.png" />
     <Content Include="Properties\Default.rd.xml" />

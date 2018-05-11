@@ -1,14 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Storage;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+
 using TheGreatEscape.GameLogic;
+using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.GameLogic.Util;
 using TheGreatEscape.LevelManager;
 
-namespace EditorLogic {
+namespace EditorLogic
+{
     class EditorController
     {
         public GameEngine GameEngine;
@@ -16,53 +19,96 @@ namespace EditorLogic {
         public Camera Camera;
 
         EditorManager _manager;
+        Vector2 _initCursorSize, _deltaCursorSize, _resizeDelta;
 
-        GamePadState _oldGamePadState;
-        KeyboardState _oldKeyboardState;
+        GamePadState _oldGamePadState, _currGamePadState;
+        KeyboardState _oldKeyboardState, _currKeyboardState;
+        MouseState _mouseState;
+
+        enum Command
+        {
+            Copy,
+            Deselect,
+            Exit,
+            NextItem,
+            Place,
+            PreviousItem,
+            Remove,
+            Select,
+            ToggleMode,
+            TogglePicker,
+            ZoomIn,
+            ZoomOut
+        }
+
+        Dictionary<Command, List<Buttons>> _buttons = new Dictionary<Command, List<Buttons>>();
 
         public EditorController(GameEngine gameEngine, Camera camera, EditorManager manager)
         {
+            _buttons[Command.Select] = new List<Buttons> { Buttons.A };
+            _buttons[Command.Place] = new List<Buttons> { Buttons.A, Buttons.X };
+            _buttons[Command.ToggleMode] = new List<Buttons> { Buttons.B };
+            _buttons[Command.TogglePicker] = new List<Buttons> { Buttons.Y };
+            _buttons[Command.Copy] = new List<Buttons> { Buttons.X };
+            _buttons[Command.ZoomIn] = new List<Buttons> { Buttons.DPadUp };
+            _buttons[Command.ZoomOut] = new List<Buttons> { Buttons.DPadDown };
+
+            _buttons[Command.Remove] = new List<Buttons> { Buttons.RightTrigger };
+            _buttons[Command.Deselect] = new List<Buttons> { Buttons.LeftTrigger };
+            _buttons[Command.NextItem] = new List<Buttons> { Buttons.RightShoulder };
+            _buttons[Command.PreviousItem] = new List<Buttons> { Buttons.LeftShoulder };
+
+            _buttons[Command.Exit] = new List<Buttons> { Buttons.Back };
+
+
             GameEngine = gameEngine;
             Camera = camera;
             _manager = manager;
-
-            _oldKeyboardState = Keyboard.GetState();
-            _oldGamePadState = GamePad.GetState(PlayerIndex.One);
+            _initCursorSize = new Vector2(10);
+            _deltaCursorSize = new Vector2(50, -50);
+            _resizeDelta = new Vector2(5, -5);
+            _mouseState = Mouse.GetState();
+            _currKeyboardState = Keyboard.GetState();
+            _currGamePadState = GamePad.GetState(PlayerIndex.One);
         }
 
 
         internal void HandleUpdate(GameTime gameTime)
         {
+
             GameEngine.gameTime = gameTime.TotalGameTime;
-            HandleMouse(Mouse.GetState());
 
+            _oldGamePadState = _currGamePadState;
+            _currGamePadState = GamePad.GetState(PlayerIndex.One);
 
-            HandleGamePad(GamePad.GetState(PlayerIndex.One));
+            _oldKeyboardState = _currKeyboardState;
+            _currKeyboardState = Keyboard.GetState();
 
-            HandleKeyboard(Keyboard.GetState());
+            _mouseState = Mouse.GetState();
 
-            _oldKeyboardState = Keyboard.GetState();
-            _oldGamePadState = GamePad.GetState(PlayerIndex.One);
+            HandleGamePad();
+            HandleKeyboard();
+            HandleMouse();
 
             GameEngine.Update();
 
         }
 
-        private void HandleMouse(MouseState ms)
+        private void HandleMouse()
         {
-            if (ms.LeftButton == ButtonState.Pressed)
+            if (_mouseState.LeftButton == ButtonState.Pressed)
             {
-                MyDebugger.WriteLine(ms.Position.X);
-                MyDebugger.WriteLine(ms.Position.Y);
+                MyDebugger.Write("(" + _mouseState.Position.X + ", ", true);
+                MyDebugger.WriteLine(_mouseState.Position.Y + ")", true);
             }
         }
-
         private void HandleSave()
         {
             string path = "Content\\" + GameEngine.GameState.levelname + ".json";
             Level level = GameEngine.GameState.GetPureLevel();
             String text = JsonConvert.SerializeObject(level);
-            
+
+            MyDebugger.WriteLine(text, true);
             //TODO: Put the text into the file
 
             /*
@@ -84,136 +130,221 @@ namespace EditorLogic {
             container.Dispose();*/
         }
 
-        private void HandleKeyboard(KeyboardState state)
+        private void HandleKeyboard()
         {
             // Handle camera
-            if (state.IsKeyDown(Keys.A)) Camera.HandleAction(Camera.CameraAction.left);
-            if (state.IsKeyDown(Keys.D)) Camera.HandleAction(Camera.CameraAction.right);
-            if (state.IsKeyDown(Keys.W)) Camera.HandleAction(Camera.CameraAction.up);
-            if (state.IsKeyDown(Keys.S)) Camera.HandleAction(Camera.CameraAction.down);
+            if (_currKeyboardState.IsKeyDown(Keys.A)) Camera.HandleAction(Camera.CameraAction.left);
+            if (_currKeyboardState.IsKeyDown(Keys.D)) Camera.HandleAction(Camera.CameraAction.right);
+            if (_currKeyboardState.IsKeyDown(Keys.W)) Camera.HandleAction(Camera.CameraAction.up);
+            if (_currKeyboardState.IsKeyDown(Keys.S)) Camera.HandleAction(Camera.CameraAction.down);
 
             // Handle Cursor movement
-            if (state.IsKeyDown(Keys.Right)) _manager.CursorPosition += new Vector2(20, 0);
-            if (state.IsKeyDown(Keys.Left)) _manager.CursorPosition += new Vector2(-20, 0);
-            if (state.IsKeyDown(Keys.Down)) _manager.CursorPosition += new Vector2(0, 20);
-            if (state.IsKeyDown(Keys.Up)) _manager.CursorPosition += new Vector2(0, -20);
+            if (_currKeyboardState.IsKeyDown(Keys.Right)) _manager.CursorPosition += new Vector2(20, 0);
+            if (_currKeyboardState.IsKeyDown(Keys.Left)) _manager.CursorPosition += new Vector2(-20, 0);
+            if (_currKeyboardState.IsKeyDown(Keys.Down)) _manager.CursorPosition += new Vector2(0, 20);
+            if (_currKeyboardState.IsKeyDown(Keys.Up)) _manager.CursorPosition += new Vector2(0, -20);
 
             // Handle saving changes
-            if (state.IsKeyDown(Keys.J)) HandleSave();
+            if (_currKeyboardState.IsKeyDown(Keys.J)) HandleSave();
 
         }
 
-        private void HandleGamePad(GamePadState gamePadState)
+        private bool KeyPressed(Command command)
         {
-            // Handle camera
-            if (gamePadState.IsButtonDown(Buttons.DPadLeft)) Camera.HandleAction(Camera.CameraAction.left);
-            if (gamePadState.IsButtonDown(Buttons.DPadRight)) Camera.HandleAction(Camera.CameraAction.right);
-            if (gamePadState.IsButtonDown(Buttons.DPadUp)) Camera.HandleAction(Camera.CameraAction.up);
-            if (gamePadState.IsButtonDown(Buttons.DPadDown)) Camera.HandleAction(Camera.CameraAction.down);
-
-
-            // when Y is pressed, open the picker wheel
-            if (gamePadState.IsButtonDown(Buttons.Y))
+            if (!_buttons.ContainsKey(command)) return false;
+            foreach (var button in _buttons[command])
             {
-                _manager.ObjectPickerOpen = true;
-                if (gamePadState.ThumbSticks.Left.Length() > 0.5)
+                if (_oldGamePadState.IsButtonUp(button)
+                    && _currGamePadState.IsButtonDown(button))
                 {
-                    _manager.CircularSelector.Update(gamePadState.ThumbSticks.Left);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool KeyReleased(Command command)
+        {
+            if (!_buttons.ContainsKey(command)) return false;
+            foreach (var button in _buttons[command])
+            {
+                if (_oldGamePadState.IsButtonDown(button)
+                    && _currGamePadState.IsButtonUp(button))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool KeyDown(Command command)
+        {
+            if (!_buttons.ContainsKey(command)) return false;
+            foreach (var button in _buttons[command])
+            {
+                if (_currGamePadState.IsButtonDown(button))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void HandleGamePad()
+        {
+            // Handle camera with DPad
+            if (KeyDown(Command.ZoomOut))
+            {
+                Camera.HandleAction(Camera.CameraAction.zoom_out);
+            }
+            if (KeyDown(Command.ZoomIn))
+            {
+                Camera.HandleAction(Camera.CameraAction.zoom_in);
+            }
+
+            Vector2 leftThumb = _currGamePadState.ThumbSticks.Left,
+                rightThumb = _currGamePadState.ThumbSticks.Right;
+
+
+            if (_manager.ObjectPickerOpen)
+            {
+
+                if (leftThumb.Length() > 0.5)
+                {
+                    _manager.CircularSelector.Update(leftThumb);
+                }
+
+                // go to the next category of GameObjects
+                if (KeyPressed(Command.NextItem))
+                {
+                    _manager.GetNextSelector();
+                }
+
+                // go to the previous category of GameObjects
+                if (KeyPressed(Command.PreviousItem))
+                {
+                    _manager.GetPrevSelector();
                 }
             }
             else
             {
                 // Handle Cursor movement
-                _manager.CursorPosition += (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
-                _manager.CursorPosition += (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
+                Vector2 cursorDisplacement = _deltaCursorSize * leftThumb;
+                _manager.CursorPosition += cursorDisplacement;
+                _manager.CheckCursorInsideScreen(cursorDisplacement, _manager.CursorPosition);
+            }
 
+            // On pressing Y, toggle between displaying ObjectPicker
+            if (KeyPressed(Command.TogglePicker))
+            {
+                _manager.ObjectPickerOpen = !_manager.ObjectPickerOpen;
+            }
 
-
-                // enable object size changes, if we only select one object
-                if (_manager.CurrentObjects != null)
+            if (KeyPressed(Command.Select))
+            {
+                // when closing the ObjectPicker, choose the last selected GameObject
+                if (_manager.ObjectPickerOpen)
                 {
-                    if (_manager.CurrentObjects.Count == 1)
-                    {
-                        _manager.CurrentObjects[0].SpriteSize += gamePadState.ThumbSticks.Right * new Vector2(5, -5);
-                    }
+                    int itemNumber = _manager.CircularSelector.SelectedElement %
+                           _manager.CircularSelector.NumberOfObjects();
+                    _manager.CreateNewGameObject(_manager.CircularSelector[itemNumber]);
+                    _manager.ObjectPickerOpen = false;
+                    return;
                 }
+            }
 
-
-                // let A go > place Object or Pick Object(s)
-                if (gamePadState.IsButtonUp(Buttons.A) && _oldGamePadState.IsButtonDown(Buttons.A))
+            // enable object size changes, if we only select one object
+            if (_manager.CurrentObjects != null)
+            {
+                // Only call this method if the right thumb is actually used
+                int minSizeX = 10, minSizeY = 10;
+                if (_manager.CurrentObjects.Count == 1 && rightThumb.Length() > 0.25f)
                 {
-                    if (_manager.CurrentObjects != null)
+                    _manager.CurrentObjects[0].SpriteSize
+                        += rightThumb * _resizeDelta;
+                    float x = _manager.CurrentObjects[0].SpriteSize.X,
+                        y = _manager.CurrentObjects[0].SpriteSize.Y;
+                    //make sure that object doesn't get negative size
+                    if (x < minSizeX) { x = minSizeX; }
+                    if (y < minSizeY) { y = minSizeY; }
+                    _manager.CurrentObjects[0].SpriteSize =
+                        new Vector2(x, y);
+                }
+            }
+
+ 
+            if (_manager.AuxiliaryObject != null)
+            {
+                _manager.AuxiliaryObject.SpriteSize += rightThumb * _resizeDelta;
+                // Remove the key
+                if (KeyPressed(Command.Remove))
+                {
+                    _manager.RemoveAuxiliaryObject();
+                }
+                else if (KeyPressed(Command.Place))
+                {
+                    _manager.PlaceAuxiliaryObject();
+                }
+            }
+            else
+            {
+                // let A pressed => place Object or Pick Object(s)
+                if (KeyPressed(Command.Select))
+                {
+
+                    if (_manager.ObjectsAreSelected)
                     {
                         _manager.PlaceCurrentObjects();
                     }
                     else
                     {
                         _manager.PickObjectUnderCursor();
-                        _manager.CursorSize = new Vector2(10);
+                        _manager.CursorSize = _initCursorSize;
                     }
                 }
 
-                // let X go > place Object or duplicate Object(s)
-                if (gamePadState.IsButtonUp(Buttons.X) && _oldGamePadState.IsButtonDown(Buttons.X))
+                // let X pressed => place Object or duplicate Object(s)
+                if (KeyPressed(Command.Copy))
                 {
-                    if (_manager.CurrentObjects != null)
+                    if (_manager.ObjectsAreSelected)
                     {
                         _manager.PlaceCurrentObjects();
                     }
+
                     else
                     {
                         _manager.DuplicateObjectUnderCursor();
-                        _manager.CursorSize = new Vector2(10);
+                        _manager.CursorSize = _initCursorSize;
                     }
-                }
-
-
-                if (gamePadState.IsButtonDown(Buttons.A) || gamePadState.IsButtonDown(Buttons.X))
-                {
-                    if (_manager.CurrentObjects == null)
-                    {
-                        // We are in selector mode
-
-                        _manager.CursorSize += (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
-                        _manager.CursorSize += (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
-
-                        _manager.CursorPosition -= (new Vector2(50, 0) * gamePadState.ThumbSticks.Left.X);
-                        _manager.CursorPosition -= (new Vector2(0, -50) * gamePadState.ThumbSticks.Left.Y);
-
-                    }
-
-                }
-
-                // remove current selection
-                if (gamePadState.IsButtonDown(Buttons.LeftTrigger) && _oldGamePadState.IsButtonUp(Buttons.LeftTrigger))
-                {
-                    _manager.DeselectCurrentObjects();
-                }
-
-                // delete current object
-                if (gamePadState.IsButtonDown(Buttons.RightTrigger) && _oldGamePadState.IsButtonUp(Buttons.RightTrigger))
-                {
-                    _manager.DeleteCurrentObject();
                 }
             }
 
-            //on release of Y, pick the current object of the selector
-            if (gamePadState.IsButtonUp(Buttons.Y) && _oldGamePadState.IsButtonDown(Buttons.Y))
+            if (KeyDown(Command.Place))
             {
-                _manager.ObjectPickerOpen = false;
-                int itemNumber = _manager.CircularSelector.SelectedElement % _manager.ObjectTemplates.Count;
-                _manager.CreateNewGameObject(_manager.ObjectTemplates[itemNumber]);
+                if (_manager.CurrentObjects == null)
+                {
+                    // We are in selector mode
+                    _manager.CursorSize += (_deltaCursorSize * leftThumb);
+                    _manager.CursorPosition -= (_deltaCursorSize * leftThumb);
+                }
             }
 
+            // remove current selection
+            if (KeyPressed(Command.Deselect))
+            {
+                _manager.DeselectCurrentObjects();
+            }
 
+            // delete current object
+            if (KeyPressed(Command.Remove))
+            {
+                _manager.DeleteCurrentObject();
+            }
 
-
-
-            if (gamePadState.IsButtonDown(Buttons.Back))
+            if (KeyPressed(Command.Exit))
                 // TODO: Ask the user to save the level
                 //Exit();
                 return;
         }
-
     }
 }

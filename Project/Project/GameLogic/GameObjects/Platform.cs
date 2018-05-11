@@ -7,7 +7,7 @@ using TheGreatEscape.LevelManager;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
-    class Platform : GameObject
+    public class Platform : GameObject
     {
         public bool Activate;
         public readonly int ActivationId;
@@ -18,7 +18,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
         private bool _movingInYdir;
         public PlatformBackground Background;
 
-        public Platform(Vector2 position, Vector2 spriteSize, string textureString, float displacement, string dir, int actId, string secondTextureString)
+        public Platform(Vector2 position, Vector2 spriteSize, string textureString, 
+            float displacement, string dir, int actId, string secondTextureString)
             : base(position, spriteSize)
         {
 
@@ -36,6 +37,12 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Displacement = displacement;
             ActivationId = actId;
 
+            if (dir is null)
+            {
+                dir = "y";
+                secondTextureString = "Sprites/Misc/platform_mechanismy";
+                displacement = 200;
+            }
 
             if (dir == "y")
             {
