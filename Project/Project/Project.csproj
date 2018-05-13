@@ -133,6 +133,7 @@
     <Compile Include="GameLogic\Renderer\GameRenderer.cs" />
     <Compile Include="GreatEscape.cs" />
     <Compile Include="GameLogic\GameManager.cs" />
+    <Compile Include="LevelManager\JsonUtil.cs" />
     <Compile Include="Libs\Simplex.cs" />
     <Compile Include="Libs\SingleRandom.cs" />
     <Compile Include="Menu\MenuManager.cs" />

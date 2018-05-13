@@ -795,87 +795,53 @@
 /build:Sprites/Menus/MenuImage.png
 
 #begin Levels/level_1.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_1.json
+/copy:Levels/level_1.json
 
 #begin Levels/level_10.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_10.json
+/copy:Levels/level_10.json
 
 #begin Levels/level_11.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_11.json
+/copy:Levels/level_11.json
 
 #begin Levels/level_12.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_12.json
+/copy:Levels/level_12.json
 
 #begin Levels/level_13.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_13.json
-
-#begin Levels/level_2.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_2.json
-
-#begin Levels/level_3.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_3.json
-
-#begin Levels/level_4.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_4.json
-
-#begin Levels/level_5.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_5.json
-
-#begin Levels/level_6.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_6.json
-
-#begin Levels/level_7.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_7.json
-
-#begin Levels/level_8.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_8.json
-
-#begin Levels/level_9.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_9.json
-
-#begin Levels/zdummy.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/zdummy.json
+/copy:Levels/level_13.json
 
 #begin Levels/level_1_more_platforms.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_1_more_platforms.json
+/copy:Levels/level_1_more_platforms.json
+
+#begin Levels/level_2.json
+/copy:Levels/level_2.json
 
 #begin Levels/level_2_samplelvl.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_2_samplelvl.json
+/copy:Levels/level_2_samplelvl.json
+
+#begin Levels/level_3.json
+/copy:Levels/level_3.json
 
 #begin Levels/level_3_wide_level.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_3_wide_level.json
+/copy:Levels/level_3_wide_level.json
+
+#begin Levels/level_4.json
+/copy:Levels/level_4.json
+
+#begin Levels/level_5.json
+/copy:Levels/level_5.json
+
+#begin Levels/level_6.json
+/copy:Levels/level_6.json
+
+#begin Levels/level_7.json
+/copy:Levels/level_7.json
+
+#begin Levels/level_8.json
+/copy:Levels/level_8.json
+
+#begin Levels/level_9.json
+/copy:Levels/level_9.json
+
+#begin Levels/zdummy.json
+/copy:Levels/zdummy.json
 
