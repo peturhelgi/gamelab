@@ -799,26 +799,8 @@
 #begin Levels/level_1.json
 /copy:Levels/level_1.json
 
-#begin Levels/level_10.json
-/copy:Levels/level_10.json
-
-#begin Levels/level_11.json
-/copy:Levels/level_11.json
-
-#begin Levels/level_12.json
-/copy:Levels/level_12.json
-
-#begin Levels/level_13.json
-/copy:Levels/level_13.json
-
-#begin Levels/level_1_more_platforms.json
-/copy:Levels/level_1_more_platforms.json
-
 #begin Levels/level_2.json
 /copy:Levels/level_2.json
-
-#begin Levels/level_2_samplelvl.json
-/copy:Levels/level_2_samplelvl.json
 
 #begin Levels/level_3.json
 /copy:Levels/level_3.json
@@ -843,7 +825,4 @@
 
 #begin Levels/level_9.json
 /copy:Levels/level_9.json
-
-#begin Levels/zdummy.json
-/copy:Levels/zdummy.json
 

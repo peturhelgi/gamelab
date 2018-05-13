@@ -36,10 +36,10 @@ namespace TheGreatEscape
         {
             Content.RootDirectory = "Content";
 
+            _transferLevels();
             _gameManager = new GameManager(Content, GraphicsDevice, _graphics);
             _editorManager = new EditorManager(Content, GraphicsDevice, _graphics);
             _menu = new MenuManager(Content, GraphicsDevice, _graphics, _gameManager, _editorManager, this);
-            _transferLevels();
             
             IsMouseVisible = true;
             base.Initialize();
