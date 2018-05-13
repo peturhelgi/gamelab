@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.IsolatedStorage;
 using EditorLogic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -126,7 +127,8 @@ namespace TheGreatEscape.Menu
             _popOver = null;
             _theGame = game;
 
-            string[] files = Directory.GetFiles("Content\\Levels");
+            IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication();
+            string[] files = isf.GetFileNames("Levels/*");
             _allLevels = new List<String>();
             foreach (String file in files)
             {

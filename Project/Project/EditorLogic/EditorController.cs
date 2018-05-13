@@ -136,7 +136,7 @@ namespace EditorLogic
             if (_currKeyboardState.IsKeyDown(Keys.Up)) _manager.CursorPosition += new Vector2(0, -20);
 
             // Handle saving changes
-            if (state.IsKeyDown(Keys.J)) HandleSave(GameEngine.GameState.levelname);
+            if (_currKeyboardState.IsKeyDown(Keys.J)) HandleSave(GameEngine.GameState.levelname);
 
         }
 
