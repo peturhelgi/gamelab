@@ -9,11 +9,14 @@ using TheGreatEscape.LevelManager;
 using TheGreatEscape.GameLogic.Renderer;
 using System;
 using System.Collections.Generic;
+
+using System.Reflection;
 using TheGreatEscape.EditorLogic.Util;
+using System.Linq;
 
 namespace EditorLogic
 {
-    class EditorManager
+    public class EditorManager
     {
         EditorController _editorController;
         GameController _gameController;
@@ -36,14 +39,23 @@ namespace EditorLogic
         public Vector2 MovingStartPosition;
         public bool Editing = true;
         public List<GameObject> CurrentObjects;
+        public GameObject AuxiliaryObject;
+        public GameObject AuxObjLink;
         public bool CurrentIsNewObject;
         public bool ObjectPickerOpen;
+        public Rectangle InitialRectangle;
 
-        public List<GameObject> ObjectTemplates;
+        public SortedList<String, CircularSelector> ObjectsSelector;
         public CircularSelector CircularSelector;
+        public Dictionary<string, Dictionary<string, Texture2D>> GameObjectTextures;
 
-
-
+        public bool ObjectsAreSelected
+        {
+            get
+            {
+                return ((CurrentObjects != null) || (AuxiliaryObject != null));
+            }
+        }
         public EditorManager(ContentManager content, GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics)
         {
             _content = content;
@@ -52,35 +64,108 @@ namespace EditorLogic
             _mapLoader = new MapLoader(content);
             CursorPosition = Vector2.Zero;
             CursorSize = new Vector2(10);
-            
+            InitialRectangle = new Rectangle(0, 0, 2000, 2000);
+
 
             _oldKeyboardState = Keyboard.GetState();
             _oldGamePadState = GamePad.GetState(PlayerIndex.One);
 
+            GameObjectTextures = new Dictionary<string, Dictionary<string, Texture2D>>();
+            ObjectsSelector = new SortedList<string, CircularSelector>();
+            LoadMiscTextures();
+            LoadAllGameObjects();
+            CircularSelector = ObjectsSelector.First().Value;
 
-            // TODO: Move to GameObject factory
-            // Templates.Add(new Miner(Vector2.Zero, new Vector2(100, 150), Vector2.Zero, 80, "Sprites/Miners/MinerHandsInPants"));
-            GameObjectFactory factory = new GameObjectFactory();
-            Obj rock = new Obj
-            {
-                Type = "rock",
-                Position = Vector2.Zero,
-                SpriteSize = new Vector2(150, 100)
+        }
+        public void LoadMiscTextures()
+        {
+            GameObjectTextures.Add("Misc", TextureContent.LoadListContent<Texture2D>(_content, "Misc"));
+        }
+        public void LoadAllGameObjects()
+        {
+            List<String> DirNames = new List<String> {
+                "Interactables", "Grounds", "Rocks"
             };
 
-            ObjectTemplates = new List<GameObject>();
-            for(int i = 1; i <= 5; ++i)
+            GameObjectFactory factory = new GameObjectFactory();
+
+            foreach (String dirName in DirNames)
             {
-                rock.Texture = "Sprites/Rocks/BareRock" + i;
-                ObjectTemplates.Add(factory.Create(rock));
-            }
-            foreach (GameObject obj in ObjectTemplates) {
-                obj.Texture = content.Load<Texture2D>(obj.TextureString);
+                Dictionary<string, Texture2D> objectTextures = TextureContent.LoadListContent
+                    <Texture2D>(_content, dirName);
+                List<GameObject> ObjectTemplates = new List<GameObject>();
+
+                GameObjectTextures.Add(dirName, objectTextures);
+
+                foreach (var gameObj in objectTextures)
+                {
+                    // the type of the object to create is extracted from the 
+                    // sprite name
+                    string objType = gameObj.Key.Split('/').Last();
+                    // for more objects of the same type, the delimitor used is underscore
+                    objType = objType.Split('_').First().ToLower();
+
+                    Obj gobj = new Obj
+                    {
+                        Type = objType,
+                        Position = Vector2.Zero,
+                        SpriteSize = new Vector2(150, 100)
+                    };
+
+                    // don't add the key to the placeable gameObjects
+                    if (objType == "key")
+                        continue;
+
+                    GameObject gameObject = factory.Create(gobj);
+                    if (objType == "door")
+                    {
+                        (gameObject as Door).LockedLight.Texture = GameObjectTextures["Misc"]["red_light"];
+                        (gameObject as Door).UnlockedLight.Texture = GameObjectTextures["Misc"]["green_light"];
+                        (gameObject as Door).LockedLight.Active = (gameObject as Door).RequiresKey;
+                        (gameObject as Door).UnlockedLight.Active = !(gameObject as Door).RequiresKey;
+                    }
+                    if (objType == "rockandhook")
+                        (gameObject as RockHook).Rope.Texture = GameObjectTextures["Misc"]["Rope"];
+                    gameObject.Texture = gameObj.Value;
+
+                    //TODO: remove this ugly hardcoding
+                    if (objType != "lever" && objType != "button")
+                        ObjectTemplates.Add(gameObject);
+
+                }
+
+                CircularSelector circSelector = new CircularSelector(_content, dirName);
+                circSelector.SetObjects(ObjectTemplates);
+                ObjectsSelector.Add(dirName, circSelector);
             }
 
-            CircularSelector = new CircularSelector(_content);
-            CircularSelector.SetObjects(ObjectTemplates);
+        }
 
+        public List<GameObject> GetAllObjectsOfType(Type ObjType)
+        {
+            List<GameObject> desiredObjects = new List<GameObject>();
+            foreach (GameObject gameObj in _engine.GameState.GetAll())
+            {
+                if (gameObj.GetType() == ObjType)
+                {
+                    desiredObjects.Add(gameObj);
+                }
+            }
+            return desiredObjects;
+        }
+        public void GetNextSelector()
+        {
+            int indexOfNext = ObjectsSelector.IndexOfKey(CircularSelector.SelectableObjects) + 1;
+            indexOfNext %= ObjectsSelector.Count;
+            CircularSelector = ObjectsSelector.Values[indexOfNext];
+        }
+
+        public void GetPrevSelector()
+        {
+            int indexOfPrev = ObjectsSelector.IndexOfKey(CircularSelector.SelectableObjects) - 1;
+            if (indexOfPrev < 0)
+                indexOfPrev += ObjectsSelector.Count;
+            CircularSelector = ObjectsSelector.Values[indexOfPrev];
         }
 
         public void DeselectCurrentObjects()
@@ -89,7 +174,9 @@ namespace EditorLogic
             {
                 foreach (var obj in CurrentObjects)
                 {
-                    _engine.GameState.Solids.Add(obj);
+                    if (obj is Miner)
+                        continue;
+                    _engine.GameState.Add(obj);
                 }
             }
             CurrentObjects = null;
@@ -101,60 +188,176 @@ namespace EditorLogic
             {
                 foreach (var obj in CurrentObjects)
                 {
-                    _engine.GameState.Solids.Remove(obj);
+                    _engine.GameState.Remove(obj);
                 }
             }
             CurrentObjects = null;
         }
 
+        // Called only when placing an object from the PickerWheel
         public void CreateNewGameObject(GameObject newObject)
         {
-            CurrentObjects = new List<GameObject>
+            GameObject obj = GameObject.Clone(newObject);
+            CurrentObjects = new List<GameObject>();
+            if(newObject is Door)
             {
-                GameObject.Clone(newObject)
-            };
-            
+                obj = GameObject.Clone(newObject);
+                (obj as Door).LockedLight = new PlatformBackground(Vector2.Zero, Vector2.Zero, "");
+                (obj as Door).UnlockedLight = new PlatformBackground(Vector2.Zero, Vector2.Zero, "");
+                (obj as Door).LockedLight.Texture = GameObjectTextures["Misc"]["red_light"];
+                (obj as Door).UnlockedLight.Texture = GameObjectTextures["Misc"]["green_light"];
+                (obj as Door).SetLights();
+            }
+
+            CurrentObjects.Add(obj);
+
             CurrentIsNewObject = true;
-            MovingStartPosition =  Vector2.Zero;
+            MovingStartPosition = Vector2.Zero;
 
         }
 
-        public void PlaceCurrentObjects() {
-            if (CurrentObjects != null) {
-                foreach (GameObject obj in CurrentObjects)
+        public void CreateDoorKey()
+        {
+            Obj gobj = new Obj
+            {
+                Type = "key",
+                Position = CursorPosition,
+                SpriteSize = new Vector2(150, 100),
+                Id = GameObjectFactory.currentKey
+            };
+            GameObjectFactory factory = new GameObjectFactory();
+            AuxiliaryObject = factory.Create(gobj);
+            AuxiliaryObject.Texture = GameObjectTextures["Interactables"]["key"];
+
+            (CurrentObjects.First() as Door).AddKey((AuxiliaryObject as Key).Id);
+        }
+
+        public void CreateRope(Vector2 spriteSize)
+        {
+            GameObject Rope = new HangingRope(CursorPosition + new Vector2(120.0f / 282.0f * spriteSize.X, 153.0f / 168.0f * spriteSize.Y),
+                    new Vector2(44, 200), "Sprites/Misc/Rope")
+            {
+                Texture = GameObjectTextures["Misc"]["Rope"]
+            };
+            AuxiliaryObject = Rope;
+        }
+
+        public void PlaceCurrentObjects()
+        {
+            if (CurrentObjects != null)
+            {
+                // Corner case for adding a door and asociating it with a key
+                if (CurrentObjects.First() is Door && CurrentIsNewObject)
+                {
+                    CreateDoorKey();
+                    Door door = CurrentObjects.First() as Door;
+                    door.Position += (CursorPosition - MovingStartPosition);
+                    door.SetLights();
+                    MovingStartPosition = CursorPosition;
+                    _engine.GameState.Add(door.UnlockedLight);
+                    _engine.GameState.Add(door.LockedLight);
+                    _engine.GameState.Add(door);
+                    CurrentObjects = null;
+                    return;
+
+                }
+
+                if (CurrentObjects.First() is RockHook && CurrentIsNewObject)
+                {
+                    RockHook rockHook = CurrentObjects.First() as RockHook;
+                    CreateRope(rockHook.SpriteSize);
+                    rockHook.Position += (CursorPosition - MovingStartPosition);
+                    MovingStartPosition = CursorPosition;
+                    _engine.GameState.Add(rockHook);
+                    AuxObjLink = rockHook;
+                    CurrentObjects = null;
+                    return;
+                }
+
+                    foreach (GameObject obj in CurrentObjects)
                 {
                     obj.Position += (CursorPosition - MovingStartPosition);
-                    _engine.GameState.Add(obj);
+                    if (obj is RockHook)
+                    {
+                        (obj as RockHook).UpdateRope();
+                    }
+                    if (!(obj is Miner))
+                        _engine.GameState.Add(obj);
+                    if(obj is Door)
+                    {
+                        (obj as Door).SetLights();
+                    }
                 }
                 CurrentObjects = null;
             }
         }
 
+        public void PlaceAuxiliaryObject()
+        {
+            if (AuxiliaryObject != null)
+            {
+                if (AuxiliaryObject is HangingRope)
+                {
+                    AuxiliaryObject.SpriteSize = new Vector2(44, AuxiliaryObject.SpriteSize.Y);
+                    AuxiliaryObject.Active = true;
+                    (AuxObjLink as RockHook).Rope = AuxiliaryObject as HangingRope;
+                    AuxiliaryObject = null;
+
+                    return;
+                }
+                AuxiliaryObject.Position += (CursorPosition - MovingStartPosition);
+                _engine.GameState.Add(AuxiliaryObject);
+            }
+            AuxiliaryObject = null;
+        }
+
+        public void RemoveAuxiliaryObject()
+        {
+            if (AuxiliaryObject is Key)
+            {
+                List<GameObject> doors = GetAllObjectsOfType(typeof(Door));
+                foreach (Door door in doors)
+                {
+                    if (door.KeyId == (AuxiliaryObject as Key).Id)
+                        door.RemoveKey(door.KeyId);
+                }
+
+            AuxiliaryObject = null;
+            }
+        }
+
         public void DuplicateObjectUnderCursor()
         {
-            List<GameObject> collisions = _engine.CollisionDetector.FindCollisions(new AxisAllignedBoundingBox(CursorPosition, CursorPosition + CursorSize), _engine.GameState.Solids);
+            List<GameObject> collisions = _engine.CollisionDetector.FindCollisions
+                (new AxisAllignedBoundingBox(CursorPosition, CursorPosition + CursorSize), _engine.GameState.GetAll());
             if (collisions.Count > 0)
             {
                 CurrentObjects = new List<GameObject>();
                 CursorPosition = new Vector2(float.MaxValue);
                 foreach (GameObject obj in collisions)
                 {
+                    if (!(obj is Miner))
+                        CurrentObjects.Add(GameObject.Clone(obj));
                     CursorPosition = Vector2.Min(CursorPosition, obj.Position);
-                    CurrentObjects.Add(GameObject.Clone(obj));
                 }
                 MovingStartPosition = CursorPosition;
                 CurrentIsNewObject = true;
             }
         }
 
-        public void PickObjectUnderCursor() {
-            List<GameObject> collisions = _engine.CollisionDetector.FindCollisions(new AxisAllignedBoundingBox(CursorPosition, CursorPosition+CursorSize), _engine.GameState.Solids);
-            if (collisions.Count > 0) {
+        public void PickObjectUnderCursor()
+        {
+            List<GameObject> collisions = _engine.CollisionDetector.FindCollisions(
+                new AxisAllignedBoundingBox(CursorPosition, CursorPosition + CursorSize), _engine.GameState.GetAll());
+            if (collisions.Count > 0)
+            {
                 CurrentObjects = collisions;
                 CursorPosition = new Vector2(float.MaxValue);
-                foreach (GameObject obj in collisions) {
+                foreach (GameObject obj in collisions)
+                {
                     CursorPosition = Vector2.Min(CursorPosition, obj.Position);
-                    _engine.GameState.Solids.Remove(obj);
+                    if (!(obj is Miner))
+                        _engine.GameState.Remove(obj);
                 }
                 MovingStartPosition = CursorPosition;
                 CurrentIsNewObject = false;
@@ -211,18 +414,33 @@ namespace EditorLogic
 
         public void Draw(GameTime gameTime, int width, int height)
         {
+
+            _gameRenderer.Draw(gameTime, width, height, 
+                Keyboard.GetState().IsKeyDown(Keys.P) ? 
+                GameRenderer.Mode.DebugView : 
+                GameRenderer.Mode.Normal, _editorController.Camera);
+
             if (Editing)
             {
                 GameManager.RenderDark = false;
-            }
-
-            _gameRenderer.Draw(gameTime, width, height, Keyboard.GetState().IsKeyDown(Keys.P) ? GameRenderer.Mode.DebugView : GameRenderer.Mode.Normal, _editorController.Camera);
-
-            if (Editing)
-            {
                 _editorRenderer.Draw(gameTime, width, height, _editorController.Camera.view);
             }
-            
+
+        }
+
+        public void CheckCursorInsideScreen(Vector2 cursorDisplacement, Vector2 cursorPosition)
+        {
+            if (!_camera.GetCameraRectangle(0,0).Contains(cursorPosition))
+            {
+                // fix weird bug
+                if (cursorDisplacement == Vector2.Zero)
+                {
+                    cursorPosition.X = _camera.GetCameraRectangle(0, 0).Center.X; 
+                    cursorPosition.Y = _camera.GetCameraRectangle(0, 0).Center.Y; 
+                }
+                InitialRectangle.Offset(cursorDisplacement);
+                _camera.SetCameraToRectangle(InitialRectangle);
+            }
         }
 
     }

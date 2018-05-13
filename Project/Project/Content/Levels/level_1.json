@@ -1,11 +1,11 @@
 {
-  "levelnr": 0,
-  "levelname": "sample",
-  "prevlvl": -1,
-  "prevlvlname": "0",
-  "nextlvl": 1,
-  "nextlvlname": "tbd",
-  "background": "Sprites/Backgrounds/Level1Background",
+  "levelnr" : 0,
+  "levelname" : "sample",
+  "prevlvl" : -1,
+  "prevlvlname" : "0",
+  "nextlvl" : 1,
+  "nextlvlname" : "tbd",
+  "background" : "Sprites/Backgrounds/Level1Background",
   "resources": {
     "pickaxe": 3,
     "rope": 2
@@ -13,11 +13,31 @@
 
   "objects": [
     {
-      "pos": {
-        "x": 210,
-        "y": 250
+      "dim": {
+        "x": 270,
+        "y": 370
       },
-      "type": "end"
+      "pos": {
+        "x": 1952,
+        "y": -150
+      },
+      "type": "door",
+      "requirement": true,
+      "id": 0,
+      "texture": "Sprites/Interactables/Door"
+    },
+    {
+      "dim": {
+        "x": 94,
+        "y": 31
+      },
+      "pos": {
+        "x": 1932,
+        "y": -90
+      },
+      "id": 0,
+      "type": "key",
+      "texture": "Sprites/Interactables/key"
     },
     {
       "dim": {
@@ -25,7 +45,7 @@
         "y": 185
       },
       "pos": {
-        "x": 210,
+        "x": -200,
         "y": 0
       },
       "vel": {
@@ -34,8 +54,26 @@
       },
       "m": 80,
       "type": "miner",
-      "tool": "pickaxe",
-      "texture": "Sprites/Miners/MinerHandsInPants"
+      "tool" : "rope",
+      "texture": "Sprites/Miners/MinerStatic"
+    },
+    {
+      "dim": {
+        "x": 61.5,
+        "y": 185
+      },
+      "pos": {
+        "x": -100,
+        "y": 0
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 80,
+      "type": "miner",
+      "tool":  "pickaxe",
+      "texture": "Sprites/Miners/MinerPickaxe"
     },
     {
       "dim": {
@@ -43,16 +81,16 @@
         "y": 107.5
       },
       "pos": {
-        "x": 881,
-        "y": 390
+        "x": 1300,
+        "y": 330
       },
       "vel": {
         "x": 0,
         "y": 0
       },
-      "m": 50,
+      "m": 10,
       "type": "rock",
-      "texture": "Sprites/Rocks/BareRock5"
+      "texture": "Sprites/Rocks/rock_5"
 
     },
     {
@@ -61,8 +99,8 @@
         "y": 175.3
       },
       "pos": {
-        "x": 746,
-        "y": 343
+        "x": 1646,
+        "y": 650
       },
       "vel": {
         "x": 0,
@@ -70,17 +108,17 @@
       },
       "m": 20,
       "type": "rock",
-      "texture": "Sprites/Rocks/BareRock1"
+      "texture": "Sprites/Rocks/rock_1"
 
     },
     {
       "dim": {
-        "x": 640,
-        "y": 318
+        "x": 452,
+        "y": 718
       },
       "pos": {
-        "x": 600,
-        "y": 500
+        "x": 1500,
+        "y": 800
       },
       "vel": {
         "x": 0,
@@ -88,15 +126,203 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/Ground1"
+      "texture": "Sprites/Grounds/ground_tall"
     },
     {
       "dim": {
-        "x": 640,
-        "y": 268
+        "x": 623,
+        "y": 244
       },
       "pos": {
-        "x": -300,
+        "x": 2200,
+        "y": 950
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_low"
+    },
+    {
+      "dim": {
+        "x": 456,
+        "y": 244
+      },
+      "pos": {
+        "x": 3200,
+        "y": 1200
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_low"
+    },
+    {
+      "dim": {
+        "x": 506,
+        "y": 244
+      },
+      "pos": {
+        "x": 3800,
+        "y": 1100
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_low"
+    },
+    {
+      "dim": {
+        "x": 500,
+        "y": 718
+      },
+      "pos": {
+        "x": -400,
+        "y": 800
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_tall"
+    },
+    {
+      "dim": {
+        "x": 547,
+        "y": 125
+      },
+      "pos": {
+        "x": 900,
+        "y": 450
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_1"
+    },
+    {
+      "dim": {
+        "x": 547,
+        "y": 125
+      },
+      "pos": {
+        "x": 900,
+        "y": 450
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_1"
+    },
+    // ======== LAST PART OF CAVE ==========
+    {
+      "dim": {
+        "x": 547,
+        "y": 84
+      },
+      "pos": {
+        "x": 4125,
+        "y": 960
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_1"
+    },
+    {
+      "dim": {
+        "x": 345,
+        "y": 84
+      },
+      "pos": {
+        "x": 4600,
+        "y": 850
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_1"
+    },
+    {
+      "dim": {
+        "x": 345,
+        "y": 84
+      },
+      "pos": {
+        "x": 4650,
+        "y": 700
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_1"
+    },
+    {
+      "dim": {
+        "x": 345,
+        "y": 84
+      },
+      "pos": {
+        "x": 4700,
+        "y": 600
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_1"
+    },
+    {
+      "dim": {
+        "x": 345,
+        "y": 84
+      },
+      "pos": {
+        "x": 3700,
+        "y": 350
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_1"
+    },
+    {
+      "dim": {
+        "x": 369,
+        "y": 59
+      },
+      "pos": {
+        "x": 4100,
         "y": 500
       },
       "vel": {
@@ -105,7 +331,76 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/Ground3"
+      "texture": "Sprites/Grounds/ground_suspended_2"
+    },
+        {
+      "dim": {
+        "x": 1700,
+        "y": 144
+      },
+      "pos": {
+        "x": 1728,
+        "y": 200  
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_low"
+    },
+    // =================================
+    {
+      "dim": {
+        "x": 369,
+        "y": 59
+      },
+      "pos": {
+        "x": 450,
+        "y": 600
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_2"
+    },
+    {
+      "dim": {
+        "x": 369,
+        "y": 59
+      },
+      "pos": {
+        "x": 250,
+        "y": 700
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_2"
+    },
+    {
+      "dim": {
+        "x": 369,
+        "y": 59
+      },
+      "pos": {
+        "x": 200,
+        "y": 1200
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_2"
     }
   ]
 }

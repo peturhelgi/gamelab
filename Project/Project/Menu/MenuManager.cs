@@ -10,7 +10,7 @@ using TheGreatEscape.GameLogic;
 
 namespace TheGreatEscape.Menu
 {
-    class MenuManager
+    public class MenuManager
     {
         Screen _currentScreen;
         Screen _prevScreen;
@@ -51,13 +51,68 @@ namespace TheGreatEscape.Menu
         GreatEscape _theGame;
         List<Screen> screenStack;
 
-        public KeyboardState OldKeyboardState;
-        public GamePadState OldPlayerOneState;
-        public GamePadState OldPlayerTwoState;
+        public KeyboardState OldKeyboardState, CurrKeyboardState;
+        public GamePadState OldPlayerOneState, CurrPlayerOneState;
+        public GamePadState OldPlayerTwoState, CurrPlayerTwoState;
         // TODO: move to renderer
         // Assets for the Menu
         public SpriteFont MenuFont;
 
+        public bool KeyPressed(params Keys[] keys)
+        {
+            foreach(var key in keys)
+            {
+                if (OldKeyboardState.IsKeyUp(key)
+                    && CurrKeyboardState.IsKeyDown(key))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ButtonDown(int player, params Buttons[] buttons)
+        {
+            var currpadState = player == 0 ? CurrPlayerOneState : CurrPlayerTwoState;
+            foreach (var button in buttons)
+            {
+                if (currpadState.IsButtonDown(button))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ButtonPressed(int player, params Buttons[] buttons)
+        {
+            var oldpadState = player == 0 ? OldPlayerOneState : OldPlayerTwoState;
+            var currpadState = player == 0 ? CurrPlayerOneState : CurrPlayerTwoState;
+            foreach (var button in buttons)
+            {
+                if (currpadState.IsButtonDown(button)
+                    && oldpadState.IsButtonUp(button))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ButtonReleased(int player, params Buttons[] buttons)
+        {
+            var oldpadState = player == 0 ? OldPlayerOneState : OldPlayerTwoState;
+            var currpadState = player == 0 ? CurrPlayerOneState : CurrPlayerTwoState;
+            foreach (var button in buttons)
+            {
+                if (currpadState.IsButtonUp(button)
+                    && oldpadState.IsButtonDown(button))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public MenuManager(ContentManager content, GraphicsDevice graphicsDevice,
             GraphicsDeviceManager graphics, GameManager gameManager, EditorManager editorManager, GreatEscape game)
@@ -128,9 +183,10 @@ namespace TheGreatEscape.Menu
 
             _editor = new EditorScreen(_editorManager, _graphicsDevice, this);
 
-            OldKeyboardState = Keyboard.GetState();
-            OldPlayerOneState = GamePad.GetState(PlayerIndex.One);
-            OldPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
+            OldKeyboardState = CurrKeyboardState;
+            CurrKeyboardState = Keyboard.GetState();
+            CurrPlayerOneState = GamePad.GetState(PlayerIndex.One);
+            CurrPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
         }
 
         public void CallAction(Action action, object value)
@@ -180,11 +236,7 @@ namespace TheGreatEscape.Menu
                     _prevScreen = null;
                     _popOver = _gameOver;
                     retry = _popOver.GetSelection(0);
-                    retry.Value = _levelSelector?.GetLastSelection()?.Value;
-                    if (retry.Value == null)
-                    {
-                        retry.Value = _mainMenu.GetSelection(0).Value;
-                    }
+                    retry.Value = "Levels/" + _allLevels[_currentLevelIdx];
                     _popOver.SetSelection(0, retry);
                     _currentScreen = _popOver;
                     break;
@@ -200,11 +252,7 @@ namespace TheGreatEscape.Menu
                     _popOver.SetSelection(0, nextLvl);
 
                     retry = _popOver.GetSelection(1);
-                    retry.Value = _levelSelector?.GetLastSelection()?.Value;
-                    if (retry.Value == null)
-                    {
-                        retry.Value = _mainMenu.GetSelection(0).Value;
-                    }
+                    retry.Value = "Levels/" + _allLevels[_currentLevelIdx];
                     _popOver.SetSelection(1, retry);
 
                     _currentScreen = _popOver;
@@ -264,12 +312,17 @@ namespace TheGreatEscape.Menu
         public void Update(GameTime gameTime)
         {
             _currentScreen.Update(gameTime);
-            OldKeyboardState = Keyboard.GetState();
-            OldPlayerOneState = GamePad.GetState(PlayerIndex.One);
-            OldPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
-            if (_gameManager?.GameEngine?.GameState != null
-                && _gameManager.GameEngine.GameState.Completed)
-            {
+
+            OldKeyboardState = CurrKeyboardState;
+            OldPlayerOneState = CurrPlayerOneState;
+            OldPlayerTwoState = CurrPlayerTwoState;
+
+            CurrKeyboardState = Keyboard.GetState();
+            CurrPlayerOneState = GamePad.GetState(PlayerIndex.One);
+            CurrPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
+            if(_gameManager?.GameEngine?.GameState != null
+                && _gameManager.GameEngine.GameState.Completed) {
+
                 CallAction(MenuManager.Action.ShowLevelCompletedScreen, null);
             }
             if (_gameManager?.GameEngine?.GameState != null
@@ -285,7 +338,7 @@ namespace TheGreatEscape.Menu
         }
     }
 
-    abstract class Screen
+    public abstract class Screen
     {
         protected MenuManager _manager;
         protected GraphicsDevice _graphicsDevice;
@@ -338,15 +391,14 @@ namespace TheGreatEscape.Menu
         public override void Update(GameTime gameTime)
         {
 
-            if ((Keyboard.GetState().IsKeyDown(Keys.Escape) && _manager.OldKeyboardState.IsKeyUp(Keys.Escape)) ||
-                (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start) && _manager.OldPlayerOneState.IsButtonUp(Buttons.Start)) ||
-                (GamePad.GetState(PlayerIndex.Two).IsButtonDown(Buttons.Start) && _manager.OldPlayerTwoState.IsButtonUp(Buttons.Start)))
+            if (_manager.KeyPressed(Keys.Escape) ||
+                _manager.ButtonPressed(0, Buttons.Start) ||
+                _manager.ButtonPressed(1, Buttons.Start))
             {
                 _manager.CallAction(MenuManager.Action.ShowPauseMenu, null);
             }
 
-            else if (Keyboard.GetState().IsKeyDown(Keys.Space)
-                && _manager.OldKeyboardState.IsKeyUp(Keys.Space))
+            else if (_manager.KeyPressed(Keys.Space))
             {
                 _manager.CallAction(MenuManager.Action.ShowPauseMenu, null);
             }
@@ -377,9 +429,9 @@ namespace TheGreatEscape.Menu
 
         public override void Update(GameTime gameTime)
         {
-            if ((Keyboard.GetState().IsKeyDown(Keys.Escape) && _manager.OldKeyboardState.IsKeyUp(Keys.Escape)) ||
-                (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Start) && _manager.OldPlayerOneState.IsButtonUp(Buttons.Start)) ||
-                (GamePad.GetState(PlayerIndex.Two).IsButtonDown(Buttons.Start) && _manager.OldPlayerTwoState.IsButtonUp(Buttons.Start)))
+            if ((_manager.KeyPressed(Keys.Escape)) ||
+                (_manager.ButtonPressed(0, Buttons.Start)) ||
+                (_manager.ButtonPressed(1, Buttons.Start)))
             {
                 _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
             }
@@ -489,19 +541,18 @@ namespace TheGreatEscape.Menu
         {
             // TODO add support for (multiple) Controllers
             // Keyboard controls
-            if (Keyboard.GetState().IsKeyDown(Keys.Down) && _manager.OldKeyboardState.IsKeyUp(Keys.Down))
+            if (_manager.KeyPressed(Keys.Down))
             {
                 _currentPosition = (++_currentPosition) % _selections.Count;
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Up) && _manager.OldKeyboardState.IsKeyUp(Keys.Up))
+            if (_manager.KeyPressed(Keys.Up))
             {
                 _currentPosition = --_currentPosition < 0 ? _selections.Count - 1 : _currentPosition;
             }
 
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter) && _manager.OldKeyboardState.IsKeyUp(Keys.Enter) ||
-                Keyboard.GetState().IsKeyDown(Keys.Space) && _manager.OldKeyboardState.IsKeyUp(Keys.Space))
+            if (_manager.KeyPressed(Keys.Enter, Keys.Space))
             {
                 _manager.CallAction(_selections[_currentPosition].Action, _selections[_currentPosition].Value);
                 _lastSelection = _currentPosition;
@@ -509,36 +560,26 @@ namespace TheGreatEscape.Menu
             }
 
             // Xbox controls for player one
-            if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickDown)
-                && _manager.OldPlayerOneState.IsButtonUp(Buttons.LeftThumbstickDown))
+            if(_manager.ButtonPressed(0, Buttons.LeftThumbstickDown, Buttons.DPadDown)
+                || _manager.ButtonPressed(1, Buttons.LeftThumbstickDown, Buttons.DPadDown))
             {
                 _currentPosition = (++_currentPosition) % _selections.Count;
             }
-            if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.LeftThumbstickUp)
-                && _manager.OldPlayerOneState.IsButtonUp(Buttons.LeftThumbstickUp))
-            {
-                _currentPosition = --_currentPosition < 0 ? _selections.Count - 1 : _currentPosition;
-            }
-            if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.DPadDown)
-                && _manager.OldPlayerOneState.IsButtonUp(Buttons.DPadDown))
-            {
-                _currentPosition = (++_currentPosition) % _selections.Count;
-            }
-            if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.DPadUp)
-                && _manager.OldPlayerOneState.IsButtonUp(Buttons.DPadUp))
+            if (_manager.ButtonPressed(0, Buttons.LeftThumbstickUp, Buttons.DPadUp)
+                || _manager.ButtonPressed(1, Buttons.LeftThumbstickUp, Buttons.DPadUp))
             {
                 _currentPosition = --_currentPosition < 0 ? _selections.Count - 1 : _currentPosition;
             }
 
-            if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A)
-                && _manager.OldPlayerOneState.IsButtonUp(Buttons.A))
+            if (_manager.ButtonPressed(0, Buttons.A)
+               || _manager.ButtonPressed(1, Buttons.A))
             {
                 _manager.CallAction(_selections[_currentPosition].Action, _selections[_currentPosition].Value);
                 _currentPosition = 0;
             }
 
-            if (GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.Back)
-                && _manager.OldPlayerOneState.IsButtonUp(Buttons.Back))
+            if (_manager.ButtonPressed(0, Buttons.Back)
+                || _manager.ButtonPressed(1, Buttons.Back))
             {
                 _manager.CallAction(MenuManager.Action.Back, null);
                 _currentPosition = 0;

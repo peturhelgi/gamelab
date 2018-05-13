@@ -6,24 +6,38 @@ using System;
 using System.Collections.Generic;
 
 namespace TheGreatEscape.EditorLogic.Util {
-    class CircularSelector
+    public class CircularSelector
     {
 
         Texture2D _pickerWheel;
         List<GameObject> _objects;
         float _selectorAngle;
         public int SelectedElement;
+        public string SelectableObjects;
 
-        public CircularSelector(ContentManager content)
+        public CircularSelector(ContentManager content, String selectableObjects)
         {
+            SelectableObjects = selectableObjects;
             _pickerWheel = content.Load<Texture2D>("Sprites/Misc/picker_wheel");
 
 
+        }
+        public int NumberOfObjects()
+        {
+            return _objects.Count;
+        }
+
+        public GameObject this[int i]
+        {
+            get => _objects[i];
+            set => _objects[i] = value;
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 size, Vector2 position)
         {
 
+            //TODO: change itemSize so the items will look like a scaled down
+            // version of the sprites and not skewed
             Vector2 itemSize = size / 6;
             Vector2 itemPosition = position + (size / 2) - (itemSize / 2);
 
@@ -36,8 +50,8 @@ namespace TheGreatEscape.EditorLogic.Util {
                    Color.Gray);
 
             int i = 0;
-
-            float offsetAngle = (float)(2 * Math.PI / _objects.Count);
+            
+            float offsetAngle = (float)(MathHelper.TwoPi / _objects.Count);
             SelectedElement = (int)Math.Floor((_selectorAngle/(2*Math.PI)) * _objects.Count);
 
 
