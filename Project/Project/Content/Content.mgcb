@@ -841,8 +841,3 @@
 /processor:ContentProcessor1
 /build:Levels/level_9.json
 
-#begin Levels/level_3_wide_level.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_3_wide_level.json
-

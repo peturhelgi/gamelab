@@ -157,15 +157,8 @@
     <Content Include="Content\Fonts\CHAMPGNE.TTF" />
     <None Include="Content\Fonts\Orbitron.spritefont" />
     <None Include="Content\Levels\level_1.json" />
-    <None Include="Content\Levels\level_10.json" />
-    <None Include="Content\Levels\level_11.json" />
-    <None Include="Content\Levels\level_12.json" />
-    <None Include="Content\Levels\level_13.json" />
-    <None Include="Content\Levels\level_1_more_platforms.json" />
     <None Include="Content\Levels\level_2.json" />
-    <None Include="Content\Levels\level_2_samplelvl.json" />
     <None Include="Content\Levels\level_3.json" />
-    <None Include="Content\Levels\level_3_wide_level.json" />
     <None Include="Content\Levels\level_4.json" />
     <None Include="Content\Levels\level_5.json" />
     <None Include="Content\Levels\level_6.json" />
