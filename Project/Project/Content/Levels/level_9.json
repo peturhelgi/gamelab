@@ -277,7 +277,7 @@
       },
       "m": 20,
       "type": "ladder",
-      "texture": "Sprites/Interactables/LadderShort"
+      "texture": "Sprites/Interactables/ladder_short"
     },
     {
       "dim": {

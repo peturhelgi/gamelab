@@ -207,10 +207,16 @@
     <Content Include="Content\Sprites\Backgrounds\Level1Background.png" />
     <Content Include="Content\Sprites\Backgrounds\Level2Background.png" />
     <Content Include="Content\Sprites\Backgrounds\Level3Background.png" />
+    <Content Include="Content\Sprites\Interactables\button_floor.png" />
     <Content Include="Content\Sprites\Interactables\crate.png" />
     <Content Include="Content\Sprites\Interactables\Door.png" />
+    <Content Include="Content\Sprites\Interactables\key.png" />
+    <Content Include="Content\Sprites\Interactables\ladder_long.png" />
+    <Content Include="Content\Sprites\Interactables\ladder_short.png" />
     <Content Include="Content\Sprites\Interactables\lever_left.png" />
     <Content Include="Content\Sprites\Interactables\lever_right.png" />
+    <Content Include="Content\Sprites\Interactables\platform_escalator.png" />
+    <Content Include="Content\Sprites\Interactables\rockandhook.png" />
     <Content Include="Content\Sprites\Menus\GameOver.png" />
     <Content Include="Content\Sprites\Menus\GamePaused.png" />
     <Content Include="Content\Sprites\Menus\LevelComplete.png" />
