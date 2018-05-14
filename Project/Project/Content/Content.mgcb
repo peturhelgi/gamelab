@@ -677,26 +677,6 @@
 /processor:ContentProcessor1
 /build:Levels/level_5.json
 
-#begin Levels/level_6.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_6.json
-
-#begin Levels/level_7.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_7.json
-
-#begin Levels/level_8.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_8.json
-
-#begin Levels/level_9.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_9.json
-
 #begin Sprites/Misc/Menus/GameOver.png
 /importer:TextureImporter
 /processor:TextureProcessor
