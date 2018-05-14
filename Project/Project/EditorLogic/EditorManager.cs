@@ -313,13 +313,17 @@ namespace EditorLogic
 
         public void RemoveAuxiliaryObject()
         {
-            List<GameObject> doors = GetAllObjectsOfType(typeof(Door));
-            foreach (Door door in doors)
+            if (AuxiliaryObject is Key)
             {
-                if (door.KeyId == (AuxiliaryObject as Key).Id)
-                    door.RemoveKey(door.KeyId);
-            }
+                List<GameObject> doors = GetAllObjectsOfType(typeof(Door));
+                foreach (Door door in doors)
+                {
+                    if (door.KeyId == (AuxiliaryObject as Key).Id)
+                        door.RemoveKey(door.KeyId);
+                }
+
             AuxiliaryObject = null;
+            }
         }
 
         public void DuplicateObjectUnderCursor()
