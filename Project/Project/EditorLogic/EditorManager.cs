@@ -125,7 +125,7 @@ namespace EditorLogic
                         (gameObject as Door).UnlockedLight.Active = !(gameObject as Door).RequiresKey;
                     }
                     if (objType == "rockandhook")
-                        (gameObject as RockHook).Rope.Texture = GameObjectTextures["Misc"]["Rope"];
+                        (gameObject as RockHook).Rope.Texture = GameObjectTextures["Misc"]["Rope_transparent"];
                     gameObject.Texture = gameObj.Value;
 
                     //TODO: remove this ugly hardcoding

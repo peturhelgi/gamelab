@@ -57,7 +57,7 @@ namespace TheGreatEscape.LevelManager
             // TODO possibly add a hashed Map to only load every Texture once
             foreach (GameObject obj in gameState.GetAll())
             {
-                if(obj?.TextureString == null || obj.TextureString == "")
+                if (obj?.TextureString == null || obj.TextureString == "")
                 {
                     continue;
                 }
@@ -65,7 +65,10 @@ namespace TheGreatEscape.LevelManager
                 if (obj is Lever)
                     (obj as Lever).SecondTexture = ContentManager.Load<Texture2D>((obj as Lever).RightleverTexture);
                 if (obj is RockHook)
+                {
                     (obj as RockHook).Rope.Texture = ContentManager.Load<Texture2D>((obj as RockHook).Rope.TextureString);
+                    (obj as RockHook).Rope.SecondTexture = ContentManager.Load<Texture2D>((obj as RockHook).Rope.SecondTextureString);
+                }
             }
 
             LoadMotionSheets(gameState);

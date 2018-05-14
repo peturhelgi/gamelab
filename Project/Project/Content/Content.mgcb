@@ -697,11 +697,6 @@
 /processor:ContentProcessor1
 /build:Levels/level_9.json
 
-#begin Levels/level_3_wide_level.json
-/importer:ContentImporter1
-/processor:ContentProcessor1
-/build:Levels/level_3_wide_level.json
-
 #begin Sprites/Misc/Menus/GameOver.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -834,18 +829,6 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Misc/red_light.png
 
-#begin Sprites/Misc/Rope.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Sprites/Misc/Rope.png
-
 #begin Sprites/Misc/box.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -857,4 +840,28 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Misc/box.png
+
+#begin Sprites/Misc/Rope_transparent.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Misc/Rope_transparent.png
+
+#begin Sprites/Misc/Rope.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Misc/Rope.png
 

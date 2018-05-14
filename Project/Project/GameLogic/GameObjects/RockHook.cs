@@ -47,11 +47,19 @@ namespace TheGreatEscape.GameLogic.GameObjects
         {
             Rope.Position = Position + new Vector2(120.0f / 282.0f * SpriteSize.X, 153.0f / 168.0f * SpriteSize.Y);
         }
-
+        
+        public HangingRope GetRope()
+        {
+            return Rope;
+        }
         public void HangOrTakeRope(GameState gs)
         {
-            if (!isRope) gs.Add(Rope, GameState.Handling.None);
+            if (!isRope)
+            {
+                gs.Add(Rope, GameState.Handling.None);
+            }
             else gs.Remove(Rope, GameState.Handling.None);
+            Rope.SwapTextures();
             isRope = !isRope;
         }
 
@@ -63,7 +71,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             obj.Velocity = Speed;
             obj.Mass = (float)Mass;
             obj.Type = "rockandhook";
-            obj.Texture = TextureString;
+            obj.TextureString = TextureString;
             obj.Displacement = 0;
             obj.Direction = "-1";
             obj.ActivationKey = -1;
@@ -80,6 +88,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
     class HangingRope : GameObject
     {
         private float _ropeLength;
+        public string SecondTextureString;
+        public Texture2D SecondTexture;
 
         public HangingRope(Vector2 position, Vector2 spriteSize, string textureString)
             : base(position, spriteSize)
@@ -90,8 +100,16 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 Visible = true;
                 Moveable = false;
                 TextureString = textureString;
+                SecondTextureString = "Sprites/Misc/Rope_transparent";
                 _ropeLength = spriteSize.Y;
             }
+        }
+
+        public void SwapTextures()
+        {
+            Texture2D temp = Texture;
+            Texture = SecondTexture;
+            SecondTexture = temp;
         }
 
         public override AxisAllignedBoundingBox BBox
@@ -112,7 +130,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             obj.Velocity = Speed;
             obj.Mass = (float)Mass;
             obj.Type = "hangingRope";
-            obj.Texture = TextureString;
+            obj.TextureString = TextureString;
             obj.Displacement = 0;
             obj.Direction = "-1";
             obj.ActivationKey = -1;
