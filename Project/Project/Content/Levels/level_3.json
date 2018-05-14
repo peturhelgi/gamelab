@@ -17,7 +17,7 @@
         "x": 210,
         "y": 250
       },
-      "type": "end",
+      "type": "door",
       "texture": "Sprites/Interactables/Door"
     },
     {
@@ -277,7 +277,8 @@
       },
       "m": 20,
       "type": "ladder",
-      "texture": "Sprites/Interactables/LadderShort"
+      "texture": "Sprites/Interactables/ladder_short",
+      "Texture": "Sprites/Interactables/ladder_short"
     },
     {
       "dim": {
@@ -412,7 +413,7 @@
       "type": "rockandhook",
       "texture": "Sprites/Interactables/suspended_rock_hook",
       "secondtexture": "Sprites/Interactables/Rope",
-      "ropelength":  1750
+      "ropelength": 1750
     }
-      ]
-    }
+  ]
+}

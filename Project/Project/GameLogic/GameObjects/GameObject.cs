@@ -89,10 +89,13 @@ namespace TheGreatEscape.GameLogic.GameObjects
     }
 
     public abstract class GameObject : IGameObject {
-        
+
         /// <summary>
         /// Describes how the game object should be handled
         /// </summary>
+        /// 
+        private Texture2D _texture;
+
         public GameState.Handling Handling { get; set; }
 
         public GameObject(Vector2 position, Vector2 spriteSize)
@@ -139,7 +142,14 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 return new AxisAllignedBoundingBox(Position, Position + SpriteSize);
             } }
 
-        public Texture2D Texture { get; set; }
+        public Texture2D Texture {
+            get { return _texture; }
+            set
+            {
+                _texture = value;
+                TextureString = _texture.Name;
+            }
+        }
 
         public bool Visible { get; set; }
 

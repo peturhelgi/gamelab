@@ -1,4 +1,8 @@
-﻿using EditorLogic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.IsolatedStorage;
+using EditorLogic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic;
@@ -32,12 +36,31 @@ namespace TheGreatEscape
         {
             Content.RootDirectory = "Content";
 
+            _transferLevels();
             _gameManager = new GameManager(Content, GraphicsDevice, _graphics);
             _editorManager = new EditorManager(Content, GraphicsDevice, _graphics);
             _menu = new MenuManager(Content, GraphicsDevice, _graphics, _gameManager, _editorManager, this);
             
             IsMouseVisible = true;
             base.Initialize();
+        }
+
+        //Writes all level files into a write access directory
+        private void _transferLevels()
+        {
+            string levelDir = "Levels";
+            IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication();
+            if (!isf.DirectoryExists(levelDir)) {
+                isf.CreateDirectory(levelDir);
+                string[] files = Directory.GetFiles("Content\\Levels");
+                foreach (String file in files)
+                {
+                    string level = File.ReadAllText(file);
+                    StreamWriter streamWriter = new StreamWriter(isf.CreateFile(levelDir + "/" + System.IO.Path.GetFileName(file)));
+                    streamWriter.Write(level);
+                    streamWriter.Dispose();
+                }
+            }
         }
 
         protected override void LoadContent()

@@ -7,17 +7,19 @@ using TheGreatEscape.GameLogic.GameObjects;
 using static TheGreatEscape.GameLogic.GameState;
 using System;
 using TheGreatEscape.GameLogic.Util;
+using Project.LeveManager;
 
 namespace TheGreatEscape.LevelManager
 {
     class MapLoader
     {
         public ContentManager ContentManager;
-
+        private JsonUtil<Level> _loader;
 
         public MapLoader(ContentManager contentManager)
         {
             ContentManager = contentManager;
+            _loader = new JsonUtil<Level>();
         }
 
         public GameState InitMap(string levelName)
@@ -25,10 +27,12 @@ namespace TheGreatEscape.LevelManager
             GameObjectFactory factory = new GameObjectFactory();
             GameState gameState = new GameState();
 
-            string text = ContentManager.Load<string>(levelName);
-            Level level = JsonConvert.DeserializeObject<Level>(text);
+            //string text = ContentManager.Load<string>(levelName);
+            //Level level = JsonConvert.DeserializeObject<Level>(text);
+            Level level = _loader.Load(levelName);
             gameState.background = level.background;
             gameState.resources = level.resources;
+            gameState.levelname = level.levelname;
 
             foreach (Obj obj in level.objects)
             {
@@ -114,6 +118,8 @@ namespace TheGreatEscape.LevelManager
                 miner.SetMotionSprite(motionSprite, MotionType.jump);
                 motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/pickaxe");
                 miner.SetMotionSprite(motionSprite, MotionType.pickaxe);
+                motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/climb");
+                miner.SetMotionSprite(motionSprite, MotionType.climb);
 
             }
         }
