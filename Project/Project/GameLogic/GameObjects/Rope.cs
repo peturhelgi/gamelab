@@ -29,7 +29,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
             foreach (GameObject c in collisions)
             {
                 (c as RockHook).HangOrTakeRope(gamestate);
+                CanUseAgain = !((c as RockHook).isRope);
             }
+
         }
         public override Texture2D GetTexture() 
         {

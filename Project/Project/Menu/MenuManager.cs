@@ -367,7 +367,7 @@ namespace TheGreatEscape.Menu
             Sound1 = _content.Load<Song>("soft_song");
             Sound2 = _content.Load<Song>("suspense_song");
             MediaPlayer.IsRepeating = true;
-            //MediaPlayer.Play(MenuManager.Sound1);
+            MediaPlayer.Play(MenuManager.Sound1);
 
         }
 
@@ -501,7 +501,8 @@ namespace TheGreatEscape.Menu
 
         public override void Update(GameTime gameTime)
         {
-            if (_manager.ButtonPressed(0, Buttons.Start))
+            if (_manager.ButtonPressed(0, Buttons.Start) 
+                || _manager.CurrKeyboardState.IsKeyDown(Keys.S))
             {
                 _manager.CallAction(MenuManager.Action.ShowPauseMenu, 0);
             }

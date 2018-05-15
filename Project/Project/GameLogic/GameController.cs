@@ -308,7 +308,7 @@ namespace TheGreatEscape.GameLogic
                 GameEngine.HandleInput(player, GameEngine.GameAction.interact, 0);
             }
 
-            if (ButtonPressed(_oldPadStates[player], _newPadStates[player], _buttons[Command.UseTool]))
+            if (ButtonDown(_newPadStates[player], _buttons[Command.UseTool]))
             {
                 GameEngine.HandleInput(player, GameEngine.GameAction.use_tool, 0);
             }

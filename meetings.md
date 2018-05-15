@@ -1,3 +1,10 @@
+### Playtesting feedback
+
+* Give me a second after I respawn
+* Latch onto the rope while climbing, quite hard to stay on it
+* When both miners jump, the camera gets too dizzy
+* Press jump button to get off the rope
+
 
 ### Improvements
 

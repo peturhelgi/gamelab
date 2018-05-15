@@ -71,7 +71,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.Position,
                         entity.SpriteSize)
                     {
-                        Mass = entity.Mass,
+                        // compute the mass of the rock depending on the sprite size 
+                        // and consider the density as being 1/750
+                        Mass = entity.SpriteSize.X * entity.SpriteSize.Y / 750f,
                         TextureString = entity?.TextureString,
                         Handling = GameState.Handling.Solid
                     };

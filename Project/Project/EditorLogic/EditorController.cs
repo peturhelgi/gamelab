@@ -233,11 +233,6 @@ namespace EditorLogic
                 _manager.ObjectPickerOpen = !_manager.ObjectPickerOpen;
             }
 
-            if (KeyPressed(Command.ShowHelp))
-            {
-                //_manager.
-            }
-
             if (KeyPressed(Command.Select))
             {
                 // when closing the ObjectPicker, choose the last selected GameObject
