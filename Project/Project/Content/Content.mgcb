@@ -64,21 +64,6 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/gameFont.spritefont
 
-#begin Levels/level_1.json
-/copy:Levels/level_1.json
-
-#begin Levels/level_2.json
-/copy:Levels/level_2.json
-
-#begin Levels/level_3.json
-/copy:Levels/level_3.json
-
-#begin Levels/level_4.json
-/copy:Levels/level_4.json
-
-#begin Levels/level_5.json
-/copy:Levels/level_5.json
-
 #begin Sprites/Backgrounds/Level1Background.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -859,12 +844,6 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Tools/Rope.png
 
-#begin Levels/level_7.json
-/copy:Levels/level_7.json
-
-#begin Levels/level_6.json
-/copy:Levels/level_6.json
-
 #begin Sprites/ScreenOverlays/EditorController.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -924,4 +903,25 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:suspense_song.mp3
+
+#begin Levels/level_1.json
+/copy:Levels/level_1.json
+
+#begin Levels/level_2.json
+/copy:Levels/level_2.json
+
+#begin Levels/level_3.json
+/copy:Levels/level_3.json
+
+#begin Levels/level_4.json
+/copy:Levels/level_4.json
+
+#begin Levels/level_5.json
+/copy:Levels/level_5.json
+
+#begin Levels/level_6.json
+/copy:Levels/level_6.json
+
+#begin Levels/level_7.json
+/copy:Levels/level_7.json
 
