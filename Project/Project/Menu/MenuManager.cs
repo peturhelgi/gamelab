@@ -203,10 +203,11 @@ namespace TheGreatEscape.Menu
 
             _editorMenu = new PopOverMenu("Menu",
                 _content.Load<Texture2D>("Sprites/Backgrounds/Level2Background"),
-                selector, true, _graphicsDevice, this);
+                selector, false, _graphicsDevice, this);
 
             size = 100;
             _editorMenu.AddSelection("Continue", Action.Back, "", new Rectangle(120, 100 + 120*0, 35 * size, 100));
+            _editorMenu.AddSelection("Main Menu", Action.ShowMainMenu, "", new Rectangle(120, 100 + 120*1, 35 * size, 100));
 
             _loading = new LoadingScreen(_graphicsDevice, this);
 
