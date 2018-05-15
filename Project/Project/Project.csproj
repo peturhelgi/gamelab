@@ -135,6 +135,7 @@
     <Compile Include="GameLogic\Renderer\GameRenderer.cs" />
     <Compile Include="GreatEscape.cs" />
     <Compile Include="GameLogic\GameManager.cs" />
+    <Compile Include="LevelManager\JsonUtil.cs" />
     <Compile Include="Libs\Simplex.cs" />
     <Compile Include="Libs\SingleRandom.cs" />
     <Compile Include="Menu\MenuManager.cs" />
@@ -156,16 +157,6 @@
     </MonoGameContentReference>
     <Content Include="Content\Fonts\CHAMPGNE.TTF" />
     <None Include="Content\Fonts\Orbitron.spritefont" />
-    <None Include="Content\Levels\level_1.json" />
-    <None Include="Content\Levels\level_2.json" />
-    <None Include="Content\Levels\level_3.json" />
-    <None Include="Content\Levels\level_4.json" />
-    <None Include="Content\Levels\level_5.json" />
-    <None Include="Content\Levels\level_6.json" />
-    <None Include="Content\Levels\level_7.json" />
-    <None Include="Content\Levels\level_8.json" />
-    <None Include="Content\Levels\level_9.json" />
-    <None Include="Content\Levels\zdummy.json" />
     <None Include="Content\Sprites\VisualAssets_PS\Background.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Ground.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Miner.psd" />
@@ -206,10 +197,16 @@
     <Content Include="Content\Sprites\Backgrounds\Level1Background.png" />
     <Content Include="Content\Sprites\Backgrounds\Level2Background.png" />
     <Content Include="Content\Sprites\Backgrounds\Level3Background.png" />
+    <Content Include="Content\Sprites\Interactables\button_floor.png" />
     <Content Include="Content\Sprites\Interactables\crate.png" />
     <Content Include="Content\Sprites\Interactables\Door.png" />
+    <Content Include="Content\Sprites\Interactables\key.png" />
+    <Content Include="Content\Sprites\Interactables\ladder_long.png" />
+    <Content Include="Content\Sprites\Interactables\ladder_short.png" />
     <Content Include="Content\Sprites\Interactables\lever_left.png" />
     <Content Include="Content\Sprites\Interactables\lever_right.png" />
+    <Content Include="Content\Sprites\Interactables\platform_escalator.png" />
+    <Content Include="Content\Sprites\Interactables\rockandhook.png" />
     <Content Include="Content\Sprites\Menus\GameOver.png" />
     <Content Include="Content\Sprites\Menus\GamePaused.png" />
     <Content Include="Content\Sprites\Menus\LevelComplete.png" />
@@ -243,7 +240,9 @@
       <Version>11.0.2</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Content\Levels\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

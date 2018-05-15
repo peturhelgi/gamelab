@@ -629,7 +629,7 @@ namespace TheGreatEscape.GameLogic
                 {
                     (obj as Miner).Climbing = true;
                     (obj as Miner).Falling = false;
-                    obj.Speed = Vector2.Zero;
+                    obj.Speed = direction;
                 }
 
                 (obj as Miner).xVel = direction.X;

@@ -1,6 +1,25 @@
-# Meetings
 
-Next meetings: Friday, 08.05.2018, 12:00 - Tuesday, 11.05.2018 after class
+### Improvements
+
+Make the menu less hardcoded.
+
+### Tasks
+
+MAIN TASK: Find people to playtest our game and record results. 
+
+[] Nicolas: Add saving to the level editor 
+
+[] Simon: Add sounds to the menu and the game
+
+[] Andreea: Add platforms to the level editor
+
+[] Andreea: Fix doors in level editor (when copy a door, make a new instance)
+
+[] Petur: Add parameter tweaking to the level editor (via a nice menu)
+
+[] Petur: Connect doors between levels (graph thingy)
+ 
+[] Bjarni: Make sprites look better in the Picker Wheel
 
 ## 04.05.2018
 ### Progress report:

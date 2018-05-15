@@ -289,8 +289,7 @@ namespace TheGreatEscape.GameLogic
             if (Math.Abs(_newPadStates[player].ThumbSticks.Left.X) > 0.5f)
             {
                 GameEngine.HandleInput(player,
-                    ButtonUp(_newPadStates[player], _buttons[Command.Left])
-                    && ButtonUp(_newPadStates[player], _buttons[Command.Sprint])
+                    ButtonUp(_newPadStates[player], _buttons[Command.Sprint])
                     ? GameEngine.GameAction.walk
                     : GameEngine.GameAction.run, _direction);
             }

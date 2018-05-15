@@ -17,7 +17,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
         walk,
         run,
         jump,
-        pickaxe
+        pickaxe,
+        climb
     };
 
 
@@ -122,6 +123,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     case MotionType.pickaxe:
                         mss = new MotionSpriteSheet(12, 64, m, new Vector2(2.3f, 1));
                         break;
+                    case MotionType.climb:
+                        mss = new MotionSpriteSheet(12, 64, m, new Vector2(1, 1.25f));
+                        break;
                     default:
                         mss = null;
                         break;
@@ -141,6 +145,16 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
         private MotionType GetCurrentState()
         {
+            if (this.Climbing)
+            {
+                if (this.Speed.Y == 0)
+                    CurrMotion.IsActive = false;
+                else
+                    CurrMotion.IsActive = true;
+                return MotionType.climb;
+            }
+
+            CurrMotion.IsActive = true;
 
             if (this.xVel > 0)
             {
