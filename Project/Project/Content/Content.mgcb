@@ -901,3 +901,27 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Grounds/ground_low_2.png
 
+#begin Sprites/Rocks/rock_6.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Rocks/rock_6.png
+
+#begin soft_song.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:soft_song.mp3
+
+#begin suspense_song.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:suspense_song.mp3
+
