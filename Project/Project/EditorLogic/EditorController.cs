@@ -44,7 +44,8 @@ namespace EditorLogic
             ToggleMode,
             TogglePicker,
             ZoomIn,
-            ZoomOut
+            ZoomOut,
+            ShowHelp
         }
 
 
@@ -64,6 +65,7 @@ namespace EditorLogic
             _buttons[Command.Deselect] = new List<Buttons> { Buttons.LeftTrigger };
             _buttons[Command.NextItem] = new List<Buttons> { Buttons.RightShoulder };
             _buttons[Command.PreviousItem] = new List<Buttons> { Buttons.LeftShoulder };
+            _buttons[Command.ShowHelp] = new List<Buttons> { Buttons.Start };
 
             _buttons[Command.Exit] = new List<Buttons> { Buttons.Back };
 
@@ -229,6 +231,11 @@ namespace EditorLogic
             if (KeyPressed(Command.TogglePicker))
             {
                 _manager.ObjectPickerOpen = !_manager.ObjectPickerOpen;
+            }
+
+            if (KeyPressed(Command.ShowHelp))
+            {
+                //_manager.
             }
 
             if (KeyPressed(Command.Select))
