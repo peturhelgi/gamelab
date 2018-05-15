@@ -309,6 +309,7 @@ namespace TheGreatEscape.Menu
             MenuFont = _content.Load<SpriteFont>("Fonts/Orbitron");
             Sound1 = _content.Load<Song>("soft_song");
             Sound2 = _content.Load<Song>("suspense_song");
+            MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(MenuManager.Sound1);
 
         }
