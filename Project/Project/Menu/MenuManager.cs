@@ -208,21 +208,8 @@ namespace TheGreatEscape.Menu
                 _content.Load<Texture2D>("Sprites/Backgrounds/Level2Background"),
                 selector, true, _graphicsDevice, this);
 
-            size = 100;
-            _editorMenu.AddSelection("Continue", Action.Back, "", new Rectangle(120, 100 + 120 * 0, 35 * size, 100));
-            _editorMenu.AddSelection("Main Menu", Action.ShowMainMenu, "", new Rectangle(120, 100 + 120 * 1, 35 * size, 100));
-            _editorMenu.AddSelection("Main Menu 1", Action.ShowMainMenu, "", new Rectangle(120, 100 + 120 * 1, 35 * size, 100));
-            _editorMenu.AddSelection("Main Menu 2", Action.ShowMainMenu, "", new Rectangle(120, 100 + 120 * 1, 35 * size, 100));
-            _editorMenu.AddSelection("Main Menu 3", Action.ShowMainMenu, "", new Rectangle(120, 100 + 120 * 1, 35 * size, 100));
-            _editorMenu.AddSelection("Main Menu 4", Action.ShowMainMenu, "", new Rectangle(120, 100 + 120 * 1, 35 * size, 100));
-            _editorMenu.AddSelection("Main Menu 5", Action.ShowMainMenu, "", new Rectangle(120, 100 + 120 * 1, 35 * size, 100));
-            _editorMenu.AddSelection("Main Menu 6", Action.ShowMainMenu, "", new Rectangle(120, 100 + 120 * 1, 35 * size, 100));
-            _editorMenu.AddSelection("Main Menu 7", Action.ShowMainMenu, "", new Rectangle(120, 100 + 120 * 1, 35 * size, 100));
-            _editorMenu.AddSelection("Main Menu 8", Action.ShowMainMenu, "", new Rectangle(120, 100 + 120 * 1, 35 * size, 100));
-            _editorMenu.AddSelection("Main Menu 9", Action.ShowMainMenu, "", new Rectangle(120, 100 + 120 * 1, 35 * size, 100));
-            _editorMenu.AddSelection("Main Menu 10", Action.ShowMainMenu, "", new Rectangle(120, 100 + 120 * 1, 35 * size, 100));
-            _editorMenu.AddSelection("Main Menu 11", Action.ShowMainMenu, "", new Rectangle(120, 100 + 120 * 1, 35 * size, 100));
-            _editorMenu.AddSelection("Main Menu 12", Action.ShowMainMenu, "", new Rectangle(120, 100 + 120 * 1, 35 * size, 100));
+            _editorMenu.AddSelection("Continue", Action.Back, "", new Rectangle(0,0,0,0));
+            _editorMenu.AddSelection("Main Menu", Action.ShowMainMenu, "", new Rectangle(0,0,0,0));
 
             _loading = new LoadingScreen(_graphicsDevice, this);
 
