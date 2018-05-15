@@ -221,6 +221,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public bool UseTool(GameState gs)
         {
             this.Interacting = true;
+            // patch for the pickaxe so the useTool button can be continuously pressed
+            //if (CurrMotion.CurrentFrame.X == 0)
             Tool.Use(this, gs);
             return true;
         }

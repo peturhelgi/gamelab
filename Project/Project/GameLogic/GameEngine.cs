@@ -103,7 +103,8 @@ namespace TheGreatEscape.GameLogic
                     }
                     break;
                 case GameAction.use_tool:
-                    UseTool(miner);
+                    if (miner.Tool.CanUseAgain)
+                        UseTool(miner);
                     break;
                 case (GameAction.interact):
                     TryToInteract(miner);
