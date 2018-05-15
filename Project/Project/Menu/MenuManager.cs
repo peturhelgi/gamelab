@@ -380,7 +380,7 @@ namespace TheGreatEscape.Menu
             Sound1 = _content.Load<Song>("soft_song");
             Sound2 = _content.Load<Song>("suspense_song");
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(MenuManager.Sound1);
+            //MediaPlayer.Play(MenuManager.Sound1);
 
         }
 

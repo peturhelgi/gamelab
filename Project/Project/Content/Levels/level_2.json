@@ -1,4 +1,4 @@
-{
+f{
   "levelnr" : 0,
   "levelname" : "sample",
   "prevlvl" : -1,
@@ -41,7 +41,7 @@
     },
     {
       "dim": {
-        "x": 51,
+        "x": 61.5,
         "y": 185
       },
       "pos": {
