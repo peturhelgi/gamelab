@@ -12,7 +12,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public int PickaxeStrength;
         public Pickaxe() {
 
-            PickaxeStrength = 5;
+            PickaxeStrength = 1;
         }
         private CollisionDetector CollisionDetector = new CollisionDetector();
 

@@ -5,7 +5,17 @@ namespace TheGreatEscape.GameLogic.GameObjects
 {
     class Rock : GameObject
     {
-       public Rock(Vector2 position, Vector2 spriteSize)
+        private Vector2 _spriteSize;
+        public override Vector2 SpriteSize
+        {
+            get { return _spriteSize; }
+            set
+            {
+                _spriteSize = value;
+                Mass = _spriteSize.X * _spriteSize.Y / 750;
+            }
+        }
+        public Rock(Vector2 position, Vector2 spriteSize)
         : base(position, spriteSize)
         {
             {
