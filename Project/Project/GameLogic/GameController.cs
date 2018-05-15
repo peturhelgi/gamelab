@@ -45,11 +45,11 @@ namespace TheGreatEscape.GameLogic
             _buttons[Command.Pause] = new List<Buttons> { Buttons.Start };
 
             _buttons[Command.Jump] = new List<Buttons> { Buttons.A };
-            _buttons[Command.Interact] = new List<Buttons> { Buttons.X, Buttons.B};
+            _buttons[Command.Interact] = new List<Buttons> { Buttons.X };
 
             _buttons[Command.ChangeTool] = new List<Buttons> { Buttons.RightShoulder };
-            _buttons[Command.Sprint] = new List<Buttons> { Buttons.LeftTrigger };
-            _buttons[Command.UseTool] = new List<Buttons> { Buttons.RightTrigger };
+            _buttons[Command.Sprint] = new List<Buttons> { Buttons.RightTrigger };
+            _buttons[Command.UseTool] = new List<Buttons> { Buttons.B };
 
             _maxNumPlayers = 2;
 
