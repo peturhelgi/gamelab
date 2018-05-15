@@ -4,9 +4,11 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using EditorLogic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using TheGreatEscape.GameLogic;
 
 namespace TheGreatEscape.Menu
@@ -51,6 +53,8 @@ namespace TheGreatEscape.Menu
         List<String> _allLevels;
         GreatEscape _theGame;
         List<Screen> screenStack;
+        public static Song Sound1, Sound2;
+        //public static SoundEffectInstance Song1, Song2;
 
         public KeyboardState OldKeyboardState, CurrKeyboardState;
         public GamePadState OldPlayerOneState, CurrPlayerOneState;
@@ -303,6 +307,9 @@ namespace TheGreatEscape.Menu
         public void LoadContent()
         {
             MenuFont = _content.Load<SpriteFont>("Fonts/Orbitron");
+            Sound1 = _content.Load<Song>("soft_song");
+            Sound2 = _content.Load<Song>("suspense_song");
+            MediaPlayer.Play(MenuManager.Sound1);
 
         }
 
@@ -383,6 +390,9 @@ namespace TheGreatEscape.Menu
         {
             _gameManager.UnloadContent();
             _gameManager.LoadLevel(level);
+            MediaPlayer.Stop();
+            MediaPlayer.Play(MenuManager.Sound2);
+
         }
 
         public override void Draw(GameTime gameTime, int width, int height)

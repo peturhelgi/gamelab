@@ -865,3 +865,15 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Miner2/climb.png
 
+#begin soft_song.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:soft_song.mp3
+
+#begin suspense_song.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:suspense_song.mp3
+
