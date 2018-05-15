@@ -52,7 +52,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     {
                         Speed = entity.Velocity,
                         Mass = entity.Mass,
-                        TextureString = entity?.Texture,
+                        TextureString = entity?.TextureString,
                         Handling = GameState.Handling.Actor,
                         Tool = _toolFactory.Create(new Obj { Type = entity.Tool })
                     };
@@ -62,7 +62,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         entity.Position,
                         entity.SpriteSize)
                     {
-                        TextureString = entity?.Texture,
+                        TextureString = entity?.TextureString,
                         Handling = GameState.Handling.Solid
                     };
                     break;
@@ -74,7 +74,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         // compute the mass of the rock depending on the sprite size 
                         // and consider the density as being 1/750
                         Mass = entity.SpriteSize.X * entity.SpriteSize.Y / 750f,
-                        TextureString = entity?.Texture,
+                        TextureString = entity?.TextureString,
                         Handling = GameState.Handling.Solid
                     };
                     break;
@@ -82,7 +82,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     instance = new Door(
                         entity.Position,
                         entity.SpriteSize,
-                        entity.Texture)
+                        entity.TextureString)
                     {
                         Handling = GameState.Handling.Interact,
                         RequiresKey = entity.Requirement,
@@ -102,7 +102,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                             Type = "secondary",
                             Position = pos,
                             SpriteSize = size,
-                            Texture = "Sprites/Misc/red_light"
+                            TextureString = "Sprites/Misc/red_light"
                         }) as PlatformBackground;
 
                     (instance as Door).UnlockedLight = Create(
@@ -111,7 +111,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                             Type = "secondary",
                             Position = pos,
                             SpriteSize = size,
-                            Texture = "Sprites/Misc/green_light"
+                            TextureString = "Sprites/Misc/green_light"
                         }) as PlatformBackground;
                     if (entity.Requirement)
                     {
@@ -125,7 +125,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     instance = new Crate(
                         entity.Position,
                         entity.SpriteSize,
-                        entity.Texture)
+                        entity.TextureString)
                     {
                         Handling = GameState.Handling.Solid
                     };
@@ -134,7 +134,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     instance = new Ladder(
                         entity.Position,
                         entity.SpriteSize,
-                        entity.Texture)
+                        entity.TextureString)
                     {
                         Handling = GameState.Handling.None
                     };
@@ -143,7 +143,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     instance = new Platform(
                         entity.Position,
                         entity.SpriteSize,
-                        entity.Texture,
+                        entity.TextureString,
                         entity.Displacement,
                         entity.Direction,
                         entity.ActivationKey,
@@ -156,7 +156,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     instance = new Lever(
                         entity.Position,
                         entity.SpriteSize,
-                        entity.Texture,
+                        entity.TextureString,
                         entity.ActivationKey)
                     {
                         Handling = GameState.Handling.None,
@@ -168,7 +168,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     instance = new Button(
                         entity.Position,
                         entity.SpriteSize,
-                        entity.Texture,
+                        entity.TextureString,
                         entity.ActivationKey)
                     {
                         Handling = GameState.Handling.None
@@ -179,7 +179,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     instance = new RockHook(
                         entity.Position,
                         entity.SpriteSize,
-                        entity.Texture,
+                        entity.TextureString,
                         entity.SecondTexture,
                         entity.RopeLength)
                     {
@@ -190,14 +190,14 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     instance = new PlatformBackground(
                         entity.Position,
                         entity.SpriteSize,
-                        entity.Texture);
+                        entity.TextureString);
                     break;
                 case "key":
                     instance = new Key(
                         entity.Position,
                         entity.SpriteSize)
                     {
-                        TextureString = entity.Texture,
+                        TextureString = entity.TextureString,
                         Handling = GameState.Handling.Collect,
                         Id = entity.Id
                     };

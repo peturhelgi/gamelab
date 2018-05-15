@@ -125,8 +125,11 @@ namespace EditorLogic
                         (gameObject as Door).UnlockedLight.Active = !(gameObject as Door).RequiresKey;
                     }
                     if (objType == "rockandhook")
+                    {
                         (gameObject as RockHook).Rope.Texture = GameObjectTextures["Misc"]["Rope"];
-                    gameObject.Texture = gameObj.Value;
+                        (gameObject as RockHook).Rope.SecondTexture = GameObjectTextures["Misc"]["Rope_transparent"];
+                    }
+                        gameObject.Texture = gameObj.Value;
 
                     //TODO: remove this ugly hardcoding
                     if (objType != "lever" && objType != "button")
@@ -237,7 +240,8 @@ namespace EditorLogic
             GameObject Rope = new HangingRope(CursorPosition + new Vector2(120.0f / 282.0f * spriteSize.X, 153.0f / 168.0f * spriteSize.Y),
                     new Vector2(44, 200), "Sprites/Misc/Rope")
             {
-                Texture = GameObjectTextures["Misc"]["Rope"]
+                Texture = GameObjectTextures["Misc"]["Rope"],
+                SecondTexture = GameObjectTextures["Misc"]["Rope_transparent"]
             };
             AuxiliaryObject = Rope;
         }

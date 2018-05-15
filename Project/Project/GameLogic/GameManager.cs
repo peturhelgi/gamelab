@@ -18,7 +18,7 @@ namespace TheGreatEscape.GameLogic {
         GameRenderer _renderer;
         public static bool RenderDark;
         public GameEngine GameEngine { get; private set; }
-
+        
         public GameManager(ContentManager content, GraphicsDevice graphicsDevice, 
                 GraphicsDeviceManager graphics) {
             _content = content;

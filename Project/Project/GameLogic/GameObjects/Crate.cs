@@ -30,7 +30,7 @@ namespace TheGreatEscape.GameLogic.GameObjects {
             obj.Velocity = Speed;
             obj.Mass = (float)Mass;
             obj.Type = "crate";
-            obj.Texture = TextureString;
+            obj.TextureString = TextureString;
             obj.Displacement = 0;
             obj.Direction = "-1";
             obj.ActivationKey = -1;

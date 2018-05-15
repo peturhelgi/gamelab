@@ -265,6 +265,7 @@ namespace TheGreatEscape.GameLogic
             resources[newTool.Key]--;
             if (!ForRemoving)
                 resources[oldTool.Key]++;
+
             miner.Tool = (new ToolFactory()).Create(new Obj { Type = newTool.Key});
             return true;
         }
