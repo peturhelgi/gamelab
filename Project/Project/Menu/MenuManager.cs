@@ -172,6 +172,7 @@ namespace TheGreatEscape.Menu
             _mainMenu.AddSelection("exit game", Action.ExitGame, null, new Rectangle(152, 636, 185, 94));
 
             _gameHelps = new PopOverMenu("Controls", _content.Load<Texture2D>("Sprites/ScreenOverlays/PlayControls"), selector, false, _graphicsDevice, this);
+            _editorHelp = new PopOverMenu("Controls", _content.Load<Texture2D>("Sprites/ScreenOverlays/EditorController"), selector, false, _graphicsDevice, this);
             _levelSelector = new SelectionMenu(
                 "Select a Level", _content.Load<Texture2D>("Sprites/Menus/LevelSelector"), selector, true, _graphicsDevice, this);
 
@@ -203,11 +204,12 @@ namespace TheGreatEscape.Menu
 
             _editorMenu = new PopOverMenu("Menu",
                 _content.Load<Texture2D>("Sprites/Backgrounds/Level2Background"),
-                selector, false, _graphicsDevice, this);
+                selector, true, _graphicsDevice, this);
 
             size = 100;
             _editorMenu.AddSelection("Continue", Action.Back, "", new Rectangle(120, 100 + 120*0, 35 * size, 100));
             _editorMenu.AddSelection("Main Menu", Action.ShowMainMenu, "", new Rectangle(120, 100 + 120*1, 35 * size, 100));
+            _editorMenu.AddSelection("Controls", Action.ShowHelp, "", new Rectangle(120, 100 + 120*2, 35 * size, 100));
 
             _loading = new LoadingScreen(_graphicsDevice, this);
 
@@ -306,8 +308,6 @@ namespace TheGreatEscape.Menu
 
                     }
 
-
-
                     _currentScreen = _popOver;
                     screenStack.Add(_currentScreen);
                     break;
@@ -337,13 +337,22 @@ namespace TheGreatEscape.Menu
                     _theGame.Exit();
                     break;
                 case Action.ShowHelp:
-                    if(_currentScreen == _gameHelps)
+                    if(_currentScreen == _gameHelps
+                        || _currentScreen == _editorHelp)
                     {
                         CallAction(Action.Back, 0);
                         break;
                     }
                     _prevScreen = _currentScreen;
+                    if(_prevScreen == _editorMenu)
+                    {
+                        _currentScreen = _editorHelp;
+                    }
+                    else if(_prevScreen == _game)
+                    {
                     _currentScreen = _gameHelps;
+
+                    }
 
                     screenStack.Add(_currentScreen);
                     break;
@@ -708,7 +717,6 @@ namespace TheGreatEscape.Menu
                     }
                 }
 
-                //sel = _selections[_currentPosition];
                 if(sel == null)
                 {
                     _spriteBatch.End();
