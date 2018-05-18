@@ -165,6 +165,10 @@ namespace TheGreatEscape.GameLogic
             }
         }
 
+        public void AddTool(ExistingTools et, Tool tool)
+        {
+            Tools.Add(et, tool);
+        }
         public void ChangeHandling(GameObject obj, Handling before,
             Handling after)
         {

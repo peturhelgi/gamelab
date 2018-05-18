@@ -160,13 +160,10 @@
     <None Include="Content\Levels\level_1.json" />
     <None Include="Content\Levels\level_2.json" />
     <None Include="Content\Levels\level_3.json" />
-    <None Include="Content\Levels\level_3_wide_level.json" />
     <None Include="Content\Levels\level_4.json" />
     <None Include="Content\Levels\level_5.json" />
     <None Include="Content\Levels\level_6.json" />
     <None Include="Content\Levels\level_7.json" />
-    <None Include="Content\Levels\level_8.json" />
-    <None Include="Content\Levels\level_9.json" />
     <None Include="Content\Sprites\VisualAssets_PS\Background.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Ground.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Miner.psd" />
