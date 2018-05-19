@@ -53,13 +53,22 @@ namespace TheGreatEscape.LevelManager
             return gameState;
         }
 
+
+        public void UnloadContent()
+        {
+            ContentManager.Unload();
+        }
+
         public void LoadMapContent(GameState gameState)
         {
-            Texture2D background = ContentManager.Load<Texture2D>(gameState.background);
+            Texture2D background = ContentManager.Load<Texture2D>(
+                gameState.background);
             gameState.SetBackground(background);
 
             // TODO possibly add a hashed Map to only load every Texture once
-            foreach (GameObject obj in gameState.GetAll())
+            List<GameObject> allObjects = gameState.GetAll();            
+
+            foreach (GameObject obj in allObjects)
             {
                 if (obj?.TextureString == null || obj.TextureString == "")
                 {
@@ -67,17 +76,22 @@ namespace TheGreatEscape.LevelManager
                 }
                 obj.Texture = ContentManager.Load<Texture2D>(obj.TextureString);
                 if (obj is Lever)
-                    (obj as Lever).SecondTexture = ContentManager.Load<Texture2D>((obj as Lever).RightleverTexture);
+                    (obj as Lever).SecondTexture = ContentManager
+                        .Load<Texture2D>((obj as Lever).RightleverTexture);
                 if (obj is RockHook)
                 {
-                    (obj as RockHook).Rope.Texture = ContentManager.Load<Texture2D>((obj as RockHook).Rope.TextureString);
-                    (obj as RockHook).Rope.SecondTexture = ContentManager.Load<Texture2D>((obj as RockHook).Rope.SecondTextureString);
+                    (obj as RockHook).Rope.Texture = ContentManager
+                        .Load<Texture2D>((obj as RockHook).Rope.TextureString);
+                    (obj as RockHook).Rope.SecondTexture = ContentManager
+                        .Load<Texture2D>(
+                        (obj as RockHook).Rope.SecondTextureString);
                 }
             }
 
             LoadMotionSheets(gameState);
             LoadTools(gameState);
-            gameState.GameFont = ContentManager.Load<SpriteFont>("Fonts/gameFont");
+            gameState.GameFont = ContentManager.Load<SpriteFont>(
+                "Fonts/gameFont");
         }
 
         private void LoadTools(GameState gameState) {

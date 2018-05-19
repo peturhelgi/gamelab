@@ -81,12 +81,12 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 case "door":
                     instance = new Door(
                         entity.Position,
-                        entity.SpriteSize,
-                        entity.TextureString)
+                        entity.SpriteSize)
                     {
                         Handling = GameState.Handling.Interact,
                         RequiresKey = entity.Requirement,
                         KeyId = entity.Id,
+                        TextureString = entity.TextureString,
                         Id = currentDoor++
                     };
                     

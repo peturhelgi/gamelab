@@ -24,18 +24,11 @@ namespace TheGreatEscape.GameLogic.GameObjects
         {
 
             TextureString = textureString;
-            Position = position;
-            SpriteSize = spriteSize;
-            Falling = false;
-
-            Speed = Vector2.Zero;
-            Mass = 10;
-            Visible = true;
-            LastUpdated = new TimeSpan();
-            Moveable = false;
-            Activate = false;
             Displacement = displacement;
             ActivationId = actId;
+            Speed = Vector2.Zero;
+
+            Initialize();
 
             if (dir is null)
             {
@@ -66,8 +59,18 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     secondTextureString)
                 { Active = true };
             }
+        }
 
 
+        public override void Initialize()
+        {
+            base.Initialize();
+            Falling = false;
+            Mass = 10;
+            Visible = true;
+            LastUpdated = new TimeSpan();
+            Moveable = false;
+            Activate = false;
         }
 
         public override AxisAllignedBoundingBox BBox

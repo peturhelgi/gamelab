@@ -15,20 +15,22 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public Button(Vector2 position, Vector2 spriteSize, string textureString, int actId)
             : base(position, spriteSize)
         {
-
             TextureString = textureString;
-            Position = position;
-            SpriteSize = spriteSize;
-            Falling = false;
-
+            ActivationId = actId;
             Speed = Vector2.Zero;
+            Initialize();
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            Falling = false;
             Mass = 10;
+
             Visible = true;
             LastUpdated = new TimeSpan();
             Moveable = false;
             ON = false;
-            ActivationId = actId;
-
         }
 
         public void Interact(List<Platform> platforms)

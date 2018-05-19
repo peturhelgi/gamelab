@@ -12,6 +12,7 @@ namespace TheGreatEscape.GameLogic
 
         public SpriteFont GameFont;
 
+        public List<GameObject> Backup;
         public List<Miner> Actors;
         public List<GameObject> Collectibles;
         public List<GameObject> Destroyables;
@@ -19,7 +20,7 @@ namespace TheGreatEscape.GameLogic
         public List<GameObject> NonSolids;
         public List<GameObject> Solids;
         public Dictionary<ExistingTools, Tool> Tools;
-
+        public int Lives { private set; get; }
         /// <summary>
         /// The state of the current game.
         /// </summary>
@@ -28,7 +29,8 @@ namespace TheGreatEscape.GameLogic
             Completed,
             Paused,
             Running,
-            GameOver
+            GameOver,
+            Reset
         }
 
         /// <summary>
@@ -55,6 +57,7 @@ namespace TheGreatEscape.GameLogic
 
         public GameState()
         {
+            Backup = new List<GameObject>();
             Actors = new List<Miner>();
             Collectibles = new List<GameObject>();
             Destroyables = new List<GameObject>();
@@ -67,8 +70,33 @@ namespace TheGreatEscape.GameLogic
             Completed = false;
             OutOfBoundsBottom = float.MinValue;
             Mode = State.Running;
+
+            Lives = 5;
         }
 
+        public void Respawn()
+        {
+            var allObjects = GetAll();
+            //allObjects.Reverse();
+            foreach (var obj in allObjects)
+            {
+                if(!(obj is Miner))
+                {
+                    Remove(obj, obj.Handling, true);
+                }
+            }
+            foreach(var obj in Backup)
+            {
+                obj.Initialize();
+                obj.Enable();
+                if(obj is Miner)
+                {
+                    continue;
+                }
+                Add(obj);
+            }
+            Mode = State.Running;
+        }
 
         public List<GameObject> GetAll()
         {
@@ -81,30 +109,39 @@ namespace TheGreatEscape.GameLogic
                 .ToList();
         }
 
-        public void Remove(GameObject obj, Handling handling = Handling.Empty)
+        public void Remove(GameObject obj, Handling handling = Handling.Empty,
+            bool disable = false)
         {
-            if(obj == null)
+            if (obj == null)
             {
                 return;
             }
 
-            if(handling == Handling.Empty)
+            if (handling == Handling.Empty)
             {
                 handling = obj.Handling;
             }
+            bool moveToBackup = !(obj is Miner) && disable;
             obj.Handling = handling;
-            switch(handling)
+            switch (handling)
             {
                 case Handling.Actor:
-                    if(obj is Miner)
+                    if (obj is Miner)
                     {
-                        Remove((obj as Miner).HeldObj);
+                        var heldObj = (obj as Miner).HeldObj;
+                        if (heldObj != null)
+                        {
+                            ChangeHandling(heldObj, heldObj.Handling, Handling.Solid);
+                        }
+                        Remove(heldObj);
                         (obj as Miner).HeldObj = null;
                         (obj as Miner).Holding = false;
 
+                        --Lives;
                         ResetMinersPosition();
-                        if (ShouldRemoveMinerFromScreen(obj as Miner))
+                        if (Lives < Actors.Count(m => m.Active))
                             obj.Disable();
+                        Respawn();
                     }
                     break;
                 case Handling.Solid:
@@ -118,40 +155,47 @@ namespace TheGreatEscape.GameLogic
                     break;
                 case Handling.Destroy:
                     Destroyables.Remove(obj);
+                    moveToBackup = true;
                     break;
                 case Handling.Collect:
                     Collectibles.Remove(obj);
+                    moveToBackup = true;
                     break;
+            }
+            if(moveToBackup)
+            {
+                Backup.Add(obj);
+                obj.Disable();
             }
         }
         public void Add(GameObject obj, Handling handling = Handling.Empty)
         {
-            if(obj == null)
+            if (obj == null)
             {
                 return;
             }
-            if(obj.BBox.Max.Y > OutOfBoundsBottom)
+            if (obj.BBox.Max.Y > OutOfBoundsBottom)
             {
                 OutOfBoundsBottom = obj.BBox.Max.Y;
             }
-            if(handling == Handling.Empty)
+            if (handling == Handling.Empty)
             {
                 handling = obj.Handling;
             }
             obj.Handling = handling;
-            switch(handling)
+            switch (handling)
             {
                 case Handling.Actor:
-                    if(obj is Miner)
+                    if (obj is Miner)
                     {
                         Actors.Add(obj as Miner);
                     }
                     break;
                 case Handling.Solid:
-                    if(!Solids.Contains(obj)) Solids.Add(obj);
+                    if (!Solids.Contains(obj)) Solids.Add(obj);
                     break;
                 case Handling.None:
-                    if(!NonSolids.Contains(obj)) NonSolids.Add(obj);
+                    if (!NonSolids.Contains(obj)) NonSolids.Add(obj);
                     break;
                 case Handling.Interact:
                     Interactables.Add(obj);
@@ -168,9 +212,9 @@ namespace TheGreatEscape.GameLogic
         public void ChangeHandling(GameObject obj, Handling before,
             Handling after)
         {
-            if (GetObjects(before).Contains(obj))
+            if (obj != null && GetObjects(before).Contains(obj))
             {
-                Remove(obj, before);
+                Remove(obj, before, false);
                 Add(obj, after);
             }
         }
@@ -213,21 +257,11 @@ namespace TheGreatEscape.GameLogic
             return objects;
         }
 
-        /// <summary>
-        /// removes a miner from the screen when there are no more available tools to switch to
-        /// </summary>
-        /// <param name="miner"></param>
-        /// <returns>true if there are no more tools available</returns>
-        public bool ShouldRemoveMinerFromScreen(Miner miner)
-        {
-            return !CanChangeTool(miner, true);
-        }
-        
         public void ResetMinersPosition()
         {
             foreach (Miner miner in Actors)
             {
-                miner.ResetPosition();
+                miner.Initialize();
             }
         }
 
@@ -237,7 +271,7 @@ namespace TheGreatEscape.GameLogic
         /// <param name="miner"></param>
         /// <param name="ForRemoving">set to true if the method is called when trying to remove the miner</param>
         /// <returns></returns>
-        public bool CanChangeTool(Miner miner, bool ForRemoving) 
+        public bool CanChangeTool(Miner miner, bool ForRemoving = false)
         {
             int i;
             for (i = 0; i < resources.Count(); ++i)
@@ -262,12 +296,38 @@ namespace TheGreatEscape.GameLogic
             if (newToolIndex == i)
                 return false;
 
-            resources[newTool.Key]--;
-            if (!ForRemoving)
-                resources[oldTool.Key]++;
+            RemoveTool(newTool.Key);
 
-            miner.Tool = (new ToolFactory()).Create(new Obj { Type = newTool.Key});
+            if (!ForRemoving)
+                AddTool(miner.Tool);
+
+            miner.Tool = (new ToolFactory()).Create(new Obj { Type = newTool.Key });
             return true;
+        }
+
+        public bool AddTool(Tool tool)
+        {
+            if (!tool.CanUseAgain)
+            {
+                return false;
+            }
+            ++resources[tool.ToString()];
+            return true;
+        }
+
+        public bool RemoveTool(string tool)
+        {
+            if (resources[tool] <= 0)
+            {
+                return false;
+            }
+            --resources[tool];
+            return true;
+        }
+
+        public bool RemoveTool(Tool tool)
+        {
+            return RemoveTool(tool.ToString());
         }
 
         public void SetBackground(Texture2D background)
@@ -275,7 +335,8 @@ namespace TheGreatEscape.GameLogic
             Background = background;
         }
 
-        public Texture2D GetBackground() {
+        public Texture2D GetBackground()
+        {
             return Background;
         }
 

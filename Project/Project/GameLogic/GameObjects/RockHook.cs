@@ -20,22 +20,29 @@ namespace TheGreatEscape.GameLogic.GameObjects
             {
                 Speed = new Vector2(0);
                 Mass = 10;
-                Visible = true;
-                Moveable = false;
                 TextureString = textureString;
-                isRope = false;
+
 
                 if (ropeLength == 0)
                     ropeLength = 200;
 
                 _ropeLength = ropeLength;
+                Vector2 scale = new Vector2(120.0f / 282.0f, 153.0f / 168.0f);
 
-
-
-                Rope = new HangingRope(position + new Vector2(120.0f / 282.0f * spriteSize.X, 153.0f / 168.0f * spriteSize.Y),
+                Rope = new HangingRope(position + scale * spriteSize,
                     new Vector2(44, ropeLength), secondTextureString)
                 { Active = true };
+                Initialize();
             }
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            Visible = true;
+            Moveable = false;
+            isRope = false;
+            Rope.Initialize();
         }
 
         public void SetRope(HangingRope rope)
@@ -47,7 +54,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         {
             Rope.Position = Position + new Vector2(120.0f / 282.0f * SpriteSize.X, 153.0f / 168.0f * SpriteSize.Y);
         }
-        
+
         public HangingRope GetRope()
         {
             return Rope;
@@ -95,14 +102,20 @@ namespace TheGreatEscape.GameLogic.GameObjects
             : base(position, spriteSize)
         {
             {
-                Speed = new Vector2(0);
+                Speed = Vector2.Zero;
                 Mass = 10;
-                Visible = true;
-                Moveable = false;
                 TextureString = textureString;
                 SecondTextureString = "Sprites/Misc/Rope_transparent";
-                _ropeLength = spriteSize.Y;
+                Initialize();
             }
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            Visible = true;
+            Moveable = false;
+            _ropeLength = SpriteSize.Y;
         }
 
         public void SwapTextures()

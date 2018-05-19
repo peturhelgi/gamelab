@@ -10,11 +10,13 @@ namespace TheGreatEscape.GameLogic.GameObjects
     public interface IGameObject
     {
 
-        AxisAllignedBoundingBox BBox {
+        AxisAllignedBoundingBox BBox
+        {
             get;
         }
 
-        double Mass {
+        double Mass
+        {
             get;
             set;
         }
@@ -25,17 +27,20 @@ namespace TheGreatEscape.GameLogic.GameObjects
             set;
         }
 
-        Vector2 SpriteSize {
+        Vector2 SpriteSize
+        {
             get;
             set;
         }
 
-        Vector2 Speed {
+        Vector2 Speed
+        {
             get;
             set;
         }
 
-        bool Visible {
+        bool Visible
+        {
             get;
             set;
         }
@@ -64,7 +69,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             set;
         }
 
-         int Seed
+        int Seed
         {
             get;
             set;
@@ -88,7 +93,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
         }
     }
 
-    public abstract class GameObject : IGameObject {
+    public abstract class GameObject : IGameObject
+    {
 
         /// <summary>
         /// Describes how the game object should be handled
@@ -100,19 +106,12 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
         public GameObject(Vector2 position, Vector2 spriteSize)
         {
-            Position = position;
-            SpriteSize = spriteSize;
+            InitialPosition = Position = position;
+            InitialSpriteSize = SpriteSize = spriteSize;
             Handling = GameState.Handling.None;
         }
         public bool Falling { get; set; }
         public bool Active { get; set; }
-        public GameObject(Vector2 position, Vector2 spriteSize, string texture)
-        {
-            Position = position;
-            SpriteSize = spriteSize;
-            TextureString = texture;
-            Handling = GameState.Handling.None;
-        }
 
         public void Enable()
         {
@@ -132,17 +131,63 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
         public virtual Vector2 Position { get; set; }
 
-        public virtual Vector2 SpriteSize { get; set; }
+        public Vector2 InitialPosition { get; protected set; }
 
-        public Vector2 Speed { get; set; }
+        public Vector2 InitialSpriteSize { get; protected set; }
+        private Vector2 _speed, _spriteSize;
+        public Vector2 InitialSpeed { get; protected set; }
+
+        public virtual void Initialize()
+        {
+            Position = InitialPosition;
+            Speed = InitialSpeed;
+            SpriteSize = InitialSpriteSize;
+        }
+
+        public virtual Vector2 SpriteSize
+        {
+            get
+            {
+                return _spriteSize;
+            }
+            set
+            {
+                _spriteSize = value;
+                if(InitialSpriteSize == null)
+                {
+                    InitialSpriteSize = _spriteSize;
+                }
+            }
+        }
+
+        public virtual Vector2 Speed
+        {
+            get
+            {
+                return _speed;
+            }
+            set
+            {
+                _speed = value;
+                if (InitialSpeed == null)
+                {
+                    InitialSpeed = _speed;
+                }
+            }
+        }
 
         public double Mass { get; set; }
 
-        public virtual AxisAllignedBoundingBox BBox { get {
+        public virtual AxisAllignedBoundingBox BBox
+        {
+            get
+            {
                 return new AxisAllignedBoundingBox(Position, Position + SpriteSize);
-            } }
+            }
+        }
 
-        public Texture2D Texture {
+        public Texture2D Texture
+        {
             get { return _texture; }
             set
             {
@@ -152,8 +197,6 @@ namespace TheGreatEscape.GameLogic.GameObjects
         }
 
         public bool Visible { get; set; }
-
-        public bool Movable { get; set; }
 
         public string TextureString { get; set; }
 
@@ -168,7 +211,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
         public static GameObject Clone(GameObject source)
         {
-            return (GameObject) source.MemberwiseClone();
+            return (GameObject)source.MemberwiseClone();
         }
 
         public abstract LevelManager.Obj GetObj();

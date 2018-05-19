@@ -11,11 +11,15 @@ namespace TheGreatEscape.GameLogic.GameObjects {
         {
 
             TextureString = textureString;
-            Position = position;
-            SpriteSize = spriteSize;
-            Falling = true;
-
             Speed = Vector2.Zero;
+
+            Initialize();
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            Falling = true;
             Mass = 10;
             Visible = true;
             LastUpdated = new TimeSpan();
