@@ -121,8 +121,6 @@ namespace EditorLogic
                     {
                         (gameObject as Door).LockedLight.Texture = GameObjectTextures["Misc"]["red_light"];
                         (gameObject as Door).UnlockedLight.Texture = GameObjectTextures["Misc"]["green_light"];
-                        (gameObject as Door).LockedLight.Active = (gameObject as Door).RequiresKey;
-                        (gameObject as Door).UnlockedLight.Active = !(gameObject as Door).RequiresKey;
                     }
                     if (objType == "rockandhook")
                         (gameObject as RockHook).Rope.Texture = GameObjectTextures["Misc"]["Rope"];
@@ -189,6 +187,11 @@ namespace EditorLogic
                 foreach (var obj in CurrentObjects)
                 {
                     _engine.GameState.Remove(obj);
+                    if (obj is Door)
+                    {
+                        _engine.GameState.Remove((obj as Door).LockedLight);
+                        _engine.GameState.Remove((obj as Door).UnlockedLight);
+                    }
                 }
             }
             CurrentObjects = null;
@@ -242,6 +245,9 @@ namespace EditorLogic
             AuxiliaryObject = Rope;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void PlaceCurrentObjects()
         {
             if (CurrentObjects != null)

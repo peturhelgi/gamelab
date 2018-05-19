@@ -17,6 +17,7 @@ namespace TheGreatEscape.GameLogic.GameObjects {
         public int Id { get; set; }
         public bool Unlocked { get; private set; }
         public PlatformBackground LockedLight, UnlockedLight;
+
         public Door(Vector2 position, Vector2 spriteSize, string texture,
             object requiresKey = null, object keyId = null, object isExit = null,
             Tuple<int, int> outEdge = null)
@@ -28,8 +29,9 @@ namespace TheGreatEscape.GameLogic.GameObjects {
             KeyId = keyId == null ? 0 : (int)keyId;
             IsExit = isExit == null ? true : (bool)isExit;
             RequiresKey = requiresKey == null ? false : (bool)requiresKey;
-            Unlocked = !RequiresKey;      
-            
+            Unlocked = !RequiresKey;
+
+            AddLights();
         }
 
         
@@ -86,7 +88,36 @@ namespace TheGreatEscape.GameLogic.GameObjects {
                 }
             }
         }
+        private void AddLights()
+        {
+            GameObjectFactory factory = new GameObjectFactory();
+            Vector2 size = new Vector2(SpriteSize.Y) * 0.1f,
+                        pos = Position
+                        + new Vector2(0.5f, -0.1f) * SpriteSize
+                        - 0.5f * size;
 
+            LockedLight = factory.Create(
+                new Obj
+                {
+                    Type = "secondary",
+                    Position = pos,
+                    SpriteSize = size,
+                    Texture = "Sprites/Misc/red_light"
+                }) as PlatformBackground;
+
+            UnlockedLight = factory.Create(
+                new Obj
+                {
+                    Type = "secondary",
+                    Position = pos,
+                    SpriteSize = size,
+                    Texture = "Sprites/Misc/green_light"
+                }) as PlatformBackground;
+
+            LockedLight.Active = !Unlocked;
+            UnlockedLight.Active = Unlocked;
+
+        }
         public void SetLights()
         {
             Vector2 size = new Vector2(SpriteSize.Y) * 0.1f,
