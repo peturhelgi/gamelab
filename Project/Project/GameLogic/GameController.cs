@@ -263,6 +263,11 @@ namespace TheGreatEscape.GameLogic
 
             // START Handle GameAction
             // last parameter is the encoding for the direction the miner is walking/running in
+
+            if (ButtonDown(_newPadStates[player], _buttons[Command.Jump]))
+            {
+                GameEngine.HandleInput(player, GameEngine.GameAction.jump, 0);
+            }
             if (_newPadStates[player].ThumbSticks.Left.Y < -0.5
                 || _newPadStates[player].IsButtonDown(Buttons.DPadDown))
             {
@@ -316,11 +321,6 @@ namespace TheGreatEscape.GameLogic
             if (ButtonPressed(_oldPadStates[player], _newPadStates[player], _buttons[Command.ChangeTool]))
             {
                 GameEngine.HandleInput(player, GameEngine.GameAction.change_tool, 0);
-            }
-
-            if (ButtonDown(_newPadStates[player], _buttons[Command.Jump]))
-            {
-                GameEngine.HandleInput(player, GameEngine.GameAction.jump, 0);
             }
         }
     }
