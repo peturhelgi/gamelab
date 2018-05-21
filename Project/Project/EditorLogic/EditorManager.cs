@@ -18,7 +18,7 @@ namespace EditorLogic
 {
     public class EditorManager
     {
-        EditorController _editorController;
+        public EditorController _editorController { private set; get; }
         GameController _gameController;
         MapLoader _mapLoader;
 
@@ -132,6 +132,16 @@ namespace EditorLogic
                     {
                         (gameObject as Platform).Background.Texture = GameObjectTextures["Misc"]["platform_mechanismy"];
                     }
+                    if (objType == "plankx") continue;
+                    if (objType == "planka") continue;
+                    if (objType == "plankbrope") continue;
+                    if (objType == "plankxrope") continue;
+                    if (objType == "plankpickaxe") continue;
+                    if (objType == "plankrb") continue;
+                    if (objType == "plankrt") continue;
+                    if (objType == "plankxrope") continue;
+                    if (objType == "plankkey") continue;
+
                         gameObject.Texture = gameObj.Value;
 
                     //TODO: remove this ugly hardcoding
@@ -298,7 +308,7 @@ namespace EditorLogic
 
         public void PlaceCurrentObjects()
         {
-            if (CurrentObjects != null)
+            if (CurrentObjects != null && CurrentObjects.Count > 0)
             {
                 // Corner case for adding a door and asociating it with a key
                 if (CurrentObjects.First() is Door && CurrentIsNewObject)
@@ -459,8 +469,16 @@ namespace EditorLogic
                         CurrentObjects.Add(GameObject.Clone(obj));
                     CursorPosition = Vector2.Min(CursorPosition, obj.Position);
                 }
-                MovingStartPosition = CursorPosition;
-                CurrentIsNewObject = true;
+                if (CurrentObjects.Count == 0)
+                {
+                    CurrentIsNewObject = false;
+                    CurrentObjects = null;
+                }
+                else
+                {
+                    MovingStartPosition = CursorPosition;
+                    CurrentIsNewObject = true;
+                }
             }
         }
 

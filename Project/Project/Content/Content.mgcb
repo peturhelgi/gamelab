@@ -937,6 +937,18 @@
 /processorParam:TextureFormat=Color
 /build:Backstory/Storyboard_1.png
 
+#begin Sprites/Interactables/plankA.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Interactables/plankA.png
+
 #begin Backstory/Storyboard_10.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -948,6 +960,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Backstory/Storyboard_10.png
+
+#begin Sprites/Interactables/plankBrope.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Interactables/plankBrope.png
 
 #begin Backstory/Storyboard_11.png
 /importer:TextureImporter
@@ -961,6 +985,18 @@
 /processorParam:TextureFormat=Color
 /build:Backstory/Storyboard_11.png
 
+#begin Sprites/Interactables/plankPickaxe.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Interactables/plankPickaxe.png
+
 #begin Backstory/Storyboard_2.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -972,6 +1008,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Backstory/Storyboard_2.png
+
+#begin Sprites/Interactables/plankRB.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Interactables/plankRB.png
 
 #begin Backstory/Storyboard_3.png
 /importer:TextureImporter
@@ -985,6 +1033,18 @@
 /processorParam:TextureFormat=Color
 /build:Backstory/Storyboard_3.png
 
+#begin Sprites/Interactables/plankRT.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Interactables/plankRT.png
+
 #begin Backstory/Storyboard_4.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -997,6 +1057,18 @@
 /processorParam:TextureFormat=Color
 /build:Backstory/Storyboard_4.png
 
+#begin Sprites/Interactables/plankXrope.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Interactables/plankXrope.png
+
 #begin Backstory/Storyboard_5.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1008,6 +1080,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Backstory/Storyboard_5.png
+
+#begin Sprites/Interactables/plankX.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Interactables/plankX.png
 
 #begin Backstory/Storyboard_6.png
 /importer:TextureImporter
@@ -1086,4 +1170,19 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:score2.wav
+
+#begin Sprites/Interactables/plankKey.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Interactables/plankKey.png
+
+#begin Levels/Template.json
+/copy:Levels/Template.json
 

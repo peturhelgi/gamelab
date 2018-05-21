@@ -11,8 +11,6 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using TheGreatEscape.GameLogic;
 
-using TheGreatEscape.GameLogic.Util;
-
 namespace TheGreatEscape.Menu
 {
     public class MenuManager
@@ -34,6 +32,9 @@ namespace TheGreatEscape.Menu
         LoadingScreen _loading;
         EditorScreen _editor;
 
+        IAsyncResult result;
+        bool _requestSave = false;
+
         public enum Action
         {
             StartStory,
@@ -49,6 +50,7 @@ namespace TheGreatEscape.Menu
             ExitGame,
             Advance,
             Back,
+            SaveLevel,
             ShowHelp,
             ToggleEdit
         };
@@ -63,6 +65,7 @@ namespace TheGreatEscape.Menu
         List<String> _allLevels;
         GreatEscape _theGame;
         List<Screen> screenStack;
+        String TemplateName = "Template";
         public static Song Sound1, Sound2;
         //public static SoundEffectInstance Song1, Song2;
 
@@ -159,6 +162,10 @@ namespace TheGreatEscape.Menu
             _allLevels = new List<String>();
             foreach (String file in files)
             {
+                if (file.ToLower().Contains(TemplateName.ToLower()+".json"))
+                {
+                    continue;
+                }
                 _allLevels.Add(System.IO.Path.GetFileNameWithoutExtension(file));
             }
 
@@ -173,7 +180,7 @@ namespace TheGreatEscape.Menu
             _currentLevelIdx = 0;
             _mainMenu.AddSelection("play", Action.StartStory, "Levels/" + _currentLevel, new Rectangle(71, 313, 458, 101));
             _mainMenu.AddSelection("choose level", Action.ShowLevelSelector, null, new Rectangle(82, 434, 471, 112));
-            _mainMenu.AddSelection("level editor", Action.ShowLevelEditor, "Levels/" + _currentLevel, new Rectangle(220, 530, 349, 102));
+            _mainMenu.AddSelection("level editor", Action.ShowLevelEditor, "Levels/" + TemplateName, new Rectangle(220, 530, 349, 102));
             _mainMenu.AddSelection("exit game", Action.ExitGame, null, new Rectangle(152, 636, 185, 94));
 
             _gameHelps = new PopOverMenu("Controls", _content.Load<Texture2D>("Sprites/ScreenOverlays/PlayControls"), selector, false, _graphicsDevice, this);
@@ -181,19 +188,21 @@ namespace TheGreatEscape.Menu
             _levelSelector = new SelectionMenu(
                 "Select a Level", _content.Load<Texture2D>("Sprites/Menus/LevelSelector"), selector, true, _graphicsDevice, this);
 
-            int size;
-            for (int i = 0; i < files.Length; i++)
+            foreach (string file in _allLevels)
             {
-                string file = System.IO.Path.GetFileNameWithoutExtension(files[i]);
-                size = file.Length;
-                _levelSelector.AddSelection(file, Action.StartGame, "Levels/" + file, new Rectangle(120, 100 + 120 * i, 35 * size, 100));
+                _levelSelector.AddSelection(file, Action.StartGame, 
+                    "Levels/" + file, new Rectangle(0,0,0,0));
             }
 
             _gameOver = new PopOverMenu(
-                "Game Over", _content.Load<Texture2D>("Sprites/Menus/GameOver"), selector, false, _graphicsDevice, this);
-            _gameOver.AddSelection("Retry", Action.StartGame, "", new Rectangle(166, 157, 549, 193));
-            _gameOver.AddSelection("Select Level", Action.ShowLevelSelector, null, new Rectangle(182, 328, 561, 133));
-            _gameOver.AddSelection("Main Menu", Action.ShowMainMenu, "", new Rectangle(205, 518, 551, 165));
+                "Game Over", _content.Load<Texture2D>("Sprites/Menus/GameOver"),
+                selector, false, _graphicsDevice, this);
+            _gameOver.AddSelection("Retry", Action.StartGame, "", 
+                new Rectangle(166, 157, 549, 193));
+            _gameOver.AddSelection("Select Level", Action.ShowLevelSelector, 
+                null, new Rectangle(182, 328, 561, 133));
+            _gameOver.AddSelection("Main Menu", Action.ShowMainMenu, "", 
+                new Rectangle(205, 518, 551, 165));
 
             _levelCompleted = new PopOverMenu(
                 "Level Completed!", _content.Load<Texture2D>("Sprites/Menus/LevelComplete"), selector, false, _graphicsDevice, this);
@@ -213,6 +222,7 @@ namespace TheGreatEscape.Menu
 
             _editorMenu.AddSelection("Continue", Action.Back, "", new Rectangle(0,0,0,0));
             _editorMenu.AddSelection("Play", Action.ToggleEdit, "", new Rectangle(0, 0, 0, 0));
+            _editorMenu.AddSelection("Save Level", Action.SaveLevel, TemplateName, new Rectangle());
             _editorMenu.AddSelection("Main Menu", Action.ShowMainMenu, "", new Rectangle(0,0,0,0));
 
             _loading = new LoadingScreen(_graphicsDevice, this);
@@ -380,6 +390,25 @@ namespace TheGreatEscape.Menu
                     }
                     CallAction(Action.Back, value);
                     break;
+
+                case Action.SaveLevel:
+                    if(_prevScreen == _editor)
+                    {
+                        int numTemplates = 1;
+                        foreach(var lvlname in _allLevels) {
+                            if (lvlname.ToLower().Contains(TemplateName.ToLower()))
+                            {
+                                ++numTemplates;
+                            }
+                        }
+                        string currFileName = value.ToString() + numTemplates.ToString();
+                        _editorManager._editorController.HandleSave(currFileName);
+                        _allLevels.Add(currFileName);
+                        _levelSelector.AddSelection(currFileName, Action.StartGame,
+                            "Levels/" + currFileName, new Rectangle(0, 0, 0, 0));
+                        _requestSave = true;
+                    }
+                    break;
                 default:
                     break;
             }
@@ -393,7 +422,6 @@ namespace TheGreatEscape.Menu
             Sound2 = _content.Load<Song>("suspense_song");
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(MenuManager.Sound1);
-
         }
 
         public ContentManager ContentLoader()
@@ -740,31 +768,27 @@ namespace TheGreatEscape.Menu
             if (_selections.Count > 0)
             {
                 // Xbox controls for player one
-                if (_manager.ButtonPressed(0, Buttons.LeftThumbstickDown, Buttons.DPadDown)
-                    || _manager.ButtonPressed(1, Buttons.LeftThumbstickDown, Buttons.DPadDown))
+                if (_manager.ButtonPressed(0, Buttons.LeftThumbstickDown, Buttons.DPadDown))
                 {
                     _currentPosition = (++_currentPosition) % _selections.Count;
                 }
-                if (_manager.ButtonPressed(0, Buttons.LeftThumbstickUp, Buttons.DPadUp)
-                    || _manager.ButtonPressed(1, Buttons.LeftThumbstickUp, Buttons.DPadUp))
+                if (_manager.ButtonPressed(0, Buttons.LeftThumbstickUp, Buttons.DPadUp))
                 {
                     _currentPosition = --_currentPosition < 0 ? _selections.Count - 1 : _currentPosition;
                 }
             }
-            if (_manager.ButtonPressed(0, Buttons.A)
-               || _manager.ButtonPressed(1, Buttons.A))
+            if (_manager.ButtonPressed(0, Buttons.A))
             {
                 _manager.CallAction(_selections[_currentPosition].Action, _selections[_currentPosition].Value);
                 _currentPosition = 0;
             }
 
-            if (_manager.ButtonPressed(0, Buttons.Back)
-                || _manager.ButtonPressed(1, Buttons.Back))
+            if (_manager.ButtonPressed(0, Buttons.Back))
             {
                 _manager.CallAction(MenuManager.Action.Back, null);
                 _currentPosition = 0;
             }
-            if (_manager.ButtonPressed(0, Buttons.Y) || _manager.ButtonPressed(1, Buttons.Y))
+            if (_manager.ButtonPressed(0, Buttons.Y))
             {
                 _manager.CallAction(MenuManager.Action.ShowHelp, 0);
                 _currentPosition = 0;

@@ -15,7 +15,7 @@ using TheGreatEscape.LevelManager;
 
 namespace EditorLogic
 {
-    class EditorController
+    public class EditorController
     {
         public GameEngine GameEngine;
 
@@ -116,7 +116,7 @@ namespace EditorLogic
             }
         }
 
-        private void HandleSave(string levelname)
+        public void HandleSave(string levelname)
         {
             string path = "Levels/" + levelname + ".json";
             Level level = GameEngine.GameState.GetPureLevel();
