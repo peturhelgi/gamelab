@@ -1021,3 +1021,6 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Interactables/plankKey.png
 
+#begin Levels/Template.json
+/copy:Levels/Template.json
+

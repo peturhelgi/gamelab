@@ -23,12 +23,6 @@ namespace TheGreatEscape
         MenuManager _menu;
         GraphicsDeviceManager _graphics;
 
-        // Simple camera controls
-        private Vector2 _viewCenter;
-        private float _viewZoom;
-        private Matrix view;
-        private Vector2 cameraPosition;
-
 
         public GreatEscape()
         {
@@ -68,11 +62,12 @@ namespace TheGreatEscape
             foreach (String file in files)
             {
                 string level = File.ReadAllText(file);
-                StreamWriter streamWriter = new StreamWriter(isf.CreateFile(levelDir + "/" + System.IO.Path.GetFileName(file)));
+                StreamWriter streamWriter = new StreamWriter(
+                    isf.CreateFile(levelDir + "/"
+                    + System.IO.Path.GetFileName(file)));
                 streamWriter.Write(level);
                 streamWriter.Dispose();
             }
-
         }
 
         protected override void LoadContent()

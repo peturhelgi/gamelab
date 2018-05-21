@@ -18,7 +18,7 @@ namespace EditorLogic
 {
     public class EditorManager
     {
-        EditorController _editorController;
+        public EditorController _editorController { private set; get; }
         GameController _gameController;
         MapLoader _mapLoader;
 
@@ -308,7 +308,7 @@ namespace EditorLogic
 
         public void PlaceCurrentObjects()
         {
-            if (CurrentObjects != null)
+            if (CurrentObjects != null && CurrentObjects.Count > 0)
             {
                 // Corner case for adding a door and asociating it with a key
                 if (CurrentObjects.First() is Door && CurrentIsNewObject)
@@ -469,8 +469,16 @@ namespace EditorLogic
                         CurrentObjects.Add(GameObject.Clone(obj));
                     CursorPosition = Vector2.Min(CursorPosition, obj.Position);
                 }
-                MovingStartPosition = CursorPosition;
-                CurrentIsNewObject = true;
+                if (CurrentObjects.Count == 0)
+                {
+                    CurrentIsNewObject = false;
+                    CurrentObjects = null;
+                }
+                else
+                {
+                    MovingStartPosition = CursorPosition;
+                    CurrentIsNewObject = true;
+                }
             }
         }
 
