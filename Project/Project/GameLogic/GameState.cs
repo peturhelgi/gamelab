@@ -88,16 +88,16 @@ namespace TheGreatEscape.GameLogic
             //allObjects.Reverse();
             foreach (var obj in allObjects)
             {
-                if(!(obj is Miner))
+                if (!(obj is Miner))
                 {
                     Remove(obj, obj.Handling, true);
                 }
             }
-            foreach(var obj in Backup)
+            foreach (var obj in Backup)
             {
                 obj.Initialize();
                 obj.Enable();
-                if(obj is Miner)
+                if (obj is Miner)
                 {
                     continue;
                 }
@@ -176,7 +176,7 @@ namespace TheGreatEscape.GameLogic
                     moveToBackup = true;
                     break;
             }
-            if(moveToBackup)
+            if (moveToBackup)
             {
                 Backup.Add(obj);
                 obj.Disable();
@@ -206,14 +206,14 @@ namespace TheGreatEscape.GameLogic
                     }
                     break;
                 case Handling.Solid:
-                    if(!Solids.Contains(obj)) Solids.Add(obj);
-                    if(obj is Ground && !grounds.Contains(obj)) grounds.Add(obj);
-                    else if(!otherSolids.Contains(obj)) otherSolids.Add(obj);
+                    if (!Solids.Contains(obj)) Solids.Add(obj);
+                    if (obj is Ground && !grounds.Contains(obj)) grounds.Add(obj);
+                    else if (!otherSolids.Contains(obj)) otherSolids.Add(obj);
                     break;
                 case Handling.None:
-                    if(!NonSolids.Contains(obj)) NonSolids.Add(obj);
-                    if(obj is PlatformBackground && !backgrounds.Contains(obj)) backgrounds.Add(obj);
-                    if(!otherNoneSolids.Contains(obj)) otherNoneSolids.Add(obj);
+                    if (!NonSolids.Contains(obj)) NonSolids.Add(obj);
+                    if (obj is PlatformBackground && !backgrounds.Contains(obj)) backgrounds.Add(obj);
+                    if (!otherNoneSolids.Contains(obj)) otherNoneSolids.Add(obj);
                     break;
                 case Handling.Interact:
                     Interactables.Add(obj);
@@ -305,13 +305,9 @@ namespace TheGreatEscape.GameLogic
                         break;
                 }
             }
-            if(i == Resources.Count)
-            {
-                return false;
-            }
+
             int newToolIndex = (i + 1) % Resources.Count();
             var newTool = Resources.ElementAt(newToolIndex);
-            var oldTool = Resources.ElementAt(i);
 
             // loop continuously through the tools until the next non-empty one is found
             while (newTool.Value.Count == 0 && newToolIndex != i)
@@ -321,18 +317,25 @@ namespace TheGreatEscape.GameLogic
             }
 
             // if there is no tool available to switch just return
-            if (newToolIndex == i)
+
+            if (newToolIndex == i && miner.Tool != null)
             {
                 return false;
             }
+            if(newTool.Value.Count <= 0)
+            {
+                return false;
+            }
+            Tool takenTool = newTool.Value.Last(),
+                returnedTool = miner.Tool;
+            TakeTool(takenTool);
 
-            Tool takenTool = newTool.Value.Last();
-            TakeTool(newTool.Value.Last());
+            if (returnedTool != null && !ForRemoving)
+            {
+                GiveBackTool(returnedTool);
+            }
 
-            if (miner.Tool!= null && !ForRemoving)
-                GiveBackTool(miner.Tool);
-
-            miner.Tool = (takenTool);
+            miner.Tool = takenTool;
             return true;
         }
 
@@ -348,11 +351,12 @@ namespace TheGreatEscape.GameLogic
 
         public bool TakeTool(Tool tool)
         {
-            if(tool == null || Resources[tool.ToString()].Count <= 0)
+            string toolName = tool?.ToString();
+            if (toolName == null || Resources[toolName].Count <= 0)
             {
                 return false;
             }
-            return Resources[tool.ToString()].Remove(tool);
+            return Resources[toolName].Remove(tool);
         }
 
         public void SetBackground(Texture2D background)
