@@ -157,6 +157,13 @@
     </MonoGameContentReference>
     <Content Include="Content\Fonts\CHAMPGNE.TTF" />
     <None Include="Content\Fonts\Orbitron.spritefont" />
+    <None Include="Content\Levels\level_1.json" />
+    <None Include="Content\Levels\level_2.json" />
+    <None Include="Content\Levels\level_3.json" />
+    <None Include="Content\Levels\level_4.json" />
+    <None Include="Content\Levels\level_5.json" />
+    <None Include="Content\Levels\level_6.json" />
+    <None Include="Content\Levels\level_7.json" />
     <None Include="Content\Sprites\VisualAssets_PS\Background.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Ground.psd" />
     <None Include="Content\Sprites\VisualAssets_PS\Miner.psd" />
