@@ -232,31 +232,31 @@
             "requirement": false,
             "ropelength": -1.0
         },
-        {
-            "dim": {
-                "X": 150.0,
-                "Y": 100.0
-            },
-            "pos": {
-                "X": 2270.87183,
-                "Y": 1515.45679
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 0.0,
-            "type": "ground",
-            "texture": "Sprites/Grounds/ground_4",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
-        },
+        // {
+        //     "dim": {
+        //         "X": 150.0,
+        //         "Y": 100.0
+        //     },
+        //     "pos": {
+        //         "X": 2270.87183,
+        //         "Y": 1515.45679
+        //     },
+        //     "vel": {
+        //         "X": 0.0,
+        //         "Y": 0.0
+        //     },
+        //     "m": 0.0,
+        //     "type": "ground",
+        //     "texture": "Sprites/Grounds/ground_4",
+        //     "displacement": 0.0,
+        //     "direction": "-1",
+        //     "activationkey": -1,
+        //     "secondtexture": "-1",
+        //     "tool": "-1",
+        //     "id": -1,
+        //     "requirement": false,
+        //     "ropelength": -1.0
+        // },
         {
             "dim": {
                 "X": 352.914673,
