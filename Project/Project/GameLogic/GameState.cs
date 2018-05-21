@@ -295,61 +295,64 @@ namespace TheGreatEscape.GameLogic
         /// <returns></returns>
         public bool CanChangeTool(Miner miner, bool ForRemoving = false)
         {
-            int i;
-            for (i = 0; i < resources.Count(); ++i)
+            int i = 0;
+            if (miner.Tool != null)
             {
-                var ttl = resources.ElementAt(i);
-                if (ttl.Key.Equals(miner.Tool.ToString()))
-                    break;
+                for (i = 0; i < Resources.Count(); ++i)
+                {
+                    var ttl = Resources.ElementAt(i);
+                    if (ttl.Key.Equals(miner.Tool.ToString()))
+                        break;
+                }
             }
-
-            int newToolIndex = (i + 1) % resources.Count();
-            var newTool = resources.ElementAt(newToolIndex);
-            var oldTool = resources.ElementAt(i);
+            if(i == Resources.Count)
+            {
+                return false;
+            }
+            int newToolIndex = (i + 1) % Resources.Count();
+            var newTool = Resources.ElementAt(newToolIndex);
+            var oldTool = Resources.ElementAt(i);
 
             // loop continuously through the tools until the next non-empty one is found
-            while (newTool.Value == 0 && newToolIndex != i)
+            while (newTool.Value.Count == 0 && newToolIndex != i)
             {
-                newToolIndex = (newToolIndex + 1) % resources.Count();
-                newTool = resources.ElementAt(newToolIndex);
+                newToolIndex = (newToolIndex + 1) % Resources.Count();
+                newTool = Resources.ElementAt(newToolIndex);
             }
 
             // if there is no tool available to switch just return
             if (newToolIndex == i)
+            {
                 return false;
+            }
 
-            RemoveTool(newTool.Key);
+            Tool takenTool = newTool.Value.Last();
+            TakeTool(newTool.Value.Last());
 
-            if (!ForRemoving)
-                AddTool(miner.Tool);
+            if (miner.Tool!= null && !ForRemoving)
+                GiveBackTool(miner.Tool);
 
-            miner.Tool = (new ToolFactory()).Create(new Obj { Type = newTool.Key });
+            miner.Tool = (takenTool);
             return true;
         }
 
-        public bool AddTool(Tool tool)
+        public bool GiveBackTool(Tool tool)
         {
             if (!tool.CanUseAgain)
             {
                 return false;
             }
-            ++resources[tool.ToString()];
+            Resources[tool.ToString()].Add(tool);
             return true;
         }
 
-        public bool RemoveTool(string tool)
+        public bool TakeTool(Tool tool)
         {
-            if (resources[tool] <= 0)
+            if(tool == null || Resources[tool.ToString()].Count <= 0)
             {
                 return false;
             }
-            --resources[tool];
-            return true;
-        }
-
-        public bool RemoveTool(Tool tool)
-        {
-            return RemoveTool(tool.ToString());
+            return Resources[tool.ToString()].Remove(tool);
         }
 
         public void SetBackground(Texture2D background)
@@ -380,7 +383,7 @@ namespace TheGreatEscape.GameLogic
                 level.objects.Add(go.GetObj());
             }
 
-            level.resources = resources;
+            level.Resources = Resources;
 
             return level;
         }

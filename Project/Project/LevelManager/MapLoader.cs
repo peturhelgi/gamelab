@@ -30,8 +30,19 @@ namespace TheGreatEscape.LevelManager
             //string text = ContentManager.Load<string>(levelName);
             //Level level = JsonConvert.DeserializeObject<Level>(text);
             Level level = _loader.Load(levelName);
+            level.Resources = new SortedDictionary<string, List<Tool>>();
             gameState.background = level.background;
-            gameState.resources = level.resources;
+            foreach(var keyValue in level.resources)
+            {
+                var tool = keyValue.Key;
+                var num = keyValue.Value;
+                level.Resources[tool] = new List<Tool>();
+                for(int i = 0; i < num; ++i)
+                {
+                    level.Resources[tool].Add((new ToolFactory()).Create(new Obj { Type = tool }));
+                }
+            }
+            gameState.Resources = level.Resources;
             gameState.levelname = level.levelname;
 
             foreach (Obj obj in level.objects)

@@ -51,15 +51,6 @@ namespace TheGreatEscape.GameLogic
             }
         }
 
-        public void Initialize()
-        {
-            var actors = GameState.Actors;
-            var resources = GameState.resources;
-            GameState.Respawn();
-            GameState.Actors = actors;
-            GameState.resources = resources;
-        }
-
         public List<AxisAllignedBoundingBox> GetAttentions()
         {
             return _attentions;
@@ -299,9 +290,13 @@ namespace TheGreatEscape.GameLogic
 
         void UseTool(Miner obj)
         {
+            if(obj?.Tool == null)
+            {
+                return;
+            }
             if (!obj.UseTool(GameState))
             {
-                GameState.RemoveTool(obj.Tool);
+                GameState.TakeTool(obj.Tool);
             }
         }
 

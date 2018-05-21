@@ -225,7 +225,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 this.Interacting = true;
                 Tool.Use(this, gs);
                 return true;
-            }            
+            }
+            this.Tool = null;
             return false;
         }
 
