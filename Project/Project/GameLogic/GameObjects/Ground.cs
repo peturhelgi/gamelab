@@ -10,9 +10,14 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public Ground(Vector2 position, Vector2 spriteSize) :
             base(position, spriteSize)
         {
+            Initialize();
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
             Movable = false;
             Visible = true;
-            // this.TextureString = textureString;
         }
 
         public override AxisAllignedBoundingBox BBox

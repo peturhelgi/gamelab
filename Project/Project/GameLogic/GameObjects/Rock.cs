@@ -19,11 +19,18 @@ namespace TheGreatEscape.GameLogic.GameObjects
         : base(position, spriteSize)
         {
             {
-                Speed = new Vector2(0);
+                Speed = Vector2.Zero;
                 Mass = 10;
                 Visible = true;
                 Movable = true;
             }
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            Visible = true;
+            Movable = false;
         }
 
         public override Obj GetObj()

@@ -34,8 +34,12 @@ namespace TheGreatEscape.GameLogic.GameObjects
             LastUpdated = new TimeSpan();
             Movable = false;
             Activate = false;
+
             Displacement = displacement;
             ActivationId = actId;
+            Speed = Vector2.Zero;
+
+            Initialize();
 
             if (dir is null)
             {
@@ -66,8 +70,18 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     secondTextureString)
                 { Active = true };
             }
+        }
 
 
+        public override void Initialize()
+        {
+            base.Initialize();
+            Falling = false;
+            Mass = 10;
+            Visible = true;
+            LastUpdated = new TimeSpan();
+            Movable = false;
+            Activate = false;
         }
 
         public void SwapDirections()

@@ -30,8 +30,19 @@ namespace TheGreatEscape.LevelManager
             //string text = ContentManager.Load<string>(levelName);
             //Level level = JsonConvert.DeserializeObject<Level>(text);
             Level level = _loader.Load(levelName);
+            level.Resources = new SortedDictionary<string, List<Tool>>();
             gameState.background = level.background;
-            gameState.resources = level.resources;
+            foreach(var keyValue in level.resources)
+            {
+                var tool = keyValue.Key;
+                var num = keyValue.Value;
+                level.Resources[tool] = new List<Tool>();
+                for(int i = 0; i < num; ++i)
+                {
+                    level.Resources[tool].Add((new ToolFactory()).Create(new Obj { Type = tool }));
+                }
+            }
+            gameState.Resources = level.Resources;
             gameState.levelname = level.levelname;
 
             foreach (Obj obj in level.objects)
@@ -53,13 +64,22 @@ namespace TheGreatEscape.LevelManager
             return gameState;
         }
 
+
+        public void UnloadContent()
+        {
+            ContentManager.Unload();
+        }
+
         public void LoadMapContent(GameState gameState)
         {
-            Texture2D background = ContentManager.Load<Texture2D>(gameState.background);
+            Texture2D background = ContentManager.Load<Texture2D>(
+                gameState.background);
             gameState.SetBackground(background);
 
             // TODO possibly add a hashed Map to only load every Texture once
-            foreach (GameObject obj in gameState.GetAll())
+            List<GameObject> allObjects = gameState.GetAll();            
+
+            foreach (GameObject obj in allObjects)
             {
                 if (obj?.TextureString == null || obj.TextureString == "")
                 {
@@ -67,17 +87,22 @@ namespace TheGreatEscape.LevelManager
                 }
                 obj.Texture = ContentManager.Load<Texture2D>(obj.TextureString);
                 if (obj is Lever)
-                    (obj as Lever).SecondTexture = ContentManager.Load<Texture2D>((obj as Lever).RightleverTexture);
+                    (obj as Lever).SecondTexture = ContentManager
+                        .Load<Texture2D>((obj as Lever).RightleverTexture);
                 if (obj is RockHook)
                 {
-                    (obj as RockHook).Rope.Texture = ContentManager.Load<Texture2D>((obj as RockHook).Rope.TextureString);
-                    (obj as RockHook).Rope.SecondTexture = ContentManager.Load<Texture2D>((obj as RockHook).Rope.SecondTextureString);
+                    (obj as RockHook).Rope.Texture = ContentManager
+                        .Load<Texture2D>((obj as RockHook).Rope.TextureString);
+                    (obj as RockHook).Rope.SecondTexture = ContentManager
+                        .Load<Texture2D>(
+                        (obj as RockHook).Rope.SecondTextureString);
                 }
             }
 
             LoadMotionSheets(gameState);
             LoadTools(gameState);
-            gameState.GameFont = ContentManager.Load<SpriteFont>("Fonts/gameFont");
+            gameState.GameFont = ContentManager.Load<SpriteFont>(
+                "Fonts/gameFont");
         }
 
         private void LoadTools(GameState gameState) {

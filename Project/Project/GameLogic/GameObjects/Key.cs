@@ -15,8 +15,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public Key(Vector2 position, Vector2 spriteSize)
             : base(position, spriteSize)
         {
-            Movable = false;
-            Visible = true;
+            Initialize();
         }
 
         public void Collect(List<GameObject> interactables)
@@ -28,6 +27,13 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     (it as Door).Unlock();
                 }
             }
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            Movable = false;
+            Visible = true;
         }
 
         public override string ToString()

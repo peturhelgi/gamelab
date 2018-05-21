@@ -21,10 +21,8 @@ namespace TheGreatEscape.GameLogic.GameObjects {
         public Door(Vector2 position, Vector2 spriteSize, string texture,
             object requiresKey = null, object keyId = null, object isExit = null,
             Tuple<int, int> outEdge = null)
-            : base(position, spriteSize, texture)
+            : base(position, spriteSize)
         {
-            Movable = false;
-            Visible = true;
             OutEdge = outEdge;
             KeyId = keyId == null ? 0 : (int)keyId;
             IsExit = isExit == null ? true : (bool)isExit;
@@ -34,7 +32,21 @@ namespace TheGreatEscape.GameLogic.GameObjects {
             AddLights();
         }
 
-        
+        public override void Initialize()
+        {
+            base.Initialize();
+            Movable = false;
+            Visible = true;
+            Unlocked = !RequiresKey;
+            if (Unlocked)
+            {
+                Unlock();
+            }
+            else
+            {
+                Lock();
+            }
+        }
 
         public bool Open(params int[] keys)
         {

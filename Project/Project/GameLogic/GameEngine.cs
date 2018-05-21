@@ -17,6 +17,7 @@ namespace TheGreatEscape.GameLogic
         public const float JumpForce = -800;
         const float FatalSpeed = 2200f;
         public GameState GameState;
+        public readonly GameState InitialGameState;
 
         public enum GameAction
         {
@@ -105,8 +106,7 @@ namespace TheGreatEscape.GameLogic
                     }
                     break;
                 case GameAction.use_tool:
-                    if (miner.Tool.CanUseAgain)
-                        UseTool(miner);
+                    UseTool(miner);
                     break;
                 case (GameAction.interact):
                     TryToInteract(miner);
@@ -181,7 +181,9 @@ namespace TheGreatEscape.GameLogic
                 {
                     (item as Key).Collect(interactables);
                 }
+
                 GameState.Remove(item);
+
             }
         }
 
@@ -279,7 +281,7 @@ namespace TheGreatEscape.GameLogic
                     CollisionDetector.FindCollisions(
                         obj.InteractionBox(),
                         GameState.GetObjects(GameState.Handling.Interact));
-                foreach(var item in interactingItems)
+                foreach (var item in interactingItems)
                 {
                     item.Interact(GameState);
                 }
@@ -288,7 +290,14 @@ namespace TheGreatEscape.GameLogic
 
         void UseTool(Miner obj)
         {
-            obj.UseTool(GameState);
+            if(obj?.Tool == null)
+            {
+                return;
+            }
+            if (!obj.UseTool(GameState))
+            {
+                GameState.TakeTool(obj.Tool);
+            }
         }
 
         void TryToJump(Miner miner, Vector2 speed)
@@ -469,7 +478,7 @@ namespace TheGreatEscape.GameLogic
         private float DistBetweenMiners()
         {
             List<Miner> actors = GameState.GetActors();
-            if(actors.Count == 2)
+            if (actors.Count == 2)
             {
                 if (!actors[0].Active || !actors[1].Active) return 0.0f;
                 return Math.Abs(actors[0].Position.X - actors[1].Position.X);
@@ -484,7 +493,7 @@ namespace TheGreatEscape.GameLogic
             {
                 foreach (Miner m in GameState.GetActors())
                 {
-                    if(obj != m)
+                    if (obj != m)
                     {
                         if (obj.Position.X < m.Position.X) leftrightminer = -1;
                         else leftrightminer = 1;

@@ -88,6 +88,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         Handling = GameState.Handling.Interact,
                         RequiresKey = entity.Requirement,
                         KeyId = entity.Id,
+                        TextureString = entity.TextureString,
                         Id = currentDoor++
                     };
                     

@@ -73,11 +73,14 @@ namespace TheGreatEscape.GameLogic.Renderer
                     _spriteBatch.Draw(m.CurrMotion.Image, destination, source, Color.White, 0f, Vector2.Zero, m.Orientation, 0f);
 
                     Tool tool = m.Tool;
-                    destination.Width = tool.GetTexture().Width / 20;
-                    destination.Height = tool.GetTexture().Height / 20;
-                    destination.Y -= 100;
-                    destination.X -= (destination.Width - (int)motionSize.X) / 2;
-                    _spriteBatch.Draw(tool.GetTexture(), destination, Color.White);
+                    if (tool != null)
+                    {
+                        destination.Width = tool.GetTexture().Width / 20;
+                        destination.Height = tool.GetTexture().Height / 20;
+                        destination.Y -= 100;
+                        destination.X -= (destination.Width - (int)motionSize.X) / 2;
+                        _spriteBatch.Draw(tool.GetTexture(), destination, Color.White);
+                    }
                 }
                 else
                 {
@@ -151,14 +154,14 @@ namespace TheGreatEscape.GameLogic.Renderer
             // Draw the UI interface that displays the number of miners still available in the game
             _spriteBatch.Begin();
             int i = 0;
-            foreach (var tool in _gameState.resources)
+            foreach (var tool in _gameState.Resources)
             {
                 Enum.TryParse(tool.Key, out ExistingTools et);
                 Texture2D toolTexture = _gameState.Tools[et].GetTexture();
                 Vector2 textureSize = new Vector2(toolTexture.Width / 20, toolTexture.Height / 20);
 
                 _spriteBatch.Draw(toolTexture, new Rectangle(100, 100 + i, (int)textureSize.X, (int)textureSize.Y), Color.White);
-                _spriteBatch.DrawString(_gameState.GameFont, tool.Value.ToString(), new Vector2(100 + textureSize.X + 50,  100 + i + textureSize.Y / 3)
+                _spriteBatch.DrawString(_gameState.GameFont, tool.Value.Count.ToString(), new Vector2(100 + textureSize.X + 50,  100 + i + textureSize.Y / 3)
                     , Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                 i += (int)textureSize.Y;
             }

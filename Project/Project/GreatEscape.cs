@@ -22,6 +22,7 @@ namespace TheGreatEscape
         EditorManager _editorManager;
         MenuManager _menu;
         GraphicsDeviceManager _graphics;
+        public static GameTime GreatTime;
 
 
         public GreatEscape()
@@ -82,7 +83,7 @@ namespace TheGreatEscape
 
         protected override void Update(GameTime gameTime)
         {
-
+            GreatTime = gameTime;
             _menu.Update(gameTime);
             base.Update(gameTime);
         }
