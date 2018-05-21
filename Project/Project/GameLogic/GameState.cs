@@ -84,11 +84,11 @@ namespace TheGreatEscape.GameLogic
             return backgrounds
                 .Concat(grounds)
                 .Concat(otherNoneSolids)
-                .Concat(Collectibles)
-                .Concat(Destroyables)
                 .Concat(Interactables)
+                .Concat(Destroyables)
                 .Concat(Actors)
                 .Concat(otherSolids)
+                .Concat(Collectibles)
                 .ToList();
         }
 
