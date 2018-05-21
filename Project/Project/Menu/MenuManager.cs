@@ -388,6 +388,11 @@ namespace TheGreatEscape.Menu
 
         }
 
+        public ContentManager ContentLoader()
+        {
+            return _content;
+        }
+
         public void UnloadContent()
         {
         }
@@ -532,6 +537,63 @@ namespace TheGreatEscape.Menu
             else
             {
                 _editorManager.Update(gameTime);
+            }
+        }
+    }
+
+    class StoryScreen : Screen
+    {
+        SpriteBatch _spriteBatch;
+        ContentManager _content;
+        List<Texture2D> _story;
+        Texture2D _currentSlide;
+        GraphicsDevice _graphics;
+
+        public StoryScreen(GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
+        {
+            _graphics = graphicsDevice;
+            _story = new List<Texture2D>();
+            _spriteBatch = new SpriteBatch(_graphicsDevice);
+            _content = _manager.ContentLoader();
+        }
+
+        public void LoadStory()
+        {
+            _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_background"));
+            _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_1"));
+            _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_2"));
+            _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_3"));
+            _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_4"));
+            _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_5"));
+            _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_6"));
+            _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_7"));
+            _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_8"));
+            _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_9"));
+            _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_10"));
+            _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_11"));
+            _currentSlide = _story[0];
+            
+        }
+
+        public override void Draw(GameTime gameTime, int width, int height)
+        {
+            Rectangle dest = new Rectangle(_graphics.Viewport.Bounds.Width / 2,
+                _graphics.Viewport.Bounds.Height / 2, _currentSlide.Width, _currentSlide.Height);
+            _spriteBatch.Draw(_currentSlide, dest, Color.Black);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (_manager.ButtonPressed(0, Buttons.Start)
+                || _manager.CurrKeyboardState.IsKeyDown(Keys.S))
+            {
+                _manager.CallAction(MenuManager.Action.ShowPauseMenu, 0);
+            }
+            else if ((_manager.KeyPressed(Keys.Escape) ||
+                _manager.ButtonPressed(0, Buttons.Start) ||
+                _manager.ButtonPressed(1, Buttons.Start)))
+            {
+                _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
             }
         }
     }
