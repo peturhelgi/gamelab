@@ -1009,9 +1009,6 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Interactables/plankX.png
 
-#begin Levels/tutorial.json
-/copy:Levels/tutorial.json
-
 #begin Sprites/Interactables/plankKey.png
 /importer:TextureImporter
 /processor:TextureProcessor
