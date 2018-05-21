@@ -27,6 +27,7 @@ namespace TheGreatEscape.Menu
         PopOverMenu _editorMenu;
         PopOverMenu _gameHelps;
 
+        StoryScreen _story;
         GameScreen _game;
         LoadingScreen _loading;
         EditorScreen _editor;
@@ -36,6 +37,7 @@ namespace TheGreatEscape.Menu
 
         public enum Action
         {
+            StartStory,
             StartGame,
             ShowMainMenu,
             ShowOptionsMenu,
@@ -176,9 +178,9 @@ namespace TheGreatEscape.Menu
             string firstLvl = System.IO.Path.GetFileNameWithoutExtension(files[0]);
             _currentLevel = firstLvl;
             _currentLevelIdx = 0;
-            _mainMenu.AddSelection("play", Action.StartGame, "Levels/" + _currentLevel, new Rectangle(71, 313, 458, 101));
+            _mainMenu.AddSelection("play", Action.StartStory, "Levels/" + _currentLevel, new Rectangle(71, 313, 458, 101));
             _mainMenu.AddSelection("choose level", Action.ShowLevelSelector, null, new Rectangle(82, 434, 471, 112));
-            _mainMenu.AddSelection("level editor", Action.ShowLevelEditor, "Levels/" + _currentLevel, new Rectangle(220, 530, 349, 102));
+            _mainMenu.AddSelection("level editor", Action.ShowLevelEditor, "Levels/" + TemplateName, new Rectangle(220, 530, 349, 102));
             _mainMenu.AddSelection("exit game", Action.ExitGame, null, new Rectangle(152, 636, 185, 94));
 
             _gameHelps = new PopOverMenu("Controls", _content.Load<Texture2D>("Sprites/ScreenOverlays/PlayControls"), selector, false, _graphicsDevice, this);
@@ -229,6 +231,8 @@ namespace TheGreatEscape.Menu
 
             _editor = new EditorScreen(_editorManager, _graphicsDevice, this);
 
+            _story = new StoryScreen(_graphicsDevice, this);
+
             OldKeyboardState = CurrKeyboardState;
             CurrKeyboardState = Keyboard.GetState();
             CurrPlayerOneState = GamePad.GetState(PlayerIndex.One);
@@ -241,6 +245,10 @@ namespace TheGreatEscape.Menu
             Selection retry, nextLvl;
             switch (action)
             {
+                case Action.StartStory:
+                    _story.LoadStory();
+                    _currentScreen = _story;
+                    break;
                 case Action.StartGame:
                     string rawLvl = (value as string).Replace("Levels/", "");
                     _currentLevelIdx = _allLevels.IndexOf(rawLvl);
@@ -416,6 +424,11 @@ namespace TheGreatEscape.Menu
             MediaPlayer.Play(MenuManager.Sound1);
         }
 
+        public ContentManager ContentLoader()
+        {
+            return _content;
+        }
+
         public void UnloadContent()
         {
         }
@@ -561,6 +574,77 @@ namespace TheGreatEscape.Menu
             {
                 _editorManager.Update(gameTime);
             }
+        }
+    }
+
+    class StoryScreen : Screen
+    {
+        SpriteBatch _spriteBatch;
+        ContentManager _content;
+        List<Texture2D> _story;
+        Texture2D _currentSlide;
+        GraphicsDevice _graphics;
+
+        int slideCnt;
+
+        int mAlphaValue = 1;
+        int mFadeIncrement = 20;
+        double mFadeDelay = .035;
+
+        public StoryScreen(GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
+        {
+            _graphics = graphicsDevice;
+            _story = new List<Texture2D>();
+            _spriteBatch = new SpriteBatch(_graphicsDevice);
+            _content = manager.ContentLoader();
+            slideCnt = 0;
+        }
+
+        public void LoadStory()
+        {
+            slideCnt = 0;
+            _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_background"));
+            for (int i = 1; i <= 11; ++i)
+            {
+                _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_" + i));
+            }
+            _currentSlide = _story[slideCnt++];
+            
+        }
+
+        public override void Draw(GameTime gameTime, int width, int height)
+        {
+            _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
+            Rectangle dest = new Rectangle(0, 0, _graphicsDevice.PresentationParameters.BackBufferWidth
+                , _graphicsDevice.PresentationParameters.BackBufferHeight);
+            //Rectangle dest = new Rectangle(0, 0, _currentSlide.Width, _currentSlide.Height);
+            _spriteBatch.Draw(_currentSlide, dest, new Color((byte)255, (byte)255, (byte)255, (byte)MathHelper.Clamp(mAlphaValue, 0, 225)));
+            _spriteBatch.End();
+        }
+
+        public override void Update(GameTime gameTime)
+        {   
+                mFadeDelay -= gameTime.ElapsedGameTime.TotalSeconds;
+                if (mFadeDelay <= 0)
+                {
+                    mFadeDelay = .035;
+                    mAlphaValue += mFadeIncrement;
+                    if (mAlphaValue >= 255 || mAlphaValue <= 0)
+                    {
+                        mFadeIncrement *= -1;
+                    }
+                }
+
+            if (_manager.ButtonPressed(0, Buttons.A)
+                || _manager.CurrKeyboardState.IsKeyDown(Keys.A))
+            {
+                if (slideCnt == 12)
+                {
+                    _manager.CallAction(MenuManager.Action.StartGame, "Levels/level_1");
+                    return;
+                }
+                _currentSlide = _story[slideCnt++];
+            } 
         }
     }
 
