@@ -37,6 +37,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public GameObject HeldObj;
         public bool Holding;
         public bool Climbing;
+        public bool ClimbingRope;
         public bool Interacting;
 
         public readonly Vector2 InitialPosition;
@@ -73,7 +74,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
             HeldObj = null;
             Holding = false;
             Climbing = false;
-            Moveable = true;
+            ClimbingRope = false;
+            Movable = true;
             Interacting = false;
             LookAt = 0.0f;
 
