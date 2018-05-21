@@ -21,7 +21,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 Speed = new Vector2(0);
                 Mass = 10;
                 Visible = true;
-                Moveable = false;
+                Movable = false;
                 TextureString = textureString;
                 isRope = false;
 
@@ -98,7 +98,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 Speed = new Vector2(0);
                 Mass = 10;
                 Visible = true;
-                Moveable = false;
+                Movable = false;
                 TextureString = textureString;
                 SecondTextureString = "Sprites/Misc/Rope_transparent";
                 _ropeLength = spriteSize.Y;

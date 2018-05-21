@@ -50,8 +50,10 @@ namespace TheGreatEscape
         {
             string levelDir = "Levels";
             IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication();
-            if (!isf.DirectoryExists(levelDir)) {
+            if (!isf.DirectoryExists(levelDir))
+            {
                 isf.CreateDirectory(levelDir);
+            }
                 string[] files = Directory.GetFiles("Content\\Levels");
                 foreach (String file in files)
                 {
@@ -60,7 +62,7 @@ namespace TheGreatEscape
                     streamWriter.Write(level);
                     streamWriter.Dispose();
                 }
-            }
+            
         }
 
         protected override void LoadContent()

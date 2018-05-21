@@ -263,6 +263,11 @@ namespace TheGreatEscape.GameLogic
 
             // START Handle GameAction
             // last parameter is the encoding for the direction the miner is walking/running in
+
+            if (ButtonDown(_newPadStates[player], _buttons[Command.Jump]))
+            {
+                GameEngine.HandleInput(player, GameEngine.GameAction.jump, 0);
+            }
             if (_newPadStates[player].ThumbSticks.Left.Y < -0.5
                 || _newPadStates[player].IsButtonDown(Buttons.DPadDown))
             {
@@ -286,15 +291,15 @@ namespace TheGreatEscape.GameLogic
                 _direction = -1;
             }
 
-            if (Math.Abs(_newPadStates[player].ThumbSticks.Left.X) > 0.5f)
+            if (Math.Abs(_newPadStates[player].ThumbSticks.Left.X) > 0.65f)
             {
                 GameEngine.HandleInput(player,
                     ButtonUp(_newPadStates[player], _buttons[Command.Sprint])
                     ? GameEngine.GameAction.walk
                     : GameEngine.GameAction.run, _direction);
             }
-            float x = _newPadStates[player].ThumbSticks.Right.X,
-                y = _newPadStates[player].ThumbSticks.Right.Y;
+            float x = _newPadStates[player].ThumbSticks.Left.X,
+                y = _newPadStates[player].ThumbSticks.Left.Y;
 
             if (x * x + y * y >= 0.5f)
             {
@@ -316,11 +321,6 @@ namespace TheGreatEscape.GameLogic
             if (ButtonPressed(_oldPadStates[player], _newPadStates[player], _buttons[Command.ChangeTool]))
             {
                 GameEngine.HandleInput(player, GameEngine.GameAction.change_tool, 0);
-            }
-
-            if (ButtonDown(_newPadStates[player], _buttons[Command.Jump]))
-            {
-                GameEngine.HandleInput(player, GameEngine.GameAction.jump, 0);
             }
         }
     }

@@ -19,7 +19,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             foreach (GameObject q in gamestate.GetObjects(GameState.Handling.Solid))
                 if(q is RockHook) hooks.Add(q);
 
-            Vector2 offset = new Vector2(50, 0);
+            Vector2 offset = new Vector2(100, 0);
             AxisAllignedBoundingBox interactionBox = new AxisAllignedBoundingBox(
                 new Vector2(user.Position.X, user.Position.Y - 750) - offset,
                 user.Position + user.SpriteSize + offset);

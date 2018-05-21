@@ -32,7 +32,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Mass = 10;
             Visible = true;
             LastUpdated = new TimeSpan();
-            Moveable = false;
+            Movable = false;
             Activate = false;
             Displacement = displacement;
             ActivationId = actId;
@@ -153,7 +153,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Mass = 10;
             Visible = true;
             LastUpdated = new TimeSpan();
-            Moveable = false;
+            Movable = false;
         }
 
         public override Obj GetObj()
