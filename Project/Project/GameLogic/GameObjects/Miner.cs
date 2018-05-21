@@ -146,7 +146,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
         private MotionType GetCurrentState()
         {
-            if (this.Climbing)
+            if (this.Climbing || this.ClimbingRope)
             {
                 if (this.Speed.Y == 0)
                     CurrMotion.IsActive = false;
