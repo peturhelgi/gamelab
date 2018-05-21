@@ -124,7 +124,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                         mss = new MotionSpriteSheet(12, 64, m, new Vector2(2.3f, 1));
                         break;
                     case MotionType.climb:
-                        mss = new MotionSpriteSheet(12, 64, m, new Vector2(1, 1.25f));
+                        mss = new MotionSpriteSheet(12, 64, m, new Vector2(1.2f, 1.25f));
                         break;
                     default:
                         mss = null;
@@ -341,7 +341,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             obj.Velocity = Speed;
             obj.Mass = (float)Mass;
             obj.Type = "miner";
-            obj.Texture = TextureString;
+            obj.TextureString = TextureString;
             obj.Displacement = 0;
             obj.Direction = "-1";
             obj.ActivationKey = -1;

@@ -81,6 +81,18 @@ namespace TheGreatEscape.GameLogic.Renderer
                 }
                 else
                 {
+                    if (obj is RockHook)
+                    {
+                        HangingRope hangingRope = (obj as RockHook).GetRope();
+                        _spriteBatch.Draw(
+                           mode == Mode.DebugView ? _debugBox : hangingRope.SecondTexture,
+                           new Rectangle(
+                               (int)hangingRope.Position.X,
+                               (int)hangingRope.Position.Y,
+                               (int)hangingRope.SpriteSize.X,
+                               (int)hangingRope.SpriteSize.Y),
+                           Color.White);
+                    }
                     if (obj?.Texture != null)
                     {                        
                         _spriteBatch.Draw(

@@ -222,7 +222,6 @@
     <Content Include="Content\Sprites\Miners\MinerHandsInPants.png" />
     <Content Include="Content\Sprites\Miners\MinerPickaxe.png" />
     <Content Include="Content\Sprites\Miners\MinerRope.png" />
-    <Content Include="Content\Sprites\Misc\box.png" />
     <Content Include="Content\Sprites\Misc\green_light.png" />
     <Content Include="Content\Sprites\Misc\picker_wheel.png" />
     <Content Include="Content\Sprites\Misc\red_light.png" />
@@ -248,7 +247,9 @@
       <Version>11.0.2</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Content\Levels\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -88,7 +88,7 @@ namespace TheGreatEscape.GameLogic.GameObjects {
                 }
             }
         }
-        private void AddLights()
+        public void AddLights()
         {
             GameObjectFactory factory = new GameObjectFactory();
             Vector2 size = new Vector2(SpriteSize.Y) * 0.1f,
@@ -102,7 +102,7 @@ namespace TheGreatEscape.GameLogic.GameObjects {
                     Type = "secondary",
                     Position = pos,
                     SpriteSize = size,
-                    Texture = "Sprites/Misc/red_light"
+                    TextureString = "Sprites/Misc/red_light"
                 }) as PlatformBackground;
 
             UnlockedLight = factory.Create(
@@ -111,7 +111,7 @@ namespace TheGreatEscape.GameLogic.GameObjects {
                     Type = "secondary",
                     Position = pos,
                     SpriteSize = size,
-                    Texture = "Sprites/Misc/green_light"
+                    TextureString = "Sprites/Misc/green_light"
                 }) as PlatformBackground;
 
             LockedLight.Active = !Unlocked;
@@ -141,7 +141,7 @@ namespace TheGreatEscape.GameLogic.GameObjects {
             obj.Velocity = Speed;
             obj.Mass = (float)Mass;
             obj.Type = ToString();
-            obj.Texture = TextureString;
+            obj.TextureString = TextureString;
             obj.Displacement = 0;
             obj.Direction = "-1";
             obj.ActivationKey = -1;

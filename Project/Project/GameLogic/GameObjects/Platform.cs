@@ -89,7 +89,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             obj.Velocity = Speed;
             obj.Mass = (float)Mass;
             obj.Type = "platform";
-            obj.Texture = TextureString;
+            obj.TextureString = TextureString;
             obj.Displacement = Displacement;
             if (_movingInYdir) obj.Direction = "y";
             else obj.Direction = "x";
@@ -128,7 +128,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             obj.Velocity = Speed;
             obj.Mass = (float)Mass;
             obj.Type = "secondary";
-            obj.Texture = TextureString;
+            obj.TextureString = TextureString;
             obj.Displacement = 0;
             obj.Direction = "-1";
             obj.ActivationKey = -1;

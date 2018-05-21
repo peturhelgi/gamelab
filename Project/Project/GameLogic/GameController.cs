@@ -45,11 +45,11 @@ namespace TheGreatEscape.GameLogic
             _buttons[Command.Pause] = new List<Buttons> { Buttons.Start };
 
             _buttons[Command.Jump] = new List<Buttons> { Buttons.A };
-            _buttons[Command.Interact] = new List<Buttons> { Buttons.X, Buttons.B};
+            _buttons[Command.Interact] = new List<Buttons> { Buttons.X };
 
             _buttons[Command.ChangeTool] = new List<Buttons> { Buttons.RightShoulder };
-            _buttons[Command.Sprint] = new List<Buttons> { Buttons.LeftTrigger };
-            _buttons[Command.UseTool] = new List<Buttons> { Buttons.RightTrigger };
+            _buttons[Command.Sprint] = new List<Buttons> { Buttons.RightTrigger };
+            _buttons[Command.UseTool] = new List<Buttons> { Buttons.B };
 
             _maxNumPlayers = 2;
 
@@ -289,8 +289,7 @@ namespace TheGreatEscape.GameLogic
             if (Math.Abs(_newPadStates[player].ThumbSticks.Left.X) > 0.5f)
             {
                 GameEngine.HandleInput(player,
-                    ButtonUp(_newPadStates[player], _buttons[Command.Left])
-                    && ButtonUp(_newPadStates[player], _buttons[Command.Sprint])
+                    ButtonUp(_newPadStates[player], _buttons[Command.Sprint])
                     ? GameEngine.GameAction.walk
                     : GameEngine.GameAction.run, _direction);
             }
@@ -319,7 +318,7 @@ namespace TheGreatEscape.GameLogic
                 GameEngine.HandleInput(player, GameEngine.GameAction.change_tool, 0);
             }
 
-            if (ButtonPressed(_oldPadStates[player], _newPadStates[player], _buttons[Command.Jump]))
+            if (ButtonDown(_newPadStates[player], _buttons[Command.Jump]))
             {
                 GameEngine.HandleInput(player, GameEngine.GameAction.jump, 0);
             }

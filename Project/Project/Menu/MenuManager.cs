@@ -4,10 +4,14 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using EditorLogic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using TheGreatEscape.GameLogic;
+
+using TheGreatEscape.GameLogic.Util;
 
 namespace TheGreatEscape.Menu
 {
@@ -21,6 +25,10 @@ namespace TheGreatEscape.Menu
         PopOverMenu _gameOver;
         PopOverMenu _levelCompleted;
         PopOverMenu _pauseGame;
+        PopOverMenu _editorHelp;
+        PopOverMenu _editorMenu;
+        PopOverMenu _gameHelps;
+
         GameScreen _game;
         LoadingScreen _loading;
         EditorScreen _editor;
@@ -38,7 +46,8 @@ namespace TheGreatEscape.Menu
             ShowLevelEditor,
             ExitGame,
             Advance,
-            Back
+            Back,
+            ShowHelp
         };
 
         GameManager _gameManager;
@@ -51,6 +60,8 @@ namespace TheGreatEscape.Menu
         List<String> _allLevels;
         GreatEscape _theGame;
         List<Screen> screenStack;
+        public static Song Sound1, Sound2;
+        //public static SoundEffectInstance Song1, Song2;
 
         public KeyboardState OldKeyboardState, CurrKeyboardState;
         public GamePadState OldPlayerOneState, CurrPlayerOneState;
@@ -61,7 +72,7 @@ namespace TheGreatEscape.Menu
 
         public bool KeyPressed(params Keys[] keys)
         {
-            foreach(var key in keys)
+            foreach (var key in keys)
             {
                 if (OldKeyboardState.IsKeyUp(key)
                     && CurrKeyboardState.IsKeyDown(key))
@@ -83,6 +94,19 @@ namespace TheGreatEscape.Menu
                 }
             }
             return false;
+        }
+
+        public bool ButtonUp(int player, params Buttons[] buttons)
+        {
+            var currpadState = player == 0 ? CurrPlayerOneState : CurrPlayerTwoState;
+            foreach (var button in buttons)
+            {
+                if (currpadState.IsButtonDown(button))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public bool ButtonPressed(int player, params Buttons[] buttons)
@@ -149,15 +173,16 @@ namespace TheGreatEscape.Menu
             _mainMenu.AddSelection("level editor", Action.ShowLevelEditor, "Levels/" + _currentLevel, new Rectangle(220, 530, 349, 102));
             _mainMenu.AddSelection("exit game", Action.ExitGame, null, new Rectangle(152, 636, 185, 94));
 
-
+            _gameHelps = new PopOverMenu("Controls", _content.Load<Texture2D>("Sprites/ScreenOverlays/PlayControls"), selector, false, _graphicsDevice, this);
+            _editorHelp = new PopOverMenu("Controls", _content.Load<Texture2D>("Sprites/ScreenOverlays/EditorController"), selector, false, _graphicsDevice, this);
             _levelSelector = new SelectionMenu(
                 "Select a Level", _content.Load<Texture2D>("Sprites/Menus/LevelSelector"), selector, true, _graphicsDevice, this);
 
-
+            int size;
             for (int i = 0; i < files.Length; i++)
             {
                 string file = System.IO.Path.GetFileNameWithoutExtension(files[i]);
-                int size = file.Length;
+                size = file.Length;
                 _levelSelector.AddSelection(file, Action.StartGame, "Levels/" + file, new Rectangle(120, 100 + 120 * i, 35 * size, 100));
             }
 
@@ -178,6 +203,13 @@ namespace TheGreatEscape.Menu
             _pauseGame.AddSelection("Resume Game", Action.ResumeGame, "", new Rectangle(171, 194, 684, 167));
             _pauseGame.AddSelection("Restart Level", Action.StartGame, "", new Rectangle(171, 371, 687, 171));
             _pauseGame.AddSelection("Main Menu", Action.ShowMainMenu, "", new Rectangle(204, 537, 544, 149));
+
+            _editorMenu = new PopOverMenu("Menu",
+                _content.Load<Texture2D>("Sprites/Backgrounds/Level2Background"),
+                selector, true, _graphicsDevice, this);
+
+            _editorMenu.AddSelection("Continue", Action.Back, "", new Rectangle(0,0,0,0));
+            _editorMenu.AddSelection("Main Menu", Action.ShowMainMenu, "", new Rectangle(0,0,0,0));
 
             _loading = new LoadingScreen(_graphicsDevice, this);
 
@@ -204,6 +236,7 @@ namespace TheGreatEscape.Menu
                     _game.LoadGame((string)value);
                     _currentScreen = _game;
                     _prevScreen = null;
+                    screenStack.Add(_currentScreen);
                     break;
                 case Action.ShowLevelSelector:
                     _prevScreen = _currentScreen;
@@ -232,6 +265,7 @@ namespace TheGreatEscape.Menu
                 case Action.ShowLevelEditor:
                     _editor.LoadGame((string)value);
                     _currentScreen = _editor;
+                    screenStack.Add(_currentScreen);
                     break;
 
                 case Action.ShowGameOverScreen:
@@ -261,13 +295,21 @@ namespace TheGreatEscape.Menu
                     break;
                 case Action.ShowPauseMenu:
                     _prevScreen = _currentScreen;
-                    _popOver = _pauseGame;
+                    if (_currentScreen is EditorScreen)
+                    {
+                        _popOver = _editorMenu;
+                    }
+                    else
+                    {
+                        _popOver = _pauseGame;
+                        retry = _popOver.GetSelection(1);
+                        retry.Value = "Levels/" + _allLevels[_currentLevelIdx];
+                        _popOver.SetSelection(1, retry);
 
-                    retry = _popOver.GetSelection(1);
-                    retry.Value = "Levels/" + _allLevels[_currentLevelIdx];
-                    _popOver.SetSelection(1, retry);
+                    }
 
                     _currentScreen = _popOver;
+                    screenStack.Add(_currentScreen);
                     break;
 
                 case Action.ResumeGame:
@@ -294,6 +336,25 @@ namespace TheGreatEscape.Menu
                 case Action.ExitGame:
                     _theGame.Exit();
                     break;
+                case Action.ShowHelp:
+                    if (_currentScreen == _gameHelps
+                        || _currentScreen == _editorHelp)
+                    {
+                        CallAction(Action.Back, 0);
+                        break;
+                    }
+                    _prevScreen = _currentScreen;
+                    if (_prevScreen == _editorMenu)
+                    {
+                        _currentScreen = _editorHelp;
+                    }
+                    else if (_prevScreen == _game)
+                    {
+                        _currentScreen = _gameHelps;
+                    }
+
+                    screenStack.Add(_currentScreen);
+                    break;
                 default:
                     break;
             }
@@ -303,6 +364,10 @@ namespace TheGreatEscape.Menu
         public void LoadContent()
         {
             MenuFont = _content.Load<SpriteFont>("Fonts/Orbitron");
+            Sound1 = _content.Load<Song>("soft_song");
+            Sound2 = _content.Load<Song>("suspense_song");
+            MediaPlayer.IsRepeating = true;
+            //MediaPlayer.Play(MenuManager.Sound1);
 
         }
 
@@ -322,8 +387,9 @@ namespace TheGreatEscape.Menu
             CurrKeyboardState = Keyboard.GetState();
             CurrPlayerOneState = GamePad.GetState(PlayerIndex.One);
             CurrPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
-            if(_gameManager?.GameEngine?.GameState != null
-                && _gameManager.GameEngine.GameState.Completed) {
+            if (_gameManager?.GameEngine?.GameState != null
+                && _gameManager.GameEngine.GameState.Completed)
+            {
 
                 CallAction(MenuManager.Action.ShowLevelCompletedScreen, null);
             }
@@ -362,7 +428,8 @@ namespace TheGreatEscape.Menu
         public MenuManager.Action Action;
         public object Value;
         public Rectangle Position;
-        public Selection(string text, MenuManager.Action action, object value, Rectangle position)
+        public Selection(string text, MenuManager.Action action, object value, 
+            Rectangle position)
         {
             Text = text;
             Action = action;
@@ -383,6 +450,9 @@ namespace TheGreatEscape.Menu
         {
             _gameManager.UnloadContent();
             _gameManager.LoadLevel(level);
+            MediaPlayer.Stop();
+            MediaPlayer.Play(MenuManager.Sound2);
+
         }
 
         public override void Draw(GameTime gameTime, int width, int height)
@@ -431,9 +501,14 @@ namespace TheGreatEscape.Menu
 
         public override void Update(GameTime gameTime)
         {
-            if ((_manager.KeyPressed(Keys.Escape)) ||
-                (_manager.ButtonPressed(0, Buttons.Start)) ||
-                (_manager.ButtonPressed(1, Buttons.Start)))
+            if (_manager.ButtonPressed(0, Buttons.Start) 
+                || _manager.CurrKeyboardState.IsKeyDown(Keys.S))
+            {
+                _manager.CallAction(MenuManager.Action.ShowPauseMenu, 0);
+            }
+            else if ((_manager.KeyPressed(Keys.Escape) ||
+                _manager.ButtonPressed(0, Buttons.Start) ||
+                _manager.ButtonPressed(1, Buttons.Start)))
             {
                 _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
             }
@@ -543,6 +618,13 @@ namespace TheGreatEscape.Menu
         {
             // TODO add support for (multiple) Controllers
             // Keyboard controls
+            if (_manager.KeyPressed(Keys.Enter, Keys.Space))
+            {
+                _manager.CallAction(_selections[_currentPosition].Action, _selections[_currentPosition].Value);
+                _lastSelection = _currentPosition;
+                _currentPosition = 0;
+            }
+
             if (_manager.KeyPressed(Keys.Down))
             {
                 _currentPosition = (++_currentPosition) % _selections.Count;
@@ -554,25 +636,20 @@ namespace TheGreatEscape.Menu
             }
 
 
-            if (_manager.KeyPressed(Keys.Enter, Keys.Space))
+            if (_selections.Count > 0)
             {
-                _manager.CallAction(_selections[_currentPosition].Action, _selections[_currentPosition].Value);
-                _lastSelection = _currentPosition;
-                _currentPosition = 0;
+                // Xbox controls for player one
+                if (_manager.ButtonPressed(0, Buttons.LeftThumbstickDown, Buttons.DPadDown)
+                    || _manager.ButtonPressed(1, Buttons.LeftThumbstickDown, Buttons.DPadDown))
+                {
+                    _currentPosition = (++_currentPosition) % _selections.Count;
+                }
+                if (_manager.ButtonPressed(0, Buttons.LeftThumbstickUp, Buttons.DPadUp)
+                    || _manager.ButtonPressed(1, Buttons.LeftThumbstickUp, Buttons.DPadUp))
+                {
+                    _currentPosition = --_currentPosition < 0 ? _selections.Count - 1 : _currentPosition;
+                }
             }
-
-            // Xbox controls for player one
-            if(_manager.ButtonPressed(0, Buttons.LeftThumbstickDown, Buttons.DPadDown)
-                || _manager.ButtonPressed(1, Buttons.LeftThumbstickDown, Buttons.DPadDown))
-            {
-                _currentPosition = (++_currentPosition) % _selections.Count;
-            }
-            if (_manager.ButtonPressed(0, Buttons.LeftThumbstickUp, Buttons.DPadUp)
-                || _manager.ButtonPressed(1, Buttons.LeftThumbstickUp, Buttons.DPadUp))
-            {
-                _currentPosition = --_currentPosition < 0 ? _selections.Count - 1 : _currentPosition;
-            }
-
             if (_manager.ButtonPressed(0, Buttons.A)
                || _manager.ButtonPressed(1, Buttons.A))
             {
@@ -586,6 +663,12 @@ namespace TheGreatEscape.Menu
                 _manager.CallAction(MenuManager.Action.Back, null);
                 _currentPosition = 0;
             }
+            if (_manager.ButtonPressed(0, Buttons.Y) || _manager.ButtonPressed(1, Buttons.Y))
+            {
+                _manager.CallAction(MenuManager.Action.ShowHelp, 0);
+                _currentPosition = 0;
+            }
+
         }
 
         public override void Draw(GameTime gameTime, int width, int height)
@@ -596,76 +679,108 @@ namespace TheGreatEscape.Menu
 
             float stretchX = (float)width / 1920f;
             float stretchY = (float)height / 1080f;
-            Selection sel = _selections[_currentPosition];
-
-            if (!_isDynamic)
+            Selection sel = _selections.Count > _currentPosition
+                ? _selections[_currentPosition]
+                : null;
+ 
+            if (!_isDynamic && sel != null)
             {
-                _spriteBatch.Draw(_selector, new Rectangle((int)((float)sel.Position.Right * stretchX), (int)((float)sel.Position.Top * stretchY), (int)(140f * stretchX), (int)(100f * stretchY)), Color.White);
-            }
-            //Draw some level names
+                _spriteBatch.Draw(
+                    _selector, 
+                    new Rectangle(
+                        (int)(sel.Position.Right * stretchX), 
+                        (int)(sel.Position.Top * stretchY), 
+                        (int)(140f * stretchX), 
+                        (int)(100f * stretchY)), 
+                    Color.White);
+            }            
+
             else
             {
-                int[] levelsToDraw;
-                if (_currentPosition == 0 || _currentPosition == 1 || _currentPosition == 2)
+                int maxNumOnScreen = (int)(height / _manager.MenuFont.MeasureString("M").Y);
+                int min_id, items_on_screen = Math.Min(maxNumOnScreen, _selections.Count),
+                    half = items_on_screen / 2;
+                if (_currentPosition < half)
                 {
-                    levelsToDraw = new int[] { 0, 1, 2, 3, 4, 5, 6 };
+                    min_id = 0;
                 }
-                else if (_currentPosition == _selections.Count - 1 || _currentPosition == _selections.Count - 2 || _currentPosition == _selections.Count - 3)
+                else if(_currentPosition >= _selections.Count - half)
                 {
-                    int i = _selections.Count;
-                    levelsToDraw = new int[] { i - 7, i - 6, i - 5, i - 4, i - 3, i - 2, i - 1 };
+                    min_id = _selections.Count - items_on_screen;
                 }
                 else
-                {
-                    int i = _currentPosition;
-                    levelsToDraw = new int[] { i - 3, i - 2, i - 1, i, i + 1, i + 2, i + 3 };
+                {                    
+                    min_id = _currentPosition - half;
                 }
+                Vector2 yOffsetter = new Vector2(
+                    0, 
+                    (int)_manager.MenuFont.MeasureString("M").Y);
+                Vector2 xOffsetter = new Vector2(50, 0),
+                    ySpacing = new Vector2(0, 10),
+                    origin, offset;
 
-                for (var i = 0; i < 7; i++)
+                for (var i = 0; i < items_on_screen; i++)
                 {
-                    int idx = levelsToDraw[i];
-                    if (idx < _selections.Count) //If level exists
+                    int idx = min_id + i;
+                    // If level exists.
+                    if (idx < _selections.Count) 
                     {
-                        _spriteBatch.DrawString(_manager.MenuFont, _selections[idx].Text,
-                        new Vector2((int)((float)_selections[idx].Position.Left * stretchX),
-                        (int)((float)(_selections[i].Position.Top - 20) * stretchY)),
-                        Color.White, 0f, new Vector2(),
-                        stretchY, new SpriteEffects(), 0f);
+                        offset = xOffsetter
+                            + i * yOffsetter + ySpacing;
+                        origin = _manager.MenuFont.MeasureString(_selections[idx].Text) / 2;
+                        _spriteBatch.DrawString(
+                            _manager.MenuFont,
+                            _selections[idx].Text,
+                             offset + origin,
+                            Color.White, 0f, origin,
+                            1.0f, new SpriteEffects(), 0f);
                     }
                 }
 
-                sel = _selections[_currentPosition];
+                if (sel == null)
+                {
+                    _spriteBatch.End();
+                    return;
+                }
+
+
+                Vector2 position = new Vector2(
+                    (int)(xOffsetter.X
+                    + _manager.MenuFont.MeasureString(
+                        _selections[_currentPosition].Text + "-").X),
+                    0
+                    );
+
                 int total = _selections.Count;
-                if (_currentPosition == 0)
+
+                position.Y = ySpacing.Y;
+                if(_currentPosition < half)
                 {
-                    _spriteBatch.Draw(_selector, new Rectangle((int)((float)sel.Position.Right * stretchX), (int)(100f * stretchY), (int)(140f * stretchX), (int)(100f * stretchY)), Color.White);
+                    position.Y += _currentPosition * yOffsetter.Y;
                 }
-                else if (_currentPosition == 1)
+                else if (_currentPosition >= total - half)
                 {
-                    _spriteBatch.Draw(_selector, new Rectangle((int)((float)sel.Position.Right * stretchX), (int)(220f * stretchY), (int)(140f * stretchX), (int)(100f * stretchY)), Color.White);
-                }
-                else if (_currentPosition == 2)
-                {
-                    _spriteBatch.Draw(_selector, new Rectangle((int)((float)sel.Position.Right * stretchX), (int)(340f * stretchY), (int)(140f * stretchX), (int)(100f * stretchY)), Color.White);
-                }
-                else if (_currentPosition == total - 1)
-                {
-                    _spriteBatch.Draw(_selector, new Rectangle((int)((float)sel.Position.Right * stretchX), (int)(820f * stretchY), (int)(140f * stretchX), (int)(100f * stretchY)), Color.White);
-                }
-                else if (_currentPosition == total - 2)
-                {
-                    _spriteBatch.Draw(_selector, new Rectangle((int)((float)sel.Position.Right * stretchX), (int)(700f * stretchY), (int)(140f * stretchX), (int)(100f * stretchY)), Color.White);
-                }
-                else if (_currentPosition == total - 3)
-                {
-                    _spriteBatch.Draw(_selector, new Rectangle((int)((float)sel.Position.Right * stretchX), (int)(580f * stretchY), (int)(140f * stretchX), (int)(100f * stretchY)), Color.White);
+                    position.Y += (_currentPosition - min_id) * yOffsetter.Y;
                 }
                 else
                 {
-                    _spriteBatch.Draw(_selector, new Rectangle((int)((float)sel.Position.Right * stretchX), (int)(460f * stretchY), (int)(140f * stretchX), (int)(100f * stretchY)), Color.White);
+                    position.Y += (half) * yOffsetter.Y;
                 }
 
-
+                origin = new Vector2(
+                    (int)(0f * stretchX),
+                    (int)_selector.Bounds.Size.Y) / 2;
+    
+                Vector2 scale = (_manager.MenuFont.MeasureString("level")) / _selector.Bounds.Size.ToVector2();
+                _spriteBatch.Draw(_selector,
+                    position + origin*scale, //position
+                    new Rectangle(Point.Zero, _selector.Bounds.Size), //source rectangle
+                    Color.White, //color
+                    0.0f, //rotation
+                    origin, //origin
+                    scale, //scale
+                    SpriteEffects.None, //effects
+                    0.0f);
             }
 
             _spriteBatch.End();
