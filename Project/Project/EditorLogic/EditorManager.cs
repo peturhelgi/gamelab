@@ -140,6 +140,7 @@ namespace EditorLogic
                     if (objType == "plankrb") continue;
                     if (objType == "plankrt") continue;
                     if (objType == "plankxrope") continue;
+                    if (objType == "plankkey") continue;
 
                         gameObject.Texture = gameObj.Value;
 

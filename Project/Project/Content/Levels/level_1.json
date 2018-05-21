@@ -1,640 +1,1354 @@
 {
-    "levelnr": 0,
-    "levelname": null,
-    "prevlvl": 0,
-    "prevlvlname": null,
-    "nextlvl": 0,
-    "nextlvlname": null,
-    "background": "Sprites/Backgrounds/Level1Background",
-    "objects": [
-        {
-            "dim": {
-                "X": 37.0,
-                "Y": 37.0
-            },
-            "pos": {
-                "X": 2068.5,
-                "Y": -205.5
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 10.0,
-            "type": "secondary",
-            "texture": "Sprites/Misc/red_light",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+  "$type": "TheGreatEscape.LevelManager.Level, TheGreatEscape",
+  "levelnr": 0,
+  "levelname": null,
+  "prevlvl": 0,
+  "prevlvlname": null,
+  "nextlvl": 0,
+  "nextlvlname": null,
+  "background": "Sprites/Backgrounds/Level1Background",
+  "objects": {
+    "$type": "System.Collections.Generic.List`1[[TheGreatEscape.LevelManager.Obj, TheGreatEscape]], System.Private.CoreLib",
+    "$values": [
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 34.9822273,
+          "Y": 34.9822273
         },
-        {
-            "dim": {
-                "X": 37.0,
-                "Y": 37.0
-            },
-            "pos": {
-                "X": 2068.5,
-                "Y": -205.5
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 10.0,
-            "type": "secondary",
-            "texture": "Sprites/Misc/green_light",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 3279.73364,
+          "Y": 2065.305
         },
-        {
-            "dim": {
-                "X": 150.0,
-                "Y": 634.8603
-            },
-            "pos": {
-                "X": 3579.26831,
-                "Y": 318.8218
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 10.0,
-            "type": "ladder",
-            "texture": "Sprites/Interactables/ladder_short",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
         },
-        {
-            "dim": {
-                "X": 34.9822273,
-                "Y": 34.9822273
-            },
-            "pos": {
-                "X": 3279.73364,
-                "Y": 2065.305
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 10.0,
-            "type": "secondary",
-            "texture": "",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "m": 10.0,
+        "type": "secondary",
+        "texture": "",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 34.9822273,
+          "Y": 34.9822273
         },
-        {
-            "dim": {
-                "X": 34.9822273,
-                "Y": 34.9822273
-            },
-            "pos": {
-                "X": 3279.73364,
-                "Y": 2065.305
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 10.0,
-            "type": "secondary",
-            "texture": "",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 3279.73364,
+          "Y": 2065.305
         },
-        {
-            "dim": {
-                "X": 296.5992,
-                "Y": 349.822266
-            },
-            "pos": {
-                "X": 3148.92529,
-                "Y": 2117.77832
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 0.0,
-            "type": "door",
-            "texture": "Sprites/Interactables/Door",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": 0,
-            "requirement": true,
-            "ropelength": -1.0
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
         },
-        {
-            "dim": {
-                "X": 150.0,
-                "Y": 100.0
-            },
-            "pos": {
-                "X": 4008.47656,
-                "Y": 187.008789
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 0.0,
-            "type": "key",
-            "texture": "Sprites/Interactables/key",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": 0,
-            "requirement": false,
-            "ropelength": -1.0
+        "m": 10.0,
+        "type": "secondary",
+        "texture": "",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 150.0,
+          "Y": 792.926453
         },
-        {
-            "dim": {
-                "X": 500.0,
-                "Y": 718.0
-            },
-            "pos": {
-                "X": -400.0,
-                "Y": 800.0
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 0.0,
-            "type": "ground",
-            "texture": "Sprites/Grounds/ground_tall",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 3656.64136,
+          "Y": -43.8114
         },
-        {
-            "dim": {
-                "X": 515.7112,
-                "Y": 547.2244
-            },
-            "pos": {
-                "X": 77.3697739,
-                "Y": 981.877563
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 0.0,
-            "type": "ground",
-            "texture": "Sprites/Grounds/ground_1",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
         },
-        {
-            "dim": {
-                "X": 1671.59253,
-                "Y": 354.899017
-            },
-            "pos": {
-                "X": 552.6958,
-                "Y": 1175.555
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 0.0,
-            "type": "ground",
-            "texture": "Sprites/Grounds/ground_2",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "m": 10.0,
+        "type": "secondary",
+        "texture": "Sprites/Misc/platform_mechanismy",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 959.893066,
+          "Y": 100.0
         },
-        {
-            "dim": {
-                "X": 1657.82837,
-                "Y": 382.9949
-            },
-            "pos": {
-                "X": -448.892944,
-                "Y": 141.342072
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 0.0,
-            "type": "ground",
-            "texture": "Sprites/Grounds/ground_3",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 4070.61841,
+          "Y": 118.151413
         },
-        {
-            "dim": {
-                "X": 150.0,
-                "Y": 100.0
-            },
-            "pos": {
-                "X": 2270.87183,
-                "Y": 1515.45679
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 0.0,
-            "type": "ground",
-            "texture": "Sprites/Grounds/ground_4",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
         },
-        {
-            "dim": {
-                "X": 352.914673,
-                "Y": 302.3168
-            },
-            "pos": {
-                "X": 1400.22522,
-                "Y": 923.2408
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 0.0,
-            "type": "rock",
-            "texture": "Sprites/Rocks/rock_1",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "m": 10.0,
+        "type": "secondary",
+        "texture": "Sprites/Misc/platform_mechanismx",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 20.69852,
+          "Y": 20.69852
         },
-        {
-            "dim": {
-                "X": 529.919739,
-                "Y": 592.6769
-            },
-            "pos": {
-                "X": 3695.86768,
-                "Y": 332.8435
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 0.0,
-            "type": "ground",
-            "texture": "Sprites/Grounds/ground_low",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 4803.071,
+          "Y": 834.091736
         },
-        {
-            "dim": {
-                "X": 2196.8645,
-                "Y": 375.675934
-            },
-            "pos": {
-                "X": 2432.52783,
-                "Y": 1157.88928
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 0.0,
-            "type": "ground",
-            "texture": "Sprites/Grounds/ground_2",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
         },
-        {
-            "dim": {
-                "X": 1013.68915,
-                "Y": 714.1564
-            },
-            "pos": {
-                "X": 4618.493,
-                "Y": 924.6092
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 0.0,
-            "type": "ground",
-            "texture": "Sprites/Grounds/ground_3",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "m": 10.0,
+        "type": "secondary",
+        "texture": "Sprites/Misc/green_light",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 20.69852,
+          "Y": 20.69852
         },
-        {
-            "dim": {
-                "X": 1583.73547,
-                "Y": 720.0691
-            },
-            "pos": {
-                "X": 4154.99072,
-                "Y": -254.284012
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 0.0,
-            "type": "ground",
-            "texture": "Sprites/Grounds/ground_tall",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 4803.071,
+          "Y": 834.091736
         },
-        {
-            "dim": {
-                "X": 116.715836,
-                "Y": 83.92051
-            },
-            "pos": {
-                "X": 3052.80957,
-                "Y": 1098.86877
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 10.0,
-            "type": "crate",
-            "texture": "Sprites/Interactables/crate",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
         },
-        {
-            "dim": {
-                "X": 3146.99976,
-                "Y": 207.26442
-            },
-            "pos": {
-                "X": 2960.97241,
-                "Y": 2431.48145
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 0.0,
-            "type": "ground",
-            "texture": "Sprites/Grounds/ground_2",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "m": 10.0,
+        "type": "secondary",
+        "texture": "Sprites/Misc/red_light",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 500.0,
+          "Y": 718.0
         },
-        {
-            "dim": {
-                "X": 1040.92944,
-                "Y": 2429.9812
-            },
-            "pos": {
-                "X": 5913.98242,
-                "Y": 251.105469
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 0.0,
-            "type": "ground",
-            "texture": "Sprites/Grounds/ground_tall",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": -400.0,
+          "Y": 800.0
         },
-        {
-            "dim": {
-                "X": 2402.82227,
-                "Y": 1094.5896
-            },
-            "pos": {
-                "X": 979.0062,
-                "Y": -383.17215
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 0.0,
-            "type": "ground",
-            "texture": "Sprites/Grounds/ground_suspended_1",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
         },
-        {
-            "dim": {
-                "X": 852.8917,
-                "Y": 318.4956
-            },
-            "pos": {
-                "X": 3368.87329,
-                "Y": -426.875549
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 0.0,
-            "type": "ground",
-            "texture": "Sprites/Grounds/ground_suspended_2",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "m": 0.0,
+        "type": "ground",
+        "texture": "Sprites/Grounds/ground_tall",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 1217.62219,
+          "Y": 148.527237
         },
-        {
-            "dim": {
-                "X": 150.0,
-                "Y": 100.0
-            },
-            "pos": {
-                "X": 5701.88525,
-                "Y": 524.8289
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 10.0,
-            "type": "rockandhook",
-            "texture": "Sprites/Interactables/rockandhook",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "Sprites/Misc/Rope",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": 2000.0
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 70.99619,
+          "Y": 887.7702
         },
-        {
-            "dim": {
-                "X": 61.5,
-                "Y": 185.0
-            },
-            "pos": {
-                "X": 0,
-                "Y": 639.9
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 80.0,
-            "type": "miner",
-            "texture": "Sprites/Miners/MinerStatic",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "pickaxe",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
         },
-        {
-            "dim": {
-                "X": 61.5,
-                "Y": 185.0
-            },
-            "pos": {
-                "X": -77.34128,
-                "Y": 639.9
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 80.0,
-            "type": "miner",
-            "texture": "Sprites/Miners/MinerPickaxe",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "rope",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
-        }
-    ],
-    "resources": {
-        "pickaxe": 1,
-        "rope": 1
-    }
+        "m": 0.0,
+        "type": "ground",
+        "texture": "Sprites/Grounds/ground_2",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 1217.62219,
+          "Y": 148.527237
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 1411.90417,
+          "Y": 887.7702
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 0.0,
+        "type": "ground",
+        "texture": "Sprites/Grounds/ground_2",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 1217.62219,
+          "Y": 148.527237
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 2612.692,
+          "Y": 802.836853
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 0.0,
+        "type": "ground",
+        "texture": "Sprites/Grounds/ground_2",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 255.132172,
+          "Y": 890.599
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 3825.07715,
+          "Y": 58.78738
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 0.0,
+        "type": "ground",
+        "texture": "Sprites/Grounds/ground_tall",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 1217.62219,
+          "Y": 148.527237
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 4887.76025,
+          "Y": 79.8894043
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 0.0,
+        "type": "ground",
+        "texture": "Sprites/Grounds/ground_2",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 1777.6687,
+          "Y": 159.902145
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 4585.697,
+          "Y": 1033.12524
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 0.0,
+        "type": "ground",
+        "texture": "Sprites/Grounds/ground_2",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 2597.53955,
+          "Y": 148.527237
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": -399.969452,
+          "Y": 331.384338
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 0.0,
+        "type": "ground",
+        "texture": "Sprites/Grounds/ground_2",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 1134.26453,
+          "Y": 133.1714
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 2165.17163,
+          "Y": 211.568451
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 0.0,
+        "type": "ground",
+        "texture": "Sprites/Grounds/ground_2",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 255.132172,
+          "Y": 890.599
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 3175.08984,
+          "Y": -528.786255
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 0.0,
+        "type": "ground",
+        "texture": "Sprites/Grounds/ground_tall",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 255.132172,
+          "Y": 890.599
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": -628.840332,
+          "Y": 298.183838
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 0.0,
+        "type": "ground",
+        "texture": "Sprites/Grounds/ground_tall",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 3027.03687,
+          "Y": 131.36705
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 3389.42285,
+          "Y": -416.649261
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 0.0,
+        "type": "ground",
+        "texture": "Sprites/Grounds/ground_2",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 484.0215,
+          "Y": 1635.73108
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 6336.55762,
+          "Y": -443.329529
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 0.0,
+        "type": "ground",
+        "texture": "Sprites/Grounds/ground_tall",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 34.9822273,
+          "Y": 34.9822273
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 3279.73364,
+          "Y": 2065.305
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 10.0,
+        "type": "secondary",
+        "texture": "",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 34.9822273,
+          "Y": 34.9822273
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 3279.73364,
+          "Y": 2065.305
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 10.0,
+        "type": "secondary",
+        "texture": "",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 150.0,
+          "Y": 792.926453
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 3656.64136,
+          "Y": -43.8114
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 10.0,
+        "type": "secondary",
+        "texture": "Sprites/Misc/platform_mechanismy",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 131.0,
+          "Y": 23.0
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 3531.59082,
+          "Y": 790.920837
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 10.0,
+        "type": "button",
+        "texture": "Sprites/Interactables/button_floor",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": 1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 959.893066,
+          "Y": 100.0
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 4070.61841,
+          "Y": 118.151413
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 10.0,
+        "type": "secondary",
+        "texture": "Sprites/Misc/platform_mechanismx",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 104.557266,
+          "Y": 105.62011
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 3953.83618,
+          "Y": -21.9327259
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 10.0,
+        "type": "lever",
+        "texture": "Sprites/Interactables/lever_left",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": 2,
+        "secondtexture": "Sprites/Interactables/lever_right",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 20.69852,
+          "Y": 20.69852
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 4803.071,
+          "Y": 834.091736
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 10.0,
+        "type": "secondary",
+        "texture": "Sprites/Misc/green_light",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 20.69852,
+          "Y": 20.69852
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 4803.071,
+          "Y": 834.091736
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 10.0,
+        "type": "secondary",
+        "texture": "Sprites/Misc/red_light",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 180.038971,
+          "Y": 206.9852
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 4723.40039,
+          "Y": 865.1395
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 0.0,
+        "type": "door",
+        "texture": "Sprites/Interactables/Door",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": 2,
+        "requirement": true,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 61.5,
+          "Y": 185.0
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 16.8000031,
+          "Y": 639.9
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 80.0,
+        "type": "miner",
+        "texture": "Sprites/Miners/MinerStatic",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "rope",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 61.5,
+          "Y": 185.0
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": -77.34128,
+          "Y": 639.9
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 80.0,
+        "type": "miner",
+        "texture": "Sprites/Miners/MinerPickaxe",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "rope",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 192.4146,
+          "Y": 170.040939
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 2096.10815,
+          "Y": 742.6293
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 43.6244774,
+        "type": "rock",
+        "texture": "Sprites/Rocks/rock_4",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 75,
+          "Y": 75
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 2808.908,
+          "Y": 740.5875
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 10.0,
+        "type": "crate",
+        "texture": "Sprites/Interactables/crate",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 150.0,
+          "Y": 100.0
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 3656.64136,
+          "Y": 669.115051
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 10.0,
+        "type": "platform",
+        "texture": "Sprites/Interactables/platform_escalator",
+        "displacement": 792.926453,
+        "direction": "y",
+        "activationkey": 1,
+        "secondtexture": "Sprites/Misc/platform_mechanismy",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 150.0,
+          "Y": 100.0
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 4070.61841,
+          "Y": 68.15141
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 10.0,
+        "type": "platform",
+        "texture": "Sprites/Interactables/platform_escalator",
+        "displacement": 650,
+        "direction": "x",
+        "activationkey": 2,
+        "secondtexture": "Sprites/Misc/platform_mechanismx",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 512,
+          "Y": 125
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 1794.05249,
+          "Y": 645.6142
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 7.307194,
+        "type": "sign",
+        "texture": "Sprites/Interactables/plankPickaxe",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 512,
+          "Y": 125
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 1794.05249,
+          "Y": 500.6142
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 7.307194,
+        "type": "sign",
+        "texture": "Sprites/Interactables/plankRB",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 512,
+          "Y": 125
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 2677.37744,
+          "Y": 565.5017
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 5.4754,
+        "type": "sign",
+        "texture": "Sprites/Interactables/plankX",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 512,
+          "Y": 125
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 3933.53174,
+          "Y": -180.4522018
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 5.4754,
+        "type": "sign",
+        "texture": "Sprites/Interactables/plankX",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 512,
+          "Y": 125
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 5590.679,
+          "Y": -150.55423
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 5.4754,
+        "type": "sign",
+        "texture": "Sprites/Interactables/plankBrope",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 512,
+          "Y": 125
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 5590.679,
+          "Y": -280.55423
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 5.4754,
+        "type": "sign",
+        "texture": "Sprites/Interactables/plankXrope",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 150.0,
+          "Y": 100.0
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 6125.881,
+          "Y": -204.6105
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 10.0,
+        "type": "rockandhook",
+        "texture": "Sprites/Interactables/rockandhook",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "Sprites/Misc/Rope",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": 1000.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 512,
+          "Y": 125
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 946.0321,
+          "Y": 645.6142
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 7.307194,
+        "type": "sign",
+        "texture": "Sprites/Interactables/plankA",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 512,
+          "Y": 125
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 155.437866,
+          "Y": 645.6142
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 7.307194,
+        "type": "sign",
+        "texture": "Sprites/Interactables/plankRT",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 94.0,
+          "Y": 31.0
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 5154.04639,
+          "Y": 991.9715
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 0.0,
+        "type": "key",
+        "texture": "Sprites/Interactables/key",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": 2,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+      {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 512,
+          "Y": 125
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 5523.40039,
+          "Y": 665.1395
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 7.307194,
+        "type": "sign",
+        "texture": "Sprites/Interactables/plankKey",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      },
+    {
+        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
+        "dim": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 512,
+          "Y": 125
+        },
+        "pos": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 4623.40039,
+          "Y": 665.1395
+        },
+        "vel": {
+          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "m": 7.307194,
+        "type": "sign",
+        "texture": "Sprites/Interactables/plankX",
+        "displacement": 0.0,
+        "direction": "-1",
+        "activationkey": -1,
+        "secondtexture": "-1",
+        "tool": "-1",
+        "id": -1,
+        "requirement": false,
+        "ropelength": -1.0
+      }
+    ]
+  },
+  "resources": {
+    "$type": "System.Collections.Generic.SortedDictionary`2[[System.String, System.Private.CoreLib],[System.Int32, System.Private.CoreLib]], System.Collections",
+    "pickaxe": 2,
+    "rope": 2
+  }
 }
