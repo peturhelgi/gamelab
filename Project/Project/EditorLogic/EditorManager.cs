@@ -121,8 +121,6 @@ namespace EditorLogic
                     {
                         (gameObject as Door).LockedLight.Texture = GameObjectTextures["Misc"]["red_light"];
                         (gameObject as Door).UnlockedLight.Texture = GameObjectTextures["Misc"]["green_light"];
-                        (gameObject as Door).LockedLight.Active = (gameObject as Door).RequiresKey;
-                        (gameObject as Door).UnlockedLight.Active = !(gameObject as Door).RequiresKey;
                     }
                     if (objType == "rockandhook")
                     {
@@ -192,6 +190,22 @@ namespace EditorLogic
                 foreach (var obj in CurrentObjects)
                 {
                     _engine.GameState.Remove(obj);
+                    if (obj is Door)
+                    {
+                        _engine.GameState.Remove((obj as Door).LockedLight);
+                        _engine.GameState.Remove((obj as Door).UnlockedLight);
+                    }
+
+                    if (obj is Key)
+                    {
+                        List<GameObject> doors = GetAllObjectsOfType(typeof(Door));
+                        foreach (Door door in doors)
+                        {
+                            if (door.KeyId == (obj as Key).Id)
+                                door.RemoveKey(door.KeyId);
+                        }
+                    }
+
                 }
             }
             CurrentObjects = null;
@@ -200,17 +214,19 @@ namespace EditorLogic
         // Called only when placing an object from the PickerWheel
         public void CreateNewGameObject(GameObject newObject)
         {
-            GameObject obj = GameObject.Clone(newObject);
-            CurrentObjects = new List<GameObject>();
-            if(newObject is Door)
+            GameObjectFactory gobjFactory = new GameObjectFactory();
+
+            GameObject obj;
+
+            obj = GameObject.Clone(newObject);
+
+            if (newObject is Door)
             {
-                obj = GameObject.Clone(newObject);
-                (obj as Door).LockedLight = new PlatformBackground(Vector2.Zero, Vector2.Zero, "");
-                (obj as Door).UnlockedLight = new PlatformBackground(Vector2.Zero, Vector2.Zero, "");
-                (obj as Door).LockedLight.Texture = GameObjectTextures["Misc"]["red_light"];
-                (obj as Door).UnlockedLight.Texture = GameObjectTextures["Misc"]["green_light"];
-                (obj as Door).SetLights();
+                (obj as Door).LockedLight = GameObject.Clone((newObject as Door).LockedLight) as PlatformBackground;
+                (obj as Door).UnlockedLight = GameObject.Clone((newObject as Door).UnlockedLight) as PlatformBackground;
             }
+
+            CurrentObjects = new List<GameObject>();
 
             CurrentObjects.Add(obj);
 
@@ -225,7 +241,7 @@ namespace EditorLogic
             {
                 Type = "key",
                 Position = CursorPosition,
-                SpriteSize = new Vector2(150, 100),
+                SpriteSize = new Vector2(94, 31),
                 Id = GameObjectFactory.currentKey
             };
             GameObjectFactory factory = new GameObjectFactory();
@@ -350,7 +366,7 @@ namespace EditorLogic
                         door.RemoveKey(door.KeyId);
                 }
 
-            AuxiliaryObject = null;
+                AuxiliaryObject = null;
             }
         }
 
@@ -362,8 +378,16 @@ namespace EditorLogic
             {
                 CurrentObjects = new List<GameObject>();
                 CursorPosition = new Vector2(float.MaxValue);
-                foreach (GameObject obj in collisions)
+                GameObject obj;  
+                foreach (GameObject newObject in collisions)
                 {
+                    obj = GameObject.Clone(newObject);
+                    if (obj is Door)
+                    {
+                        (obj as Door).LockedLight = GameObject.Clone((newObject as Door).LockedLight) as PlatformBackground;
+                        (obj as Door).UnlockedLight = GameObject.Clone((newObject as Door).UnlockedLight) as PlatformBackground;
+                    }
+
                     if (!(obj is Miner))
                         CurrentObjects.Add(GameObject.Clone(obj));
                     CursorPosition = Vector2.Min(CursorPosition, obj.Position);
@@ -463,8 +487,10 @@ namespace EditorLogic
                 // fix weird bug
                 if (cursorDisplacement == Vector2.Zero)
                 {
-                    cursorPosition.X = _camera.GetCameraRectangle(0, 0).Center.X; 
-                    cursorPosition.Y = _camera.GetCameraRectangle(0, 0).Center.Y; 
+                    Vector2 newCursPos;
+                    newCursPos.X = _camera.GetCameraRectangle(0, 0).Center.X / 2;
+                    newCursPos.Y = _camera.GetCameraRectangle(0, 0).Center.Y / 2;
+                    CursorPosition = newCursPos;
                 }
                 InitialRectangle.Offset(cursorDisplacement);
                 _camera.SetCameraToRectangle(InitialRectangle);

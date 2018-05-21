@@ -92,35 +92,10 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     };
                     
                     bool unlocked = !entity.Requirement;
-                    Vector2 size = new Vector2(entity.SpriteSize.Y) * 0.1f,
-                        pos = instance.Position
-                        + new Vector2(0.5f, -0.1f) * entity.SpriteSize
-                        - 0.5f * size;
-
-                    (instance as Door).LockedLight = Create(
-                        new Obj
-                        {
-                            Type = "secondary",
-                            Position = pos,
-                            SpriteSize = size,
-                            TextureString = "Sprites/Misc/red_light"
-                        }) as PlatformBackground;
-
-                    (instance as Door).UnlockedLight = Create(
-                        new Obj
-                        {
-                            Type = "secondary",
-                            Position = pos,
-                            SpriteSize = size,
-                            TextureString = "Sprites/Misc/green_light"
-                        }) as PlatformBackground;
                     if (entity.Requirement)
                     {
                         (instance as Door).AddKey(entity.Id);
                     }
-
-                    (instance as Door).LockedLight.Active = !unlocked;
-                    (instance as Door).UnlockedLight.Active = unlocked;
                     break;
                 case "crate":
                     instance = new Crate(

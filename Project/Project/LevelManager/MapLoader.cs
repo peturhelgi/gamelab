@@ -83,6 +83,7 @@ namespace TheGreatEscape.LevelManager
         private void LoadTools(GameState gameState) {
 
             String toolSpritePath = "Sprites/Tools/";
+            ToolFactory toolFactory = new ToolFactory();
 
             foreach (ExistingTools et in Enum.GetValues(typeof(ExistingTools)))
             {
@@ -100,6 +101,9 @@ namespace TheGreatEscape.LevelManager
                             string.Format("GameObject '{0}' cannot be created", true));
                         break;
                 }
+
+                Tool tool = toolFactory.Create(new Obj { Type = et.ToString() });
+                gameState.AddTool(et, tool);
             }
         }
         private void LoadMotionSheets(GameState gameState) {
