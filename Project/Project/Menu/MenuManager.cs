@@ -63,6 +63,7 @@ namespace TheGreatEscape.Menu
         List<String> _allLevels;
         GreatEscape _theGame;
         List<Screen> screenStack;
+        String TemplateName = "Template";
         public static Song Sound1, Sound2;
         //public static SoundEffectInstance Song1, Song2;
 
@@ -159,6 +160,10 @@ namespace TheGreatEscape.Menu
             _allLevels = new List<String>();
             foreach (String file in files)
             {
+                if (file.ToLower().Contains(TemplateName.ToLower()+".json"))
+                {
+                    continue;
+                }
                 _allLevels.Add(System.IO.Path.GetFileNameWithoutExtension(file));
             }
 
@@ -181,19 +186,21 @@ namespace TheGreatEscape.Menu
             _levelSelector = new SelectionMenu(
                 "Select a Level", _content.Load<Texture2D>("Sprites/Menus/LevelSelector"), selector, true, _graphicsDevice, this);
 
-            int size;
-            for (int i = 0; i < files.Length; i++)
+            foreach (string file in _allLevels)
             {
-                string file = System.IO.Path.GetFileNameWithoutExtension(files[i]);
-                size = file.Length;
-                _levelSelector.AddSelection(file, Action.StartGame, "Levels/" + file, new Rectangle(120, 100 + 120 * i, 35 * size, 100));
+                _levelSelector.AddSelection(file, Action.StartGame, 
+                    "Levels/" + file, new Rectangle(0,0,0,0));
             }
 
             _gameOver = new PopOverMenu(
-                "Game Over", _content.Load<Texture2D>("Sprites/Menus/GameOver"), selector, false, _graphicsDevice, this);
-            _gameOver.AddSelection("Retry", Action.StartGame, "", new Rectangle(166, 157, 549, 193));
-            _gameOver.AddSelection("Select Level", Action.ShowLevelSelector, null, new Rectangle(182, 328, 561, 133));
-            _gameOver.AddSelection("Main Menu", Action.ShowMainMenu, "", new Rectangle(205, 518, 551, 165));
+                "Game Over", _content.Load<Texture2D>("Sprites/Menus/GameOver"),
+                selector, false, _graphicsDevice, this);
+            _gameOver.AddSelection("Retry", Action.StartGame, "", 
+                new Rectangle(166, 157, 549, 193));
+            _gameOver.AddSelection("Select Level", Action.ShowLevelSelector, 
+                null, new Rectangle(182, 328, 561, 133));
+            _gameOver.AddSelection("Main Menu", Action.ShowMainMenu, "", 
+                new Rectangle(205, 518, 551, 165));
 
             _levelCompleted = new PopOverMenu(
                 "Level Completed!", _content.Load<Texture2D>("Sprites/Menus/LevelComplete"), selector, false, _graphicsDevice, this);
@@ -213,7 +220,7 @@ namespace TheGreatEscape.Menu
 
             _editorMenu.AddSelection("Continue", Action.Back, "", new Rectangle(0,0,0,0));
             _editorMenu.AddSelection("Play", Action.ToggleEdit, "", new Rectangle(0, 0, 0, 0));
-            _editorMenu.AddSelection("Save Level", Action.SaveLevel, "Hard Coded Level", new Rectangle());
+            _editorMenu.AddSelection("Save Level", Action.SaveLevel, TemplateName, new Rectangle());
             _editorMenu.AddSelection("Main Menu", Action.ShowMainMenu, "", new Rectangle(0,0,0,0));
 
             _loading = new LoadingScreen(_graphicsDevice, this);
@@ -379,9 +386,19 @@ namespace TheGreatEscape.Menu
                 case Action.SaveLevel:
                     if(_prevScreen == _editor)
                     {
-                        _editorManager._editorController.HandleSave(value.ToString());
+                        int numTemplates = 1;
+                        foreach(var lvlname in _allLevels) {
+                            if (lvlname.ToLower().Contains(TemplateName.ToLower()))
+                            {
+                                ++numTemplates;
+                            }
+                        }
+                        string currFileName = value.ToString() + numTemplates.ToString();
+                        _editorManager._editorController.HandleSave(currFileName);
+                        _allLevels.Add(currFileName);
+                        _levelSelector.AddSelection(currFileName, Action.StartGame,
+                            "Levels/" + currFileName, new Rectangle(0, 0, 0, 0));
                         _requestSave = true;
-
                     }
                     break;
                 default:
@@ -397,7 +414,6 @@ namespace TheGreatEscape.Menu
             Sound2 = _content.Load<Song>("suspense_song");
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(MenuManager.Sound1);
-
         }
 
         public void UnloadContent()
