@@ -77,6 +77,7 @@ namespace TheGreatEscape.GameLogic
                     break;
                 case (GameAction.walk):
                     miner.SetOrientation((int)value);
+                    if (miner.ClimbingRope) break;
                     posDiff = miner.Position;
                     CalculateAndSetNewPosition(miner, new Vector2(value * WalkSpeed, 0));
                     posDiff -= miner.Position;
@@ -92,6 +93,7 @@ namespace TheGreatEscape.GameLogic
                     break;
                 case (GameAction.run):
                     miner.SetOrientation((int)value);
+                    if (miner.ClimbingRope) break;
                     posDiff = miner.Position;
                     CalculateAndSetNewPosition(miner, new Vector2(value * RunSpeed, 0));
                     posDiff -= miner.Position;
@@ -189,6 +191,8 @@ namespace TheGreatEscape.GameLogic
             List<Miner> actors = GameState.GetActors();
             List<GameObject> allObjects = GameState.GetAll();
             List<Platform> platforms = new List<Platform>();
+            List<GameObject> possibleObjs = new List<GameObject>();
+                
 
             foreach (Miner m in GameState.GetActors()) actorsFirst.Add(m as GameObject);
             foreach (GameObject g in allObjects)
@@ -198,6 +202,7 @@ namespace TheGreatEscape.GameLogic
                 {
                     platforms.Add(g as Platform);
                 }
+                if (!(g is Ground)) possibleObjs.Add(g);
             }
 
             foreach (var miner in actors)
@@ -209,7 +214,7 @@ namespace TheGreatEscape.GameLogic
 
             foreach (GameObject c in actorsFirst)
             {
-                if (c.Active && c.Moveable)
+                if (c.Active && c.Movable)
                 {
                     if (c.Position.Y > GameState.OutOfBoundsBottom)
                     {
@@ -223,10 +228,6 @@ namespace TheGreatEscape.GameLogic
 
                 if (c is Button)
                 {
-                    List<GameObject> possibleObjs = new List<GameObject>();
-                    foreach (GameObject q in actorsFirst)
-                        if (!(q is Ground)) possibleObjs.Add(q);
-
                     List<GameObject> touchingButtons = CollisionDetector.FindCollisions(c.BBox, possibleObjs);
                     if (touchingButtons.Count > 0)
                     {
@@ -262,6 +263,7 @@ namespace TheGreatEscape.GameLogic
 
         void TryToInteract(Miner obj)
         {
+            if (GrabRope(obj)) return;
             if (obj.Holding)
             {
                 // If holding an object, one does not drop it for a lever.
@@ -291,7 +293,7 @@ namespace TheGreatEscape.GameLogic
 
         void TryToJump(Miner miner, Vector2 speed)
         {
-            if (!miner.Falling && !miner.Climbing)
+            if (!miner.Falling && !miner.Climbing && !miner.ClimbingRope)
             {
                 miner.Speed = speed;
                 miner.Falling = true;
@@ -301,15 +303,70 @@ namespace TheGreatEscape.GameLogic
                     miner.HeldObj.Falling = true;
                 }
             }
+            if (miner.ClimbingRope)
+            {
+                miner.Speed = speed;
+                miner.ClimbingRope = false;
+                miner.Climbing = false;
+                miner.Falling = true;
+                if (miner.Holding)
+                {
+                    miner.HeldObj.Speed = speed;
+                    miner.HeldObj.Falling = true;
+                }
+            }
+        }
+
+        bool GrabRope(Miner miner)
+        {
+            List<GameObject> ropes = new List<GameObject>();
+            foreach (GameObject c in GameState.NonSolids)
+            { 
+                if (c is HangingRope) ropes.Add(c);
+            }
+            AxisAllignedBoundingBox tmpBox = new AxisAllignedBoundingBox(miner.Position,
+                miner.Position + miner.SpriteSize + new Vector2(0, 10));
+            List<GameObject> onRope = CollisionDetector.FindCollisions(tmpBox, ropes);
+            if(onRope.Count > 0)
+            {
+                miner.ClimbingRope = !miner.ClimbingRope;
+                miner.Climbing = !miner.Climbing;
+                miner.Falling = !miner.Falling;
+                miner.Speed = Vector2.Zero;
+                return true;
+            }
+            return false;
         }
 
         void TryToClimb(Miner miner, Vector2 direction)
         {
+            if (miner.ClimbingRope)
+            {
+                List<GameObject> ropes = new List<GameObject>();
+                foreach (GameObject c in GameState.NonSolids)
+                {
+                    if (c is HangingRope) ropes.Add(c);
+                }
+
+                AxisAllignedBoundingBox BBBox = new AxisAllignedBoundingBox(
+                    new Vector2(miner.BBox.Min.X, miner.BBox.Max.Y),
+                    new Vector2(miner.BBox.Max.X, miner.BBox.Max.Y + direction.Y)
+                    );
+
+                List<GameObject> onRope = CollisionDetector.FindCollisions(BBBox, ropes);
+                if (onRope.Count > 0)
+                {
+                    miner.Speed = Vector2.Zero;
+                    miner.Climbing = true;
+                    miner.Falling = false;
+                    CalculateAndSetNewPosition(miner, direction);
+                }
+                return;
+            }
             List<GameObject> ladders = new List<GameObject>();
             foreach (GameObject c in GameState.NonSolids)
             {
                 if (c is Ladder) ladders.Add(c);
-                else if (c is HangingRope) ladders.Add(c);
             }
             if (ladders.Count == 0) return;
 
@@ -318,8 +375,8 @@ namespace TheGreatEscape.GameLogic
                    new Vector2(miner.BBox.Max.X, miner.BBox.Max.Y + direction.Y)
                    );
 
-            List<GameObject> onLadders = CollisionDetector.FindCollisions(Box, ladders);
-            if (onLadders.Count > 0)
+            List<GameObject> onClimbableObj = CollisionDetector.FindCollisions(Box, ladders);
+            if (onClimbableObj.Count > 0)
             {
                 miner.Speed = Vector2.Zero;
                 miner.Climbing = true;
@@ -618,7 +675,6 @@ namespace TheGreatEscape.GameLogic
                 foreach (GameObject c in GameState.NonSolids)
                 {
                     if (c is Ladder) ladders.Add(c);
-                    else if (c is HangingRope) ladders.Add(c);
                 }
                 AxisAllignedBoundingBox Box = new AxisAllignedBoundingBox(
                                    new Vector2(obj.BBox.Min.X, obj.BBox.Max.Y),
@@ -632,6 +688,9 @@ namespace TheGreatEscape.GameLogic
                     (obj as Miner).Falling = false;
                     obj.Speed = direction;
                 }
+
+                if ((obj as Miner).ClimbingRope) obj.Falling = false;
+
 
                 (obj as Miner).xVel = direction.X;
                 (obj as Miner).ChangeCurrentMotion();

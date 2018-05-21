@@ -38,6 +38,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         ToolFactory _toolFactory = new ToolFactory();
         public static int currentKey = 0;
         public static int currentDoor = 0;
+        public static int activationKeys = 0;
         public override GameObject Create(
             Object obj)
         {
@@ -148,6 +149,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     {
                         Handling = GameState.Handling.None
                     };
+                    activationKeys++;
                     break;
                 case "rockandhook":
                     entity.SecondTexture = "Sprites/Misc/Rope";

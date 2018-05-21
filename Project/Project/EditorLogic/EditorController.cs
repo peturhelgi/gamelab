@@ -278,6 +278,11 @@ namespace EditorLogic
                 {
                     _manager.PlaceAuxiliaryObject();
                 }
+
+                else if (KeyPressed(Command.NextItem))
+                {
+                    _manager.SwapBetweenAuxiliaries();
+                }
             }
             else
             {

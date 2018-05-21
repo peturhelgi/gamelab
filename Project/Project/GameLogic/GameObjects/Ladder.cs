@@ -24,7 +24,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Mass = 10;
             Visible = true;
             LastUpdated = new TimeSpan();
-            Moveable = false;
+            Movable = false;
         }
 
         public override AxisAllignedBoundingBox BBox

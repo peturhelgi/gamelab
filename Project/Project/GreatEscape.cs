@@ -40,7 +40,7 @@ namespace TheGreatEscape
             };
             _graphics.ApplyChanges();
         }
-        
+
         protected override void Initialize()
         {
             Content.RootDirectory = "Content";
@@ -49,7 +49,7 @@ namespace TheGreatEscape
             _gameManager = new GameManager(Content, GraphicsDevice, _graphics);
             _editorManager = new EditorManager(Content, GraphicsDevice, _graphics);
             _menu = new MenuManager(Content, GraphicsDevice, _graphics, _gameManager, _editorManager, this);
-            
+
             IsMouseVisible = true;
             base.Initialize();
         }
@@ -60,16 +60,17 @@ namespace TheGreatEscape
         {
             string levelDir = "Levels";
             IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication();
-            if (!isf.DirectoryExists(levelDir)) {
+            if (!isf.DirectoryExists(levelDir))
+            {
                 isf.CreateDirectory(levelDir);
-                string[] files = Directory.GetFiles("Content\\Levels");
-                foreach (String file in files)
-                {
-                    string level = File.ReadAllText(file);
-                    StreamWriter streamWriter = new StreamWriter(isf.CreateFile(levelDir + "/" + System.IO.Path.GetFileName(file)));
-                    streamWriter.Write(level);
-                    streamWriter.Dispose();
-                }
+            }
+            string[] files = Directory.GetFiles("Content\\Levels");
+            foreach (String file in files)
+            {
+                string level = File.ReadAllText(file);
+                StreamWriter streamWriter = new StreamWriter(isf.CreateFile(levelDir + "/" + System.IO.Path.GetFileName(file)));
+                streamWriter.Write(level);
+                streamWriter.Dispose();
             }
 
         }
@@ -94,8 +95,8 @@ namespace TheGreatEscape
         protected override void Draw(GameTime gameTime)
         {
             _menu.Draw(
-                gameTime, 
-                GraphicsDevice.PresentationParameters.BackBufferWidth, 
+                gameTime,
+                GraphicsDevice.PresentationParameters.BackBufferWidth,
                 GraphicsDevice.PresentationParameters.BackBufferHeight);
             base.Draw(gameTime);
         }
