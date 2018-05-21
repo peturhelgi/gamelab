@@ -1,0 +1,640 @@
+{
+    "levelnr": 0,
+    "levelname": null,
+    "prevlvl": 0,
+    "prevlvlname": null,
+    "nextlvl": 0,
+    "nextlvlname": null,
+    "background": "Sprites/Backgrounds/Level1Background",
+    "objects": [
+        {
+            "dim": {
+                "X": 37.0,
+                "Y": 37.0
+            },
+            "pos": {
+                "X": 2068.5,
+                "Y": -205.5
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 10.0,
+            "type": "secondary",
+            "texture": "Sprites/Misc/red_light",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 37.0,
+                "Y": 37.0
+            },
+            "pos": {
+                "X": 2068.5,
+                "Y": -205.5
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 10.0,
+            "type": "secondary",
+            "texture": "Sprites/Misc/green_light",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 150.0,
+                "Y": 634.8603
+            },
+            "pos": {
+                "X": 3579.26831,
+                "Y": 318.8218
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 10.0,
+            "type": "ladder",
+            "texture": "Sprites/Interactables/ladder_short",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 34.9822273,
+                "Y": 34.9822273
+            },
+            "pos": {
+                "X": 3279.73364,
+                "Y": 2065.305
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 10.0,
+            "type": "secondary",
+            "texture": "",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 34.9822273,
+                "Y": 34.9822273
+            },
+            "pos": {
+                "X": 3279.73364,
+                "Y": 2065.305
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 10.0,
+            "type": "secondary",
+            "texture": "",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 296.5992,
+                "Y": 349.822266
+            },
+            "pos": {
+                "X": 3148.92529,
+                "Y": 2117.77832
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 0.0,
+            "type": "door",
+            "texture": "Sprites/Interactables/Door",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": 0,
+            "requirement": true,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 150.0,
+                "Y": 100.0
+            },
+            "pos": {
+                "X": 4008.47656,
+                "Y": 187.008789
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 0.0,
+            "type": "key",
+            "texture": "Sprites/Interactables/key",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": 0,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 500.0,
+                "Y": 718.0
+            },
+            "pos": {
+                "X": -400.0,
+                "Y": 800.0
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 0.0,
+            "type": "ground",
+            "texture": "Sprites/Grounds/ground_tall",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 515.7112,
+                "Y": 547.2244
+            },
+            "pos": {
+                "X": 77.3697739,
+                "Y": 981.877563
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 0.0,
+            "type": "ground",
+            "texture": "Sprites/Grounds/ground_1",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 1671.59253,
+                "Y": 354.899017
+            },
+            "pos": {
+                "X": 552.6958,
+                "Y": 1175.555
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 0.0,
+            "type": "ground",
+            "texture": "Sprites/Grounds/ground_2",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 1657.82837,
+                "Y": 382.9949
+            },
+            "pos": {
+                "X": -448.892944,
+                "Y": 141.342072
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 0.0,
+            "type": "ground",
+            "texture": "Sprites/Grounds/ground_3",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 150.0,
+                "Y": 100.0
+            },
+            "pos": {
+                "X": 2270.87183,
+                "Y": 1515.45679
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 0.0,
+            "type": "ground",
+            "texture": "Sprites/Grounds/ground_4",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 352.914673,
+                "Y": 302.3168
+            },
+            "pos": {
+                "X": 1400.22522,
+                "Y": 923.2408
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 0.0,
+            "type": "rock",
+            "texture": "Sprites/Rocks/rock_1",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 529.919739,
+                "Y": 592.6769
+            },
+            "pos": {
+                "X": 3695.86768,
+                "Y": 332.8435
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 0.0,
+            "type": "ground",
+            "texture": "Sprites/Grounds/ground_low",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 2196.8645,
+                "Y": 375.675934
+            },
+            "pos": {
+                "X": 2432.52783,
+                "Y": 1157.88928
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 0.0,
+            "type": "ground",
+            "texture": "Sprites/Grounds/ground_2",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 1013.68915,
+                "Y": 714.1564
+            },
+            "pos": {
+                "X": 4618.493,
+                "Y": 924.6092
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 0.0,
+            "type": "ground",
+            "texture": "Sprites/Grounds/ground_3",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 1583.73547,
+                "Y": 720.0691
+            },
+            "pos": {
+                "X": 4154.99072,
+                "Y": -254.284012
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 0.0,
+            "type": "ground",
+            "texture": "Sprites/Grounds/ground_tall",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 116.715836,
+                "Y": 83.92051
+            },
+            "pos": {
+                "X": 3052.80957,
+                "Y": 1098.86877
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 10.0,
+            "type": "crate",
+            "texture": "Sprites/Interactables/crate",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 3146.99976,
+                "Y": 207.26442
+            },
+            "pos": {
+                "X": 2960.97241,
+                "Y": 2431.48145
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 0.0,
+            "type": "ground",
+            "texture": "Sprites/Grounds/ground_2",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 1040.92944,
+                "Y": 2429.9812
+            },
+            "pos": {
+                "X": 5913.98242,
+                "Y": 251.105469
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 0.0,
+            "type": "ground",
+            "texture": "Sprites/Grounds/ground_tall",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 2402.82227,
+                "Y": 1094.5896
+            },
+            "pos": {
+                "X": 979.0062,
+                "Y": -383.17215
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 0.0,
+            "type": "ground",
+            "texture": "Sprites/Grounds/ground_suspended_1",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 852.8917,
+                "Y": 318.4956
+            },
+            "pos": {
+                "X": 3368.87329,
+                "Y": -426.875549
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 0.0,
+            "type": "ground",
+            "texture": "Sprites/Grounds/ground_suspended_2",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 150.0,
+                "Y": 100.0
+            },
+            "pos": {
+                "X": 5701.88525,
+                "Y": 524.8289
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 10.0,
+            "type": "rockandhook",
+            "texture": "Sprites/Interactables/rockandhook",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "Sprites/Misc/Rope",
+            "tool": "-1",
+            "id": -1,
+            "requirement": false,
+            "ropelength": 2000.0
+        },
+        {
+            "dim": {
+                "X": 61.5,
+                "Y": 185.0
+            },
+            "pos": {
+                "X": 0,
+                "Y": 639.9
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 80.0,
+            "type": "miner",
+            "texture": "Sprites/Miners/MinerStatic",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "pickaxe",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        },
+        {
+            "dim": {
+                "X": 61.5,
+                "Y": 185.0
+            },
+            "pos": {
+                "X": -77.34128,
+                "Y": 639.9
+            },
+            "vel": {
+                "X": 0.0,
+                "Y": 0.0
+            },
+            "m": 80.0,
+            "type": "miner",
+            "texture": "Sprites/Miners/MinerPickaxe",
+            "displacement": 0.0,
+            "direction": "-1",
+            "activationkey": -1,
+            "secondtexture": "-1",
+            "tool": "rope",
+            "id": -1,
+            "requirement": false,
+            "ropelength": -1.0
+        }
+    ],
+    "resources": {
+        "pickaxe": 1,
+        "rope": 1
+    }
+}
