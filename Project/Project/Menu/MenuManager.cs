@@ -684,31 +684,27 @@ namespace TheGreatEscape.Menu
             if (_selections.Count > 0)
             {
                 // Xbox controls for player one
-                if (_manager.ButtonPressed(0, Buttons.LeftThumbstickDown, Buttons.DPadDown)
-                    || _manager.ButtonPressed(1, Buttons.LeftThumbstickDown, Buttons.DPadDown))
+                if (_manager.ButtonPressed(0, Buttons.LeftThumbstickDown, Buttons.DPadDown))
                 {
                     _currentPosition = (++_currentPosition) % _selections.Count;
                 }
-                if (_manager.ButtonPressed(0, Buttons.LeftThumbstickUp, Buttons.DPadUp)
-                    || _manager.ButtonPressed(1, Buttons.LeftThumbstickUp, Buttons.DPadUp))
+                if (_manager.ButtonPressed(0, Buttons.LeftThumbstickUp, Buttons.DPadUp))
                 {
                     _currentPosition = --_currentPosition < 0 ? _selections.Count - 1 : _currentPosition;
                 }
             }
-            if (_manager.ButtonPressed(0, Buttons.A)
-               || _manager.ButtonPressed(1, Buttons.A))
+            if (_manager.ButtonPressed(0, Buttons.A))
             {
                 _manager.CallAction(_selections[_currentPosition].Action, _selections[_currentPosition].Value);
                 _currentPosition = 0;
             }
 
-            if (_manager.ButtonPressed(0, Buttons.Back)
-                || _manager.ButtonPressed(1, Buttons.Back))
+            if (_manager.ButtonPressed(0, Buttons.Back))
             {
                 _manager.CallAction(MenuManager.Action.Back, null);
                 _currentPosition = 0;
             }
-            if (_manager.ButtonPressed(0, Buttons.Y) || _manager.ButtonPressed(1, Buttons.Y))
+            if (_manager.ButtonPressed(0, Buttons.Y))
             {
                 _manager.CallAction(MenuManager.Action.ShowHelp, 0);
                 _currentPosition = 0;
