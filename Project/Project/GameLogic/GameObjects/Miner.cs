@@ -17,7 +17,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
         walk,
         run,
         jump,
-        pickaxe
+        pickaxe,
+        climb
     };
 
 
@@ -122,6 +123,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     case MotionType.pickaxe:
                         mss = new MotionSpriteSheet(12, 64, m, new Vector2(2.3f, 1));
                         break;
+                    case MotionType.climb:
+                        mss = new MotionSpriteSheet(12, 64, m, new Vector2(1.2f, 1.25f));
+                        break;
                     default:
                         mss = null;
                         break;
@@ -141,6 +145,16 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
         private MotionType GetCurrentState()
         {
+            if (this.Climbing)
+            {
+                if (this.Speed.Y == 0)
+                    CurrMotion.IsActive = false;
+                else
+                    CurrMotion.IsActive = true;
+                return MotionType.climb;
+            }
+
+            CurrMotion.IsActive = true;
 
             if (this.xVel > 0)
             {
@@ -207,6 +221,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public bool UseTool(GameState gs)
         {
             this.Interacting = true;
+            // patch for the pickaxe so the useTool button can be continuously pressed
+            //if (CurrMotion.CurrentFrame.X == 0)
             Tool.Use(this, gs);
             return true;
         }
@@ -315,6 +331,26 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 MyDebugger.WriteLine("crate hits something as it is picked up");
                 return false;
             }
+        }
+
+        public override Obj GetObj()
+        {
+            Obj obj = new Obj();
+            obj.SpriteSize = SpriteSize;
+            obj.Position = Position;
+            obj.Velocity = Speed;
+            obj.Mass = (float)Mass;
+            obj.Type = "miner";
+            obj.TextureString = TextureString;
+            obj.Displacement = 0;
+            obj.Direction = "-1";
+            obj.ActivationKey = -1;
+            obj.SecondTexture = "-1";
+            obj.Tool = Tool.ToString();
+            obj.Id = -1;
+            obj.Requirement = false;
+            obj.RopeLength = -1f;
+            return obj;
         }
     }
 }

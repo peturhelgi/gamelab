@@ -1,5 +1,87 @@
 \section{Progress}
 
+\begin{figure}[ht]
+\centering
+\includegraphics[width = 0.9\textwidth]{img/alpha/spritesheet.png}
+\caption{A sprite sheet for animating the use of a pick axe.}
+\end{figure}
+
+These past two weeks have been very productive and the game has greatly improved. The game has better visuals, new animations and nice looking menu screens giving a nicer and cleaner look and feel. We have completely finished layer 2 and most of layer 3. From layer 3 we have finished the technical tasks while tasks like music and narration are still outstanding. We could also argue that we are well on our way with a fancier level editor from layer 4. We introduced new functions and interactables for the miners that improve both the gameplay and give the players more possibilities for designing levels in the level editor. The new features are:
+
+\begin{itemize}
+    \item[Interactebles]
+    \begin{itemize}[label={}]
+        \item \textbf{Exit door} with a red or a green light above it indicating whether it is open or not. 
+        \item \textbf{Keys} that open up the exit door.
+        \item \textbf{Rocks} are now solid and destroyable.
+        \item \textbf{Pickaxe} animation as the miners use it to destroy rocks.
+        \item \textbf{Rope} as a tool. The miners can throw a rope at rocks that have a hook and climb up and down it.
+        \item \textbf{Ladders} to move the miners up and down.
+        \item \textbf{Crates} that miners can pick up and move around. The crate can for example activate buttons and be moved around with platforms.
+        \item \textbf{Platforms} that move either horizontally or vertically. They are activated either by buttons or levers and can move both objects and miners.
+        \item \textbf{Buttons} that are pushed by standing on them and they activate platforms.
+        \item \textbf{Levers} that can be switched on or off to activate platforms.
+    \end{itemize}
+    
+    \item[Camera] 
+    We restricted the camera movement, or rather the players movement so they can't walk too far away from each other. The camera zooms in and out depending on if the players are walking towards each other or not. When the players have lost all of their miners except one the camera only follows the player that remains. In the level editor the camera moves with the mouse if the mouse is too close to the boundary.
+    
+    \item[Animations]
+    Previously the miners were only an image that slid and jumped around the playing area. Now with the use of spritesheets the miners walk, run and jump all over the place and also have an animation for swinging a pickaxe.
+    
+    \item[Switching tools]
+    The miners share between them a set of tools. Their spare tools are displayed in the top left corner of the screen and a player can switch his tool if he has a spare.
+    
+    \item[Game over]
+    The miners can now die from falling off the map or from fall damage. If only one miner is left then only one player can play. If all miners are dead it is game over and a game over screen pops up.
+    
+    \item[Level Editor]
+    A level editor was made from scratch. First an object factory to handle the creation of objects. In the level editor you select new objects through a selection wheel. You can then position and scale the objects as you see fit. You can also select a couple of objects and move them in unison. To test the level you can press a button for switching back and forth between playing the level and editing it.
+    
+    \item[Headlights]
+    The miners have a circular light around them and a directional light that they can move up or down and points in the direction they face. The size of the light also varies with the size of the miners.
+    
+    \item[Menu]
+    New menus for starting the game, pausing it and a game over menuscreen with different options to navigate back and forth. They also have some pretty images to give the game a cool look.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width = 0.9\textwidth]{img/alpha/controller.png}
+\caption{This diagram shows the button layout for the game editor.}
+\end{figure}
+
+\newpage
+
 \section{Challenges}
 
+\begin{figure}[ht]
+\centering
+\includegraphics[width = 0.9\textwidth]{img/alpha/editor.png}
+\caption{An example of a state in the game editor. Note that the darkness is not rendered during editing.}
+\end{figure}
+We tried to make a split screen camera but faced a lot of difficulties because of the way we render the scene and the lights. In the end we decided that this task had to be put on hold and we made a much simpler camera model for our alpha. 
+
+The biggest challenge of the level editor is that the objects don't follow the same implementation pattern. We were not sure about the best way to design some aspects and these things turned out to take more time than we anticipated.
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \vspace{-20pt}
+  \begin{center}
+    \includegraphics[height=0.48\textwidth]{img/alpha/platform.png}
+  \end{center}
+  \caption{The platform mechanism was quite the pickle and required a lot of attention from the game designers.}
+\end{wrapfigure}
+
+Debugging various features has usually taken more time than we hoped; also we implemented a lot of features in a short period of time, focusing more on functionality than on coding style.
+
+Designing the camera constraints and the platform mechanism proved more challenging than expected. For the camera, we constrained the view such that the players can't get too far away from each other. Obviously, this can cause the players to lose more miners if they are not careful. If a miner stands on a moving platform and goes out of bounds, the camera constraints can push them of the platform to their death. This is a game design which we decided to stick with as it resonates best with the objective of the game; stick together to stay alive.
+
 \section{Future Work}
+
+We would like to be able to switch the camera model to a split screen. Unfortunately saving levels in the level editor is just shy of being finished so we put it in the future work category but it will be finished shortly. Until then we have a cheap workaround for ourselves to design and save levels quickly and easily with the level editor.
+
+\begin{figure}
+\centering
+\includegraphics[width = 0.9\textwidth]{img/alpha/selector.png}
+\caption{A selection wheel to add game objects to a level in the editor.}
+\end{figure}

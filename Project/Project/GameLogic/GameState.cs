@@ -265,6 +265,7 @@ namespace TheGreatEscape.GameLogic
             resources[newTool.Key]--;
             if (!ForRemoving)
                 resources[oldTool.Key]++;
+
             miner.Tool = (new ToolFactory()).Create(new Obj { Type = newTool.Key});
             return true;
         }
@@ -276,6 +277,29 @@ namespace TheGreatEscape.GameLogic
 
         public Texture2D GetBackground() {
             return Background;
+        }
+
+        public Level GetPureLevel()
+        {
+            Level level = new Level();
+
+            level.levelnr = levelnr;
+            level.levelname = levelname;
+            level.prevlvl = prevlvl;
+            level.prevlvlname = prevlvlname;
+            level.nextlvl = nextlvl;
+            level.nextlvlname = nextlvlname;
+            level.background = background;
+
+            level.objects = new List<Obj>();
+            foreach (GameObject go in GetAll())
+            {
+                level.objects.Add(go.GetObj());
+            }
+
+            level.resources = resources;
+
+            return level;
         }
 
     }

@@ -104,6 +104,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EditorLogic\ParameterMenu.cs" />
     <Compile Include="EditorLogic\Util\TextureContent.cs" />
     <Compile Include="GameLogic\GameObjects\Button.cs" />
     <Compile Include="GameLogic\GameObjects\Key.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="GameLogic\Renderer\GameRenderer.cs" />
     <Compile Include="GreatEscape.cs" />
     <Compile Include="GameLogic\GameManager.cs" />
+    <Compile Include="LevelManager\JsonUtil.cs" />
     <Compile Include="Libs\Simplex.cs" />
     <Compile Include="Libs\SingleRandom.cs" />
     <Compile Include="Menu\MenuManager.cs" />
@@ -153,11 +155,14 @@
     <MonoGameContentReference Include="Content\Content.mgcb">
       <SubType>Designer</SubType>
     </MonoGameContentReference>
+    <Content Include="Content\Fonts\CHAMPGNE.TTF" />
     <None Include="Content\Fonts\Orbitron.spritefont" />
-    <None Include="Content\level_1.json" />
-    <None Include="Content\wide_level.json" />
-    <None Include="Content\more_platforms.json" />
-    <None Include="Content\samplelvl.json" />
+    <None Include="Content\Sprites\VisualAssets_PS\Background.psd" />
+    <None Include="Content\Sprites\VisualAssets_PS\Ground.psd" />
+    <None Include="Content\Sprites\VisualAssets_PS\Miner.psd" />
+    <None Include="Content\Sprites\VisualAssets_PS\Pickaxe.psd" />
+    <None Include="Content\Sprites\VisualAssets_PS\Rock.psd" />
+    <None Include="Content\Sprites\VisualAssets_PS\Rope.psd" />
     <None Include="Content\Lights\circular_light.psd" />
     <None Include="Content\Lights\directional_light.psd" />
   </ItemGroup>
@@ -192,14 +197,24 @@
     <Content Include="Content\Sprites\Backgrounds\Level1Background.png" />
     <Content Include="Content\Sprites\Backgrounds\Level2Background.png" />
     <Content Include="Content\Sprites\Backgrounds\Level3Background.png" />
+    <Content Include="Content\Sprites\Interactables\button_floor.png" />
     <Content Include="Content\Sprites\Interactables\crate.png" />
     <Content Include="Content\Sprites\Interactables\Door.png" />
+    <Content Include="Content\Sprites\Interactables\key.png" />
+    <Content Include="Content\Sprites\Interactables\ladder_long.png" />
+    <Content Include="Content\Sprites\Interactables\ladder_short.png" />
     <Content Include="Content\Sprites\Interactables\lever_left.png" />
     <Content Include="Content\Sprites\Interactables\lever_right.png" />
+    <Content Include="Content\Sprites\Interactables\platform_escalator.png" />
+    <Content Include="Content\Sprites\Interactables\rockandhook.png" />
+    <Content Include="Content\Sprites\Menus\GameOver.png" />
+    <Content Include="Content\Sprites\Menus\GamePaused.png" />
+    <Content Include="Content\Sprites\Menus\LevelComplete.png" />
+    <Content Include="Content\Sprites\Menus\LevelSelector.png" />
+    <Content Include="Content\Sprites\Menus\MenuImage.png" />
     <Content Include="Content\Sprites\Miners\MinerHandsInPants.png" />
     <Content Include="Content\Sprites\Miners\MinerPickaxe.png" />
     <Content Include="Content\Sprites\Miners\MinerRope.png" />
-    <Content Include="Content\Sprites\Misc\box.png" />
     <Content Include="Content\Sprites\Misc\green_light.png" />
     <Content Include="Content\Sprites\Misc\picker_wheel.png" />
     <Content Include="Content\Sprites\Misc\red_light.png" />
@@ -225,7 +240,9 @@
       <Version>11.0.2</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Content\Levels\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

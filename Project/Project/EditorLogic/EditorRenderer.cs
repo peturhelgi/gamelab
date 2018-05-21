@@ -10,7 +10,7 @@ namespace EditorLogic {
         GraphicsDevice _graphicsDevice;
         GameState _gameState;
         SpriteBatch _spriteBatch;
-        Texture2D _debugBox;
+        Texture2D _debugBox, _selectBox;
         EditorManager _manager;
 
         public enum Mode { Normal, DebugView }
@@ -22,7 +22,8 @@ namespace EditorLogic {
             _spriteBatch = new SpriteBatch(_graphicsDevice);
             _manager = manager;
 
-            _debugBox = content.Load<Texture2D>("Sprites/Misc/box");
+            _debugBox = content.Load<Texture2D>("Sprites/Misc/box_select");
+            _selectBox = content.Load<Texture2D>("Sprites/Misc/box");
         }
 
         public void Draw(GameTime gameTime, int width, int height, Matrix camera)
@@ -51,8 +52,9 @@ namespace EditorLogic {
                     _manager.CursorPosition + _manager.CursorSize);
 
                 // Draws cursor on screen
+                Texture2D cursorOrSelectBox = cursorMax - cursorMin == new Vector2(10) ? _debugBox : _selectBox;
                 _spriteBatch.Draw(
-                    _debugBox,
+                    cursorOrSelectBox,
                     new Rectangle( 
                         cursorMin.ToPoint(), 
                         (cursorMax - cursorMin).ToPoint()),           

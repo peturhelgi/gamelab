@@ -7,7 +7,7 @@ using System;
 using TheGreatEscape.GameLogic.Util;
 
 namespace TheGreatEscape.GameLogic {
-    class GameManager
+    public class GameManager
     {
         GameController _controller;
         MapLoader _mapLoader;
@@ -18,7 +18,7 @@ namespace TheGreatEscape.GameLogic {
         GameRenderer _renderer;
         public static bool RenderDark;
         public GameEngine GameEngine { get; private set; }
-
+        
         public GameManager(ContentManager content, GraphicsDevice graphicsDevice, 
                 GraphicsDeviceManager graphics) {
             _content = content;
