@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace TheGreatEscape.GameLogic
 {
-    class Camera
+    public class Camera
     {
         public Matrix view;
         float _zoom;

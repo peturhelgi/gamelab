@@ -28,7 +28,7 @@ namespace EditorLogic
         GameRenderer _gameRenderer;
         EditorRenderer _editorRenderer;
         GameEngine _engine;
-        Camera _camera;
+        public Camera _camera;
 
         GamePadState _oldGamePadState;
         KeyboardState _oldKeyboardState;
@@ -509,14 +509,14 @@ namespace EditorLogic
             KeyboardState keyboardState = Keyboard.GetState();
 
             GamePad.GetState(PlayerIndex.One);
-            if ((gamePadState.IsButtonDown(Buttons.B) && _oldGamePadState.IsButtonUp(Buttons.B))
+            if ((gamePadState.IsButtonUp(Buttons.B) &&gamePadState.IsButtonDown(Buttons.Back) && _oldGamePadState.IsButtonUp(Buttons.Back))
                 || (keyboardState.IsKeyDown(Keys.Tab) && _oldKeyboardState.IsKeyUp(Keys.Tab)))
             {
-                Editing = !Editing;
-                if (Editing)
-                {
-                    _camera.SetCameraToRectangle(new Rectangle(0, 0, 2000, 2000));
-                }
+                //Editing = !Editing;
+                //if (Editing)
+                //{
+                //    _camera.SetCameraToRectangle(new Rectangle(0, 0, 2000, 2000));
+                //}
             }
             if (Editing)
             {
