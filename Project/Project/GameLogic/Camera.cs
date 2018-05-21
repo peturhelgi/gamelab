@@ -1,36 +1,60 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 
-namespace TheGreatEscape.GameLogic {
+namespace TheGreatEscape.GameLogic
+{
     class Camera
     {
         public Matrix view;
         float _zoom;
         Vector2 _position;
         Vector2 _dimensions;
+        Vector2 _minBox = new Vector2(900, 900);
         Rectangle _rectangle;
+        private Rectangle _focusBox;
+        public Vector2 MinBox
+        {
+            get
+            {
+                return _minBox;
+            }
+        }
+        public Rectangle FocusBox {
+            get
+            {
+                return _focusBox;
+            }
+            set
+            {
+                _focusBox = value;
+                _focusBox.Size = Vector2.Max(
+                    _focusBox.Size.ToVector2(), 
+                    _minBox).ToPoint();
+            }
+        }
 
         public enum CameraAction { right, left, up, down, zoom_in, zoom_out };
 
 
-
-        public Camera(float zoom, Vector2 position, Vector2 dimensions) {
+        public Camera(float zoom, Vector2 position, Vector2 dimensions)
+        {
             view = Matrix.Identity;
             _zoom = zoom;
             _position = position;
             _dimensions = dimensions;
             Refresh();
-
+            
         }
 
-        public void SetCameraToRectangle(Rectangle r) {
+        public void SetCameraToRectangle(Rectangle rect)
+        {
             Vector2 offset = new Vector2(500, 300);
-            _position = new Vector2(r.X-offset.X, r.Y- offset.Y);
+            _position = new Vector2(rect.X - offset.X, rect.Y - offset.Y);
 
-            Vector2 dims = r.Size.ToVector2()+ 2 * offset;
-            Vector2 scales =    _dimensions/ dims;
+            Vector2 dims = Vector2.Max(rect.Size.ToVector2(), _minBox) + 2 * offset;
+            Vector2 scales = _dimensions / dims;
             _zoom = Math.Min(scales.X, scales.Y);
-            _rectangle = new Rectangle((int)_position.X, (int)_position.Y, (int)dims.X, (int)dims.Y);
+            _rectangle = new Rectangle(_position.ToPoint(), dims.ToPoint());
             Refresh();
         }
 
@@ -40,7 +64,8 @@ namespace TheGreatEscape.GameLogic {
             _rectangle.Width = Math.Max(backgroundW, _rectangle.Width);
             return _rectangle;
         }
-        public void HandleAction(CameraAction action) {
+        public void HandleAction(CameraAction action)
+        {
             switch (action)
             {
                 case (CameraAction.right):
@@ -75,16 +100,18 @@ namespace TheGreatEscape.GameLogic {
 
 
 
-        public void Zoom(float factor) {
+        public void Zoom(float factor)
+        {
             _zoom *= factor;
             Refresh();
         }
 
-        public void Translate(Vector2 t) {
-            _position += (t*_zoom);
+        public void Translate(Vector2 t)
+        {
+            _position += (t * _zoom);
             Refresh();
         }
-        
+
 
         private void Refresh()
         {

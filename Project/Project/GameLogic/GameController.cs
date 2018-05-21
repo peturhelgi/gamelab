@@ -87,8 +87,14 @@ namespace TheGreatEscape.GameLogic
             GameEngine.Update();
 
             // Handle the Camera
-            AxisAllignedBoundingBox frame = new AxisAllignedBoundingBox(
-                new Vector2(float.MaxValue), new Vector2(float.MinValue));
+            Rectangle _frame = new Rectangle(
+                Camera.FocusBox.Location,
+                Camera.MinBox.ToPoint());
+            float leftMost = float.MaxValue,
+                rightMost = float.MinValue,
+                topMost = float.MaxValue,
+                bottomMost = float.MinValue;
+
             List<AxisAllignedBoundingBox> attentions = GameEngine.GetAttentions();
             foreach (AxisAllignedBoundingBox a in attentions)
             {
@@ -96,15 +102,40 @@ namespace TheGreatEscape.GameLogic
                 {
                     continue;
                 }
-                frame.Min = Vector2.Min(frame.Min, a.Min);
-                frame.Max = Vector2.Max(frame.Max, a.Max);
+                leftMost = Math.Min(leftMost, a.Min.X);
+                rightMost = Math.Max(rightMost, a.Max.X);
+                topMost = Math.Min(topMost, a.Min.Y);
+                bottomMost = Math.Max(bottomMost, a.Max.Y);
+            }
+
+            float width = Math.Max(rightMost - leftMost, Camera.MinBox.X);
+            float height = Math.Max(bottomMost - topMost, Camera.MinBox.Y);
+
+            if(_frame.Left < leftMost && rightMost < _frame.Right)
+            {
+                leftMost = _frame.Left;
+                rightMost = _frame.Right;
+            }
+            if(_frame.Top < topMost && bottomMost < _frame.Bottom)
+            {
+                topMost = _frame.Top;
+                bottomMost = _frame.Bottom;
+            }
+            if (rightMost > _frame.Right)
+            {
+                leftMost = rightMost - width;
+            }
+            if (bottomMost > _frame.Bottom)
+            {
+                topMost = bottomMost - height;
             }
             Camera.SetCameraToRectangle(
                 new Rectangle(
-                    (int)frame.Min.X,
-                    (int)frame.Min.Y,
-                    (int)(frame.Max.X - frame.Min.X),
-                    (int)(frame.Max.Y - frame.Min.Y)));
+                    (int)leftMost,
+                    (int)topMost,
+                    (int)width,
+                    (int)height)
+            );
         }
 
         private void HandleMouse(MouseState ms)
