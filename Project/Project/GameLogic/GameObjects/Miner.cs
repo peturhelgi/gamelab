@@ -84,7 +84,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public override void Initialize()
         {
             base.Initialize();
-            LastUpdated = new TimeSpan();
+            LastUpdated = GreatEscape.GreatTime.TotalGameTime;
             HeldObj = null;
             Holding = false;
             Climbing = false;

@@ -71,7 +71,7 @@ namespace TheGreatEscape.GameLogic
             OutOfBoundsBottom = float.MinValue;
             Mode = State.Running;
 
-            Lives = 5;
+            Lives = 2;
         }
 
         public void Respawn()

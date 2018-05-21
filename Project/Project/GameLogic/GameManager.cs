@@ -50,7 +50,7 @@ namespace TheGreatEscape.GameLogic {
         void LoadContent()
         {
             _mapLoader.LoadMapContent(_controller.GameEngine.GameState);
-            _controller.GameEngine.gameTime = new TimeSpan();            
+            _controller.GameEngine.gameTime = new TimeSpan();
             _renderer = new GameRenderer(_graphicsDevice, 
                 _controller.GameEngine.GameState, _content);
         }
