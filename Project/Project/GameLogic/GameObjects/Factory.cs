@@ -180,6 +180,15 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     };
                     currentKey++;
                     break;
+                case "sign":
+                    instance = new Sign(
+                        entity.Position,
+                        entity.SpriteSize,
+                        entity.TextureString)
+                    {
+                        Handling = GameState.Handling.None
+                    };
+                    break;
                 default:
                     instance = null;
                     MyDebugger.WriteLine(

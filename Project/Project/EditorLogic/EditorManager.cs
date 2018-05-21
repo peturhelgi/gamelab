@@ -132,6 +132,16 @@ namespace EditorLogic
                     {
                         (gameObject as Platform).Background.Texture = GameObjectTextures["Misc"]["platform_mechanismy"];
                     }
+                    if (objType == "plankx") continue;
+                    if (objType == "planka") continue;
+                    if (objType == "plankbrope") continue;
+                    if (objType == "plankxrope") continue;
+                    if (objType == "plankpickaxe") continue;
+                    if (objType == "plankrb") continue;
+                    if (objType == "plankrt") continue;
+                    if (objType == "plankxrope") continue;
+                    if (objType == "plankkey") continue;
+
                         gameObject.Texture = gameObj.Value;
 
                     //TODO: remove this ugly hardcoding
