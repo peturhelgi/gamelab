@@ -119,6 +119,7 @@
     <Compile Include="GameLogic\GameObjects\Rock.cs" />
     <Compile Include="GameLogic\GameObjects\RockHook.cs" />
     <Compile Include="GameLogic\GameObjects\Rope.cs" />
+    <Compile Include="GameLogic\GameObjects\Sign.cs" />
     <Compile Include="GameLogic\GameObjects\Tool.cs" />
     <Compile Include="GameLogic\GameObjects\GameObject.cs" />
     <Compile Include="GameLogic\GameObjects\Miner.cs" />
@@ -212,6 +213,13 @@
     <Content Include="Content\Sprites\Interactables\ladder_short.png" />
     <Content Include="Content\Sprites\Interactables\lever_left.png" />
     <Content Include="Content\Sprites\Interactables\lever_right.png" />
+    <Content Include="Content\Sprites\Interactables\plankA.png" />
+    <Content Include="Content\Sprites\Interactables\plankBrope.png" />
+    <Content Include="Content\Sprites\Interactables\plankPickaxe.png" />
+    <Content Include="Content\Sprites\Interactables\plankRB.png" />
+    <Content Include="Content\Sprites\Interactables\plankRT.png" />
+    <Content Include="Content\Sprites\Interactables\plankX.png" />
+    <Content Include="Content\Sprites\Interactables\plankXrope.png" />
     <Content Include="Content\Sprites\Interactables\platform_escalator.png" />
     <Content Include="Content\Sprites\Interactables\rockandhook.png" />
     <Content Include="Content\Sprites\Menus\GameOver.png" />
@@ -247,9 +255,7 @@
       <Version>11.0.2</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Content\Levels\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
