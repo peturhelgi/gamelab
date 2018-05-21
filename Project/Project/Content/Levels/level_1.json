@@ -153,7 +153,7 @@
             "activationkey": -1,
             "secondtexture": "-1",
             "tool": "-1",
-            "id": 1,
+            "id": 0,
             "requirement": true,
             "ropelength": -1.0
         },
@@ -178,7 +178,7 @@
             "activationkey": -1,
             "secondtexture": "-1",
             "tool": "-1",
-            "id": 1,
+            "id": 0,
             "requirement": false,
             "ropelength": -1.0
         },
