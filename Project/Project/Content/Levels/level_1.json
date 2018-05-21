@@ -84,56 +84,6 @@
         },
         {
             "dim": {
-                "X": 34.9822273,
-                "Y": 34.9822273
-            },
-            "pos": {
-                "X": 3279.73364,
-                "Y": 2065.305
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 10.0,
-            "type": "secondary",
-            "texture": "",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
-        },
-        {
-            "dim": {
-                "X": 34.9822273,
-                "Y": 34.9822273
-            },
-            "pos": {
-                "X": 3279.73364,
-                "Y": 2065.305
-            },
-            "vel": {
-                "X": 0.0,
-                "Y": 0.0
-            },
-            "m": 10.0,
-            "type": "secondary",
-            "texture": "",
-            "displacement": 0.0,
-            "direction": "-1",
-            "activationkey": -1,
-            "secondtexture": "-1",
-            "tool": "-1",
-            "id": -1,
-            "requirement": false,
-            "ropelength": -1.0
-        },
-        {
-            "dim": {
                 "X": 296.5992,
                 "Y": 349.822266
             },
