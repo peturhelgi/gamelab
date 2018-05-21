@@ -689,8 +689,11 @@ namespace TheGreatEscape.GameLogic
                     obj.Speed = direction;
                 }
 
-                if ((obj as Miner).ClimbingRope) obj.Falling = false;
-
+                if ((obj as Miner).ClimbingRope)
+                {
+                    obj.Falling = false;
+                    obj.Speed = direction;
+                }
 
                 (obj as Miner).xVel = direction.X;
                 (obj as Miner).ChangeCurrentMotion();
