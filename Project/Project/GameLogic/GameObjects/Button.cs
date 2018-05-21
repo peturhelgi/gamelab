@@ -25,7 +25,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Mass = 10;
             Visible = true;
             LastUpdated = new TimeSpan();
-            Moveable = false;
+            Moveable = true;
             ON = false;
             ActivationId = actId;
 

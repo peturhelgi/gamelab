@@ -291,15 +291,15 @@ namespace TheGreatEscape.GameLogic
                 _direction = -1;
             }
 
-            if (Math.Abs(_newPadStates[player].ThumbSticks.Left.X) > 0.5f)
+            if (Math.Abs(_newPadStates[player].ThumbSticks.Left.X) > 0.65f)
             {
                 GameEngine.HandleInput(player,
                     ButtonUp(_newPadStates[player], _buttons[Command.Sprint])
                     ? GameEngine.GameAction.walk
                     : GameEngine.GameAction.run, _direction);
             }
-            float x = _newPadStates[player].ThumbSticks.Right.X,
-                y = _newPadStates[player].ThumbSticks.Right.Y;
+            float x = _newPadStates[player].ThumbSticks.Left.X,
+                y = _newPadStates[player].ThumbSticks.Left.Y;
 
             if (x * x + y * y >= 0.5f)
             {
