@@ -11,8 +11,6 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using TheGreatEscape.GameLogic;
 
-using TheGreatEscape.GameLogic.Util;
-
 namespace TheGreatEscape.Menu
 {
     public class MenuManager
@@ -33,6 +31,9 @@ namespace TheGreatEscape.Menu
         LoadingScreen _loading;
         EditorScreen _editor;
 
+        IAsyncResult result;
+        bool _requestSave = false;
+
         public enum Action
         {
             StartGame,
@@ -47,6 +48,7 @@ namespace TheGreatEscape.Menu
             ExitGame,
             Advance,
             Back,
+            SaveLevel,
             ShowHelp,
             ToggleEdit
         };
@@ -211,6 +213,7 @@ namespace TheGreatEscape.Menu
 
             _editorMenu.AddSelection("Continue", Action.Back, "", new Rectangle(0,0,0,0));
             _editorMenu.AddSelection("Play", Action.ToggleEdit, "", new Rectangle(0, 0, 0, 0));
+            _editorMenu.AddSelection("Save Level", Action.SaveLevel, "Hard Coded Level", new Rectangle());
             _editorMenu.AddSelection("Main Menu", Action.ShowMainMenu, "", new Rectangle(0,0,0,0));
 
             _loading = new LoadingScreen(_graphicsDevice, this);
@@ -371,6 +374,15 @@ namespace TheGreatEscape.Menu
                         _editorManager._camera.SetCameraToRectangle(new Rectangle(0, 0, 2000, 2000));   
                     }
                     CallAction(Action.Back, value);
+                    break;
+
+                case Action.SaveLevel:
+                    if(_prevScreen == _editor)
+                    {
+                        _editorManager._editorController.HandleSave(value.ToString());
+                        _requestSave = true;
+
+                    }
                     break;
                 default:
                     break;

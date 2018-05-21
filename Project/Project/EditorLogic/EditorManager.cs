@@ -18,7 +18,7 @@ namespace EditorLogic
 {
     public class EditorManager
     {
-        EditorController _editorController;
+        public EditorController _editorController { private set; get; }
         GameController _gameController;
         MapLoader _mapLoader;
 

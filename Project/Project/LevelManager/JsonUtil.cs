@@ -33,9 +33,11 @@ namespace Project.LeveManager
             T instance;
             try
             {
-                StreamReader streamReader = new StreamReader(_isf.OpenFile(path, FileMode.Open));
-                string data = streamReader.ReadToEnd();
-                instance = JsonConvert.DeserializeObject<T>(data, settings);
+                using (StreamReader streamReader = new StreamReader(_isf.OpenFile(path, FileMode.Open)))
+                {
+                    string data = streamReader.ReadToEnd();
+                    instance = JsonConvert.DeserializeObject<T>(data, settings);
+                }
             }
             catch (FileNotFoundException)
             {
