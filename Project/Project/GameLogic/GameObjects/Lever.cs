@@ -30,7 +30,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Mass = 10;
             Visible = true;
             LastUpdated = new TimeSpan();
-            Moveable = true;
+            Movable = true;
             ON = false;
             ActivationId = actId;
             _leftLeverTexture = textureString;

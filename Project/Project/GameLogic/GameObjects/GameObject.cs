@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using TheGreatEscape.GameLogic.Collision;
 using TheGreatEscape.GameLogic.Renderer;
 
@@ -75,7 +75,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             set;
         }
 
-        bool Moveable
+        bool Movable
         {
             get;
             set;
@@ -153,8 +153,6 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
         public bool Visible { get; set; }
 
-        public bool Movable { get; set; }
-
         public string TextureString { get; set; }
 
         public List<Light> Lights { get; set; }
@@ -163,7 +161,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
         public TimeSpan LastUpdated { get; set; }
 
-        public bool Moveable { get; set; }
+        public bool Movable { get; set; }
 
 
         public static GameObject Clone(GameObject source)

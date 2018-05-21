@@ -10,7 +10,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public Ground(Vector2 position, Vector2 spriteSize) :
             base(position, spriteSize)
         {
-            Moveable = false;
+            Movable = false;
             Visible = true;
             // this.TextureString = textureString;
         }

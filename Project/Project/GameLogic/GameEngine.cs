@@ -189,6 +189,8 @@ namespace TheGreatEscape.GameLogic
             List<Miner> actors = GameState.GetActors();
             List<GameObject> allObjects = GameState.GetAll();
             List<Platform> platforms = new List<Platform>();
+            List<GameObject> possibleObjs = new List<GameObject>();
+                
 
             foreach (Miner m in GameState.GetActors()) actorsFirst.Add(m as GameObject);
             foreach (GameObject g in allObjects)
@@ -198,6 +200,7 @@ namespace TheGreatEscape.GameLogic
                 {
                     platforms.Add(g as Platform);
                 }
+                if (!(g is Ground)) possibleObjs.Add(g);
             }
 
             foreach (var miner in actors)
@@ -209,7 +212,7 @@ namespace TheGreatEscape.GameLogic
 
             foreach (GameObject c in actorsFirst)
             {
-                if (c.Active && c.Moveable)
+                if (c.Active && c.Movable)
                 {
                     if (c.Position.Y > GameState.OutOfBoundsBottom)
                     {
@@ -223,13 +226,13 @@ namespace TheGreatEscape.GameLogic
 
                 if (c is Button)
                 {
-                    List<GameObject> possibleObjs = new List<GameObject>();
-                    foreach (GameObject q in actorsFirst)
-                        if (!(q is Ground)) possibleObjs.Add(q);
-
                     List<GameObject> touchingButtons = CollisionDetector.FindCollisions(c.BBox, possibleObjs);
                     if (touchingButtons.Count > 0)
                     {
+                        MyDebugger.WriteLine("kemst hingad");
+                        MyDebugger.WriteLine("Miner shoes: " + (touchingButtons[0].Position.Y + touchingButtons[0].SpriteSize.Y).ToString());
+                        MyDebugger.WriteLine("Button height: " + (c.Position.Y).ToString());
+
                         if (!(c as Button).ON) (c as Button).Interact(platforms);
                     }
                     else

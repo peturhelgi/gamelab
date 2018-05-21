@@ -37,7 +37,8 @@ namespace TheGreatEscape.GameLogic.Collision {
                     // We can return early, if a point is between the others
                     return true;
                 }
-                else {
+                else
+                {
                     o_min = Math.Min(pos, o_min);
                     o_max = Math.Max(pos, o_max);
                 }

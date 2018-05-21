@@ -73,7 +73,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             HeldObj = null;
             Holding = false;
             Climbing = false;
-            Moveable = true;
+            Movable = true;
             Interacting = false;
             LookAt = 0.0f;
 
