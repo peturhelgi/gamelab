@@ -66,7 +66,7 @@ namespace TheGreatEscape.Menu
         GreatEscape _theGame;
         List<Screen> screenStack;
         String TemplateName = "Template";
-        public static Song Sound1, Sound2;
+        public static Song Sound1, Sound2, Sound3;
         //public static SoundEffectInstance Song1, Song2;
 
         public KeyboardState OldKeyboardState, CurrKeyboardState;
@@ -420,6 +420,7 @@ namespace TheGreatEscape.Menu
             MenuFont = _content.Load<SpriteFont>("Fonts/Orbitron");
             Sound1 = _content.Load<Song>("soft_song");
             Sound2 = _content.Load<Song>("suspense_song");
+            Sound3 = _content.Load<Song>("story_song");
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(MenuManager.Sound1);
         }
@@ -609,7 +610,9 @@ namespace TheGreatEscape.Menu
                 _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_" + i));
             }
             _currentSlide = _story[slideCnt++];
-            
+
+            MediaPlayer.Stop();
+            MediaPlayer.Play(MenuManager.Sound3);
         }
 
         public override void Draw(GameTime gameTime, int width, int height)
