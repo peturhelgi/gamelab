@@ -47,7 +47,8 @@ namespace TheGreatEscape.Menu
             ExitGame,
             Advance,
             Back,
-            ShowHelp
+            ShowHelp,
+            ToggleEdit
         };
 
         GameManager _gameManager;
@@ -209,6 +210,7 @@ namespace TheGreatEscape.Menu
                 selector, true, _graphicsDevice, this);
 
             _editorMenu.AddSelection("Continue", Action.Back, "", new Rectangle(0,0,0,0));
+            _editorMenu.AddSelection("Play", Action.ToggleEdit, "", new Rectangle(0, 0, 0, 0));
             _editorMenu.AddSelection("Main Menu", Action.ShowMainMenu, "", new Rectangle(0,0,0,0));
 
             _loading = new LoadingScreen(_graphicsDevice, this);
@@ -298,6 +300,17 @@ namespace TheGreatEscape.Menu
                     if (_currentScreen is EditorScreen)
                     {
                         _popOver = _editorMenu;
+                        var toggleOption = (_popOver as SelectionMenu)?.GetSelection(1);
+                        if (_editorManager.Editing)
+                        {
+                            _editorManager._camera.SetCameraToRectangle(new Rectangle(0, 0, 2000, 2000));
+                            toggleOption.Text = "Play Level";
+                        }
+                        else
+                        {
+                            toggleOption.Text = "Edit Level";
+                        }
+                    (_popOver as SelectionMenu).SetSelection(1, toggleOption);
                     }
                     else
                     {
@@ -313,11 +326,7 @@ namespace TheGreatEscape.Menu
                     break;
 
                 case Action.ResumeGame:
-                    if (_prevScreen != null)
-                    {
-                        _currentScreen = _prevScreen;
-                        _prevScreen = null;
-                    }
+                    CallAction(Action.Back, value);
 
                     break;
                 case Action.Back:
@@ -325,7 +334,6 @@ namespace TheGreatEscape.Menu
                     {
                         screenStack.RemoveAt(screenStack.Count - 1);
                         _currentScreen = screenStack[screenStack.Count - 1];
-
                     }
                     break;
                 case Action.Advance:
@@ -340,7 +348,7 @@ namespace TheGreatEscape.Menu
                     if (_currentScreen == _gameHelps
                         || _currentScreen == _editorHelp)
                     {
-                        CallAction(Action.Back, 0);
+                        CallAction(Action.Back, value);
                         break;
                     }
                     _prevScreen = _currentScreen;
@@ -348,12 +356,21 @@ namespace TheGreatEscape.Menu
                     {
                         _currentScreen = _editorHelp;
                     }
-                    else if (_prevScreen == _game)
+                    else if (_prevScreen == _pauseGame)
                     {
                         _currentScreen = _gameHelps;
                     }
 
                     screenStack.Add(_currentScreen);
+                    break;
+
+                case Action.ToggleEdit:
+                    _editorManager.Editing = !_editorManager.Editing;
+                    if (_editorManager.Editing)
+                    {
+                        _editorManager._camera.SetCameraToRectangle(new Rectangle(0, 0, 2000, 2000));   
+                    }
+                    CallAction(Action.Back, value);
                     break;
                 default:
                     break;
@@ -367,7 +384,7 @@ namespace TheGreatEscape.Menu
             Sound1 = _content.Load<Song>("soft_song");
             Sound2 = _content.Load<Song>("suspense_song");
             MediaPlayer.IsRepeating = true;
-            //MediaPlayer.Play(MenuManager.Sound1);
+            MediaPlayer.Play(MenuManager.Sound1);
 
         }
 
