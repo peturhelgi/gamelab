@@ -556,7 +556,12 @@ namespace TheGreatEscape.Menu
         List<Texture2D> _story;
         Texture2D _currentSlide;
         GraphicsDevice _graphics;
+
         int slideCnt;
+
+        int mAlphaValue = 1;
+        int mFadeIncrement = 20;
+        double mFadeDelay = .035;
 
         public StoryScreen(GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
         {
@@ -581,16 +586,27 @@ namespace TheGreatEscape.Menu
 
         public override void Draw(GameTime gameTime, int width, int height)
         {
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
             Rectangle dest = new Rectangle(0, 0, _graphicsDevice.PresentationParameters.BackBufferWidth
                 , _graphicsDevice.PresentationParameters.BackBufferHeight);
             //Rectangle dest = new Rectangle(0, 0, _currentSlide.Width, _currentSlide.Height);
-            _spriteBatch.Draw(_currentSlide, dest, Color.White);
+            _spriteBatch.Draw(_currentSlide, dest, new Color((byte)255, (byte)255, (byte)255, (byte)MathHelper.Clamp(mAlphaValue, 0, 225)));
             _spriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
-        {
+        {   
+                mFadeDelay -= gameTime.ElapsedGameTime.TotalSeconds;
+                if (mFadeDelay <= 0)
+                {
+                    mFadeDelay = .035;
+                    mAlphaValue += mFadeIncrement;
+                    if (mAlphaValue >= 255 || mAlphaValue <= 0)
+                    {
+                        mFadeIncrement *= -1;
+                    }
+                }
+
             if (_manager.ButtonPressed(0, Buttons.A)
                 || _manager.CurrKeyboardState.IsKeyDown(Keys.A))
             {

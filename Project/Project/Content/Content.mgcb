@@ -1069,3 +1069,21 @@
 /processorParam:TextureFormat=Color
 /build:Backstory/Storyboard_background.png
 
+#begin Door_Unlock.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Door_Unlock.wav
+
+#begin score1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:score1.wav
+
+#begin score2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:score2.wav
+
