@@ -32,13 +32,14 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Mass = 10;
             Visible = true;
             LastUpdated = new TimeSpan();
-            Moveable = false;
+
             if (ON)
             {
                 Texture2D tmp = Texture;
                 Texture = SecondTexture;
                 SecondTexture = tmp;
             }
+            Movable = true;
             ON = false;
         }
 

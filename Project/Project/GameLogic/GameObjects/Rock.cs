@@ -21,6 +21,8 @@ namespace TheGreatEscape.GameLogic.GameObjects
             {
                 Speed = Vector2.Zero;
                 Mass = 10;
+                Visible = true;
+                Movable = true;
             }
         }
 
@@ -28,7 +30,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         {
             base.Initialize();
             Visible = true;
-            Moveable = false;
+            Movable = false;
         }
 
         public override Obj GetObj()

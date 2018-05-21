@@ -52,6 +52,10 @@ namespace TheGreatEscape.GameLogic
         private Texture2D Background;
         public float OutOfBoundsBottom;
         public State Mode;
+        private List<GameObject> backgrounds;
+        private List<GameObject> otherNoneSolids;
+        private List<GameObject> grounds;
+        private List<GameObject> otherSolids;
 
         CollisionDetector CollisionDetector;
 
@@ -72,6 +76,10 @@ namespace TheGreatEscape.GameLogic
             Mode = State.Running;
 
             Lives = 2;
+            backgrounds = new List<GameObject>();
+            otherNoneSolids = new List<GameObject>();
+            grounds = new List<GameObject>();
+            otherSolids = new List<GameObject>();
         }
 
         public void Respawn()
@@ -100,12 +108,14 @@ namespace TheGreatEscape.GameLogic
 
         public List<GameObject> GetAll()
         {
-            return NonSolids
+            return backgrounds
+                .Concat(grounds)
+                .Concat(otherNoneSolids)
                 .Concat(Interactables)
-                .Concat(Collectibles)
                 .Concat(Destroyables)
-                .Concat(Solids)
                 .Concat(Actors)
+                .Concat(otherSolids)
+                .Concat(Collectibles)
                 .ToList();
         }
 
@@ -146,9 +156,13 @@ namespace TheGreatEscape.GameLogic
                     break;
                 case Handling.Solid:
                     Solids.Remove(obj);
+                    grounds.Remove(obj);
+                    otherSolids.Remove(obj);
                     break;
                 case Handling.None:
                     NonSolids.Remove(obj);
+                    backgrounds.Remove(obj);
+                    otherNoneSolids.Remove(obj);
                     break;
                 case Handling.Interact:
                     Interactables.Remove(obj);
@@ -192,10 +206,14 @@ namespace TheGreatEscape.GameLogic
                     }
                     break;
                 case Handling.Solid:
-                    if (!Solids.Contains(obj)) Solids.Add(obj);
+                    if(!Solids.Contains(obj)) Solids.Add(obj);
+                    if(obj is Ground && !grounds.Contains(obj)) grounds.Add(obj);
+                    else if(!otherSolids.Contains(obj)) otherSolids.Add(obj);
                     break;
                 case Handling.None:
-                    if (!NonSolids.Contains(obj)) NonSolids.Add(obj);
+                    if(!NonSolids.Contains(obj)) NonSolids.Add(obj);
+                    if(obj is PlatformBackground && !backgrounds.Contains(obj)) backgrounds.Add(obj);
+                    if(!otherNoneSolids.Contains(obj)) otherNoneSolids.Add(obj);
                     break;
                 case Handling.Interact:
                     Interactables.Add(obj);
@@ -209,6 +227,10 @@ namespace TheGreatEscape.GameLogic
             }
         }
 
+        public void AddTool(ExistingTools et, Tool tool)
+        {
+            Tools.Add(et, tool);
+        }
         public void ChangeHandling(GameObject obj, Handling before,
             Handling after)
         {

@@ -16,7 +16,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public override void Initialize()
         {
             base.Initialize();
-            Moveable = false;
+            Movable = false;
             Visible = true;
         }
 

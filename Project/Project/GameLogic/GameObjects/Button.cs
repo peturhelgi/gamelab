@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.Util;
 using TheGreatEscape.LevelManager;
+using TheGreatEscape.GameLogic.Collision;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
@@ -29,9 +30,17 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
             Visible = true;
             LastUpdated = new TimeSpan();
-            Moveable = false;
+            Movable = false;
             ON = false;
         }
+
+        //public override AxisAllignedBoundingBox BBox
+        //{
+        //    get
+        //    {
+        //        return new AxisAllignedBoundingBox(Position - new Vector2(0,5), Position + SpriteSize);
+        //    }
+        //}
 
         public void Interact(List<Platform> platforms)
         {

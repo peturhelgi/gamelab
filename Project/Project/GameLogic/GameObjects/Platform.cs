@@ -10,12 +10,12 @@ namespace TheGreatEscape.GameLogic.GameObjects
     public class Platform : GameObject
     {
         public bool Activate;
-        public readonly int ActivationId;
+        public int ActivationId;
         public float Displacement;
         public Vector2 DisplacementStep;
         public float MaxHeight;
         public float MinHeight;
-        private bool _movingInYdir;
+        public bool _movingInYdir;
         public PlatformBackground Background;
 
         public Platform(Vector2 position, Vector2 spriteSize, string textureString, 
@@ -24,6 +24,17 @@ namespace TheGreatEscape.GameLogic.GameObjects
         {
 
             TextureString = textureString;
+            Position = position;
+            SpriteSize = spriteSize;
+            Falling = false;
+
+            Speed = Vector2.Zero;
+            Mass = 10;
+            Visible = true;
+            LastUpdated = new TimeSpan();
+            Movable = false;
+            Activate = false;
+
             Displacement = displacement;
             ActivationId = actId;
             Speed = Vector2.Zero;
@@ -34,7 +45,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             {
                 dir = "y";
                 secondTextureString = "Sprites/Misc/platform_mechanismy";
-                displacement = 200;
+                Displacement = 800;
             }
 
             if (dir == "y")
@@ -69,10 +80,46 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Mass = 10;
             Visible = true;
             LastUpdated = new TimeSpan();
-            Moveable = false;
+            Movable = false;
             Activate = false;
         }
 
+        public void SwapDirections()
+        {
+            _movingInYdir = !_movingInYdir;
+            SetPosition(Vector2.Zero);
+        }
+        public void SetPosition(Vector2 pos)
+        {
+            Position += pos;
+            if (_movingInYdir)
+            {
+                MinHeight = Position.Y;
+                MaxHeight = Position.Y - Displacement;
+                DisplacementStep = new Vector2(0.0f, 5.0f);
+            }
+            else
+            {
+                MaxHeight = Position.X + Displacement;
+                MinHeight = Position.X;
+                DisplacementStep = new Vector2(-5.0f, 0.0f);
+            }
+            SetBackground();
+        }
+
+        private void SetBackground()
+        {
+            if (_movingInYdir)
+            {
+                Background.Position = new Vector2(Position.X, MaxHeight + SpriteSize.Y * 0.8f);
+                Background.SpriteSize = new Vector2(SpriteSize.X, Displacement);
+            }
+            else
+            {
+                Background.Position = new Vector2(Position.X, Position.Y + SpriteSize.Y * 0.5f);
+                Background.SpriteSize = new Vector2(Displacement + SpriteSize.X, SpriteSize.Y);
+            }
+        }
         public override AxisAllignedBoundingBox BBox
         {
             get
@@ -120,7 +167,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Mass = 10;
             Visible = true;
             LastUpdated = new TimeSpan();
-            Moveable = false;
+            Movable = false;
         }
 
         public override Obj GetObj()

@@ -23,7 +23,7 @@ namespace TheGreatEscape.GameLogic.GameObjects {
             Mass = 10;
             Visible = true;
             LastUpdated = new TimeSpan();
-            Moveable = true;
+            Movable = true;
         }
 
         public override Obj GetObj()

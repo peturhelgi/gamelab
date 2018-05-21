@@ -121,13 +121,16 @@ namespace EditorLogic
                     {
                         (gameObject as Door).LockedLight.Texture = GameObjectTextures["Misc"]["red_light"];
                         (gameObject as Door).UnlockedLight.Texture = GameObjectTextures["Misc"]["green_light"];
-                        (gameObject as Door).LockedLight.Active = (gameObject as Door).RequiresKey;
-                        (gameObject as Door).UnlockedLight.Active = !(gameObject as Door).RequiresKey;
                     }
                     if (objType == "rockandhook")
                     {
                         (gameObject as RockHook).Rope.Texture = GameObjectTextures["Misc"]["Rope"];
                         (gameObject as RockHook).Rope.SecondTexture = GameObjectTextures["Misc"]["Rope_transparent"];
+                    }
+
+                    if (objType == "platform")
+                    {
+                        (gameObject as Platform).Background.Texture = GameObjectTextures["Misc"]["platform_mechanismy"];
                     }
                         gameObject.Texture = gameObj.Value;
 
@@ -192,6 +195,22 @@ namespace EditorLogic
                 foreach (var obj in CurrentObjects)
                 {
                     _engine.GameState.Remove(obj);
+                    if (obj is Door)
+                    {
+                        _engine.GameState.Remove((obj as Door).LockedLight);
+                        _engine.GameState.Remove((obj as Door).UnlockedLight);
+                    }
+
+                    if (obj is Key)
+                    {
+                        List<GameObject> doors = GetAllObjectsOfType(typeof(Door));
+                        foreach (Door door in doors)
+                        {
+                            if (door.KeyId == (obj as Key).Id)
+                                door.RemoveKey(door.KeyId);
+                        }
+                    }
+
                 }
             }
             CurrentObjects = null;
@@ -201,16 +220,18 @@ namespace EditorLogic
         public void CreateNewGameObject(GameObject newObject)
         {
             GameObject obj = GameObject.Clone(newObject);
-            CurrentObjects = new List<GameObject>();
-            if(newObject is Door)
+
+            if (newObject is Door)
             {
-                obj = GameObject.Clone(newObject);
-                (obj as Door).LockedLight = new PlatformBackground(Vector2.Zero, Vector2.Zero, "");
-                (obj as Door).UnlockedLight = new PlatformBackground(Vector2.Zero, Vector2.Zero, "");
-                (obj as Door).LockedLight.Texture = GameObjectTextures["Misc"]["red_light"];
-                (obj as Door).UnlockedLight.Texture = GameObjectTextures["Misc"]["green_light"];
-                (obj as Door).SetLights();
+                (obj as Door).LockedLight = GameObject.Clone((newObject as Door).LockedLight) as PlatformBackground;
+                (obj as Door).UnlockedLight = GameObject.Clone((newObject as Door).UnlockedLight) as PlatformBackground;
             }
+
+            if (newObject is Platform)
+            {
+                (obj as Platform).Background = GameObject.Clone((newObject as Platform).Background) as PlatformBackground;
+            }
+            CurrentObjects = new List<GameObject>();
 
             CurrentObjects.Add(obj);
 
@@ -225,7 +246,7 @@ namespace EditorLogic
             {
                 Type = "key",
                 Position = CursorPosition,
-                SpriteSize = new Vector2(150, 100),
+                SpriteSize = new Vector2(94, 31),
                 Id = GameObjectFactory.currentKey
             };
             GameObjectFactory factory = new GameObjectFactory();
@@ -244,6 +265,35 @@ namespace EditorLogic
                 SecondTexture = GameObjectTextures["Misc"]["Rope_transparent"]
             };
             AuxiliaryObject = Rope;
+        }
+
+        public void CreateButton(int activationKey)
+        {
+            Obj gobj = new Obj
+            {
+                Type = "button",
+                Position = CursorPosition,
+                SpriteSize = new Vector2(131, 23),
+                ActivationKey = activationKey
+            };
+            GameObjectFactory factory = new GameObjectFactory();
+            AuxiliaryObject = factory.Create(gobj);
+            AuxiliaryObject.Texture = GameObjectTextures["Interactables"]["button_floor"];
+        }
+
+        public void CreateLever(int activationKey)
+        {
+            Obj gobj = new Obj
+            {
+                Type = "lever",
+                Position = CursorPosition,
+                SpriteSize = new Vector2(142, 129),
+                ActivationKey = activationKey
+            };
+            GameObjectFactory factory = new GameObjectFactory();
+            AuxiliaryObject = factory.Create(gobj);
+            AuxiliaryObject.Texture = GameObjectTextures["Interactables"]["lever_left"];
+            (AuxiliaryObject as Lever).SecondTexture = GameObjectTextures["Interactables"]["lever_right"];
         }
 
         public void PlaceCurrentObjects()
@@ -274,6 +324,18 @@ namespace EditorLogic
                     MovingStartPosition = CursorPosition;
                     _engine.GameState.Add(rockHook);
                     AuxObjLink = rockHook;
+                    CurrentObjects = null;
+                    return;
+                }
+                if (CurrentObjects.First() is Platform && CurrentIsNewObject)
+                {
+                    Platform platform = CurrentObjects.First() as Platform;
+                    platform.ActivationId = GetAllObjectsOfType(typeof(Platform)).Count + 1;
+                    platform.SetPosition(CursorPosition - MovingStartPosition);
+
+                    MovingStartPosition = CursorPosition;
+                    AuxObjLink = platform;
+                    AuxiliaryObject = platform.Background;
                     CurrentObjects = null;
                     return;
                 }
@@ -309,14 +371,59 @@ namespace EditorLogic
 
                     return;
                 }
+
+                if (AuxiliaryObject is PlatformBackground)
+                {   
+                    if ((AuxObjLink as Platform)._movingInYdir)
+                        (AuxObjLink as Platform).Displacement = AuxiliaryObject.SpriteSize.Y;
+                    else
+                        (AuxObjLink as Platform).Displacement = AuxiliaryObject.SpriteSize.X;
+                    (AuxObjLink as Platform).SetPosition(Vector2.Zero);
+                    _engine.GameState.Add(AuxObjLink);
+                    _engine.GameState.Add(AuxiliaryObject);
+
+                    MovingStartPosition = CursorPosition;
+                    CreateButton((AuxObjLink as Platform).ActivationId);
+                    return;
+
+                }
                 AuxiliaryObject.Position += (CursorPosition - MovingStartPosition);
                 _engine.GameState.Add(AuxiliaryObject);
             }
             AuxiliaryObject = null;
         }
+        public void SwapBetweenAuxiliaries()
+        {
+            if (AuxiliaryObject is Button)
+            {
+                CreateLever((AuxObjLink as Platform).ActivationId);
+                MovingStartPosition = CursorPosition;
+
+                return;
+            }
+
+            if (AuxiliaryObject is Lever)
+            {
+                CreateButton((AuxObjLink as Platform).ActivationId);
+                MovingStartPosition = CursorPosition;
+
+                return;
+            }
+
+            if (AuxiliaryObject is PlatformBackground)
+            {
+                (AuxObjLink as Platform).SwapDirections();
+                if ((AuxObjLink as Platform)._movingInYdir)
+                    AuxiliaryObject.Texture = GameObjectTextures["Misc"]["platform_mechanismy"];
+                else
+                    AuxiliaryObject.Texture = GameObjectTextures["Misc"]["platform_mechanismx"];
+
+            }
+        }
 
         public void RemoveAuxiliaryObject()
         {
+            
             if (AuxiliaryObject is Key)
             {
                 List<GameObject> doors = GetAllObjectsOfType(typeof(Door));
@@ -326,7 +433,7 @@ namespace EditorLogic
                         door.RemoveKey(door.KeyId);
                 }
 
-            AuxiliaryObject = null;
+                AuxiliaryObject = null;
             }
         }
 
@@ -338,8 +445,16 @@ namespace EditorLogic
             {
                 CurrentObjects = new List<GameObject>();
                 CursorPosition = new Vector2(float.MaxValue);
-                foreach (GameObject obj in collisions)
+                GameObject obj;  
+                foreach (GameObject newObject in collisions)
                 {
+                    obj = GameObject.Clone(newObject);
+                    if (obj is Door)
+                    {
+                        (obj as Door).LockedLight = GameObject.Clone((newObject as Door).LockedLight) as PlatformBackground;
+                        (obj as Door).UnlockedLight = GameObject.Clone((newObject as Door).UnlockedLight) as PlatformBackground;
+                    }
+
                     if (!(obj is Miner))
                         CurrentObjects.Add(GameObject.Clone(obj));
                     CursorPosition = Vector2.Min(CursorPosition, obj.Position);
@@ -439,8 +554,10 @@ namespace EditorLogic
                 // fix weird bug
                 if (cursorDisplacement == Vector2.Zero)
                 {
-                    cursorPosition.X = _camera.GetCameraRectangle(0, 0).Center.X; 
-                    cursorPosition.Y = _camera.GetCameraRectangle(0, 0).Center.Y; 
+                    Vector2 newCursPos;
+                    newCursPos.X = _camera.GetCameraRectangle(0, 0).Center.X / 2;
+                    newCursPos.Y = _camera.GetCameraRectangle(0, 0).Center.Y / 2;
+                    CursorPosition = newCursPos;
                 }
                 InitialRectangle.Offset(cursorDisplacement);
                 _camera.SetCameraToRectangle(InitialRectangle);
