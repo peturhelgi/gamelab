@@ -1180,3 +1180,21 @@
 /processorParam:Quality=Best
 /build:Sounds/level_completed.wav
 
+#begin Sounds/interact_door.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/interact_door.wav
+
+#begin Sounds/pick_key.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/pick_key.wav
+
+#begin Sounds/pickaxe.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/pickaxe.wav
+

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.Menu;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
@@ -23,6 +24,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             {
                 return;
             }
+
             List<GameObject> SolidAndInteracts = gamestate.GetObjects(GameState.Handling.Solid,
                 GameState.Handling.Interact);
             List<GameObject> collisions = CollisionDetector.FindCollisions(

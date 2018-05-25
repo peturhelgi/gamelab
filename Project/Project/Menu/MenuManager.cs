@@ -31,7 +31,7 @@ namespace TheGreatEscape.Menu
         LoadingScreen _loading;
         EditorScreen _editor;
 
-        SoundPlayer _soundPlayer;
+        public static SoundPlayer SoundsPlayer;
 
         IAsyncResult result;
         bool _requestSave = false;
@@ -42,7 +42,10 @@ namespace TheGreatEscape.Menu
             Menu,
             GameOver,
             Story,
-            LevelCompleted
+            LevelCompleted,
+            Pickaxe,
+            Key,
+            Door
         }
         public enum Action
         {
@@ -155,7 +158,7 @@ namespace TheGreatEscape.Menu
 
         public void PlaySound(SoundToPlay sound)
         {
-            _soundPlayer.Play(sound);
+            SoundsPlayer.Play(sound);
         }
 
         public MenuManager(ContentManager content, GraphicsDevice graphicsDevice,
@@ -169,7 +172,7 @@ namespace TheGreatEscape.Menu
             _editorManager = editorManager;
             _popOver = null;
             _theGame = game;
-            _soundPlayer = new SoundPlayer(_content);
+            SoundsPlayer = new SoundPlayer(_content);
 
             IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication();
             string[] files = isf.GetFileNames("Levels/*");
@@ -439,7 +442,7 @@ namespace TheGreatEscape.Menu
         public void LoadContent()
         {
             MenuFont = _content.Load<SpriteFont>("Fonts/Orbitron");
-            _soundPlayer.LoadSongs();
+            SoundsPlayer.LoadSongs();
             PlaySound(SoundToPlay.Menu);
         }
 
