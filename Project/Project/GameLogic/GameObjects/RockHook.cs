@@ -21,21 +21,30 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 Speed = new Vector2(0);
                 Mass = 10;
                 Visible = true;
-                Moveable = false;
+                Movable = false;
                 TextureString = textureString;
-                isRope = false;
+
 
                 if (ropeLength == 0)
                     ropeLength = 200;
 
                 _ropeLength = ropeLength;
+                Vector2 scale = new Vector2(120.0f / 282.0f, 153.0f / 168.0f);
 
-
-
-                Rope = new HangingRope(position + new Vector2(120.0f / 282.0f * spriteSize.X, 153.0f / 168.0f * spriteSize.Y),
+                Rope = new HangingRope(position + scale * spriteSize,
                     new Vector2(44, ropeLength), secondTextureString)
                 { Active = true };
+                Initialize();
             }
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            Visible = true;
+            Movable = false;
+            isRope = false;
+            Rope.Initialize();
         }
 
         public void SetRope(HangingRope rope)
@@ -48,10 +57,18 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Rope.Position = Position + new Vector2(120.0f / 282.0f * SpriteSize.X, 153.0f / 168.0f * SpriteSize.Y);
         }
 
+        public HangingRope GetRope()
+        {
+            return Rope;
+        }
         public void HangOrTakeRope(GameState gs)
         {
-            if (!isRope) gs.Add(Rope, GameState.Handling.None);
+            if (!isRope)
+            {
+                gs.Add(Rope, GameState.Handling.None);
+            }
             else gs.Remove(Rope, GameState.Handling.None);
+            Rope.SwapTextures();
             isRope = !isRope;
         }
 
@@ -63,7 +80,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             obj.Velocity = Speed;
             obj.Mass = (float)Mass;
             obj.Type = "rockandhook";
-            obj.Texture = TextureString;
+            obj.TextureString = TextureString;
             obj.Displacement = 0;
             obj.Direction = "-1";
             obj.ActivationKey = -1;
@@ -80,18 +97,36 @@ namespace TheGreatEscape.GameLogic.GameObjects
     class HangingRope : GameObject
     {
         private float _ropeLength;
+        public string SecondTextureString;
+        public Texture2D SecondTexture;
 
         public HangingRope(Vector2 position, Vector2 spriteSize, string textureString)
             : base(position, spriteSize)
         {
             {
-                Speed = new Vector2(0);
+                Speed = Vector2.Zero;
                 Mass = 10;
                 Visible = true;
-                Moveable = false;
+                Movable = false;
                 TextureString = textureString;
-                _ropeLength = spriteSize.Y;
+                SecondTextureString = "Sprites/Misc/Rope_transparent";
+                Initialize();
             }
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            Visible = true;
+            Movable = false;
+            _ropeLength = SpriteSize.Y;
+        }
+
+        public void SwapTextures()
+        {
+            Texture2D temp = Texture;
+            Texture = SecondTexture;
+            SecondTexture = temp;
         }
 
         public override AxisAllignedBoundingBox BBox
@@ -112,7 +147,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             obj.Velocity = Speed;
             obj.Mass = (float)Mass;
             obj.Type = "hangingRope";
-            obj.Texture = TextureString;
+            obj.TextureString = TextureString;
             obj.Displacement = 0;
             obj.Direction = "-1";
             obj.ActivationKey = -1;

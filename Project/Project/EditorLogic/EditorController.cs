@@ -2,8 +2,11 @@
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Project.LeveManager;
 using System;
 using System.IO;
+
+using System.IO.IsolatedStorage;
 
 using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.GameObjects;
@@ -12,13 +15,16 @@ using TheGreatEscape.LevelManager;
 
 namespace EditorLogic
 {
-    class EditorController
+    public class EditorController
     {
         public GameEngine GameEngine;
 
         public Camera Camera;
 
         EditorManager _manager;
+
+        JsonUtil<Level> _saver;
+
         Vector2 _initCursorSize, _deltaCursorSize, _resizeDelta;
 
         GamePadState _oldGamePadState, _currGamePadState;
@@ -38,8 +44,10 @@ namespace EditorLogic
             ToggleMode,
             TogglePicker,
             ZoomIn,
-            ZoomOut
+            ZoomOut,
+            ShowHelp
         }
+
 
         Dictionary<Command, List<Buttons>> _buttons = new Dictionary<Command, List<Buttons>>();
 
@@ -57,6 +65,7 @@ namespace EditorLogic
             _buttons[Command.Deselect] = new List<Buttons> { Buttons.LeftTrigger };
             _buttons[Command.NextItem] = new List<Buttons> { Buttons.RightShoulder };
             _buttons[Command.PreviousItem] = new List<Buttons> { Buttons.LeftShoulder };
+            _buttons[Command.ShowHelp] = new List<Buttons> { Buttons.Start };
 
             _buttons[Command.Exit] = new List<Buttons> { Buttons.Back };
 
@@ -64,6 +73,10 @@ namespace EditorLogic
             GameEngine = gameEngine;
             Camera = camera;
             _manager = manager;
+
+            _saver = new JsonUtil<Level>();
+
+
             _initCursorSize = new Vector2(10);
             _deltaCursorSize = new Vector2(50, -50);
             _resizeDelta = new Vector2(5, -5);
@@ -102,32 +115,12 @@ namespace EditorLogic
                 MyDebugger.WriteLine(_mouseState.Position.Y + ")", true);
             }
         }
-        private void HandleSave()
+
+        public void HandleSave(string levelname)
         {
-            string path = "Content\\" + GameEngine.GameState.levelname + ".json";
+            string path = "Levels/" + levelname + ".json";
             Level level = GameEngine.GameState.GetPureLevel();
-            String text = JsonConvert.SerializeObject(level);
-
-            MyDebugger.WriteLine(text, true);
-            //TODO: Put the text into the file
-
-            /*
-            IAsyncResult result1 = StorageDevice.BeginShowSelector(PlayerIndex.One, null, null);
-            StorageDevice device = StorageDevice.EndShowSelector(result1);
-
-            IAsyncResult result = device.BeginOpenContainer("LevelSaver", null, null);
-            result.AsyncWaitHandle.WaitOne();
-            StorageContainer container = device.EndOpenContainer(result);
-            result.AsyncWaitHandle.Dispose();
-
-            if (container.FileExists(filename)) container.DeleteFile(filename);
-            Stream stream = container.CreateFile(filename);
-            TextWriter writer = new StreamWriter(stream);
-            writer.Write(level);
-
-            writer.Dispose();
-            stream.Dispose();
-            container.Dispose();*/
+            _saver.Save(path, level);
         }
 
         private void HandleKeyboard()
@@ -145,7 +138,7 @@ namespace EditorLogic
             if (_currKeyboardState.IsKeyDown(Keys.Up)) _manager.CursorPosition += new Vector2(0, -20);
 
             // Handle saving changes
-            if (_currKeyboardState.IsKeyDown(Keys.J)) HandleSave();
+            if (_currKeyboardState.IsKeyDown(Keys.J)) HandleSave(GameEngine.GameState.levelname);
 
         }
 
@@ -284,6 +277,11 @@ namespace EditorLogic
                 else if (KeyPressed(Command.Place))
                 {
                     _manager.PlaceAuxiliaryObject();
+                }
+
+                else if (KeyPressed(Command.NextItem))
+                {
+                    _manager.SwapBetweenAuxiliaries();
                 }
             }
             else

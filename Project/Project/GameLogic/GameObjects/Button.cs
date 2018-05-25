@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.Util;
 using TheGreatEscape.LevelManager;
+using TheGreatEscape.GameLogic.Collision;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
@@ -15,21 +16,31 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public Button(Vector2 position, Vector2 spriteSize, string textureString, int actId)
             : base(position, spriteSize)
         {
-
             TextureString = textureString;
-            Position = position;
-            SpriteSize = spriteSize;
-            Falling = false;
-
+            ActivationId = actId;
             Speed = Vector2.Zero;
+            Initialize();
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            Falling = false;
             Mass = 10;
+
             Visible = true;
             LastUpdated = new TimeSpan();
-            Moveable = false;
+            Movable = false;
             ON = false;
-            ActivationId = actId;
-
         }
+
+        //public override AxisAllignedBoundingBox BBox
+        //{
+        //    get
+        //    {
+        //        return new AxisAllignedBoundingBox(Position - new Vector2(0,5), Position + SpriteSize);
+        //    }
+        //}
 
         public void Interact(List<Platform> platforms)
         {
@@ -46,7 +57,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             obj.Velocity = Speed;
             obj.Mass = (float)Mass;
             obj.Type = "button";
-            obj.Texture = TextureString;
+            obj.TextureString = TextureString;
             obj.Displacement = 0;
             obj.Direction = "-1";
             obj.ActivationKey = ActivationId;

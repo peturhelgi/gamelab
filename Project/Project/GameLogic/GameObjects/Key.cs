@@ -15,8 +15,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public Key(Vector2 position, Vector2 spriteSize)
             : base(position, spriteSize)
         {
-            Movable = false;
-            Visible = true;
+            Initialize();
         }
 
         public void Collect(List<GameObject> interactables)
@@ -28,6 +27,13 @@ namespace TheGreatEscape.GameLogic.GameObjects
                     (it as Door).Unlock();
                 }
             }
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            Movable = false;
+            Visible = true;
         }
 
         public override string ToString()
@@ -43,7 +49,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             obj.Velocity = Speed;
             obj.Mass = (float)Mass;
             obj.Type = "key";
-            obj.Texture = TextureString;
+            obj.TextureString = TextureString;
             obj.Displacement = 0;
             obj.Direction = "-1";
             obj.ActivationKey = -1;

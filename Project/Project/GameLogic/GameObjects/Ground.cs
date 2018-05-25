@@ -10,9 +10,14 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public Ground(Vector2 position, Vector2 spriteSize) :
             base(position, spriteSize)
         {
-            Moveable = false;
+            Initialize();
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            Movable = false;
             Visible = true;
-            // this.TextureString = textureString;
         }
 
         public override AxisAllignedBoundingBox BBox
@@ -31,7 +36,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             obj.Velocity = Speed;
             obj.Mass = (float)Mass;
             obj.Type = "ground";
-            obj.Texture = TextureString;
+            obj.TextureString = TextureString;
             obj.Displacement = 0;
             obj.Direction = "-1";
             obj.ActivationKey = -1;

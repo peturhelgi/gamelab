@@ -18,8 +18,10 @@ namespace TheGreatEscape.GameLogic {
         GameRenderer _renderer;
         public static bool RenderDark;
         public GameEngine GameEngine { get; private set; }
-
-        public GameManager(ContentManager content, GraphicsDevice graphicsDevice, 
+        
+        public GameManager(
+                ContentManager content, 
+                GraphicsDevice graphicsDevice, 
                 GraphicsDeviceManager graphics) {
             _content = content;
             _graphicsDevice = graphicsDevice;
@@ -48,16 +50,13 @@ namespace TheGreatEscape.GameLogic {
         void LoadContent()
         {
             _mapLoader.LoadMapContent(_controller.GameEngine.GameState);
-            // The render instance is create per level: Like this we don't need to worry about resetting global variables in the renderer (e.g. lightning)
+            _controller.GameEngine.gameTime = new TimeSpan();
             _renderer = new GameRenderer(_graphicsDevice, 
                 _controller.GameEngine.GameState, _content);
         }
 
-        //TODO remove public
         public void UnloadContent()
         {
-            //If we run into memory problems at some time, we will need to Dispose the textures loaded when unloading the game. But this will unlikely happen, as the content loader uses a dictionary to only load textures once. Remark: Dispose per texture doesn't work! One would have to use a seperate ContentManager (as there is global content which will never be unloaded) and unload the complete ContentManager
-            //_mapLoader.UnloadMapContent(_controller.GameEngine.GameState);
             _controller = null;
         }
 

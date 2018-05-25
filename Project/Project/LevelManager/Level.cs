@@ -17,6 +17,7 @@ namespace TheGreatEscape.LevelManager {
         public List<Obj> objects;
         //public Dictionary<string, int> resources;
         public SortedDictionary<string, int> resources;
+        public SortedDictionary<string, List<Tool>> Resources;
     }
     
 
@@ -39,7 +40,7 @@ namespace TheGreatEscape.LevelManager {
         public string Type;
 
         [JsonProperty("texture")]
-        public string Texture;
+        public string TextureString;
 
         [JsonProperty("displacement")]
         public float Displacement;

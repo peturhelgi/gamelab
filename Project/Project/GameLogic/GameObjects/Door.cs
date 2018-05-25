@@ -17,22 +17,36 @@ namespace TheGreatEscape.GameLogic.GameObjects {
         public int Id { get; set; }
         public bool Unlocked { get; private set; }
         public PlatformBackground LockedLight, UnlockedLight;
+
         public Door(Vector2 position, Vector2 spriteSize, string texture,
             object requiresKey = null, object keyId = null, object isExit = null,
             Tuple<int, int> outEdge = null)
-            : base(position, spriteSize, texture)
+            : base(position, spriteSize)
         {
-            Movable = false;
-            Visible = true;
             OutEdge = outEdge;
             KeyId = keyId == null ? 0 : (int)keyId;
             IsExit = isExit == null ? true : (bool)isExit;
             RequiresKey = requiresKey == null ? false : (bool)requiresKey;
-            Unlocked = !RequiresKey;      
-            
+            Unlocked = !RequiresKey;
+
+            AddLights();
         }
 
-        
+        public override void Initialize()
+        {
+            base.Initialize();
+            Movable = false;
+            Visible = true;
+            Unlocked = !RequiresKey;
+            if (Unlocked)
+            {
+                Unlock();
+            }
+            else
+            {
+                Lock();
+            }
+        }
 
         public bool Open(params int[] keys)
         {
@@ -86,7 +100,36 @@ namespace TheGreatEscape.GameLogic.GameObjects {
                 }
             }
         }
+        public void AddLights()
+        {
+            GameObjectFactory factory = new GameObjectFactory();
+            Vector2 size = new Vector2(SpriteSize.Y) * 0.1f,
+                        pos = Position
+                        + new Vector2(0.5f, -0.1f) * SpriteSize
+                        - 0.5f * size;
 
+            LockedLight = factory.Create(
+                new Obj
+                {
+                    Type = "secondary",
+                    Position = pos,
+                    SpriteSize = size,
+                    TextureString = "Sprites/Misc/red_light"
+                }) as PlatformBackground;
+
+            UnlockedLight = factory.Create(
+                new Obj
+                {
+                    Type = "secondary",
+                    Position = pos,
+                    SpriteSize = size,
+                    TextureString = "Sprites/Misc/green_light"
+                }) as PlatformBackground;
+
+            LockedLight.Active = !Unlocked;
+            UnlockedLight.Active = Unlocked;
+
+        }
         public void SetLights()
         {
             Vector2 size = new Vector2(SpriteSize.Y) * 0.1f,
@@ -110,7 +153,7 @@ namespace TheGreatEscape.GameLogic.GameObjects {
             obj.Velocity = Speed;
             obj.Mass = (float)Mass;
             obj.Type = ToString();
-            obj.Texture = TextureString;
+            obj.TextureString = TextureString;
             obj.Displacement = 0;
             obj.Direction = "-1";
             obj.ActivationKey = -1;

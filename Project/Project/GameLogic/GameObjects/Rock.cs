@@ -5,15 +5,32 @@ namespace TheGreatEscape.GameLogic.GameObjects
 {
     class Rock : GameObject
     {
-       public Rock(Vector2 position, Vector2 spriteSize)
+        private Vector2 _spriteSize;
+        public override Vector2 SpriteSize
+        {
+            get { return _spriteSize; }
+            set
+            {
+                _spriteSize = value;
+                Mass = _spriteSize.X * _spriteSize.Y / 750;
+            }
+        }
+        public Rock(Vector2 position, Vector2 spriteSize)
         : base(position, spriteSize)
         {
             {
-                Speed = new Vector2(0);
+                Speed = Vector2.Zero;
                 Mass = 10;
                 Visible = true;
-                Moveable = false;
+                Movable = true;
             }
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            Visible = true;
+            Movable = false;
         }
 
         public override Obj GetObj()
@@ -24,7 +41,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             obj.Velocity = Speed;
             obj.Mass = (float)Mass;
             obj.Type = "rock";
-            obj.Texture = TextureString;
+            obj.TextureString = TextureString;
             obj.Displacement = 0;
             obj.Direction = "-1";
             obj.ActivationKey = -1;

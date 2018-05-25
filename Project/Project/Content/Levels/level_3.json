@@ -1,11 +1,11 @@
 {
-  "levelnr": 0,
-  "levelname": "sample",
-  "prevlvl": -1,
-  "prevlvlname": "0",
-  "nextlvl": 1,
-  "nextlvlname": "tbd",
-  "background": "Sprites/Backgrounds/Level3Background",
+  "levelnr" : 0,
+  "levelname" : "sample",
+  "prevlvl" : -1,
+  "prevlvlname" : "0",
+  "nextlvl" : 1,
+  "nextlvlname" : "tbd",
+  "background" : "Sprites/Backgrounds/Level1Background",
   "resources": {
     "pickaxe": 3,
     "rope": 2
@@ -13,39 +13,40 @@
 
   "objects": [
     {
-      "pos": {
-        "x": 210,
-        "y": 250
+      "dim": {
+        "x": 270,
+        "y": 370
       },
-      "type": "end",
+      "pos": {
+        "x": 1952,
+        "y": -150
+      },
+      "type": "door",
+      "requirement": true,
+      "id": 0,
       "texture": "Sprites/Interactables/Door"
     },
     {
       "dim": {
-        "x": 51,
-        "y": 185
+        "x": 94,
+        "y": 31
       },
       "pos": {
-        "x": 100,
-        "y": 0
+        "x": 1932,
+        "y": -90
       },
-      "vel": {
-        "x": 0,
-        "y": 0
-      },
-      "m": 80,
-      "type": "miner",
-      "tool": "pickaxe",
-      "texture": "Sprites/Miners/MinerHandsInPants"
+      "id": 0,
+      "type": "key",
+      "texture": "Sprites/Interactables/key"
     },
     {
       "dim": {
-        "x": 51,
+        "x": 61.5,
         "y": 185
       },
       "pos": {
-        "x": 200,
-        "y": 0
+        "x": -200,
+        "y": 400
       },
       "vel": {
         "x": 0,
@@ -53,7 +54,25 @@
       },
       "m": 80,
       "type": "miner",
-      "tool": "pickaxe",
+      "tool" : "rope",
+      "texture": "Sprites/Miners/MinerStatic"
+    },
+    {
+      "dim": {
+        "x": 61.5,
+        "y": 185
+      },
+      "pos": {
+        "x": -100,
+        "y": 400
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 80,
+      "type": "miner",
+      "tool":  "pickaxe",
       "texture": "Sprites/Miners/MinerPickaxe"
     },
     {
@@ -62,16 +81,16 @@
         "y": 107.5
       },
       "pos": {
-        "x": 881,
-        "y": 720
+        "x": 1300,
+        "y": 330
       },
       "vel": {
         "x": 0,
         "y": 0
       },
-      "m": 50,
+      "m": 10,
       "type": "rock",
-      "texture": "Sprites/Rocks/BareRock5"
+      "texture": "Sprites/Rocks/rock_5"
 
     },
     {
@@ -80,7 +99,7 @@
         "y": 175.3
       },
       "pos": {
-        "x": 1046,
+        "x": 1646,
         "y": 650
       },
       "vel": {
@@ -89,30 +108,13 @@
       },
       "m": 20,
       "type": "rock",
-      "texture": "Sprites/Rocks/BareRock1"
+      "texture": "Sprites/Rocks/rock_1"
 
     },
     {
       "dim": {
-        "x": 640,
-        "y": 318
-      },
-      "pos": {
-        "x": 900,
-        "y": 800
-      },
-      "vel": {
-        "x": 0,
-        "y": 0
-      },
-      "m": 1000,
-      "type": "ground",
-      "texture": "Sprites/Rocks/Ground1"
-    },
-    {
-      "dim": {
-        "x": 640,
-        "y": 318
+        "x": 452,
+        "y": 718
       },
       "pos": {
         "x": 1500,
@@ -124,16 +126,16 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/Ground1"
+      "texture": "Sprites/Grounds/ground_tall"
     },
     {
       "dim": {
-        "x": 640,
-        "y": 318
+        "x": 623,
+        "y": 244
       },
       "pos": {
-        "x": 2400,
-        "y": 800
+        "x": 2200,
+        "y": 950
       },
       "vel": {
         "x": 0,
@@ -141,12 +143,12 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/Ground1"
+      "texture": "Sprites/Grounds/ground_low"
     },
     {
       "dim": {
-        "x": 640,
-        "y": 318
+        "x": 456,
+        "y": 244
       },
       "pos": {
         "x": 3200,
@@ -158,16 +160,16 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/Ground1"
+      "texture": "Sprites/Grounds/ground_low"
     },
     {
       "dim": {
-        "x": 640,
-        "y": 318
+        "x": 506,
+        "y": 244
       },
       "pos": {
-        "x": 4000,
-        "y": 1000
+        "x": 3800,
+        "y": 1100
       },
       "vel": {
         "x": 0,
@@ -175,32 +177,15 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/Ground1"
+      "texture": "Sprites/Grounds/ground_low"
     },
     {
       "dim": {
-        "x": 320,
-        "y": 109
+        "x": 500,
+        "y": 718
       },
       "pos": {
-        "x": 450,
-        "y": 600
-      },
-      "vel": {
-        "x": 0,
-        "y": 0
-      },
-      "m": 1000,
-      "type": "ground",
-      "texture": "Sprites/Rocks/Ground2"
-    },
-    {
-      "dim": {
-        "x": 640,
-        "y": 268
-      },
-      "pos": {
-        "x": -300,
+        "x": -400,
         "y": 800
       },
       "vel": {
@@ -209,12 +194,12 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/Ground3"
+      "texture": "Sprites/Grounds/ground_tall"
     },
     {
       "dim": {
-        "x": 320,
-        "y": 109
+        "x": 547,
+        "y": 125
       },
       "pos": {
         "x": 900,
@@ -226,12 +211,167 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/Ground4"
+      "texture": "Sprites/Grounds/ground_suspended_1"
     },
     {
       "dim": {
-        "x": 127.3,
-        "y": 69.15
+        "x": 547,
+        "y": 125
+      },
+      "pos": {
+        "x": 900,
+        "y": 450
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_1"
+    },
+    // ======== LAST PART OF CAVE ==========
+    {
+      "dim": {
+        "x": 547,
+        "y": 84
+      },
+      "pos": {
+        "x": 4125,
+        "y": 960
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_1"
+    },
+    {
+      "dim": {
+        "x": 345,
+        "y": 84
+      },
+      "pos": {
+        "x": 4600,
+        "y": 850
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_1"
+    },
+    {
+      "dim": {
+        "x": 345,
+        "y": 84
+      },
+      "pos": {
+        "x": 4650,
+        "y": 700
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_1"
+    },
+    {
+      "dim": {
+        "x": 345,
+        "y": 84
+      },
+      "pos": {
+        "x": 4700,
+        "y": 600
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_1"
+    },
+    {
+      "dim": {
+        "x": 345,
+        "y": 84
+      },
+      "pos": {
+        "x": 3700,
+        "y": 350
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_1"
+    },
+    {
+      "dim": {
+        "x": 369,
+        "y": 59
+      },
+      "pos": {
+        "x": 4100,
+        "y": 500
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_2"
+    },
+        {
+      "dim": {
+        "x": 1700,
+        "y": 144
+      },
+      "pos": {
+        "x": 1728,
+        "y": 200  
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_low"
+    },
+    // =================================
+    {
+      "dim": {
+        "x": 369,
+        "y": 59
+      },
+      "pos": {
+        "x": 450,
+        "y": 600
+      },
+      "vel": {
+        "x": 0,
+        "y": 0
+      },
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_2"
+    },
+    {
+      "dim": {
+        "x": 369,
+        "y": 59
       },
       "pos": {
         "x": 250,
@@ -243,176 +383,24 @@
       },
       "m": 1000,
       "type": "ground",
-      "texture": "Sprites/Rocks/SuspendedRock"
+      "texture": "Sprites/Grounds/ground_suspended_2"
     },
     {
       "dim": {
-        "x": 75,
-        "y": 75
+        "x": 369,
+        "y": 59
       },
       "pos": {
-        "x": 1500,
-        "y": 550
+        "x": 200,
+        "y": 1200
       },
       "vel": {
         "x": 0,
         "y": 0
       },
-      "m": 20,
-      "type": "crate",
-      "texture": "Sprites/Interactables/crate"
-    },
-    {
-      "dim": {
-        "x": 150,
-        "y": 600
-      },
-      "pos": {
-        "x": 2500,
-        "y": 200
-      },
-      "vel": {
-        "x": 0,
-        "y": 0
-      },
-      "m": 20,
-      "type": "ladder",
-      "texture": "Sprites/Interactables/LadderShort"
-    },
-    {
-      "dim": {
-        "x": 180,
-        "y": 116
-      },
-      "pos": {
-        "x": 2800,
-        "y": 650
-      },
-      "vel": {
-        "x": 0,
-        "y": 0
-      },
-      "m": 20,
-      "type": "platform",
-      "displacement": 500,
-      "direction": "x",
-      "activationkey": 0,
-      "texture": "Sprites/Interactables/escalator_platform",
-      "secondtexture": "Sprites/Interactables/escalator_mechanismx"
-    },
-    {
-      "dim": {
-        "x": 180,
-        "y": 116
-      },
-      "pos": {
-        "x": 3500,
-        "y": 1050
-      },
-      "vel": {
-        "x": 0,
-        "y": 0
-      },
-      "m": 20,
-      "type": "platform",
-      "displacement": 700,
-      "direction": "y",
-      "activationkey": 1,
-      "texture": "Sprites/Interactables/escalator_platform",
-      "secondtexture": "Sprites/Interactables/escalator_mechanismy"
-    },
-    {
-      "dim": {
-        "x": 112,
-        "y": 145
-      },
-      "pos": {
-        "x": 2650,
-        "y": 650
-      },
-      "vel": {
-        "x": 0,
-        "y": 0
-      },
-      "m": 20,
-      "type": "lever",
-      "activationkey": 0,
-      "texture": "Sprites/Interactables/lever_left",
-      "secondtexture": "Sprites/Interactables/lever_right"
-    },
-    {
-      "dim": {
-        "x": 112,
-        "y": 145
-      },
-      "pos": {
-        "x": 2400,
-        "y": 650
-      },
-      "vel": {
-        "x": 0,
-        "y": 0
-      },
-      "m": 20,
-      "type": "lever",
-      "activationkey": 1,
-      "texture": "Sprites/Interactables/lever_left",
-      "secondtexture": "Sprites/Interactables/lever_right"
-    },
-    {
-      "dim": {
-        "x": 131,
-        "y": 23
-      },
-      "pos": {
-        "x": 3700,
-        "y": 1185
-      },
-      "vel": {
-        "x": 0,
-        "y": 0
-      },
-      "m": 20,
-      "type": "button",
-      "activationkey": 1,
-      "texture": "Sprites/Interactables/floor_button"
-    },
-    {
-      "dim": {
-        "x": 131,
-        "y": 23
-      },
-      "pos": {
-        "x": 3200,
-        "y": 1185
-      },
-      "vel": {
-        "x": 0,
-        "y": 0
-      },
-      "m": 20,
-      "type": "button",
-      "activationkey": 1,
-      "texture": "Sprites/Interactables/floor_button"
-    },
-    {
-      "dim": {
-        "x": 282,
-        "y": 168
-      },
-      "pos": {
-        "x": -500,
-        "y": 0
-      },
-      "vel": {
-        "x": 0,
-        "y": 0
-      },
-      "m": 80,
-      "type": "rockandhook",
-      "texture": "Sprites/Interactables/suspended_rock_hook",
-      "secondtexture": "Sprites/Interactables/Rope",
-      "ropelength":  1750
+      "m": 1000,
+      "type": "ground",
+      "texture": "Sprites/Grounds/ground_suspended_2"
     }
-      ]
-    }
+  ]
+}

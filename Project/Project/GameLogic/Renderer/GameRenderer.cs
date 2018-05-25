@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.GameObjects;
+using static TheGreatEscape.GameLogic.GameState;
 
 namespace TheGreatEscape.GameLogic.Renderer
 {
@@ -71,14 +73,29 @@ namespace TheGreatEscape.GameLogic.Renderer
                     _spriteBatch.Draw(m.CurrMotion.Image, destination, source, Color.White, 0f, Vector2.Zero, m.Orientation, 0f);
 
                     Tool tool = m.Tool;
-                    destination.Width = tool.GetTexture().Width / 20;
-                    destination.Height = tool.GetTexture().Height / 20;
-                    destination.Y -= 100;
-                    destination.X -= (destination.Width - (int)motionSize.X) / 2;
-                    _spriteBatch.Draw(tool.GetTexture(), destination, Color.White);
+                    if (tool != null)
+                    {
+                        destination.Width = tool.GetTexture().Width / 20;
+                        destination.Height = tool.GetTexture().Height / 20;
+                        destination.Y -= 100;
+                        destination.X -= (destination.Width - (int)motionSize.X) / 2;
+                        _spriteBatch.Draw(tool.GetTexture(), destination, Color.White);
+                    }
                 }
                 else
                 {
+                    if (obj is RockHook)
+                    {
+                        HangingRope hangingRope = (obj as RockHook).GetRope();
+                        _spriteBatch.Draw(
+                           mode == Mode.DebugView ? _debugBox : hangingRope.SecondTexture,
+                           new Rectangle(
+                               (int)hangingRope.Position.X,
+                               (int)hangingRope.Position.Y,
+                               (int)hangingRope.SpriteSize.X,
+                               (int)hangingRope.SpriteSize.Y),
+                           Color.White);
+                    }
                     if (obj?.Texture != null)
                     {                        
                         _spriteBatch.Draw(
@@ -137,16 +154,16 @@ namespace TheGreatEscape.GameLogic.Renderer
             // Draw the UI interface that displays the number of miners still available in the game
             _spriteBatch.Begin();
             int i = 0;
-            int prevSprite = 0;
-            foreach (var miner in _gameState.resources)
+            foreach (var tool in _gameState.Resources)
             {
-                var toolFontSize = _gameState.GameFont.MeasureString(miner.Key + ":  ");
-                _spriteBatch.DrawString(_gameState.GameFont, miner.Key + ":", new Vector2(100 + prevSprite, 100 + i)
+                Enum.TryParse(tool.Key, out ExistingTools et);
+                Texture2D toolTexture = _gameState.Tools[et].GetTexture();
+                Vector2 textureSize = new Vector2(toolTexture.Width / 20, toolTexture.Height / 20);
+
+                _spriteBatch.Draw(toolTexture, new Rectangle(100, 100 + i, (int)textureSize.X, (int)textureSize.Y), Color.White);
+                _spriteBatch.DrawString(_gameState.GameFont, tool.Value.Count.ToString(), new Vector2(100 + textureSize.X + 50,  100 + i + textureSize.Y / 3)
                     , Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-                _spriteBatch.DrawString(_gameState.GameFont, miner.Value.ToString(), new Vector2(100 + prevSprite + toolFontSize.X, 100 + i)
-                    , Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-                i += (int)toolFontSize.Y;
-                prevSprite += (int)toolFontSize.X / 4;
+                i += (int)textureSize.Y;
             }
 
             _spriteBatch.End();

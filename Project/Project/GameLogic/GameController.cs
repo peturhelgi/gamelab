@@ -45,11 +45,11 @@ namespace TheGreatEscape.GameLogic
             _buttons[Command.Pause] = new List<Buttons> { Buttons.Start };
 
             _buttons[Command.Jump] = new List<Buttons> { Buttons.A };
-            _buttons[Command.Interact] = new List<Buttons> { Buttons.X, Buttons.B};
+            _buttons[Command.Interact] = new List<Buttons> { Buttons.X };
 
             _buttons[Command.ChangeTool] = new List<Buttons> { Buttons.RightShoulder };
-            _buttons[Command.Sprint] = new List<Buttons> { Buttons.LeftTrigger };
-            _buttons[Command.UseTool] = new List<Buttons> { Buttons.RightTrigger };
+            _buttons[Command.Sprint] = new List<Buttons> { Buttons.RightTrigger };
+            _buttons[Command.UseTool] = new List<Buttons> { Buttons.B };
 
             _maxNumPlayers = 2;
 
@@ -87,8 +87,14 @@ namespace TheGreatEscape.GameLogic
             GameEngine.Update();
 
             // Handle the Camera
-            AxisAllignedBoundingBox frame = new AxisAllignedBoundingBox(
-                new Vector2(float.MaxValue), new Vector2(float.MinValue));
+            Rectangle _frame = new Rectangle(
+                Camera.FocusBox.Location,
+                Camera.MinBox.ToPoint());
+            float leftMost = float.MaxValue,
+                rightMost = float.MinValue,
+                topMost = float.MaxValue,
+                bottomMost = float.MinValue;
+
             List<AxisAllignedBoundingBox> attentions = GameEngine.GetAttentions();
             foreach (AxisAllignedBoundingBox a in attentions)
             {
@@ -96,15 +102,40 @@ namespace TheGreatEscape.GameLogic
                 {
                     continue;
                 }
-                frame.Min = Vector2.Min(frame.Min, a.Min);
-                frame.Max = Vector2.Max(frame.Max, a.Max);
+                leftMost = Math.Min(leftMost, a.Min.X);
+                rightMost = Math.Max(rightMost, a.Max.X);
+                topMost = Math.Min(topMost, a.Min.Y);
+                bottomMost = Math.Max(bottomMost, a.Max.Y);
+            }
+
+            float width = Math.Max(rightMost - leftMost, Camera.MinBox.X);
+            float height = Math.Max(bottomMost - topMost, Camera.MinBox.Y);
+
+            if(_frame.Left < leftMost && rightMost < _frame.Right)
+            {
+                leftMost = _frame.Left;
+                rightMost = _frame.Right;
+            }
+            if(_frame.Top < topMost && bottomMost < _frame.Bottom)
+            {
+                topMost = _frame.Top;
+                bottomMost = _frame.Bottom;
+            }
+            if (rightMost > _frame.Right)
+            {
+                leftMost = rightMost - width;
+            }
+            if (bottomMost > _frame.Bottom)
+            {
+                topMost = bottomMost - height;
             }
             Camera.SetCameraToRectangle(
                 new Rectangle(
-                    (int)frame.Min.X,
-                    (int)frame.Min.Y,
-                    (int)(frame.Max.X - frame.Min.X),
-                    (int)(frame.Max.Y - frame.Min.Y)));
+                    (int)leftMost,
+                    (int)topMost,
+                    (int)width,
+                    (int)height)
+            );
         }
 
         private void HandleMouse(MouseState ms)
@@ -263,6 +294,11 @@ namespace TheGreatEscape.GameLogic
 
             // START Handle GameAction
             // last parameter is the encoding for the direction the miner is walking/running in
+
+            if (ButtonDown(_newPadStates[player], _buttons[Command.Jump]))
+            {
+                GameEngine.HandleInput(player, GameEngine.GameAction.jump, 0);
+            }
             if (_newPadStates[player].ThumbSticks.Left.Y < -0.5
                 || _newPadStates[player].IsButtonDown(Buttons.DPadDown))
             {
@@ -286,16 +322,15 @@ namespace TheGreatEscape.GameLogic
                 _direction = -1;
             }
 
-            if (Math.Abs(_newPadStates[player].ThumbSticks.Left.X) > 0.5f)
+            if (Math.Abs(_newPadStates[player].ThumbSticks.Left.X) > 0.65f)
             {
                 GameEngine.HandleInput(player,
-                    ButtonUp(_newPadStates[player], _buttons[Command.Left])
-                    && ButtonUp(_newPadStates[player], _buttons[Command.Sprint])
+                    ButtonUp(_newPadStates[player], _buttons[Command.Sprint])
                     ? GameEngine.GameAction.walk
                     : GameEngine.GameAction.run, _direction);
             }
-            float x = _newPadStates[player].ThumbSticks.Right.X,
-                y = _newPadStates[player].ThumbSticks.Right.Y;
+            float x = _newPadStates[player].ThumbSticks.Left.X,
+                y = _newPadStates[player].ThumbSticks.Left.Y;
 
             if (x * x + y * y >= 0.5f)
             {
@@ -309,7 +344,7 @@ namespace TheGreatEscape.GameLogic
                 GameEngine.HandleInput(player, GameEngine.GameAction.interact, 0);
             }
 
-            if (ButtonPressed(_oldPadStates[player], _newPadStates[player], _buttons[Command.UseTool]))
+            if (ButtonDown(_newPadStates[player], _buttons[Command.UseTool]))
             {
                 GameEngine.HandleInput(player, GameEngine.GameAction.use_tool, 0);
             }
@@ -317,11 +352,6 @@ namespace TheGreatEscape.GameLogic
             if (ButtonPressed(_oldPadStates[player], _newPadStates[player], _buttons[Command.ChangeTool]))
             {
                 GameEngine.HandleInput(player, GameEngine.GameAction.change_tool, 0);
-            }
-
-            if (ButtonPressed(_oldPadStates[player], _newPadStates[player], _buttons[Command.Jump]))
-            {
-                GameEngine.HandleInput(player, GameEngine.GameAction.jump, 0);
             }
         }
     }

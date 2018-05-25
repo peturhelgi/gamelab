@@ -13,13 +13,22 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
         private CollisionDetector CollisionDetector = new CollisionDetector();
 
+        public Rope()
+        {
+            UsesLeft = 1;
+        }
+
         public override void Use(Miner user, GameState gamestate)
         {
+            if (UsesLeft <= 0)
+            {
+                return;
+            }
             List<GameObject> hooks = new List<GameObject>();
             foreach (GameObject q in gamestate.GetObjects(GameState.Handling.Solid))
                 if(q is RockHook) hooks.Add(q);
 
-            Vector2 offset = new Vector2(50, 0);
+            Vector2 offset = new Vector2(100, 0);
             AxisAllignedBoundingBox interactionBox = new AxisAllignedBoundingBox(
                 new Vector2(user.Position.X, user.Position.Y - 750) - offset,
                 user.Position + user.SpriteSize + offset);
@@ -29,7 +38,13 @@ namespace TheGreatEscape.GameLogic.GameObjects
             foreach (GameObject c in collisions)
             {
                 (c as RockHook).HangOrTakeRope(gamestate);
+                CanUseAgain = !((c as RockHook).isRope);
+                if (!CanUseAgain)
+                {
+                    --UsesLeft;
+                }
             }
+            CanUseAgain = UsesLeft > 0;
         }
         public override Texture2D GetTexture() 
         {

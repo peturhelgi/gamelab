@@ -1,5 +1,52 @@
 \section{Playtesting Session}
 
+We invited five people over to play our game, three boys and two girls. Two of them are computer science students, two from computational science, and one girlfriend who does not have experience in the field. They played the game as a group, as the game is 2-player, they switched controllers as they saw fit until all playtesters had played every level at least once. They struggled with some parts and solved one level in a different way then intended. During the whole gameplay they communicated a lot which also came naturally as the game relies on teamwork. We noticed that the players laughed a lot during the gameplay for they were experiencing something new and mysterious.
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img/playtest/play.jpg}
+    \caption{Playing the game.}
+    \label{fig:my_label}
+\end{figure}
 \section{Questions and Comments}
 
+\subsection{In-game Questions}
+We didn't ask the play testers any questions while playing, other than leading hints when they were curious or really stuck. For example, they were very curious what happened when they collected a key and what it did. Our reply: \enquote{What does a key do?}. When stuck using platforms and levers, we gave them hints to wait and observe what happens when they toggle them.
+
+\subsection{Post-Game Questions}
+We asked if the controls felt awkward or wrong. The players said that they were mostly fine but suggested moving the button for using tools from the right trigger to the B button, and moving sprinting from left trigger to right trigger.
+
+We asked if anything else felt off. The players agreed that they were confused as to when they were using the rope as a tool as we don't have an animation for it like with the pickaxe. Also the distance the miners could throw the rope was too short and often they had to stand all the way on the edge. They also got disoriented as to which miner was theirs when the miners overlapped. The miners wear different coloured clothes but that wasn't enough. They suggested adding triangles over the miners heads or to have one with dark skin and the other light. 
+The players agreed that it would be more intuitive that a miner should be able to jump on a crate, even when it is held by another miner. This would lead to more creative gameplay and solvable levels.
+
+We asked if they found anything frustrating. One guy said that he got frustrated when he wasn't able to jump while standing on top of a moving platform. That is a bug that we didn't know about and need to fix as one level relies heavily on it. They also got frustrated when they were allowed to play on, for example with one player when the level isn't solvable anymore like that. They suggested adding a suicide function.
+
+We asked what they thought about the lighting. Playtesters, who were not playing at the time, complained during the gameplay that they couldn't see far enough, especially when jumping to far away platforms. They felt like they were doing a somewhat of a leap of faith. They however changed their mind in the post-game questions and said it was okay after they figured out the run button. We also got a nice suggestion about the controls for the lightbeam from Tono, our mentor. He suggested that we should move the controls from the right thumbstick to the left, so that the left thumbstick controls both the movement and the lightbeam.
+
+\subsection{Our Observation}
+
+We noticed that holding down the left trigger for sprinting is not intuitive and the playtesters got stuck as they could not make a long jump. They got stuck for such a long time that we felt the need to intervene and tell them about it.
+
+At one point the players got so far away from each other that the camera restricted their movements and prohibited them from moving further apart. This really confused the playtesters and they immediately thought that it must be the game glitching. This came as a surprise to us as we expected it to be clear and we have to think of a way to make this restriction of movement clearer.
+
+We noticed immediatly that the level should be reset everytime a miner dies. For example when a crate falls out of the level, it disappears forever but might be needed at a later point in time.
+
+\subsection{Play Matrix}
+We asked the group where they would place our game in the play matrix and this was their answer.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics{img/playtest/playMatrixNew.png}
+    \caption{Play Matrix: The rating the playtesters agreed on for our game.}
+    \label{fig:my_label}
+\end{figure}
+
+
 \section{Design Revisions}
+
+Some input was more useful and more urgent than others. We will go right into changing the controllers, at least for sprinting and using a tool. We will have to test how it feels moving the light beam with the left thumbstick before making a final decision. We have to fix the bug with the moving platforms.
+
+Our mentor also gave us some feedback for the game mechanics. First, he thought that our resources, i.e. our tools, should decrease upon usage rather than when a player dies. Second, he thought that we should separate the resources from the life/health mechanic. As it is now, a tool is lost when a player holding it dies, and they lose when the last tool has been lost.
+
+We like his suggestions. They sound like good improvements and we are going to try them out. These should also fix some problems we noticed in our play testing, for example with a level not being solvable and resetting levels after death. After receiving this input, we thought we'd make a pickaxe unusable after a certain number of uses, i.e. some sort of a health bar. Since minable rocks may need more hits, this would make sense from the players' perspective.

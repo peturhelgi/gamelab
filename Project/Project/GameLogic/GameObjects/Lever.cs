@@ -15,26 +15,32 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public string RightleverTexture;
         public Texture2D SecondTexture;
 
-
-
         public Lever(Vector2 position, Vector2 spriteSize, string textureString, int actId)
             : base(position, spriteSize)
         {
-
             TextureString = textureString;
-            Position = position;
-            SpriteSize = spriteSize;
-            Falling = false;
-
             Speed = Vector2.Zero;
+            ActivationId = actId;
+            _leftLeverTexture = textureString;
+            Initialize();
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+            Falling = false;
             Mass = 10;
             Visible = true;
             LastUpdated = new TimeSpan();
-            Moveable = false;
-            ON = false;
-            ActivationId = actId;
-            _leftLeverTexture = textureString;
 
+            if (ON)
+            {
+                Texture2D tmp = Texture;
+                Texture = SecondTexture;
+                SecondTexture = tmp;
+            }
+            Movable = true;
+            ON = false;
         }
 
         public void Interact(List<Platform> platforms)
@@ -63,7 +69,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             obj.Velocity = Speed;
             obj.Mass = (float)Mass;
             obj.Type = "lever";
-            obj.Texture = TextureString;
+            obj.TextureString = TextureString;
             obj.Displacement = 0;
             obj.Direction = "-1";
             obj.ActivationKey = ActivationId;

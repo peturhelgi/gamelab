@@ -12,6 +12,7 @@ namespace TheGreatEscape.GameLogic
 
         public SpriteFont GameFont;
 
+        public List<GameObject> Backup;
         public List<Miner> Actors;
         public List<GameObject> Collectibles;
         public List<GameObject> Destroyables;
@@ -19,7 +20,7 @@ namespace TheGreatEscape.GameLogic
         public List<GameObject> NonSolids;
         public List<GameObject> Solids;
         public Dictionary<ExistingTools, Tool> Tools;
-
+        public int Lives { private set; get; }
         /// <summary>
         /// The state of the current game.
         /// </summary>
@@ -28,7 +29,8 @@ namespace TheGreatEscape.GameLogic
             Completed,
             Paused,
             Running,
-            GameOver
+            GameOver,
+            Reset
         }
 
         /// <summary>
@@ -50,11 +52,16 @@ namespace TheGreatEscape.GameLogic
         private Texture2D Background;
         public float OutOfBoundsBottom;
         public State Mode;
+        private List<GameObject> backgrounds;
+        private List<GameObject> otherNoneSolids;
+        private List<GameObject> grounds;
+        private List<GameObject> otherSolids;
 
         CollisionDetector CollisionDetector;
 
         public GameState()
         {
+            Backup = new List<GameObject>();
             Actors = new List<Miner>();
             Collectibles = new List<GameObject>();
             Destroyables = new List<GameObject>();
@@ -67,91 +74,146 @@ namespace TheGreatEscape.GameLogic
             Completed = false;
             OutOfBoundsBottom = float.MinValue;
             Mode = State.Running;
+
+            Lives = 2;
+            backgrounds = new List<GameObject>();
+            otherNoneSolids = new List<GameObject>();
+            grounds = new List<GameObject>();
+            otherSolids = new List<GameObject>();
         }
 
+        public void Respawn()
+        {
+            var allObjects = GetAll();
+            //allObjects.Reverse();
+            foreach (var obj in allObjects)
+            {
+                if (!(obj is Miner))
+                {
+                    Remove(obj, obj.Handling, true);
+                }
+            }
+            foreach (var obj in Backup)
+            {
+                obj.Initialize();
+                obj.Enable();
+                if (obj is Miner)
+                {
+                    continue;
+                }
+                Add(obj);
+            }
+            Mode = State.Running;
+        }
 
         public List<GameObject> GetAll()
         {
-            return NonSolids
+            return backgrounds
+                .Concat(grounds)
+                .Concat(otherNoneSolids)
                 .Concat(Interactables)
-                .Concat(Collectibles)
                 .Concat(Destroyables)
-                .Concat(Solids)
                 .Concat(Actors)
+                .Concat(otherSolids)
+                .Concat(Collectibles)
                 .ToList();
         }
 
-        public void Remove(GameObject obj, Handling handling = Handling.Empty)
+        public void Remove(GameObject obj, Handling handling = Handling.Empty,
+            bool disable = false)
         {
-            if(obj == null)
+            if (obj == null)
             {
                 return;
             }
 
-            if(handling == Handling.Empty)
+            if (handling == Handling.Empty)
             {
                 handling = obj.Handling;
             }
+            bool moveToBackup = !(obj is Miner) && disable;
             obj.Handling = handling;
-            switch(handling)
+            switch (handling)
             {
                 case Handling.Actor:
-                    if(obj is Miner)
+                    if (obj is Miner)
                     {
-                        Remove((obj as Miner).HeldObj);
+                        var heldObj = (obj as Miner).HeldObj;
+                        if (heldObj != null)
+                        {
+                            ChangeHandling(heldObj, heldObj.Handling, Handling.Solid);
+                        }
+                        Remove(heldObj);
                         (obj as Miner).HeldObj = null;
                         (obj as Miner).Holding = false;
 
+                        --Lives;
                         ResetMinersPosition();
-                        if (ShouldRemoveMinerFromScreen(obj as Miner))
+                        if (Lives < Actors.Count(m => m.Active))
                             obj.Disable();
+                        Respawn();
                     }
                     break;
                 case Handling.Solid:
                     Solids.Remove(obj);
+                    grounds.Remove(obj);
+                    otherSolids.Remove(obj);
                     break;
                 case Handling.None:
                     NonSolids.Remove(obj);
+                    backgrounds.Remove(obj);
+                    otherNoneSolids.Remove(obj);
                     break;
                 case Handling.Interact:
                     Interactables.Remove(obj);
                     break;
                 case Handling.Destroy:
                     Destroyables.Remove(obj);
+                    moveToBackup = true;
                     break;
                 case Handling.Collect:
                     Collectibles.Remove(obj);
+                    moveToBackup = true;
                     break;
+            }
+            if (moveToBackup)
+            {
+                Backup.Add(obj);
+                obj.Disable();
             }
         }
         public void Add(GameObject obj, Handling handling = Handling.Empty)
         {
-            if(obj == null)
+            if (obj == null)
             {
                 return;
             }
-            if(obj.BBox.Max.Y > OutOfBoundsBottom)
+            if (obj.BBox.Max.Y > OutOfBoundsBottom)
             {
                 OutOfBoundsBottom = obj.BBox.Max.Y;
             }
-            if(handling == Handling.Empty)
+            if (handling == Handling.Empty)
             {
                 handling = obj.Handling;
             }
             obj.Handling = handling;
-            switch(handling)
+            switch (handling)
             {
                 case Handling.Actor:
-                    if(obj is Miner)
+                    if (obj is Miner)
                     {
                         Actors.Add(obj as Miner);
                     }
                     break;
                 case Handling.Solid:
-                    if(!Solids.Contains(obj)) Solids.Add(obj);
+                    if (!Solids.Contains(obj)) Solids.Add(obj);
+                    if (obj is Ground && !grounds.Contains(obj)) grounds.Add(obj);
+                    else if (!otherSolids.Contains(obj)) otherSolids.Add(obj);
                     break;
                 case Handling.None:
-                    if(!NonSolids.Contains(obj)) NonSolids.Add(obj);
+                    if (!NonSolids.Contains(obj)) NonSolids.Add(obj);
+                    if (obj is PlatformBackground && !backgrounds.Contains(obj)) backgrounds.Add(obj);
+                    if (!otherNoneSolids.Contains(obj)) otherNoneSolids.Add(obj);
                     break;
                 case Handling.Interact:
                     Interactables.Add(obj);
@@ -165,12 +227,16 @@ namespace TheGreatEscape.GameLogic
             }
         }
 
+        public void AddTool(ExistingTools et, Tool tool)
+        {
+            Tools.Add(et, tool);
+        }
         public void ChangeHandling(GameObject obj, Handling before,
             Handling after)
         {
-            if (GetObjects(before).Contains(obj))
+            if (obj != null && GetObjects(before).Contains(obj))
             {
-                Remove(obj, before);
+                Remove(obj, before, false);
                 Add(obj, after);
             }
         }
@@ -213,21 +279,11 @@ namespace TheGreatEscape.GameLogic
             return objects;
         }
 
-        /// <summary>
-        /// removes a miner from the screen when there are no more available tools to switch to
-        /// </summary>
-        /// <param name="miner"></param>
-        /// <returns>true if there are no more tools available</returns>
-        public bool ShouldRemoveMinerFromScreen(Miner miner)
-        {
-            return !CanChangeTool(miner, true);
-        }
-        
         public void ResetMinersPosition()
         {
             foreach (Miner miner in Actors)
             {
-                miner.ResetPosition();
+                miner.Initialize();
             }
         }
 
@@ -237,36 +293,70 @@ namespace TheGreatEscape.GameLogic
         /// <param name="miner"></param>
         /// <param name="ForRemoving">set to true if the method is called when trying to remove the miner</param>
         /// <returns></returns>
-        public bool CanChangeTool(Miner miner, bool ForRemoving) 
+        public bool CanChangeTool(Miner miner, bool ForRemoving = false)
         {
-            int i;
-            for (i = 0; i < resources.Count(); ++i)
+            int i = 0;
+            if (miner.Tool != null)
             {
-                var ttl = resources.ElementAt(i);
-                if (ttl.Key.Equals(miner.Tool.ToString()))
-                    break;
+                for (i = 0; i < Resources.Count(); ++i)
+                {
+                    var ttl = Resources.ElementAt(i);
+                    if (ttl.Key.Equals(miner.Tool.ToString()))
+                        break;
+                }
             }
 
-            int newToolIndex = (i + 1) % resources.Count();
-            var newTool = resources.ElementAt(newToolIndex);
-            var oldTool = resources.ElementAt(i);
+            int newToolIndex = (i + 1) % Resources.Count();
+            var newTool = Resources.ElementAt(newToolIndex);
 
             // loop continuously through the tools until the next non-empty one is found
-            while (newTool.Value == 0 && newToolIndex != i)
+            while (newTool.Value.Count == 0 && newToolIndex != i)
             {
-                newToolIndex = (newToolIndex + 1) % resources.Count();
-                newTool = resources.ElementAt(newToolIndex);
+                newToolIndex = (newToolIndex + 1) % Resources.Count();
+                newTool = Resources.ElementAt(newToolIndex);
             }
 
             // if there is no tool available to switch just return
-            if (newToolIndex == i)
-                return false;
 
-            resources[newTool.Key]--;
-            if (!ForRemoving)
-                resources[oldTool.Key]++;
-            miner.Tool = (new ToolFactory()).Create(new Obj { Type = newTool.Key});
+            if (newToolIndex == i && miner.Tool != null)
+            {
+                return false;
+            }
+            if(newTool.Value.Count <= 0)
+            {
+                return false;
+            }
+            Tool takenTool = newTool.Value.Last(),
+                returnedTool = miner.Tool;
+            TakeTool(takenTool);
+
+            if (returnedTool != null && !ForRemoving)
+            {
+                GiveBackTool(returnedTool);
+            }
+
+            miner.Tool = takenTool;
             return true;
+        }
+
+        public bool GiveBackTool(Tool tool)
+        {
+            if (!tool.CanUseAgain)
+            {
+                return false;
+            }
+            Resources[tool.ToString()].Add(tool);
+            return true;
+        }
+
+        public bool TakeTool(Tool tool)
+        {
+            string toolName = tool?.ToString();
+            if (toolName == null || Resources[toolName].Count <= 0)
+            {
+                return false;
+            }
+            return Resources[toolName].Remove(tool);
         }
 
         public void SetBackground(Texture2D background)
@@ -274,7 +364,8 @@ namespace TheGreatEscape.GameLogic
             Background = background;
         }
 
-        public Texture2D GetBackground() {
+        public Texture2D GetBackground()
+        {
             return Background;
         }
 
@@ -296,7 +387,7 @@ namespace TheGreatEscape.GameLogic
                 level.objects.Add(go.GetObj());
             }
 
-            level.resources = resources;
+            level.Resources = Resources;
 
             return level;
         }

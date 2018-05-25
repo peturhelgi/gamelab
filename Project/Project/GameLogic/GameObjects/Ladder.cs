@@ -24,7 +24,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             Mass = 10;
             Visible = true;
             LastUpdated = new TimeSpan();
-            Moveable = false;
+            Movable = false;
         }
 
         public override AxisAllignedBoundingBox BBox
@@ -45,7 +45,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             obj.Velocity = Speed;
             obj.Mass = (float)Mass;
             obj.Type = "ladder";
-            obj.Texture = TextureString;
+            obj.TextureString = TextureString;
             obj.Displacement = 0;
             obj.Direction = "-1";
             obj.ActivationKey = -1;

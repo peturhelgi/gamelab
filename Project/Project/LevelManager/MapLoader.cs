@@ -7,17 +7,19 @@ using TheGreatEscape.GameLogic.GameObjects;
 using static TheGreatEscape.GameLogic.GameState;
 using System;
 using TheGreatEscape.GameLogic.Util;
+using Project.LeveManager;
 
 namespace TheGreatEscape.LevelManager
 {
     class MapLoader
     {
         public ContentManager ContentManager;
-
+        private JsonUtil<Level> _loader;
 
         public MapLoader(ContentManager contentManager)
         {
             ContentManager = contentManager;
+            _loader = new JsonUtil<Level>();
         }
 
         public GameState InitMap(string levelName)
@@ -25,10 +27,23 @@ namespace TheGreatEscape.LevelManager
             GameObjectFactory factory = new GameObjectFactory();
             GameState gameState = new GameState();
 
-            string text = ContentManager.Load<string>(levelName);
-            Level level = JsonConvert.DeserializeObject<Level>(text);
+            //string text = ContentManager.Load<string>(levelName);
+            //Level level = JsonConvert.DeserializeObject<Level>(text);
+            Level level = _loader.Load(levelName);
+            level.Resources = new SortedDictionary<string, List<Tool>>();
             gameState.background = level.background;
-            gameState.resources = level.resources;
+            foreach(var keyValue in level.resources)
+            {
+                var tool = keyValue.Key;
+                var num = keyValue.Value;
+                level.Resources[tool] = new List<Tool>();
+                for(int i = 0; i < num; ++i)
+                {
+                    level.Resources[tool].Add((new ToolFactory()).Create(new Obj { Type = tool }));
+                }
+            }
+            gameState.Resources = level.Resources;
+            gameState.levelname = level.levelname;
 
             foreach (Obj obj in level.objects)
             {
@@ -49,33 +64,51 @@ namespace TheGreatEscape.LevelManager
             return gameState;
         }
 
+
+        public void UnloadContent()
+        {
+            ContentManager.Unload();
+        }
+
         public void LoadMapContent(GameState gameState)
         {
-            Texture2D background = ContentManager.Load<Texture2D>(gameState.background);
+            Texture2D background = ContentManager.Load<Texture2D>(
+                gameState.background);
             gameState.SetBackground(background);
 
             // TODO possibly add a hashed Map to only load every Texture once
-            foreach (GameObject obj in gameState.GetAll())
+            List<GameObject> allObjects = gameState.GetAll();            
+
+            foreach (GameObject obj in allObjects)
             {
-                if(obj?.TextureString == null || obj.TextureString == "")
+                if (obj?.TextureString == null || obj.TextureString == "")
                 {
                     continue;
                 }
                 obj.Texture = ContentManager.Load<Texture2D>(obj.TextureString);
                 if (obj is Lever)
-                    (obj as Lever).SecondTexture = ContentManager.Load<Texture2D>((obj as Lever).RightleverTexture);
+                    (obj as Lever).SecondTexture = ContentManager
+                        .Load<Texture2D>((obj as Lever).RightleverTexture);
                 if (obj is RockHook)
-                    (obj as RockHook).Rope.Texture = ContentManager.Load<Texture2D>((obj as RockHook).Rope.TextureString);
+                {
+                    (obj as RockHook).Rope.Texture = ContentManager
+                        .Load<Texture2D>((obj as RockHook).Rope.TextureString);
+                    (obj as RockHook).Rope.SecondTexture = ContentManager
+                        .Load<Texture2D>(
+                        (obj as RockHook).Rope.SecondTextureString);
+                }
             }
 
             LoadMotionSheets(gameState);
             LoadTools(gameState);
-            gameState.GameFont = ContentManager.Load<SpriteFont>("Fonts/gameFont");
+            gameState.GameFont = ContentManager.Load<SpriteFont>(
+                "Fonts/gameFont");
         }
 
         private void LoadTools(GameState gameState) {
 
             String toolSpritePath = "Sprites/Tools/";
+            ToolFactory toolFactory = new ToolFactory();
 
             foreach (ExistingTools et in Enum.GetValues(typeof(ExistingTools)))
             {
@@ -93,6 +126,9 @@ namespace TheGreatEscape.LevelManager
                             string.Format("GameObject '{0}' cannot be created", true));
                         break;
                 }
+
+                Tool tool = toolFactory.Create(new Obj { Type = et.ToString() });
+                gameState.AddTool(et, tool);
             }
         }
         private void LoadMotionSheets(GameState gameState) {
@@ -114,6 +150,8 @@ namespace TheGreatEscape.LevelManager
                 miner.SetMotionSprite(motionSprite, MotionType.jump);
                 motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/pickaxe");
                 miner.SetMotionSprite(motionSprite, MotionType.pickaxe);
+                motionSprite = ContentManager.Load<Texture2D>(minerPath + i + "/climb");
+                miner.SetMotionSprite(motionSprite, MotionType.climb);
 
             }
         }
