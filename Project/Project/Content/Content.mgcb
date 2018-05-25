@@ -14,12 +14,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin caveMusic.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:caveMusic.mp3
-
 #begin Lights/circular_light.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -892,18 +886,6 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Rocks/rock_6.png
 
-#begin soft_song.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:soft_song.mp3
-
-#begin suspense_song.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:suspense_song.mp3
-
 #begin Levels/level_1.json
 /copy:Levels/level_1.json
 
@@ -1168,9 +1150,21 @@
 #begin Levels/Template.json
 /copy:Levels/Template.json
 
-#begin story_song.mp3
+#begin Sounds/story_song.mp3
 /importer:Mp3Importer
 /processor:SongProcessor
 /processorParam:Quality=Best
-/build:story_song.mp3
+/build:Sounds/story_song.mp3
+
+#begin Sounds/ingame.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/ingame.mp3
+
+#begin Sounds/menu.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/menu.mp3
 

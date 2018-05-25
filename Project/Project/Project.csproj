@@ -198,7 +198,6 @@
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-400.png" />
-    <Content Include="Content\caveMusic.mp3" />
     <Content Include="Content\Lights\circular_light.png" />
     <Content Include="Content\Lights\directional_light.png" />
     <Content Include="Content\Lights\Lighting.fx" />
