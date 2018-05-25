@@ -1168,15 +1168,15 @@
 /processorParam:Quality=Best
 /build:Sounds/menu.mp3
 
-#begin Sounds/Jingle_Lose.wav
+#begin Sounds/game_over.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Sounds/Jingle_Lose.wav
+/build:Sounds/game_over.wav
 
-#begin Sounds/Jingle_Win.wav
+#begin Sounds/level_completed.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Sounds/Jingle_Win.wav
+/build:Sounds/level_completed.wav
 
