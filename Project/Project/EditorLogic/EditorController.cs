@@ -10,7 +10,7 @@ using System.IO.IsolatedStorage;
 
 using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.GameObjects;
-using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.Util;
 using TheGreatEscape.LevelManager;
 
 namespace EditorLogic

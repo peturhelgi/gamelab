@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using TheGreatEscape.GameLogic.Collision;
-using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.Util;
 
 
 namespace TheGreatEscape.GameLogic

@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.GameLogic.Collision;
-using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.Util;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace TheGreatEscape.GameLogic

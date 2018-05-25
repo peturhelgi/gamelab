@@ -6,7 +6,7 @@ using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.GameObjects;
 using static TheGreatEscape.GameLogic.GameState;
 using System;
-using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.Util;
 using Project.LeveManager;
 
 namespace TheGreatEscape.LevelManager

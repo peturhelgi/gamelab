@@ -21,9 +21,12 @@
     <PackageCertificateKeyFile>Project_TemporaryKey.pfx</PackageCertificateKeyFile>
     <MonoGamePlatform>WindowsStoreApp</MonoGamePlatform>
     <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
-    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <AppInstallerUpdateFrequency>1</AppInstallerUpdateFrequency>
+    <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -128,8 +131,8 @@
     <Compile Include="EditorLogic\EditorController.cs" />
     <Compile Include="EditorLogic\EditorManager.cs" />
     <Compile Include="GameLogic\Renderer\LightRenderer.cs" />
-    <Compile Include="GameLogic\Util\MotionSpriteSheet.cs" />
-    <Compile Include="GameLogic\Util\Debugger.cs" />
+    <Compile Include="Util\MotionSpriteSheet.cs" />
+    <Compile Include="Util\Debugger.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
