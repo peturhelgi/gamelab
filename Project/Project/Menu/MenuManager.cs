@@ -4,12 +4,11 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using EditorLogic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 using TheGreatEscape.GameLogic;
+using static TheGreatEscape.Menu.MenuManager;
 
 namespace TheGreatEscape.Menu
 {
@@ -32,9 +31,19 @@ namespace TheGreatEscape.Menu
         LoadingScreen _loading;
         EditorScreen _editor;
 
+        SoundPlayer _soundPlayer;
+
         IAsyncResult result;
         bool _requestSave = false;
 
+        public enum SoundToPlay
+        {
+            Ingame,
+            Menu,
+            GameOver,
+            Story,
+            LevelCompleted
+        }
         public enum Action
         {
             StartStory,
@@ -66,12 +75,11 @@ namespace TheGreatEscape.Menu
         GreatEscape _theGame;
         List<Screen> screenStack;
         String TemplateName = "Template";
-        public static Song MenuSong, IngameSong, StorySong;
-        //public static SoundEffectInstance Song1, Song2;
 
         public KeyboardState OldKeyboardState, CurrKeyboardState;
         public GamePadState OldPlayerOneState, CurrPlayerOneState;
         public GamePadState OldPlayerTwoState, CurrPlayerTwoState;
+
         // TODO: move to renderer
         // Assets for the Menu
         public SpriteFont MenuFont;
@@ -145,6 +153,11 @@ namespace TheGreatEscape.Menu
             return false;
         }
 
+        public void PlaySound(SoundToPlay sound)
+        {
+            _soundPlayer.Play(sound);
+        }
+
         public MenuManager(ContentManager content, GraphicsDevice graphicsDevice,
             GraphicsDeviceManager graphics, GameManager gameManager, EditorManager editorManager, GreatEscape game)
 
@@ -156,6 +169,7 @@ namespace TheGreatEscape.Menu
             _editorManager = editorManager;
             _popOver = null;
             _theGame = game;
+            _soundPlayer = new SoundPlayer(_content);
 
             IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication();
             string[] files = isf.GetFileNames("Levels/*");
@@ -239,6 +253,11 @@ namespace TheGreatEscape.Menu
             CurrPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="value"></param>
         public void CallAction(Action action, object value)
         {
             _popOver = null;
@@ -289,6 +308,7 @@ namespace TheGreatEscape.Menu
                     break;
 
                 case Action.ShowGameOverScreen:
+                    PlaySound(SoundToPlay.GameOver);
                     _prevScreen = null;
                     _popOver = _gameOver;
                     retry = _popOver.GetSelection(0);
@@ -298,6 +318,7 @@ namespace TheGreatEscape.Menu
                     break;
 
                 case Action.ShowLevelCompletedScreen:
+                    PlaySound(SoundToPlay.LevelCompleted);
                     _prevScreen = null;
                     _popOver = _levelCompleted;
                     nextLvl = _popOver.GetSelection(0);
@@ -418,11 +439,8 @@ namespace TheGreatEscape.Menu
         public void LoadContent()
         {
             MenuFont = _content.Load<SpriteFont>("Fonts/Orbitron");
-            MenuSong = _content.Load<Song>("Sounds/menu");
-            IngameSong = _content.Load<Song>("Sounds/ingame");
-            StorySong = _content.Load<Song>("Sounds/story_song");
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(MenuManager.MenuSong);
+            _soundPlayer.LoadSongs();
+            PlaySound(SoundToPlay.Menu);
         }
 
         public ContentManager ContentLoader()
@@ -509,8 +527,7 @@ namespace TheGreatEscape.Menu
         {
             _gameManager.UnloadContent();
             _gameManager.LoadLevel(level);
-            MediaPlayer.Stop();
-            MediaPlayer.Play(MenuManager.IngameSong);
+            _manager.PlaySound(SoundToPlay.Ingame);
 
         }
 
@@ -611,8 +628,7 @@ namespace TheGreatEscape.Menu
             }
             _currentSlide = _story[slideCnt++];
 
-            MediaPlayer.Stop();
-            MediaPlayer.Play(MenuManager.StorySong);
+            _manager.PlaySound(SoundToPlay.Story);
         }
 
         public override void Draw(GameTime gameTime, int width, int height)
