@@ -6,6 +6,7 @@ using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.GameLogic.Collision;
 using TheGreatEscape.GameLogic.Util;
 using Microsoft.Xna.Framework.Graphics;
+using TheGreatEscape.Menu;
 
 namespace TheGreatEscape.GameLogic
 {
@@ -15,9 +16,10 @@ namespace TheGreatEscape.GameLogic
         public const float WalkSpeed = 5.6f;
         public const float RunSpeed = 9.8f;
         public const float JumpForce = -800;
-        const float FatalSpeed = 2200f;
+        const float FatalSpeed = 1000;
         public GameState GameState;
         public readonly GameState InitialGameState;
+        SoundPlayer _soundPlayer;
 
         public enum GameAction
         {
@@ -41,6 +43,7 @@ namespace TheGreatEscape.GameLogic
 
         public GameEngine(GameState gameState)
         {
+            _soundPlayer = MenuManager.SoundsPlayer;
             GameState = gameState;
             CollisionDetector = new CollisionDetector();
             _attentions = new List<AxisAllignedBoundingBox>();
@@ -179,6 +182,7 @@ namespace TheGreatEscape.GameLogic
             {
                 if (item is Key)
                 {
+                    _soundPlayer.PlayIngameSound(Menu.MenuManager.SoundToPlay.Key);
                     (item as Key).Collect(interactables);
                 }
 
