@@ -45,7 +45,8 @@ namespace TheGreatEscape.Menu
             LevelCompleted,
             Pickaxe,
             Key,
-            Door
+            Door,
+            Dying
         }
         public enum Action
         {

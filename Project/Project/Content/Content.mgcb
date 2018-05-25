@@ -1198,3 +1198,9 @@
 /processorParam:Quality=Best
 /build:Sounds/pickaxe.wav
 
+#begin Sounds/dying.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/dying.wav
+
