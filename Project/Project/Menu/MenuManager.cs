@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using TheGreatEscape.GameLogic;
+using TheGreatEscape.Util;
 
 namespace TheGreatEscape.Menu
 {
@@ -31,9 +32,6 @@ namespace TheGreatEscape.Menu
         GameScreen _game;
         LoadingScreen _loading;
         EditorScreen _editor;
-
-        IAsyncResult result;
-        bool _requestSave = false;
 
         public enum Action
         {
@@ -75,75 +73,7 @@ namespace TheGreatEscape.Menu
         // TODO: move to renderer
         // Assets for the Menu
         public SpriteFont MenuFont;
-
-        public bool KeyPressed(params Keys[] keys)
-        {
-            foreach (var key in keys)
-            {
-                if (OldKeyboardState.IsKeyUp(key)
-                    && CurrKeyboardState.IsKeyDown(key))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public bool ButtonDown(int player, params Buttons[] buttons)
-        {
-            var currpadState = player == 0 ? CurrPlayerOneState : CurrPlayerTwoState;
-            foreach (var button in buttons)
-            {
-                if (currpadState.IsButtonDown(button))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public bool ButtonUp(int player, params Buttons[] buttons)
-        {
-            var currpadState = player == 0 ? CurrPlayerOneState : CurrPlayerTwoState;
-            foreach (var button in buttons)
-            {
-                if (currpadState.IsButtonDown(button))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        public bool ButtonPressed(int player, params Buttons[] buttons)
-        {
-            var oldpadState = player == 0 ? OldPlayerOneState : OldPlayerTwoState;
-            var currpadState = player == 0 ? CurrPlayerOneState : CurrPlayerTwoState;
-            foreach (var button in buttons)
-            {
-                if (currpadState.IsButtonDown(button)
-                    && oldpadState.IsButtonUp(button))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public bool ButtonReleased(int player, params Buttons[] buttons)
-        {
-            var oldpadState = player == 0 ? OldPlayerOneState : OldPlayerTwoState;
-            var currpadState = player == 0 ? CurrPlayerOneState : CurrPlayerTwoState;
-            foreach (var button in buttons)
-            {
-                if (currpadState.IsButtonUp(button)
-                    && oldpadState.IsButtonDown(button))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        InputManager _input;
 
         public MenuManager(ContentManager content, GraphicsDevice graphicsDevice,
             GraphicsDeviceManager graphics, GameManager gameManager, EditorManager editorManager, GreatEscape game)
@@ -156,6 +86,7 @@ namespace TheGreatEscape.Menu
             _editorManager = editorManager;
             _popOver = null;
             _theGame = game;
+            _input = new InputManager(2);
 
             IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication();
             string[] files = isf.GetFileNames("Levels/*");
@@ -190,7 +121,7 @@ namespace TheGreatEscape.Menu
 
             foreach (string file in _allLevels)
             {
-                _levelSelector.AddSelection(file, Action.StartGame, 
+                _levelSelector.AddSelection(file.Replace("_", " "), Action.StartGame, 
                     "Levels/" + file, new Rectangle(0,0,0,0));
             }
 
@@ -406,7 +337,6 @@ namespace TheGreatEscape.Menu
                         _allLevels.Add(currFileName);
                         _levelSelector.AddSelection(currFileName, Action.StartGame,
                             "Levels/" + currFileName, new Rectangle(0, 0, 0, 0));
-                        _requestSave = true;
                     }
                     break;
                 default:
@@ -446,6 +376,7 @@ namespace TheGreatEscape.Menu
             CurrKeyboardState = Keyboard.GetState();
             CurrPlayerOneState = GamePad.GetState(PlayerIndex.One);
             CurrPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
+            _input.Update();
             if (_gameManager?.GameEngine?.GameState != null
                 && _gameManager.GameEngine.GameState.Completed)
             {
@@ -469,6 +400,7 @@ namespace TheGreatEscape.Menu
     {
         protected MenuManager _manager;
         protected GraphicsDevice _graphicsDevice;
+        protected InputManager Input;
 
         public Screen(GraphicsDevice graphicsDevice, MenuManager manager)
         {
@@ -476,7 +408,13 @@ namespace TheGreatEscape.Menu
             _graphicsDevice = graphicsDevice;
         }
 
-        abstract public void Update(GameTime gameTime);
+        public virtual void Update(GameTime gameTime)
+        {
+            if(Input != null)
+            {
+                Input.Update();
+            }
+        }
         abstract public void Draw(GameTime gameTime, int widht, int height);
 
     }
@@ -503,6 +441,7 @@ namespace TheGreatEscape.Menu
         public GameScreen(GameManager gameManager, GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
         {
             _gameManager = gameManager;
+            Input = new InputManager(2);
         }
 
         public void LoadGame(String level)
@@ -521,15 +460,15 @@ namespace TheGreatEscape.Menu
 
         public override void Update(GameTime gameTime)
         {
-
-            if (_manager.KeyPressed(Keys.Escape) ||
-                _manager.ButtonPressed(0, Buttons.Start) ||
-                _manager.ButtonPressed(1, Buttons.Start))
+            base.Update(gameTime);
+            if (Input.KeyPressed(Keys.Escape) ||
+                Input.ButtonPressed(0, Buttons.Start) ||
+                Input.ButtonPressed(1, Buttons.Start))
             {
                 _manager.CallAction(MenuManager.Action.ShowPauseMenu, null);
             }
 
-            else if (_manager.KeyPressed(Keys.Space))
+            else if (Input.KeyPressed(Keys.Space))
             {
                 _manager.CallAction(MenuManager.Action.ShowPauseMenu, null);
             }
@@ -546,6 +485,7 @@ namespace TheGreatEscape.Menu
         public EditorScreen(EditorManager editorManager, GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
         {
             _editorManager = editorManager;
+            Input = new InputManager(1);
         }
 
         public void LoadGame(String level)
@@ -560,14 +500,15 @@ namespace TheGreatEscape.Menu
 
         public override void Update(GameTime gameTime)
         {
-            if (_manager.ButtonPressed(0, Buttons.Start) 
-                || _manager.CurrKeyboardState.IsKeyDown(Keys.S))
+            base.Update(gameTime);
+            if (Input.ButtonPressed(0, Buttons.Start) 
+                || Input.KeyDown(Keys.S))
             {
                 _manager.CallAction(MenuManager.Action.ShowPauseMenu, 0);
             }
-            else if ((_manager.KeyPressed(Keys.Escape) ||
-                _manager.ButtonPressed(0, Buttons.Start) ||
-                _manager.ButtonPressed(1, Buttons.Start)))
+            else if ((Input.KeyPressed(Keys.Escape) ||
+                Input.ButtonPressed(0, Buttons.Start) ||
+                Input.ButtonPressed(1, Buttons.Start)))
             {
                 _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
             }
@@ -599,6 +540,7 @@ namespace TheGreatEscape.Menu
             _spriteBatch = new SpriteBatch(_graphicsDevice);
             _content = manager.ContentLoader();
             slideCnt = 0;
+            Input = new InputManager(1);
         }
 
         public void LoadStory()
@@ -626,8 +568,9 @@ namespace TheGreatEscape.Menu
         }
 
         public override void Update(GameTime gameTime)
-        {   
-                mFadeDelay -= gameTime.ElapsedGameTime.TotalSeconds;
+        {
+            base.Update(gameTime);
+            mFadeDelay -= gameTime.ElapsedGameTime.TotalSeconds;
                 if (mFadeDelay <= 0)
                 {
                     mFadeDelay = .035;
@@ -638,8 +581,8 @@ namespace TheGreatEscape.Menu
                     }
                 }
 
-            if (_manager.ButtonPressed(0, Buttons.A)
-                || _manager.CurrKeyboardState.IsKeyDown(Keys.A))
+            if (Input.ButtonPressed(0, Buttons.A)
+                || Input.KeyPressed(Keys.A, Keys.Space))
             {
                 if (slideCnt == 12)
                 {
@@ -684,10 +627,10 @@ namespace TheGreatEscape.Menu
         protected Texture2D _selector;
         protected Boolean _isDynamic;
 
-
         public SelectionMenu(string title, Texture2D background, Texture2D selector, Boolean isDynamic, GraphicsDevice graphicsDevice,
             MenuManager manager) : base(graphicsDevice, manager)
         {
+            Input = new InputManager(1);
             _selections = new List<Selection>();
             _spriteBatch = new SpriteBatch(_graphicsDevice);
             _title = title;
@@ -750,19 +693,20 @@ namespace TheGreatEscape.Menu
         {
             // TODO add support for (multiple) Controllers
             // Keyboard controls
-            if (_manager.KeyPressed(Keys.Enter, Keys.Space))
+            base.Update(gameTime);
+            if (Input.KeyPressed(Keys.Enter, Keys.Space))
             {
                 _manager.CallAction(_selections[_currentPosition].Action, _selections[_currentPosition].Value);
                 _lastSelection = _currentPosition;
                 _currentPosition = 0;
             }
 
-            if (_manager.KeyPressed(Keys.Down))
+            if (Input.KeyPressed(Keys.Down))
             {
                 _currentPosition = (++_currentPosition) % _selections.Count;
             }
 
-            if (_manager.KeyPressed(Keys.Up))
+            if (Input.KeyPressed(Keys.Up))
             {
                 _currentPosition = --_currentPosition < 0 ? _selections.Count - 1 : _currentPosition;
             }
@@ -771,27 +715,27 @@ namespace TheGreatEscape.Menu
             if (_selections.Count > 0)
             {
                 // Xbox controls for player one
-                if (_manager.ButtonPressed(0, Buttons.LeftThumbstickDown, Buttons.DPadDown))
+                if (Input.ButtonPressed(0, Buttons.LeftThumbstickDown, Buttons.DPadDown))
                 {
                     _currentPosition = (++_currentPosition) % _selections.Count;
                 }
-                if (_manager.ButtonPressed(0, Buttons.LeftThumbstickUp, Buttons.DPadUp))
+                if (Input.ButtonPressed(0, Buttons.LeftThumbstickUp, Buttons.DPadUp))
                 {
                     _currentPosition = --_currentPosition < 0 ? _selections.Count - 1 : _currentPosition;
                 }
             }
-            if (_manager.ButtonPressed(0, Buttons.A))
+            if (Input.ButtonPressed(0, Buttons.A))
             {
                 _manager.CallAction(_selections[_currentPosition].Action, _selections[_currentPosition].Value);
                 _currentPosition = 0;
             }
 
-            if (_manager.ButtonPressed(0, Buttons.Back))
+            if (Input.ButtonPressed(0, Buttons.Back))
             {
                 _manager.CallAction(MenuManager.Action.Back, null);
                 _currentPosition = 0;
             }
-            if (_manager.ButtonPressed(0, Buttons.Y))
+            if (Input.ButtonPressed(0, Buttons.Y))
             {
                 _manager.CallAction(MenuManager.Action.ShowHelp, 0);
                 _currentPosition = 0;
@@ -930,25 +874,5 @@ namespace TheGreatEscape.Menu
             _ratioY = ratioY;
             _alpha = alpha;
         }
-        /*
-        public override void Draw(GameTime gameTime, int width, int height)
-        {
-            _graphicsDevice.Clear(Color.Black);
-            _spriteBatch.Begin();
-
-            _spriteBatch.DrawString(_manager.MenuFont, _title,
-                new Vector2(50f, 50f), Color.White, 0f, new Vector2(), 0.5f,
-                new SpriteEffects(), 0f);
-            for(var i = 0; i < _selections.Count; i++)
-            {
-                _spriteBatch.DrawString(_manager.MenuFont, _selections[i].Text,
-                    new Vector2(i == _currentPosition ? 100 : 50,
-                    (i * 100.0f) + 150),
-                    Color.White, 0f, new Vector2(),
-                    i == _currentPosition ? 1f : 0.75f, new SpriteEffects(), 0f);
-            }
-            _spriteBatch.End();
-            base.Draw(gameTime, (int)(width * _ratioX), (int)(height * _ratioY));
-        }*/
     }
 }

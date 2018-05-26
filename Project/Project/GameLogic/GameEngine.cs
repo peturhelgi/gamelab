@@ -115,35 +115,11 @@ namespace TheGreatEscape.GameLogic
                     TryToClimb(miner, new Vector2(0, 8) * value);
                     break;
                 case (GameAction.look):
-                    // TODO: Add looking
                     float theta = value;
                     if (miner.Orientation != SpriteEffects.FlipHorizontally)
                     {
-                        // Miner looks to the left,
-                        // clamp theta to be in 3rd and 4th quarters
-                        if (0 <= theta && theta < MathHelper.PiOver2)
-                        {
-                            theta = MathHelper.PiOver2;
-                        }
-                        else if (-MathHelper.PiOver2 < theta && theta < 0.0f)
-                        {
-                            theta = -MathHelper.PiOver2;
-                        }
                         theta = MathHelper.Pi - theta;
-                    }
-                    else
-                    {
-                        if (theta < -MathHelper.PiOver2)
-                        {
-                            theta = -MathHelper.PiOver2;
-                        }
-                        else if (MathHelper.PiOver2 < theta)
-                        {
-                            theta = MathHelper.PiOver2;
-                        }
-                    }
-
-
+                    }                    
                     miner.LookAt = theta;
                     break;
                 default:
