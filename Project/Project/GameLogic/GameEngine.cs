@@ -588,7 +588,7 @@ namespace TheGreatEscape.GameLogic
 
                     if (obj is Miner && obj.Speed.Y > FatalSpeed)
                     {
-                        GameState.Remove(obj);
+                        //GameState.Remove(obj);
                     }
 
                     obj.Speed = Vector2.Zero;
@@ -599,6 +599,11 @@ namespace TheGreatEscape.GameLogic
                     {
                         direction.Y = (lowestPoint - obj.BBox.Max.Y) - 0.1f;
                         obj.Falling = false;
+
+                        if(obj.ShouldDie)
+                        {
+                            GameState.Remove(obj);
+                        }
                         if (obj is Miner && (obj as Miner).Holding) (obj as Miner).HeldObj.Falling = false;
                     }
 

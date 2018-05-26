@@ -9,7 +9,7 @@ using TheGreatEscape.LevelManager;
 using TheGreatEscape.GameLogic.Renderer;
 using System;
 using System.Collections.Generic;
-
+using TheGreatEscape.Util;
 using System.Reflection;
 using TheGreatEscape.EditorLogic.Util;
 using System.Linq;
@@ -29,9 +29,6 @@ namespace EditorLogic
         EditorRenderer _editorRenderer;
         GameEngine _engine;
         public Camera _camera;
-
-        GamePadState _oldGamePadState;
-        KeyboardState _oldKeyboardState;
 
         // Editor State
         public Vector2 CursorPosition;
@@ -66,16 +63,11 @@ namespace EditorLogic
             CursorSize = new Vector2(10);
             InitialRectangle = new Rectangle(0, 0, 2000, 2000);
 
-
-            _oldKeyboardState = Keyboard.GetState();
-            _oldGamePadState = GamePad.GetState(PlayerIndex.One);
-
             GameObjectTextures = new Dictionary<string, Dictionary<string, Texture2D>>();
             ObjectsSelector = new SortedList<string, CircularSelector>();
             LoadMiscTextures();
             LoadAllGameObjects();
             CircularSelector = ObjectsSelector.First().Value;
-
         }
         public void LoadMiscTextures()
         {
@@ -514,28 +506,13 @@ namespace EditorLogic
 
         void LoadContent()
         {
-            _mapLoader.LoadMapContent(_engine.GameState);
-            // The render instance is create per level: Like this we don't need to worry about resetting global variables in the renderer (e.g. lightning)
+            _mapLoader.LoadMapContent(_engine.GameState);            
             _gameRenderer = new GameRenderer(_graphicsDevice, _engine.GameState, _content);
             _editorRenderer = new EditorRenderer(_graphicsDevice, _engine.GameState, _content, this);
         }
 
-
         public void Update(GameTime gameTime)
         {
-            GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
-            KeyboardState keyboardState = Keyboard.GetState();
-
-            GamePad.GetState(PlayerIndex.One);
-            if ((gamePadState.IsButtonUp(Buttons.B) &&gamePadState.IsButtonDown(Buttons.Back) && _oldGamePadState.IsButtonUp(Buttons.Back))
-                || (keyboardState.IsKeyDown(Keys.Tab) && _oldKeyboardState.IsKeyUp(Keys.Tab)))
-            {
-                //Editing = !Editing;
-                //if (Editing)
-                //{
-                //    _camera.SetCameraToRectangle(new Rectangle(0, 0, 2000, 2000));
-                //}
-            }
             if (Editing)
             {
                 _editorController.HandleUpdate(gameTime);
@@ -544,19 +521,16 @@ namespace EditorLogic
             {
                 _gameController.HandleUpdate(gameTime);
             }
-
-            _oldKeyboardState = Keyboard.GetState();
-            _oldGamePadState = GamePad.GetState(PlayerIndex.One);
         }
 
         public void Draw(GameTime gameTime, int width, int height)
         {
-
+            
             _gameRenderer.Draw(gameTime, width, height, 
                 Keyboard.GetState().IsKeyDown(Keys.P) ? 
                 GameRenderer.Mode.DebugView : 
                 GameRenderer.Mode.Normal, _editorController.Camera);
-
+                
             if (Editing)
             {
                 GameManager.RenderDark = false;

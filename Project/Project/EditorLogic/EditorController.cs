@@ -26,8 +26,6 @@ namespace EditorLogic
         JsonUtil<Level> _saver;
 
         Vector2 _initCursorSize, _deltaCursorSize, _resizeDelta;
-
-        //GamePadState _oldGamePadState, _currGamePadState;
         MouseState _mouseState;
 
         enum Command

@@ -9,7 +9,7 @@ namespace TheGreatEscape.GameLogic
         float _zoom;
         Vector2 _position;
         Vector2 _dimensions;
-        Vector2 _minBox = new Vector2(900, 900);
+        Vector2 _minBox = new Vector2(700, 500);
         Rectangle _rectangle;
         private Rectangle _focusBox;
         public Vector2 MinBox
