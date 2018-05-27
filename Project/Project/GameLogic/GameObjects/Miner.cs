@@ -68,10 +68,10 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 {
                     return;
                 }
+                FallHeight = 0f;
                 if (!was_falling && _falling)
                 {
                     topOfFall = this.Position.Y;
-                    FallHeight = 0f;
                 }
                 else if(was_falling && !_falling)
                 {
@@ -84,9 +84,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         {
             get
             {
-                if (!Falling && FallHeight > LethalHeight)
-                    return true;
-                return false;
+                return (!Falling && FallHeight > LethalHeight);
             }
         }
 
