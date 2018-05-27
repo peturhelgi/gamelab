@@ -331,6 +331,11 @@ namespace TheGreatEscape.Menu
                     break;
 
                 case Action.ShowLevelCompletedScreen:
+                    if (_currentLevelIdx == 6)
+                    {
+                        CallAction(Action.ShowCredits, null);
+                        break;
+                    }
                     PlaySound(SoundToPlay.LevelCompleted);
                     _prevScreen = null;
                     _popOver = _levelCompleted;
@@ -391,10 +396,7 @@ namespace TheGreatEscape.Menu
                 case Action.Advance:
                     _currentLevelIdx = (++_currentLevelIdx) % _allLevels.Count;
                     //value = "Levels/" + _allLevels[_currentLevelIdx];
-                    if (_currentLevelIdx == 3)
-                        CallAction(Action.ShowCredits, null);
-                    else
-                        CallAction(Action.StartGame, value);
+                    CallAction(Action.StartGame, value);
                     break;
                 case Action.ExitGame:
                     _theGame.Exit();
