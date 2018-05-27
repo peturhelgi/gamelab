@@ -81,10 +81,6 @@ namespace TheGreatEscape.Menu
         List<Screen> screenStack;
         String TemplateName = "Template";
 
-        public KeyboardState OldKeyboardState, CurrKeyboardState;
-        public GamePadState OldPlayerOneState, CurrPlayerOneState;
-        public GamePadState OldPlayerTwoState, CurrPlayerTwoState;
-
         // TODO: move to renderer
         // Assets for the Menu
         public SpriteFont MenuFont;
@@ -185,10 +181,10 @@ namespace TheGreatEscape.Menu
 
             _story = new StoryScreen(_graphicsDevice, this);
 
-            OldKeyboardState = CurrKeyboardState;
-            CurrKeyboardState = Keyboard.GetState();
-            CurrPlayerOneState = GamePad.GetState(PlayerIndex.One);
-            CurrPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
+            //OldKeyboardState = CurrKeyboardState;
+            //CurrKeyboardState = Keyboard.GetState();
+            //CurrPlayerOneState = GamePad.GetState(PlayerIndex.One);
+            //CurrPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
         }
 
         /// <summary>
@@ -200,6 +196,7 @@ namespace TheGreatEscape.Menu
         {
             _popOver = null;
             Selection retry, nextLvl;
+            _input.Reset();
             switch (action)
             {
                 case Action.StartStory:
@@ -370,6 +367,7 @@ namespace TheGreatEscape.Menu
                 default:
                     break;
             }
+           
         }
 
         // Load an unload the content specific to the Menu
@@ -394,13 +392,13 @@ namespace TheGreatEscape.Menu
         {
             _currentScreen.Update(gameTime);
 
-            OldKeyboardState = CurrKeyboardState;
-            OldPlayerOneState = CurrPlayerOneState;
-            OldPlayerTwoState = CurrPlayerTwoState;
+            //OldKeyboardState = CurrKeyboardState;
+            //OldPlayerOneState = CurrPlayerOneState;
+            //OldPlayerTwoState = CurrPlayerTwoState;
 
-            CurrKeyboardState = Keyboard.GetState();
-            CurrPlayerOneState = GamePad.GetState(PlayerIndex.One);
-            CurrPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
+            //CurrKeyboardState = Keyboard.GetState();
+            //CurrPlayerOneState = GamePad.GetState(PlayerIndex.One);
+            //CurrPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
             _input.Update();
             if (_gameManager?.GameEngine?.GameState != null
                 && _gameManager.GameEngine.GameState.Completed)
@@ -733,7 +731,6 @@ namespace TheGreatEscape.Menu
             {
                 _currentPosition = --_currentPosition < 0 ? _selections.Count - 1 : _currentPosition;
             }
-
 
             if (_selections.Count > 0)
             {

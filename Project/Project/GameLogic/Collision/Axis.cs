@@ -11,14 +11,7 @@ namespace TheGreatEscape.GameLogic.Collision {
 
         public bool Equals(Axis other)
         {
-            if (this.direction == other.direction)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return (this.direction == other.direction) ;
         }
     }
 }

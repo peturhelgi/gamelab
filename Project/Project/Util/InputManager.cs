@@ -31,6 +31,16 @@ namespace TheGreatEscape.Util
             _currKbState = Keyboard.GetState();
         }
 
+        public void Reset()
+        {
+            for (int i = 0; i < _num_pads; ++i)
+            {
+                _oldPadStates[i] = GamePad.GetState(i);
+                _currPadStates[i] = GamePad.GetState(i);
+            }
+            _oldKbState = Keyboard.GetState();
+            _currKbState = Keyboard.GetState();
+        }
         public bool IsConnected(int player)
         {
             return (0 <= player && player < _num_pads
