@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.LevelManager;
+using TheGreatEscape.Menu;
 
 namespace TheGreatEscape.GameLogic
 {
@@ -138,6 +139,7 @@ namespace TheGreatEscape.GameLogic
                 case Handling.Actor:
                     if (obj is Miner)
                     {
+                        MenuManager.SoundsPlayer.PlayIngameSound(MenuManager.SoundToPlay.Dying);
                         var heldObj = (obj as Miner).HeldObj;
                         if (heldObj != null)
                         {

@@ -7,6 +7,7 @@ using TheGreatEscape.LevelManager;
 using TheGreatEscape.GameLogic.Collision;
 using TheGreatEscape.Util;
 using TheGreatEscape.GameLogic.Renderer;
+using TheGreatEscape.Menu;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
@@ -251,6 +252,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 case MotionType.pickaxe:
                     if (CurrMotion.LoopsPlayed >= 1)
                     {
+                        MenuManager.SoundsPlayer.PlayIngameSound(MenuManager.SoundToPlay.Pickaxe);
                         this.Interacting = false;
                         CurrMotion.ResetCurrentFrame();
                     }
@@ -259,7 +261,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
         }
 
         /// <summary>
-        /// Uses the tool that the miner currenty has
+        /// Uses the tool that the miner currently has
         /// </summary>
         /// <returns>True iff 1==1</returns>
         public bool UseTool(GameState gs)

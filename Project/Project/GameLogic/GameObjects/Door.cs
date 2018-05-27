@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using TheGreatEscape.LevelManager;
+using TheGreatEscape.Menu;
 
 namespace TheGreatEscape.GameLogic.GameObjects {
     public class Door : GameObject
@@ -89,6 +90,7 @@ namespace TheGreatEscape.GameLogic.GameObjects {
             {
                 if (Unlocked)
                 {
+                    MenuManager.SoundsPlayer.PlayIngameSound(MenuManager.SoundToPlay.Door);
                     if (IsExit)
                     {
                         gameState.Completed = true;
