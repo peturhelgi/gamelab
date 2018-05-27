@@ -27,6 +27,7 @@ namespace TheGreatEscape.Menu
         PopOverMenu _gameHelps;
 
         StoryScreen _story;
+        CreditsScreen _credits;
         GameScreen _game;
         LoadingScreen _loading;
         EditorScreen _editor;
@@ -65,7 +66,8 @@ namespace TheGreatEscape.Menu
             Back,
             SaveLevel,
             ShowHelp,
-            ToggleEdit
+            ToggleEdit,
+            ShowCredits
         };
 
         GameManager _gameManager;
@@ -250,6 +252,8 @@ namespace TheGreatEscape.Menu
             _editor = new EditorScreen(_editorManager, _graphicsDevice, this);
 
             _story = new StoryScreen(_graphicsDevice, this);
+            _credits = new CreditsScreen(_graphicsDevice, this);
+
 
             OldKeyboardState = CurrKeyboardState;
             CurrKeyboardState = Keyboard.GetState();
@@ -271,6 +275,11 @@ namespace TheGreatEscape.Menu
                 case Action.StartStory:
                     _story.LoadStory();
                     _currentScreen = _story;
+                    break;
+                case Action.ShowCredits:
+                    _credits.LoadCredits();
+                    _currentScreen = _credits;
+                    _gameManager.GameEngine.GameState = null;
                     break;
                 case Action.StartGame:
                     string rawLvl = (value as string).Replace("Levels/", "");
@@ -382,7 +391,10 @@ namespace TheGreatEscape.Menu
                 case Action.Advance:
                     _currentLevelIdx = (++_currentLevelIdx) % _allLevels.Count;
                     //value = "Levels/" + _allLevels[_currentLevelIdx];
-                    CallAction(Action.StartGame, value);
+                    if (_currentLevelIdx == 3)
+                        CallAction(Action.ShowCredits, null);
+                    else
+                        CallAction(Action.StartGame, value);
                     break;
                 case Action.ExitGame:
                     _theGame.Exit();
@@ -640,7 +652,6 @@ namespace TheGreatEscape.Menu
             _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
             Rectangle dest = new Rectangle(0, 0, _graphicsDevice.PresentationParameters.BackBufferWidth
                 , _graphicsDevice.PresentationParameters.BackBufferHeight);
-            //Rectangle dest = new Rectangle(0, 0, _currentSlide.Width, _currentSlide.Height);
             _spriteBatch.Draw(_currentSlide, dest, new Color((byte)255, (byte)255, (byte)255, (byte)MathHelper.Clamp(mAlphaValue, 0, 225)));
             _spriteBatch.End();
         }
@@ -671,6 +682,75 @@ namespace TheGreatEscape.Menu
         }
     }
 
+    class CreditsScreen : Screen
+    {
+        SpriteBatch _spriteBatch;
+        ContentManager _content;
+        List<Texture2D> _credits;
+        Texture2D _currentSlide;
+        GraphicsDevice _graphics;
+
+        int slideCnt;
+
+        int mAlphaValue = 1;
+        int mFadeIncrement = 20;
+        double mFadeDelay = .035;
+
+        public CreditsScreen(GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
+        {
+            _graphics = graphicsDevice;
+            _credits = new List<Texture2D>();
+            _spriteBatch = new SpriteBatch(_graphicsDevice);
+            _content = manager.ContentLoader();
+            slideCnt = 0;
+        }
+
+        public void LoadCredits()
+        {
+            slideCnt = 0;
+            for (int i = 1; i <= 3; ++i)
+            {
+                _credits.Add(_content.Load<Texture2D>("Credits/Credits_" + i));
+            }
+            _currentSlide = _credits[slideCnt++];
+
+            _manager.PlaySound(SoundToPlay.Story);
+        }
+
+        public override void Draw(GameTime gameTime, int width, int height)
+        {
+            _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
+            Rectangle dest = new Rectangle(0, 0, _graphicsDevice.PresentationParameters.BackBufferWidth
+                , _graphicsDevice.PresentationParameters.BackBufferHeight);
+            _spriteBatch.Draw(_currentSlide, dest, new Color((byte)255, (byte)255, (byte)255, (byte)MathHelper.Clamp(mAlphaValue, 0, 225)));
+            _spriteBatch.End();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            mFadeDelay -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (mFadeDelay <= 0)
+            {
+                mFadeDelay = .035;
+                mAlphaValue += mFadeIncrement;
+                if (mAlphaValue >= 255 || mAlphaValue <= 0)
+                {
+                    mFadeIncrement *= -1;
+                }
+            }
+
+            if (_manager.ButtonPressed(0, Buttons.A)
+                || _manager.CurrKeyboardState.IsKeyDown(Keys.A))
+            {
+                if (slideCnt == 3)
+                {
+                    _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
+                    return;
+                }
+                _currentSlide = _credits[slideCnt++];
+            }
+        }
+    }
     class LoadingScreen : Screen
     {
         SpriteBatch _spriteBatch;
