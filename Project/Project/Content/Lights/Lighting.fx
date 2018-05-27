@@ -19,7 +19,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR
 {
     const float4 sceneColor = tex2D(SceneSampler, input.texCoords);
     const float4 lightColor = tex2D(lightSampler, input.texCoords);
-    return  (sceneColor * lightColor*0.7);
+    return  (sceneColor * lightColor*1.2);
 }
 technique Technique1
 {
