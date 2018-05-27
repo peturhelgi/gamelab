@@ -84,7 +84,7 @@ namespace TheGreatEscape.Menu
         // TODO: move to renderer
         // Assets for the Menu
         public SpriteFont MenuFont;
-        InputManager _input;
+        public InputManager Input;
 
         public void PlaySound(SoundToPlay sound)
         {
@@ -92,7 +92,9 @@ namespace TheGreatEscape.Menu
         }
 
         public MenuManager(ContentManager content, GraphicsDevice graphicsDevice,
-            GraphicsDeviceManager graphics, GameManager gameManager, EditorManager editorManager, GreatEscape game)
+            GraphicsDeviceManager graphics, GameManager gameManager, 
+            EditorManager editorManager, GreatEscape game,
+            InputManager input)
 
         {
             _content = content;
@@ -102,7 +104,7 @@ namespace TheGreatEscape.Menu
             _editorManager = editorManager;
             _popOver = null;
             _theGame = game;
-            _input = new InputManager(2);
+            Input = input;
             SoundsPlayer = new SoundPlayer(_content);
 
             IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication();
@@ -196,7 +198,7 @@ namespace TheGreatEscape.Menu
         {
             _popOver = null;
             Selection retry, nextLvl;
-            _input.Reset();
+            Input.Reset();
             switch (action)
             {
                 case Action.StartStory:
@@ -390,6 +392,7 @@ namespace TheGreatEscape.Menu
 
         public void Update(GameTime gameTime)
         {
+            Input.Update();
             _currentScreen.Update(gameTime);
 
             //OldKeyboardState = CurrKeyboardState;
@@ -399,7 +402,6 @@ namespace TheGreatEscape.Menu
             //CurrKeyboardState = Keyboard.GetState();
             //CurrPlayerOneState = GamePad.GetState(PlayerIndex.One);
             //CurrPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
-            _input.Update();
             if (_gameManager?.GameEngine?.GameState != null
                 && _gameManager.GameEngine.GameState.Completed)
             {
@@ -429,14 +431,11 @@ namespace TheGreatEscape.Menu
         {
             _manager = manager;
             _graphicsDevice = graphicsDevice;
+            Input = _manager.Input;
         }
 
         public virtual void Update(GameTime gameTime)
         {
-            if(Input != null)
-            {
-                Input.Update();
-            }
         }
         abstract public void Draw(GameTime gameTime, int widht, int height);
 
@@ -464,7 +463,6 @@ namespace TheGreatEscape.Menu
         public GameScreen(GameManager gameManager, GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
         {
             _gameManager = gameManager;
-            Input = new InputManager(2);
         }
 
         public void LoadGame(String level)
@@ -507,7 +505,6 @@ namespace TheGreatEscape.Menu
         public EditorScreen(EditorManager editorManager, GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
         {
             _editorManager = editorManager;
-            Input = new InputManager(1);
         }
 
         public void LoadGame(String level)
@@ -562,7 +559,6 @@ namespace TheGreatEscape.Menu
             _spriteBatch = new SpriteBatch(_graphicsDevice);
             _content = manager.ContentLoader();
             slideCnt = 0;
-            Input = new InputManager(1);
         }
 
         public void LoadStory()
@@ -651,7 +647,6 @@ namespace TheGreatEscape.Menu
         public SelectionMenu(string title, Texture2D background, Texture2D selector, Boolean isDynamic, GraphicsDevice graphicsDevice,
             MenuManager manager) : base(graphicsDevice, manager)
         {
-            Input = new InputManager(1);
             _selections = new List<Selection>();
             _spriteBatch = new SpriteBatch(_graphicsDevice);
             _title = title;
@@ -712,8 +707,7 @@ namespace TheGreatEscape.Menu
 
         public override void Update(GameTime gameTime)
         {
-            // TODO add support for (multiple) Controllers
-            // Keyboard controls
+
             base.Update(gameTime);
             if (Input.KeyPressed(Keys.Enter, Keys.Space))
             {

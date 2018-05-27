@@ -53,7 +53,11 @@ namespace EditorLogic
                 return ((CurrentObjects != null) || (AuxiliaryObject != null));
             }
         }
-        public EditorManager(ContentManager content, GraphicsDevice graphicsDevice, GraphicsDeviceManager graphics)
+        public EditorManager(
+            ContentManager content, 
+            GraphicsDevice graphicsDevice, 
+            GraphicsDeviceManager graphics,
+            InputManager input)
         {
             _content = content;
             _graphicsDevice = graphicsDevice;
