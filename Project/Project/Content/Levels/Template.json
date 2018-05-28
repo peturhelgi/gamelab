@@ -14,64 +14,6 @@
         "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
         "dim": {
           "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
-          "X": 31.59809,
-          "Y": 31.59809
-        },
-        "pos": {
-          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
-          "X": 2247.55347,
-          "Y": 1036.63037
-        },
-        "vel": {
-          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
-          "X": 0.0,
-          "Y": 0.0
-        },
-        "m": 10.0,
-        "type": "secondary",
-        "texture": "Sprites/Misc/green_light",
-        "displacement": 0.0,
-        "direction": "-1",
-        "activationkey": -1,
-        "secondtexture": "-1",
-        "tool": "-1",
-        "id": -1,
-        "requirement": false,
-        "ropelength": -1.0
-      },
-      {
-        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
-        "dim": {
-          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
-          "X": 31.59809,
-          "Y": 31.59809
-        },
-        "pos": {
-          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
-          "X": 2247.55347,
-          "Y": 1036.63037
-        },
-        "vel": {
-          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
-          "X": 0.0,
-          "Y": 0.0
-        },
-        "m": 10.0,
-        "type": "secondary",
-        "texture": "Sprites/Misc/red_light",
-        "displacement": 0.0,
-        "direction": "-1",
-        "activationkey": -1,
-        "secondtexture": "-1",
-        "tool": "-1",
-        "id": -1,
-        "requirement": false,
-        "ropelength": -1.0
-      },
-      {
-        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
-        "dim": {
-          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
           "X": 1657.82837,
           "Y": 382.9949
         },
@@ -130,65 +72,7 @@
         "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
         "dim": {
           "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
-          "X": 31.59809,
-          "Y": 31.59809
-        },
-        "pos": {
-          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
-          "X": 2247.55347,
-          "Y": 1036.63037
-        },
-        "vel": {
-          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
-          "X": 0.0,
-          "Y": 0.0
-        },
-        "m": 10.0,
-        "type": "secondary",
-        "texture": "Sprites/Misc/green_light",
-        "displacement": 0.0,
-        "direction": "-1",
-        "activationkey": -1,
-        "secondtexture": "-1",
-        "tool": "-1",
-        "id": -1,
-        "requirement": false,
-        "ropelength": -1.0
-      },
-      {
-        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
-        "dim": {
-          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
-          "X": 31.59809,
-          "Y": 31.59809
-        },
-        "pos": {
-          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
-          "X": 2247.55347,
-          "Y": 1036.63037
-        },
-        "vel": {
-          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
-          "X": 0.0,
-          "Y": 0.0
-        },
-        "m": 10.0,
-        "type": "secondary",
-        "texture": "Sprites/Misc/red_light",
-        "displacement": 0.0,
-        "direction": "-1",
-        "activationkey": -1,
-        "secondtexture": "-1",
-        "tool": "-1",
-        "id": -1,
-        "requirement": false,
-        "ropelength": -1.0
-      },
-      {
-        "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
-        "dim": {
-          "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
-          "X": 187.534744,
+          "X": 257.534744,
           "Y": 315.9809
         },
         "pos": {
@@ -281,7 +165,7 @@
         "pos": {
           "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
           "X": 950.1018,
-          "Y": 789.830444
+          "Y": 850.830444
         },
         "vel": {
           "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
