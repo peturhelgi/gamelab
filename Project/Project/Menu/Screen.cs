@@ -277,6 +277,12 @@ namespace TheGreatEscape.Menu
             _helpImage = helpImage;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameTime"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         public override void Draw(GameTime gameTime, int width, int height)
         {
             _spriteBatch.Begin();
@@ -294,17 +300,9 @@ namespace TheGreatEscape.Menu
             imgW / 2,
             imgH / 2);
 
-            //Rectangle dest = new Rectangle(0, 0, _graphicsDevice.PresentationParameters.BackBufferWidth
-            //    , _graphicsDevice.PresentationParameters.BackBufferHeight);
-            //Rectangle dest = new Rectangle(0, 0, imgW, imgH);
-            //_spriteBatch.Draw(_helpImage, dest, Color.White);
-            _spriteBatch.Draw(_helpImage, screenCenter, new Rectangle(Point.Zero, new Point(imgW, imgH)),
-                Color.White,
-                0.0f,
-                textureCenter,
-                1f,
-                SpriteEffects.None,
-                0.0f);
+            int offset = (_graphicsDevice.PresentationParameters.BackBufferWidth - imgW) / 2;
+            Rectangle dest = new Rectangle(offset, 0, imgW, imgH);
+            _spriteBatch.Draw(_helpImage, dest, Color.White);
 
             _spriteBatch.End();
         }
