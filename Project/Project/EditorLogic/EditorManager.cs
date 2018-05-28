@@ -490,6 +490,8 @@ namespace EditorLogic
                     CursorPosition = Vector2.Min(CursorPosition, obj.Position);
                     if (!(obj is Miner))
                         _engine.GameState.Remove(obj);
+                    if (obj is Key)
+                        obj.Enable();
                 }
                 MovingStartPosition = CursorPosition;
                 CurrentIsNewObject = false;
