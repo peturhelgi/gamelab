@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.GameObjects;
 
-namespace TheGreatEscape.GameLogic.Util {
+namespace TheGreatEscape.Util {
     public class MotionSpriteSheet {
 
         public int FrameCounter;

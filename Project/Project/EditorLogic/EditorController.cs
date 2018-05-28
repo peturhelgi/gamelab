@@ -10,7 +10,7 @@ using System.IO.IsolatedStorage;
 
 using TheGreatEscape.GameLogic;
 using TheGreatEscape.GameLogic.GameObjects;
-using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.Util;
 using TheGreatEscape.LevelManager;
 
 namespace EditorLogic
@@ -18,7 +18,7 @@ namespace EditorLogic
     public class EditorController
     {
         public GameEngine GameEngine;
-
+        protected InputManager Input;
         public Camera Camera;
 
         EditorManager _manager;
@@ -26,9 +26,6 @@ namespace EditorLogic
         JsonUtil<Level> _saver;
 
         Vector2 _initCursorSize, _deltaCursorSize, _resizeDelta;
-
-        GamePadState _oldGamePadState, _currGamePadState;
-        KeyboardState _oldKeyboardState, _currKeyboardState;
         MouseState _mouseState;
 
         enum Command
@@ -53,6 +50,8 @@ namespace EditorLogic
 
         public EditorController(GameEngine gameEngine, Camera camera, EditorManager manager)
         {
+            Input = new InputManager(1);
+
             _buttons[Command.Select] = new List<Buttons> { Buttons.A };
             _buttons[Command.Place] = new List<Buttons> { Buttons.A, Buttons.X };
             _buttons[Command.ToggleMode] = new List<Buttons> { Buttons.B };
@@ -76,13 +75,10 @@ namespace EditorLogic
 
             _saver = new JsonUtil<Level>();
 
-
             _initCursorSize = new Vector2(10);
             _deltaCursorSize = new Vector2(50, -50);
             _resizeDelta = new Vector2(5, -5);
             _mouseState = Mouse.GetState();
-            _currKeyboardState = Keyboard.GetState();
-            _currGamePadState = GamePad.GetState(PlayerIndex.One);
         }
 
 
@@ -90,15 +86,8 @@ namespace EditorLogic
         {
 
             GameEngine.gameTime = gameTime.TotalGameTime;
-
-            _oldGamePadState = _currGamePadState;
-            _currGamePadState = GamePad.GetState(PlayerIndex.One);
-
-            _oldKeyboardState = _currKeyboardState;
-            _currKeyboardState = Keyboard.GetState();
-
+            Input.Update();
             _mouseState = Mouse.GetState();
-
             HandleGamePad();
             HandleKeyboard();
             HandleMouse();
@@ -126,78 +115,36 @@ namespace EditorLogic
         private void HandleKeyboard()
         {
             // Handle camera
-            if (_currKeyboardState.IsKeyDown(Keys.A)) Camera.HandleAction(Camera.CameraAction.left);
-            if (_currKeyboardState.IsKeyDown(Keys.D)) Camera.HandleAction(Camera.CameraAction.right);
-            if (_currKeyboardState.IsKeyDown(Keys.W)) Camera.HandleAction(Camera.CameraAction.up);
-            if (_currKeyboardState.IsKeyDown(Keys.S)) Camera.HandleAction(Camera.CameraAction.down);
+            if (Input.KeyDown(Keys.A)) Camera.HandleAction(Camera.CameraAction.left);
+            if (Input.KeyDown(Keys.D)) Camera.HandleAction(Camera.CameraAction.right);
+            if (Input.KeyDown(Keys.W)) Camera.HandleAction(Camera.CameraAction.up);
+            if (Input.KeyDown(Keys.S)) Camera.HandleAction(Camera.CameraAction.down);
 
             // Handle Cursor movement
-            if (_currKeyboardState.IsKeyDown(Keys.Right)) _manager.CursorPosition += new Vector2(20, 0);
-            if (_currKeyboardState.IsKeyDown(Keys.Left)) _manager.CursorPosition += new Vector2(-20, 0);
-            if (_currKeyboardState.IsKeyDown(Keys.Down)) _manager.CursorPosition += new Vector2(0, 20);
-            if (_currKeyboardState.IsKeyDown(Keys.Up)) _manager.CursorPosition += new Vector2(0, -20);
+            if (Input.KeyDown(Keys.Right)) _manager.CursorPosition += new Vector2(20, 0);
+            if (Input.KeyDown(Keys.Left)) _manager.CursorPosition += new Vector2(-20, 0);
+            if (Input.KeyDown(Keys.Down)) _manager.CursorPosition += new Vector2(0, 20);
+            if (Input.KeyDown(Keys.Up)) _manager.CursorPosition += new Vector2(0, -20);
 
             // Handle saving changes
-            if (_currKeyboardState.IsKeyDown(Keys.J)) HandleSave(GameEngine.GameState.levelname);
+            if (Input.KeyDown(Keys.J)) HandleSave(GameEngine.GameState.levelname);
 
-        }
-
-        private bool KeyPressed(Command command)
-        {
-            if (!_buttons.ContainsKey(command)) return false;
-            foreach (var button in _buttons[command])
-            {
-                if (_oldGamePadState.IsButtonUp(button)
-                    && _currGamePadState.IsButtonDown(button))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool KeyReleased(Command command)
-        {
-            if (!_buttons.ContainsKey(command)) return false;
-            foreach (var button in _buttons[command])
-            {
-                if (_oldGamePadState.IsButtonDown(button)
-                    && _currGamePadState.IsButtonUp(button))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool KeyDown(Command command)
-        {
-            if (!_buttons.ContainsKey(command)) return false;
-            foreach (var button in _buttons[command])
-            {
-                if (_currGamePadState.IsButtonDown(button))
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         private void HandleGamePad()
         {
             // Handle camera with DPad
-            if (KeyDown(Command.ZoomOut))
+            if (Input.ButtonDown(0, _buttons[Command.ZoomOut]))
             {
                 Camera.HandleAction(Camera.CameraAction.zoom_out);
             }
-            if (KeyDown(Command.ZoomIn))
+            if (Input.ButtonDown(0, _buttons[Command.ZoomIn]))
             {
                 Camera.HandleAction(Camera.CameraAction.zoom_in);
             }
 
-            Vector2 leftThumb = _currGamePadState.ThumbSticks.Left,
-                rightThumb = _currGamePadState.ThumbSticks.Right;
-
+            Vector2 leftThumb = Input.LeftThumb(0),
+                rightThumb = Input.RightThumb(0);
 
             if (_manager.ObjectPickerOpen)
             {
@@ -208,13 +155,13 @@ namespace EditorLogic
                 }
 
                 // go to the next category of GameObjects
-                if (KeyPressed(Command.NextItem))
+                if (Input.ButtonPressed(0, _buttons[Command.NextItem]))
                 {
                     _manager.GetNextSelector();
                 }
 
                 // go to the previous category of GameObjects
-                if (KeyPressed(Command.PreviousItem))
+                if (Input.ButtonPressed(0, _buttons[Command.PreviousItem]))
                 {
                     _manager.GetPrevSelector();
                 }
@@ -228,12 +175,12 @@ namespace EditorLogic
             }
 
             // On pressing Y, toggle between displaying ObjectPicker
-            if (KeyPressed(Command.TogglePicker))
+            if (Input.ButtonPressed(0, _buttons[Command.TogglePicker]))
             {
                 _manager.ObjectPickerOpen = !_manager.ObjectPickerOpen;
             }
 
-            if (KeyPressed(Command.Select))
+            if (Input.ButtonPressed(0, _buttons[Command.Select]))
             {
                 // when closing the ObjectPicker, choose the last selected GameObject
                 if (_manager.ObjectPickerOpen)
@@ -270,16 +217,16 @@ namespace EditorLogic
             {
                 _manager.AuxiliaryObject.SpriteSize += rightThumb * _resizeDelta;
                 // Remove the key
-                if (KeyPressed(Command.Remove))
+                if (Input.ButtonPressed(0, _buttons[Command.Remove]))
                 {
                     _manager.RemoveAuxiliaryObject();
                 }
-                else if (KeyPressed(Command.Place))
+                else if (Input.ButtonPressed(0, _buttons[Command.Place]))
                 {
                     _manager.PlaceAuxiliaryObject();
                 }
 
-                else if (KeyPressed(Command.NextItem))
+                else if (Input.ButtonPressed(0, _buttons[Command.NextItem]))
                 {
                     _manager.SwapBetweenAuxiliaries();
                 }
@@ -287,7 +234,7 @@ namespace EditorLogic
             else
             {
                 // let A pressed => place Object or Pick Object(s)
-                if (KeyPressed(Command.Select))
+                if (Input.ButtonPressed(0, _buttons[Command.Select]))
                 {
 
                     if (_manager.ObjectsAreSelected)
@@ -302,7 +249,7 @@ namespace EditorLogic
                 }
 
                 // let X pressed => place Object or duplicate Object(s)
-                if (KeyPressed(Command.Copy))
+                if (Input.ButtonPressed(0, _buttons[Command.Copy]))
                 {
                     if (_manager.ObjectsAreSelected)
                     {
@@ -317,7 +264,7 @@ namespace EditorLogic
                 }
             }
 
-            if (KeyDown(Command.Place))
+            if (Input.ButtonDown(0, _buttons[Command.Place]))
             {
                 if (_manager.CurrentObjects == null)
                 {
@@ -328,18 +275,18 @@ namespace EditorLogic
             }
 
             // remove current selection
-            if (KeyPressed(Command.Deselect))
+            if (Input.ButtonPressed(0, _buttons[Command.Deselect]))
             {
                 _manager.DeselectCurrentObjects();
             }
 
             // delete current object
-            if (KeyPressed(Command.Remove))
+            if (Input.ButtonPressed(0, _buttons[Command.Remove]))
             {
                 _manager.DeleteCurrentObject();
             }
 
-            if (KeyPressed(Command.Exit))
+            if (Input.ButtonPressed(0, _buttons[Command.Exit]))
                 // TODO: Ask the user to save the level
                 //Exit();
                 return;

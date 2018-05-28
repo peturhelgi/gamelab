@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.Renderer;
 using TheGreatEscape.LevelManager;
 using System;
-using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.Util;
 
 namespace TheGreatEscape.GameLogic {
     public class GameManager

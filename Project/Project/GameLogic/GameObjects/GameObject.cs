@@ -110,7 +110,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
             InitialSpriteSize = SpriteSize = spriteSize;
             Handling = GameState.Handling.None;
         }
-        public bool Falling { get; set; }
+        public virtual bool Falling { get; set; }
         public bool Active { get; set; }
 
         public void Enable()
@@ -127,6 +127,13 @@ namespace TheGreatEscape.GameLogic.GameObjects
         {
             Visible = false;
             Active = false;
+        }
+
+        public virtual bool ShouldDie { 
+            get
+            {
+                return false;
+            }
         }
 
         public virtual Vector2 Position { get; set; }

@@ -8,6 +8,7 @@ using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using TheGreatEscape.Util;
 using TheGreatEscape.Menu;
 
 namespace TheGreatEscape.EditorLogic
@@ -25,28 +26,30 @@ namespace TheGreatEscape.EditorLogic
         {
             //var a = obj.GetType().GetProperties();
             _spriteBatch = new SpriteBatch(_graphicsDevice);
+            Input = new TheGreatEscape.Util.InputManager(1);
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (_manager.ButtonDown(0, Buttons.DPadDown)
-                || _manager.ButtonDown(1, Buttons.DPadDown))
+            base.Update(gameTime);
+            if (Input.ButtonDown(0, Buttons.DPadDown)
+                || Input.ButtonDown(1, Buttons.DPadDown))
             {
                 CurrentPosition = ++CurrentPosition % Options.Count;
             }
-            if (_manager.ButtonDown(0, Buttons.DPadUp)
-                || _manager.ButtonDown(0, Buttons.DPadUp))
+            if (Input.ButtonDown(0, Buttons.DPadUp)
+                || Input.ButtonDown(0, Buttons.DPadUp))
             {
                 CurrentPosition = (--CurrentPosition + Options.Count) % Options.Count;
             }
 
-            if (_manager.ButtonDown(0, Buttons.DPadLeft)
-                || _manager.ButtonDown(1, Buttons.DPadLeft))
+            if (Input.ButtonDown(0, Buttons.DPadLeft)
+                || Input.ButtonDown(1, Buttons.DPadLeft))
             {
                 CurrentPosition = ++CurrentPosition % Options.Count;
             }
-            if (_manager.ButtonDown(0, Buttons.DPadRight)
-                || _manager.ButtonDown(0, Buttons.DPadRight))
+            if (Input.ButtonDown(0, Buttons.DPadRight)
+                || Input.ButtonDown(0, Buttons.DPadRight))
             {
                 CurrentPosition = (--CurrentPosition + Options.Count) % Options.Count;
             }
@@ -80,7 +83,5 @@ namespace TheGreatEscape.EditorLogic
             Name = name;
             Value = value;
         }
-
-
     }
 }

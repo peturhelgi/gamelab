@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TheGreatEscape.GameLogic.Collision;
 using Microsoft.Xna.Framework;
-using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.Util;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
@@ -42,6 +42,7 @@ namespace TheGreatEscape.GameLogic.GameObjects
                 if (!CanUseAgain)
                 {
                     --UsesLeft;
+                    break;
                 }
             }
             CanUseAgain = UsesLeft > 0;
