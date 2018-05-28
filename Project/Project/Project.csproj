@@ -145,6 +145,7 @@
     <Compile Include="Libs\Simplex.cs" />
     <Compile Include="Libs\SingleRandom.cs" />
     <Compile Include="Menu\MenuManager.cs" />
+    <Compile Include="Menu\Screen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameLogic\Camera.cs" />
     <Compile Include="GameLogic\Collision\AxisAllignedBoundingBox.cs" />

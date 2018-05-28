@@ -15,6 +15,9 @@ namespace TheGreatEscape.Menu
 {
     public class MenuManager
     {
+        IAsyncResult result;
+        bool _requestSave = false;
+
         public enum SoundToPlay
         {
             Ingame,
@@ -44,7 +47,8 @@ namespace TheGreatEscape.Menu
             Back,
             SaveLevel,
             ShowHelp,
-            ToggleEdit
+            ToggleEdit,
+            ShowCredits
         };
 
         // Menus
@@ -52,9 +56,7 @@ namespace TheGreatEscape.Menu
         PopOverMenu _gameOver;
         PopOverMenu _levelCompleted;
         PopOverMenu _pauseGame;
-        PopOverMenu _editorHelp;
         PopOverMenu _editorMenu;
-        PopOverMenu _gameHelp;
 
         Screen _currentScreen;
         Screen _prevScreen;
@@ -67,6 +69,11 @@ namespace TheGreatEscape.Menu
         GameScreen _gameScreen;
         LoadingScreen _loadingScreen;
         EditorScreen _editorScreen;
+        // Secondary Screens
+        HelpScreen _editorHelp;
+        HelpScreen _gameHelp;
+        StoryScreen _story;
+        CreditsScreen _credits;
 
         public static SoundPlayer SoundsPlayer;
 
@@ -127,12 +134,6 @@ namespace TheGreatEscape.Menu
             _currentScreen = _mainMenu = new SelectionMenu(
                 "Main Menu", _content.Load<Texture2D>("Sprites/Menus/MenuImage"),
                 selector, false, _graphicsDevice, this);
-            _gameHelp = new PopOverMenu("Controls", 
-                _content.Load<Texture2D>("Sprites/ScreenOverlays/PlayControls"),
-                selector, false, _graphicsDevice, this);
-            _editorHelp = new PopOverMenu("Controls", 
-                _content.Load<Texture2D>("Sprites/ScreenOverlays/EditorController"), 
-                selector, false, _graphicsDevice, this);
             _levelSelector = new SelectionMenu(
                 "Select a Level", 
                 _content.Load<Texture2D>("Sprites/Menus/LevelSelector"), 
@@ -147,6 +148,10 @@ namespace TheGreatEscape.Menu
             _mainMenu.AddSelection("level editor", Action.ShowLevelEditor, "Levels/" + _templateName, new Rectangle(220, 530, 349, 102));
             _mainMenu.AddSelection("exit game", Action.ExitGame, null, new Rectangle(152, 636, 185, 94));
 
+            _gameHelp = new HelpScreen(graphicsDevice, this, _content.Load<Texture2D>("Sprites/ScreenOverlays/PlayControls"));
+            _editorHelp = new HelpScreen(graphicsDevice, this, _content.Load<Texture2D>("Sprites/ScreenOverlays/EditorController"));
+            _levelSelector = new SelectionMenu(
+                "Select a Level", _content.Load<Texture2D>("Sprites/Menus/LevelSelector"), selector, true, _graphicsDevice, this);
 
             foreach (string file in _allLevels)
             {
@@ -185,7 +190,9 @@ namespace TheGreatEscape.Menu
             _editorMenu.AddSelection("Save Level", Action.SaveLevel, _templateName, new Rectangle());
             _editorMenu.AddSelection("Main Menu", Action.ShowMainMenu, "", new Rectangle(0,0,0,0));
 
-            _loadingScreen = new LoadingScreen(_graphicsDevice, this);
+            _story = new StoryScreen(_graphicsDevice, this);
+            _credits = new CreditsScreen(_graphicsDevice, this);
+
             _gameScreen = new GameScreen(_gameManager, _graphicsDevice, this);
             _editorScreen = new EditorScreen(_editorManager, _graphicsDevice, this);
             _storyScreen = new StoryScreen(_graphicsDevice, this);
@@ -207,10 +214,14 @@ namespace TheGreatEscape.Menu
                     _storyScreen.LoadStory();
                     _currentScreen = _storyScreen;
                     break;
+                case Action.ShowCredits:
+                    _credits.LoadCredits();
+                    _currentScreen = _credits;
+                    _gameManager.GameEngine.GameState = null;
+                    break;
                 case Action.StartGame:
                     string rawLvl = (value as string).Replace("Levels/", "");
                     _currentLevelIdx = _allLevels.IndexOf(rawLvl);
-                    _currentScreen = _loadingScreen;
                     _gameScreen.LoadGame((string)value);
                     _currentScreen = _gameScreen;
                     _prevScreen = null;
@@ -257,6 +268,11 @@ namespace TheGreatEscape.Menu
                     break;
 
                 case Action.ShowLevelCompletedScreen:
+                    if (_currentLevelIdx == 6)
+                    {
+                        CallAction(Action.ShowCredits, null);
+                        break;
+                    }
                     PlaySound(SoundToPlay.LevelCompleted);
                     _prevScreen = null;
                     _popOver = _levelCompleted;
@@ -411,474 +427,6 @@ namespace TheGreatEscape.Menu
         public void Draw(GameTime gameTime, int width, int height)
         {
             _currentScreen.Draw(gameTime, width, height);
-        }
-    }
-
-    public abstract class Screen
-    {
-        protected MenuManager _manager;
-        protected GraphicsDevice _graphicsDevice;
-        protected InputManager Input;
-
-        public Screen(GraphicsDevice graphicsDevice, MenuManager manager)
-        {
-            _manager = manager;
-            _graphicsDevice = graphicsDevice;
-            Input = _manager.Input;
-        }
-
-        public virtual void Update(GameTime gameTime)
-        {
-        }
-        abstract public void Draw(GameTime gameTime, int widht, int height);
-
-    }
-
-    class Selection
-    {
-        public string Text;
-        public MenuManager.Action Action;
-        public object Value;
-        public Rectangle Position;
-        public Selection(string text, MenuManager.Action action, object value, 
-            Rectangle position)
-        {
-            Text = text;
-            Action = action;
-            Value = value;
-            Position = position;
-        }
-    }
-
-    class GameScreen : Screen
-    {
-        GameManager _gameManager;
-        public GameScreen(GameManager gameManager, GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
-        {
-            _gameManager = gameManager;
-        }
-
-        public void LoadGame(String level)
-        {
-            _gameManager.UnloadContent();
-            _gameManager.LoadLevel(level);
-            _manager.PlaySound(SoundToPlay.Ingame);
-
-        }
-
-        public override void Draw(GameTime gameTime, int width, int height)
-        {
-            _gameManager.Draw(gameTime, width, height);
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-            if (Input.KeyPressed(Keys.Escape) ||
-                Input.ButtonPressed(0, Buttons.Start) ||
-                Input.ButtonPressed(1, Buttons.Start))
-            {
-                _manager.CallAction(MenuManager.Action.ShowPauseMenu, null);
-            }
-
-            else if (Input.KeyPressed(Keys.Space))
-            {
-                _manager.CallAction(MenuManager.Action.ShowPauseMenu, null);
-            }
-            else
-            {
-                _gameManager.Update(gameTime);
-            }
-        }
-    }
-
-    class EditorScreen : Screen
-    {
-        EditorManager _editorManager;
-        public EditorScreen(EditorManager editorManager, GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
-        {
-            _editorManager = editorManager;
-        }
-
-        public void LoadGame(String level)
-        {
-            _editorManager.LoadLevel(level);
-        }
-
-        public override void Draw(GameTime gameTime, int width, int height)
-        {
-            _editorManager.Draw(gameTime, width, height);
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-            if (Input.ButtonPressed(0, Buttons.Start) 
-                || Input.KeyDown(Keys.S))
-            {
-                _manager.CallAction(MenuManager.Action.ShowPauseMenu, 0);
-            }
-            else if ((Input.KeyPressed(Keys.Escape) ||
-                Input.ButtonPressed(0, Buttons.Start) ||
-                Input.ButtonPressed(1, Buttons.Start)))
-            {
-                _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
-            }
-            else
-            {
-                _editorManager.Update(gameTime);
-            }
-        }
-    }
-
-    class StoryScreen : Screen
-    {
-        SpriteBatch _spriteBatch;
-        ContentManager _content;
-        List<Texture2D> _story;
-        Texture2D _currentSlide;
-        GraphicsDevice _graphics;
-
-        int slideCnt;
-
-        int mAlphaValue = 1;
-        int mFadeIncrement = 20;
-        double mFadeDelay = .035;
-
-        public StoryScreen(GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
-        {
-            _graphics = graphicsDevice;
-            _story = new List<Texture2D>();
-            _spriteBatch = new SpriteBatch(_graphicsDevice);
-            _content = manager.ContentLoader();
-            slideCnt = 0;
-        }
-
-        public void LoadStory()
-        {
-            slideCnt = 0;
-            _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_background"));
-            for (int i = 1; i <= 11; ++i)
-            {
-                _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_" + i));
-            }
-            _currentSlide = _story[slideCnt++];
-
-            _manager.PlaySound(SoundToPlay.Story);
-        }
-
-        public override void Draw(GameTime gameTime, int width, int height)
-        {
-            _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
-            Rectangle dest = new Rectangle(0, 0, _graphicsDevice.PresentationParameters.BackBufferWidth
-                , _graphicsDevice.PresentationParameters.BackBufferHeight);
-            _spriteBatch.Draw(_currentSlide, dest, new Color((byte)255, (byte)255, (byte)255, (byte)MathHelper.Clamp(mAlphaValue, 0, 225)));
-            _spriteBatch.End();
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-            mFadeDelay -= gameTime.ElapsedGameTime.TotalSeconds;
-                if (mFadeDelay <= 0)
-                {
-                    mFadeDelay = .035;
-                    mAlphaValue += mFadeIncrement;
-                    if (mAlphaValue >= 255 || mAlphaValue <= 0)
-                    {
-                        mFadeIncrement *= -1;
-                    }
-                }
-
-            if (Input.ButtonPressed(0, Buttons.A)
-                || Input.KeyPressed(Keys.A, Keys.Space))
-            {
-                if (slideCnt == 12)
-                {
-                    _manager.CallAction(MenuManager.Action.StartGame, "Levels/level_1");
-                    return;
-                }
-                _currentSlide = _story[slideCnt++];
-            } 
-        }
-    }
-
-    class LoadingScreen : Screen
-    {
-        SpriteBatch _spriteBatch;
-        public LoadingScreen(GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
-        {
-            _spriteBatch = new SpriteBatch(_graphicsDevice);
-        }
-
-        public override void Draw(GameTime gameTime, int width, int height)
-        {
-            _graphicsDevice.Clear(Color.Red);
-            _spriteBatch.Begin();
-            _spriteBatch.DrawString(_manager.MenuFont, "loading...", new Vector2(50f, 50f), Color.White, 0f, new Vector2(), 0.5f, new SpriteEffects(), 0f);
-            _spriteBatch.End();
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-        }
-    }
-
-    class SelectionMenu : Screen
-    {
-
-        protected List<Selection> _selections;
-        protected int _currentPosition = 0;
-        int _lastSelection = -1;
-        protected SpriteBatch _spriteBatch;
-        protected String _title;
-        protected Texture2D _background;
-        protected Texture2D _selector;
-        protected Boolean _isDynamic;
-
-        public SelectionMenu(string title, Texture2D background, Texture2D selector, Boolean isDynamic, GraphicsDevice graphicsDevice,
-            MenuManager manager) : base(graphicsDevice, manager)
-        {
-            _selections = new List<Selection>();
-            _spriteBatch = new SpriteBatch(_graphicsDevice);
-            _title = title;
-            _background = background;
-            _selector = selector;
-            _isDynamic = isDynamic;
-        }
-
-        public void AddSelection(string text, MenuManager.Action action, object value, Rectangle position)
-        {
-            _selections.Add(new Selection(text, action, value, position));
-        }
-
-        public void AddSelection(Selection selection)
-        {
-            if (selection != null)
-            {
-                _selections.Add(selection);
-            }
-        }
-
-        public void SetSelection(int index, Selection selection)
-        {
-            if (selection == null)
-            {
-                return;
-            }
-
-            if (_selections.IndexOf(selection) == -1)
-            {
-                if (index < _selections.Count)
-                {
-                    _selections[index] = selection;
-                }
-                else
-                {
-                    AddSelection(selection);
-                }
-            }
-        }
-
-        public Selection GetSelection(int index)
-        {
-            if (_selections.Count > 0)
-            {
-                return _selections[index % _selections.Count];
-            }
-            return null;
-        }
-        public Selection GetLastSelection()
-        {
-            if (_lastSelection != -1 && _selections.Count > 0)
-            {
-                return _selections[_lastSelection];
-            }
-            return null;
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-
-            base.Update(gameTime);
-            if (Input.KeyPressed(Keys.Enter, Keys.Space))
-            {
-                _manager.CallAction(_selections[_currentPosition].Action, _selections[_currentPosition].Value);
-                _lastSelection = _currentPosition;
-                _currentPosition = 0;
-            }
-
-            if (Input.KeyPressed(Keys.Down))
-            {
-                _currentPosition = (++_currentPosition) % _selections.Count;
-            }
-
-            if (Input.KeyPressed(Keys.Up))
-            {
-                _currentPosition = --_currentPosition < 0 ? _selections.Count - 1 : _currentPosition;
-            }
-
-            if (_selections.Count > 0)
-            {
-                // Xbox controls for player one
-                if (Input.ButtonPressed(0, Buttons.LeftThumbstickDown, Buttons.DPadDown))
-                {
-                    _currentPosition = (++_currentPosition) % _selections.Count;
-                }
-                if (Input.ButtonPressed(0, Buttons.LeftThumbstickUp, Buttons.DPadUp))
-                {
-                    _currentPosition = --_currentPosition < 0 ? _selections.Count - 1 : _currentPosition;
-                }
-            }
-            if (Input.ButtonPressed(0, Buttons.A))
-            {
-                _manager.CallAction(_selections[_currentPosition].Action, _selections[_currentPosition].Value);
-                _currentPosition = 0;
-            }
-
-            if (Input.ButtonPressed(0, Buttons.Back))
-            {
-                _manager.CallAction(MenuManager.Action.Back, null);
-                _currentPosition = 0;
-            }
-            if (Input.ButtonPressed(0, Buttons.Y))
-            {
-                _manager.CallAction(MenuManager.Action.ShowHelp, 0);
-                _currentPosition = 0;
-            }
-
-        }
-
-        public override void Draw(GameTime gameTime, int width, int height)
-        {
-            _graphicsDevice.Clear(Color.Black);
-            _spriteBatch.Begin();
-            _spriteBatch.Draw(_background, new Rectangle(0, 0, width, height), Color.White);
-
-            float stretchX = (float)width / 1920f;
-            float stretchY = (float)height / 1080f;
-            Selection sel = _selections.Count > _currentPosition
-                ? _selections[_currentPosition]
-                : null;
- 
-            if (!_isDynamic && sel != null)
-            {
-                _spriteBatch.Draw(
-                    _selector, 
-                    new Rectangle(
-                        (int)(sel.Position.Right * stretchX), 
-                        (int)(sel.Position.Top * stretchY), 
-                        (int)(140f * stretchX), 
-                        (int)(100f * stretchY)), 
-                    Color.White);
-            }            
-
-            else
-            {
-                int maxNumOnScreen = (int)(height / _manager.MenuFont.MeasureString("M").Y);
-                int min_id, items_on_screen = Math.Min(maxNumOnScreen, _selections.Count),
-                    half = items_on_screen / 2;
-                if (_currentPosition < half)
-                {
-                    min_id = 0;
-                }
-                else if(_currentPosition >= _selections.Count - half)
-                {
-                    min_id = _selections.Count - items_on_screen;
-                }
-                else
-                {                    
-                    min_id = _currentPosition - half;
-                }
-                Vector2 yOffsetter = new Vector2(
-                    0, 
-                    (int)_manager.MenuFont.MeasureString("M").Y);
-                Vector2 xOffsetter = new Vector2(50, 0),
-                    ySpacing = new Vector2(0, 10),
-                    origin, offset;
-
-                for (var i = 0; i < items_on_screen; i++)
-                {
-                    int idx = min_id + i;
-                    // If level exists.
-                    if (idx < _selections.Count) 
-                    {
-                        offset = xOffsetter
-                            + i * yOffsetter + ySpacing;
-                        origin = _manager.MenuFont.MeasureString(_selections[idx].Text) / 2;
-                        _spriteBatch.DrawString(
-                            _manager.MenuFont,
-                            _selections[idx].Text,
-                             offset + origin,
-                            Color.White, 0f, origin,
-                            1.0f, new SpriteEffects(), 0f);
-                    }
-                }
-
-                if (sel == null)
-                {
-                    _spriteBatch.End();
-                    return;
-                }
-
-
-                Vector2 position = new Vector2(
-                    (int)(xOffsetter.X
-                    + _manager.MenuFont.MeasureString(
-                        _selections[_currentPosition].Text + "-").X),
-                    0
-                    );
-
-                int total = _selections.Count;
-
-                position.Y = ySpacing.Y;
-                if(_currentPosition < half)
-                {
-                    position.Y += _currentPosition * yOffsetter.Y;
-                }
-                else if (_currentPosition >= total - half)
-                {
-                    position.Y += (_currentPosition - min_id) * yOffsetter.Y;
-                }
-                else
-                {
-                    position.Y += (half) * yOffsetter.Y;
-                }
-
-                origin = new Vector2(
-                    (int)(0f * stretchX),
-                    (int)_selector.Bounds.Size.Y) / 2;
-    
-                Vector2 scale = (_manager.MenuFont.MeasureString("level")) / _selector.Bounds.Size.ToVector2();
-                _spriteBatch.Draw(_selector,
-                    position + origin*scale, //position
-                    new Rectangle(Point.Zero, _selector.Bounds.Size), //source rectangle
-                    Color.White, //color
-                    0.0f, //rotation
-                    origin, //origin
-                    scale, //scale
-                    SpriteEffects.None, //effects
-                    0.0f);
-            }
-
-            _spriteBatch.End();
-        }
-
-    }
-
-    class PopOverMenu : SelectionMenu
-    {
-        float _ratioX;
-        float _ratioY;
-        float _alpha;
-        public PopOverMenu(string title, Texture2D background, Texture2D selector, Boolean isDynamic, GraphicsDevice graphicsDevice,
-            MenuManager manager, float ratioX = 1.0f, float ratioY = 1.0f,
-            float alpha = 1.0f) :
-            base(title, background, selector, isDynamic, graphicsDevice, manager)
-        {
-            _ratioX = ratioX;
-            _ratioY = ratioY;
-            _alpha = alpha;
         }
     }
 }
