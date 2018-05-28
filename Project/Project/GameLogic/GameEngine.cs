@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using TheGreatEscape.GameLogic.GameObjects;
 using TheGreatEscape.GameLogic.Collision;
-using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.Util;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.Menu;
 
@@ -15,8 +15,7 @@ namespace TheGreatEscape.GameLogic
     {
         public const float WalkSpeed = 5.6f;
         public const float RunSpeed = 9.8f;
-        public const float JumpForce = -800;
-        const float FatalSpeed = 1000;
+        public const float JumpForce = -872;
         public GameState GameState;
         public readonly GameState InitialGameState;
         SoundPlayer _soundPlayer;
@@ -118,35 +117,11 @@ namespace TheGreatEscape.GameLogic
                     TryToClimb(miner, new Vector2(0, 8) * value);
                     break;
                 case (GameAction.look):
-                    // TODO: Add looking
                     float theta = value;
                     if (miner.Orientation != SpriteEffects.FlipHorizontally)
                     {
-                        // Miner looks to the left,
-                        // clamp theta to be in 3rd and 4th quarters
-                        if (0 <= theta && theta < MathHelper.PiOver2)
-                        {
-                            theta = MathHelper.PiOver2;
-                        }
-                        else if (-MathHelper.PiOver2 < theta && theta < 0.0f)
-                        {
-                            theta = -MathHelper.PiOver2;
-                        }
                         theta = MathHelper.Pi - theta;
-                    }
-                    else
-                    {
-                        if (theta < -MathHelper.PiOver2)
-                        {
-                            theta = -MathHelper.PiOver2;
-                        }
-                        else if (MathHelper.PiOver2 < theta)
-                        {
-                            theta = MathHelper.PiOver2;
-                        }
-                    }
-
-
+                    }                    
                     miner.LookAt = theta;
                     break;
                 default:
@@ -614,11 +589,6 @@ namespace TheGreatEscape.GameLogic
                         lowestPoint = Math.Min(lowestPoint, collision.BBox.Min.Y);
                     }
 
-                    if (obj is Miner && obj.Speed.Y > FatalSpeed)
-                    {
-                        GameState.Remove(obj);
-                    }
-
                     obj.Speed = Vector2.Zero;
                     // TODO: Perhaps move this to the Miner class
                     if (obj is Miner && (obj as Miner).Holding) (obj as Miner).HeldObj.Speed = Vector2.Zero;
@@ -627,6 +597,11 @@ namespace TheGreatEscape.GameLogic
                     {
                         direction.Y = (lowestPoint - obj.BBox.Max.Y) - 0.1f;
                         obj.Falling = false;
+
+                        if(obj.ShouldDie)
+                        {
+                            GameState.Remove(obj);
+                        }
                         if (obj is Miner && (obj as Miner).Holding) (obj as Miner).HeldObj.Falling = false;
                     }
 

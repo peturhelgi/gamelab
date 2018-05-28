@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.Libs;
 using TheGreatEscape.LevelManager;
 using TheGreatEscape.GameLogic.Collision;
-using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.Util;
 using TheGreatEscape.GameLogic.Renderer;
 using TheGreatEscape.Menu;
 
@@ -22,8 +22,6 @@ namespace TheGreatEscape.GameLogic.GameObjects
         climb
     };
 
-
-    
     public class Miner : GameObject
     {
         public Dictionary<MotionType, MotionSpriteSheet> Motion;
@@ -42,6 +40,54 @@ namespace TheGreatEscape.GameLogic.GameObjects
         public bool Interacting;
 
         private CollisionDetector CollisionDetector = new CollisionDetector();
+
+        private bool _falling;
+        private float topOfFall;
+        public float FallHeight { private set; get; }
+        public float LethalHeight
+        {
+            get
+            {
+                if(SpriteSize != null)
+                {
+                    return 8.0f * SpriteSize.Y;
+                }
+                return 100f;
+            }
+        }
+        public override bool Falling
+        {
+            get
+            {
+                return _falling;
+            }
+            set
+            {
+                bool was_falling = _falling;
+                _falling = value;
+                if(Position == null)
+                {
+                    return;
+                }
+                FallHeight = 0f;
+                if (!was_falling && _falling)
+                {
+                    topOfFall = this.Position.Y;
+                }
+                else if(was_falling && !_falling)
+                {
+                    FallHeight = this.Position.Y - topOfFall;
+                }
+            }
+        }
+
+        public override bool ShouldDie
+        {
+            get
+            {
+                return (!Falling && FallHeight > LethalHeight);
+            }
+        }
 
         public Miner(Vector2 position, Vector2 spriteSize)
             : base(position, spriteSize)

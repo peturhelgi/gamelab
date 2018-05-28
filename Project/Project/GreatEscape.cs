@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic;
 using TheGreatEscape.Menu;
 
-
 namespace TheGreatEscape
 {
 
@@ -23,7 +22,6 @@ namespace TheGreatEscape
         MenuManager _menu;
         GraphicsDeviceManager _graphics;
         public static GameTime GreatTime;
-
 
         public GreatEscape()
         {
@@ -41,6 +39,7 @@ namespace TheGreatEscape
             Content.RootDirectory = "Content";
 
             _transferLevels();
+
             _gameManager = new GameManager(Content, GraphicsDevice, _graphics);
             _editorManager = new EditorManager(Content, GraphicsDevice, _graphics);
             _menu = new MenuManager(Content, GraphicsDevice, _graphics, _gameManager, _editorManager, this);

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TheGreatEscape.GameLogic.Collision;
 using Microsoft.Xna.Framework;
-using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.Util;
 
 namespace TheGreatEscape.GameLogic.GameObjects
 {
@@ -37,11 +37,12 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
             foreach (GameObject c in collisions)
             {
-                (c as RockHook).HangOrTakeRope(gamestate);
+                bool used = (c as RockHook).HangOrTakeRope(gamestate);
                 CanUseAgain = !((c as RockHook).isRope);
-                if (!CanUseAgain)
+                if (used && !CanUseAgain)
                 {
                     --UsesLeft;
+                    break;
                 }
             }
             CanUseAgain = UsesLeft > 0;

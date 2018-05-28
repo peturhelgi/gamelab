@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.Util;
 using TheGreatEscape.LevelManager;
 
 namespace TheGreatEscape.GameLogic.GameObjects

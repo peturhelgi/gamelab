@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using TheGreatEscape.GameLogic.Collision;
-using TheGreatEscape.GameLogic.Util;
+using TheGreatEscape.Util;
 using TheGreatEscape.LevelManager;
 
 namespace TheGreatEscape.GameLogic.GameObjects
