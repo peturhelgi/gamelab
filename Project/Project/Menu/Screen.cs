@@ -271,7 +271,7 @@ namespace TheGreatEscape.Menu
         SpriteBatch _spriteBatch;
         Texture2D _helpImage;
 
-        public HelpScreen(GraphicsDevice graphicsDevice, MenuManager manager,Texture2D helpImage ) : base(graphicsDevice, manager)
+        public HelpScreen(GraphicsDevice graphicsDevice, MenuManager manager, Texture2D helpImage) : base(graphicsDevice, manager)
         {
             _spriteBatch = new SpriteBatch(_graphicsDevice);
             _helpImage = helpImage;
@@ -279,17 +279,44 @@ namespace TheGreatEscape.Menu
 
         public override void Draw(GameTime gameTime, int width, int height)
         {
-            _graphicsDevice.Clear(Color.Red);
             _spriteBatch.Begin();
-            _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
-            Rectangle dest = new Rectangle(0, 0, _graphicsDevice.PresentationParameters.BackBufferWidth
-                , _graphicsDevice.PresentationParameters.BackBufferHeight);
-            _spriteBatch.Draw(_helpImage, dest, Color.White);
+            int imgH = Math.Min(_helpImage.Height, _graphicsDevice.PresentationParameters.BackBufferHeight);
+            int imgW;
+            if (imgH == _helpImage.Height)
+                imgW = _helpImage.Width;
+            else
+                imgW = _helpImage.Width * imgH / _helpImage.Height;
+
+            var screenCenter = new Vector2(
+            _graphicsDevice.Viewport.Bounds.Width / 2,
+            _graphicsDevice.Viewport.Bounds.Height / 2);
+            var textureCenter = new Vector2(
+            imgW / 2,
+            imgH / 2);
+
+            //Rectangle dest = new Rectangle(0, 0, _graphicsDevice.PresentationParameters.BackBufferWidth
+            //    , _graphicsDevice.PresentationParameters.BackBufferHeight);
+            //Rectangle dest = new Rectangle(0, 0, imgW, imgH);
+            //_spriteBatch.Draw(_helpImage, dest, Color.White);
+            _spriteBatch.Draw(_helpImage, screenCenter, new Rectangle(Point.Zero, new Point(imgW, imgH)),
+                Color.White,
+                0.0f,
+                textureCenter,
+                1f,
+                SpriteEffects.None,
+                0.0f);
+
             _spriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
         {
+            if (_manager.ButtonPressed(0, Buttons.Y)
+               || _manager.CurrKeyboardState.IsKeyDown(Keys.Y))
+            {
+                _manager.CallAction(MenuManager.Action.ShowHelp, null);
+            }
+
         }
     }
 

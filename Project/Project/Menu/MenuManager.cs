@@ -21,10 +21,10 @@ namespace TheGreatEscape.Menu
         PopOverMenu _gameOver;
         PopOverMenu _levelCompleted;
         PopOverMenu _pauseGame;
-        PopOverMenu _editorHelp;
         PopOverMenu _editorMenu;
-        PopOverMenu _gameHelps;
 
+        HelpScreen _editorHelp;
+        HelpScreen _gameHelps;
         StoryScreen _story;
         CreditsScreen _credits;
         GameScreen _game;
@@ -201,8 +201,8 @@ namespace TheGreatEscape.Menu
             _mainMenu.AddSelection("level editor", Action.ShowLevelEditor, "Levels/" + TemplateName, new Rectangle(220, 530, 349, 102));
             _mainMenu.AddSelection("exit game", Action.ExitGame, null, new Rectangle(152, 636, 185, 94));
 
-            _gameHelps = new PopOverMenu("Controls", _content.Load<Texture2D>("Sprites/ScreenOverlays/PlayControls"), selector, false, _graphicsDevice, this);
-            _editorHelp = new PopOverMenu("Controls", _content.Load<Texture2D>("Sprites/ScreenOverlays/EditorController"), selector, false, _graphicsDevice, this);
+            _gameHelps = new HelpScreen(graphicsDevice, this, _content.Load<Texture2D>("Sprites/ScreenOverlays/PlayControls"));
+            _editorHelp = new HelpScreen(graphicsDevice, this, _content.Load<Texture2D>("Sprites/ScreenOverlays/EditorController"));
             _levelSelector = new SelectionMenu(
                 "Select a Level", _content.Load<Texture2D>("Sprites/Menus/LevelSelector"), selector, true, _graphicsDevice, this);
 
