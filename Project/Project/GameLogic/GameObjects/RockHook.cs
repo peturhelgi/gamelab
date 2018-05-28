@@ -61,15 +61,17 @@ namespace TheGreatEscape.GameLogic.GameObjects
         {
             return Rope;
         }
-        public void HangOrTakeRope(GameState gs)
+        public bool HangOrTakeRope(GameState gs)
         {
             if (!isRope)
             {
                 gs.Add(Rope, GameState.Handling.None);
+                Rope.SwapTextures();
+                isRope = true;
+                return true;
             }
-            else gs.Remove(Rope, GameState.Handling.None);
-            Rope.SwapTextures();
-            isRope = !isRope;
+            return false;
+            //else gs.Remove(Rope, GameState.Handling.None);
         }
 
         public override Obj GetObj()

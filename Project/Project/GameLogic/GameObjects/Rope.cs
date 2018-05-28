@@ -37,9 +37,9 @@ namespace TheGreatEscape.GameLogic.GameObjects
 
             foreach (GameObject c in collisions)
             {
-                (c as RockHook).HangOrTakeRope(gamestate);
+                bool used = (c as RockHook).HangOrTakeRope(gamestate);
                 CanUseAgain = !((c as RockHook).isRope);
-                if (!CanUseAgain)
+                if (used && !CanUseAgain)
                 {
                     --UsesLeft;
                     break;
