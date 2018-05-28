@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic.GameObjects;
+using TheGreatEscape.GameLogic.Collision;
 using static TheGreatEscape.GameLogic.GameState;
 
 namespace TheGreatEscape.GameLogic.Renderer
@@ -56,10 +57,18 @@ namespace TheGreatEscape.GameLogic.Renderer
 
             _spriteBatch.Draw(background, camera.GetCameraRectangle(background.Width, background.Height), Color.White);
 
+            var cameraRect = camera.GetCameraRectangle(0, 0);
+            var cameraPolygon = new AxisAllignedBoundingBox(
+                new Vector2(cameraRect.Left, cameraRect.Top),
+                new Vector2(cameraRect.Right, cameraRect.Bottom));
 
             foreach (GameObject obj in _gameState.GetAll())
             {
                 if (!obj.Active || !obj.Visible)
+                {
+                    continue;
+                }
+                if (!obj.BBox.Intersects(cameraPolygon))
                 {
                     continue;
                 }

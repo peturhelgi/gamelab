@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheGreatEscape.GameLogic;
-
+using TheGreatEscape.Util;
 using static TheGreatEscape.Menu.MenuManager;
 
 namespace TheGreatEscape.Menu
@@ -18,14 +18,18 @@ namespace TheGreatEscape.Menu
     {
         protected MenuManager _manager;
         protected GraphicsDevice _graphicsDevice;
+        protected InputManager Input;
 
         public Screen(GraphicsDevice graphicsDevice, MenuManager manager)
         {
             _manager = manager;
             _graphicsDevice = graphicsDevice;
+            Input = _manager.Input;
         }
 
-        abstract public void Update(GameTime gameTime);
+        public virtual void Update(GameTime gameTime)
+        {
+        }
         abstract public void Draw(GameTime gameTime, int widht, int height);
 
     }
@@ -69,15 +73,15 @@ namespace TheGreatEscape.Menu
 
         public override void Update(GameTime gameTime)
         {
-
-            if (_manager.KeyPressed(Keys.Escape) ||
-                _manager.ButtonPressed(0, Buttons.Start) ||
-                _manager.ButtonPressed(1, Buttons.Start))
+            base.Update(gameTime);
+            if (Input.KeyPressed(Keys.Escape) ||
+                Input.ButtonPressed(0, Buttons.Start) ||
+                Input.ButtonPressed(1, Buttons.Start))
             {
                 _manager.CallAction(MenuManager.Action.ShowPauseMenu, null);
             }
 
-            else if (_manager.KeyPressed(Keys.Space))
+            else if (Input.KeyPressed(Keys.Space))
             {
                 _manager.CallAction(MenuManager.Action.ShowPauseMenu, null);
             }
@@ -108,14 +112,15 @@ namespace TheGreatEscape.Menu
 
         public override void Update(GameTime gameTime)
         {
-            if (_manager.ButtonPressed(0, Buttons.Start)
-                || _manager.CurrKeyboardState.IsKeyDown(Keys.S))
+            base.Update(gameTime);
+            if (Input.ButtonPressed(0, Buttons.Start)
+                || Input.KeyDown(Keys.S))
             {
                 _manager.CallAction(MenuManager.Action.ShowPauseMenu, 0);
             }
-            else if ((_manager.KeyPressed(Keys.Escape) ||
-                _manager.ButtonPressed(0, Buttons.Start) ||
-                _manager.ButtonPressed(1, Buttons.Start)))
+            else if ((Input.KeyPressed(Keys.Escape) ||
+                Input.ButtonPressed(0, Buttons.Start) ||
+                Input.ButtonPressed(1, Buttons.Start)))
             {
                 _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
             }
@@ -125,196 +130,24 @@ namespace TheGreatEscape.Menu
             }
         }
     }
-
-    class StoryScreen : Screen
+    class LoadingScreen : Screen
     {
         SpriteBatch _spriteBatch;
-        ContentManager _content;
-        List<Texture2D> _story;
-        Texture2D _currentSlide;
-        GraphicsDevice _graphics;
-
-        int slideCnt;
-
-        int mAlphaValue = 1;
-        int mFadeIncrement = 20;
-        double mFadeDelay = .035;
-
-        public StoryScreen(GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
+        public LoadingScreen(GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
         {
-            _graphics = graphicsDevice;
-            _story = new List<Texture2D>();
             _spriteBatch = new SpriteBatch(_graphicsDevice);
-            _content = manager.ContentLoader();
-            slideCnt = 0;
-        }
-
-        public void LoadStory()
-        {
-            slideCnt = 0;
-            _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_background"));
-            for (int i = 1; i <= 11; ++i)
-            {
-                _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_" + i));
-            }
-            _currentSlide = _story[slideCnt++];
-
-            _manager.PlaySound(SoundToPlay.Story);
         }
 
         public override void Draw(GameTime gameTime, int width, int height)
         {
-            _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
-            Rectangle dest = new Rectangle(0, 0, _graphicsDevice.PresentationParameters.BackBufferWidth
-                , _graphicsDevice.PresentationParameters.BackBufferHeight);
-            _spriteBatch.Draw(_currentSlide, dest, new Color((byte)255, (byte)255, (byte)255, (byte)MathHelper.Clamp(mAlphaValue, 0, 225)));
-            _spriteBatch.End();
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            mFadeDelay -= gameTime.ElapsedGameTime.TotalSeconds;
-            if (mFadeDelay <= 0)
-            {
-                mFadeDelay = .035;
-                mAlphaValue += mFadeIncrement;
-                if (mAlphaValue >= 255 || mAlphaValue <= 0)
-                {
-                    mFadeIncrement *= -1;
-                }
-            }
-
-            if (_manager.ButtonPressed(0, Buttons.A)
-                || _manager.CurrKeyboardState.IsKeyDown(Keys.A))
-            {
-                if (slideCnt == 12)
-                {
-                    _manager.CallAction(MenuManager.Action.StartGame, "Levels/level_1");
-                    return;
-                }
-                _currentSlide = _story[slideCnt++];
-            }
-        }
-    }
-
-    class CreditsScreen : Screen
-    {
-        SpriteBatch _spriteBatch;
-        ContentManager _content;
-        List<Texture2D> _credits;
-        Texture2D _currentSlide;
-        GraphicsDevice _graphics;
-
-        int slideCnt;
-
-        int mAlphaValue = 1;
-        int mFadeIncrement = 20;
-        double mFadeDelay = .035;
-
-        public CreditsScreen(GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
-        {
-            _graphics = graphicsDevice;
-            _credits = new List<Texture2D>();
-            _spriteBatch = new SpriteBatch(_graphicsDevice);
-            _content = manager.ContentLoader();
-            slideCnt = 0;
-        }
-
-        public void LoadCredits()
-        {
-            slideCnt = 0;
-            for (int i = 1; i <= 3; ++i)
-            {
-                _credits.Add(_content.Load<Texture2D>("Credits/Credits_" + i));
-            }
-            _currentSlide = _credits[slideCnt++];
-
-            _manager.PlaySound(SoundToPlay.Story);
-        }
-
-        public override void Draw(GameTime gameTime, int width, int height)
-        {
-            _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
-            Rectangle dest = new Rectangle(0, 0, _graphicsDevice.PresentationParameters.BackBufferWidth
-                , _graphicsDevice.PresentationParameters.BackBufferHeight);
-            _spriteBatch.Draw(_currentSlide, dest, new Color((byte)255, (byte)255, (byte)255, (byte)MathHelper.Clamp(mAlphaValue, 0, 225)));
-            _spriteBatch.End();
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            mFadeDelay -= gameTime.ElapsedGameTime.TotalSeconds;
-            if (mFadeDelay <= 0)
-            {
-                mFadeDelay = .035;
-                mAlphaValue += mFadeIncrement;
-                if (mAlphaValue >= 255 || mAlphaValue <= 0)
-                {
-                    mFadeIncrement *= -1;
-                }
-            }
-
-            if (_manager.ButtonPressed(0, Buttons.A)
-                || _manager.CurrKeyboardState.IsKeyDown(Keys.A))
-            {
-                if (slideCnt == 3)
-                {
-                    _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
-                    return;
-                }
-                _currentSlide = _credits[slideCnt++];
-            }
-        }
-    }
-    class HelpScreen : Screen
-    {
-        SpriteBatch _spriteBatch;
-        Texture2D _helpImage;
-
-        public HelpScreen(GraphicsDevice graphicsDevice, MenuManager manager, Texture2D helpImage) : base(graphicsDevice, manager)
-        {
-            _spriteBatch = new SpriteBatch(_graphicsDevice);
-            _helpImage = helpImage;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="gameTime"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        public override void Draw(GameTime gameTime, int width, int height)
-        {
+            _graphicsDevice.Clear(Color.Red);
             _spriteBatch.Begin();
-            int imgH = Math.Min(_helpImage.Height, _graphicsDevice.PresentationParameters.BackBufferHeight);
-            int imgW;
-            if (imgH == _helpImage.Height)
-                imgW = _helpImage.Width;
-            else
-                imgW = _helpImage.Width * imgH / _helpImage.Height;
-
-            var screenCenter = new Vector2(
-            _graphicsDevice.Viewport.Bounds.Width / 2,
-            _graphicsDevice.Viewport.Bounds.Height / 2);
-            var textureCenter = new Vector2(
-            imgW / 2,
-            imgH / 2);
-
-            int offset = (_graphicsDevice.PresentationParameters.BackBufferWidth - imgW) / 2;
-            Rectangle dest = new Rectangle(offset, 0, imgW, imgH);
-            _spriteBatch.Draw(_helpImage, dest, Color.White);
-
+            _spriteBatch.DrawString(_manager.MenuFont, "loading...", new Vector2(50f, 50f), Color.White, 0f, new Vector2(), 0.5f, new SpriteEffects(), 0f);
             _spriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (_manager.ButtonPressed(0, Buttons.Y)
-               || _manager.CurrKeyboardState.IsKeyDown(Keys.Y))
-            {
-                _manager.CallAction(MenuManager.Action.ShowHelp, null);
-            }
-
         }
     }
 
@@ -329,7 +162,6 @@ namespace TheGreatEscape.Menu
         protected Texture2D _background;
         protected Texture2D _selector;
         protected Boolean _isDynamic;
-
 
         public SelectionMenu(string title, Texture2D background, Texture2D selector, Boolean isDynamic, GraphicsDevice graphicsDevice,
             MenuManager manager) : base(graphicsDevice, manager)
@@ -394,50 +226,49 @@ namespace TheGreatEscape.Menu
 
         public override void Update(GameTime gameTime)
         {
-            // TODO add support for (multiple) Controllers
-            // Keyboard controls
-            if (_manager.KeyPressed(Keys.Enter, Keys.Space))
+
+            base.Update(gameTime);
+            if (Input.KeyPressed(Keys.Enter, Keys.Space))
             {
                 _manager.CallAction(_selections[_currentPosition].Action, _selections[_currentPosition].Value);
                 _lastSelection = _currentPosition;
                 _currentPosition = 0;
             }
 
-            if (_manager.KeyPressed(Keys.Down))
+            if (Input.KeyPressed(Keys.Down))
             {
                 _currentPosition = (++_currentPosition) % _selections.Count;
             }
 
-            if (_manager.KeyPressed(Keys.Up))
+            if (Input.KeyPressed(Keys.Up))
             {
                 _currentPosition = --_currentPosition < 0 ? _selections.Count - 1 : _currentPosition;
             }
 
-
             if (_selections.Count > 0)
             {
                 // Xbox controls for player one
-                if (_manager.ButtonPressed(0, Buttons.LeftThumbstickDown, Buttons.DPadDown))
+                if (Input.ButtonPressed(0, Buttons.LeftThumbstickDown, Buttons.DPadDown))
                 {
                     _currentPosition = (++_currentPosition) % _selections.Count;
                 }
-                if (_manager.ButtonPressed(0, Buttons.LeftThumbstickUp, Buttons.DPadUp))
+                if (Input.ButtonPressed(0, Buttons.LeftThumbstickUp, Buttons.DPadUp))
                 {
                     _currentPosition = --_currentPosition < 0 ? _selections.Count - 1 : _currentPosition;
                 }
             }
-            if (_manager.ButtonPressed(0, Buttons.A))
+            if (Input.ButtonPressed(0, Buttons.A))
             {
                 _manager.CallAction(_selections[_currentPosition].Action, _selections[_currentPosition].Value);
                 _currentPosition = 0;
             }
 
-            if (_manager.ButtonPressed(0, Buttons.Back))
+            if (Input.ButtonPressed(0, Buttons.Back))
             {
                 _manager.CallAction(MenuManager.Action.Back, null);
                 _currentPosition = 0;
             }
-            if (_manager.ButtonPressed(0, Buttons.Y))
+            if (Input.ButtonPressed(0, Buttons.Y))
             {
                 _manager.CallAction(MenuManager.Action.ShowHelp, 0);
                 _currentPosition = 0;
@@ -575,6 +406,198 @@ namespace TheGreatEscape.Menu
             _ratioX = ratioX;
             _ratioY = ratioY;
             _alpha = alpha;
+        }
+    }
+
+    class StoryScreen : Screen
+    {
+        SpriteBatch _spriteBatch;
+        ContentManager _content;
+        List<Texture2D> _story;
+        Texture2D _currentSlide;
+        GraphicsDevice _graphics;
+
+        int slideCnt;
+
+        int mAlphaValue = 1;
+        int mFadeIncrement = 20;
+        double mFadeDelay = .035;
+
+        public StoryScreen(GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
+        {
+            _graphics = graphicsDevice;
+            _story = new List<Texture2D>();
+            _spriteBatch = new SpriteBatch(_graphicsDevice);
+            _content = manager.ContentLoader();
+            slideCnt = 0;
+        }
+
+        public void LoadStory()
+        {
+            slideCnt = 0;
+            _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_background"));
+            for (int i = 1; i <= 11; ++i)
+            {
+                _story.Add(_content.Load<Texture2D>("Backstory/Storyboard_" + i));
+            }
+            _currentSlide = _story[slideCnt++];
+
+            _manager.PlaySound(SoundToPlay.Story);
+        }
+
+        public override void Draw(GameTime gameTime, int width, int height)
+        {
+            _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
+            Rectangle dest = new Rectangle(0, 0, _graphicsDevice.PresentationParameters.BackBufferWidth
+                , _graphicsDevice.PresentationParameters.BackBufferHeight);
+            _spriteBatch.Draw(_currentSlide, dest, new Color((byte)255, (byte)255, (byte)255, (byte)MathHelper.Clamp(mAlphaValue, 0, 225)));
+            _spriteBatch.End();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            mFadeDelay -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (mFadeDelay <= 0)
+            {
+                mFadeDelay = .035;
+                mAlphaValue += mFadeIncrement;
+                if (mAlphaValue >= 255 || mAlphaValue <= 0)
+                {
+                    mFadeIncrement *= -1;
+                }
+            }
+
+            if (Input.ButtonPressed(0, Buttons.A)
+                || Input.KeyPressed(Keys.A, Keys.Space))
+            {
+                if (slideCnt == 12)
+                {
+                    _manager.CallAction(MenuManager.Action.StartGame, "Levels/level_1");
+                    return;
+                }
+                _currentSlide = _story[slideCnt++];
+            }
+        }
+    }
+
+    class CreditsScreen : Screen
+    {
+        SpriteBatch _spriteBatch;
+        ContentManager _content;
+        List<Texture2D> _credits;
+        Texture2D _currentSlide;
+        GraphicsDevice _graphics;
+
+        int slideCnt;
+
+        int mAlphaValue = 1;
+        int mFadeIncrement = 20;
+        double mFadeDelay = .035;
+
+        public CreditsScreen(GraphicsDevice graphicsDevice, MenuManager manager) : base(graphicsDevice, manager)
+        {
+            _graphics = graphicsDevice;
+            _credits = new List<Texture2D>();
+            _spriteBatch = new SpriteBatch(_graphicsDevice);
+            _content = manager.ContentLoader();
+            slideCnt = 0;
+        }
+
+        public void LoadCredits()
+        {
+            slideCnt = 0;
+            for (int i = 1; i <= 3; ++i)
+            {
+                _credits.Add(_content.Load<Texture2D>("Credits/Credits_" + i));
+            }
+            _currentSlide = _credits[slideCnt++];
+
+            _manager.PlaySound(SoundToPlay.Story);
+        }
+
+        public override void Draw(GameTime gameTime, int width, int height)
+        {
+            _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
+            Rectangle dest = new Rectangle(0, 0, _graphicsDevice.PresentationParameters.BackBufferWidth
+                , _graphicsDevice.PresentationParameters.BackBufferHeight);
+            _spriteBatch.Draw(_currentSlide, dest, new Color((byte)255, (byte)255, (byte)255, (byte)MathHelper.Clamp(mAlphaValue, 0, 225)));
+            _spriteBatch.End();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            mFadeDelay -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (mFadeDelay <= 0)
+            {
+                mFadeDelay = .035;
+                mAlphaValue += mFadeIncrement;
+                if (mAlphaValue >= 255 || mAlphaValue <= 0)
+                {
+                    mFadeIncrement *= -1;
+                }
+            }
+
+            if (Input.ButtonPressed(0, Buttons.A)
+                || Input.KeyPressed(Keys.A, Keys.Space))
+            {
+                if (slideCnt == 3)
+                {
+                    _manager.CallAction(MenuManager.Action.ShowMainMenu, null);
+                    return;
+                }
+                _currentSlide = _credits[slideCnt++];
+            }
+        }
+    }
+    class HelpScreen : Screen
+    {
+        SpriteBatch _spriteBatch;
+        Texture2D _helpImage;
+
+        public HelpScreen(GraphicsDevice graphicsDevice, MenuManager manager, Texture2D helpImage) : base(graphicsDevice, manager)
+        {
+            _spriteBatch = new SpriteBatch(_graphicsDevice);
+            _helpImage = helpImage;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameTime"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        public override void Draw(GameTime gameTime, int width, int height)
+        {
+            _spriteBatch.Begin();
+            int imgH = Math.Min(_helpImage.Height, _graphicsDevice.PresentationParameters.BackBufferHeight);
+            int imgW;
+            if (imgH == _helpImage.Height)
+                imgW = _helpImage.Width;
+            else
+                imgW = _helpImage.Width * imgH / _helpImage.Height;
+
+            var screenCenter = new Vector2(
+            _graphicsDevice.Viewport.Bounds.Width / 2,
+            _graphicsDevice.Viewport.Bounds.Height / 2);
+            var textureCenter = new Vector2(
+            imgW / 2,
+            imgH / 2);
+
+            int offset = (_graphicsDevice.PresentationParameters.BackBufferWidth - imgW) / 2;
+            Rectangle dest = new Rectangle(offset, 0, imgW, imgH);
+            _spriteBatch.Draw(_helpImage, dest, Color.White);
+
+            _spriteBatch.End();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (Input.ButtonPressed(0, Buttons.Y)
+                || Input.KeyPressed(Keys.A, Keys.Space))
+            {
+                _manager.CallAction(MenuManager.Action.ShowHelp, null);
+            }
+
         }
     }
 }

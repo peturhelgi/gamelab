@@ -884,13 +884,13 @@
         "$type": "TheGreatEscape.LevelManager.Obj, TheGreatEscape",
         "dim": {
           "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
-          "X": 192.4146,
-          "Y": 170.040939
+          "X": 212.4146,
+          "Y": 194.040939
         },
         "pos": {
           "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",
           "X": 2096.10815,
-          "Y": 742.6293
+          "Y": 722.6293
         },
         "vel": {
           "$type": "Microsoft.Xna.Framework.Vector2, MonoGame.Framework",

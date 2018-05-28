@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace TheGreatEscape.GameLogic.Util
+namespace TheGreatEscape.Util
 {
     // TODO: Find a better name for this class. "Debugger" is taken.
     public static class MyDebugger
