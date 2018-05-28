@@ -70,7 +70,10 @@ namespace TheGreatEscape.GameLogic.Renderer
                 }
                 if (!obj.BBox.Intersects(cameraPolygon))
                 {
-                    continue;
+                    if (!(obj is RockHook))
+                    {
+                        continue;
+                    }
                 }
                 if (obj is Miner)
                 {
