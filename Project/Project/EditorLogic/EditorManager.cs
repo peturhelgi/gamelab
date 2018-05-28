@@ -56,8 +56,7 @@ namespace EditorLogic
         public EditorManager(
             ContentManager content, 
             GraphicsDevice graphicsDevice, 
-            GraphicsDeviceManager graphics,
-            InputManager input)
+            GraphicsDeviceManager graphics)
         {
             _content = content;
             _graphicsDevice = graphicsDevice;

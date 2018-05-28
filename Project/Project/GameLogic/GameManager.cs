@@ -22,8 +22,7 @@ namespace TheGreatEscape.GameLogic {
         public GameManager(
                 ContentManager content, 
                 GraphicsDevice graphicsDevice, 
-                GraphicsDeviceManager graphics,
-                InputManager manager) {
+                GraphicsDeviceManager graphics) {
             _content = content;
             _graphicsDevice = graphicsDevice;
             _graphics = graphics;

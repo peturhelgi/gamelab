@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TheGreatEscape.GameLogic;
 using TheGreatEscape.Menu;
-using TheGreatEscape.Util;
 
 namespace TheGreatEscape
 {
@@ -23,7 +22,6 @@ namespace TheGreatEscape
         MenuManager _menu;
         GraphicsDeviceManager _graphics;
         public static GameTime GreatTime;
-
 
         public GreatEscape()
         {
@@ -41,12 +39,10 @@ namespace TheGreatEscape
             Content.RootDirectory = "Content";
 
             _transferLevels();
-            InputManager gameInput = new InputManager(2),
-                menuInput = new InputManager(1),
-                editorInput = new InputManager(1);
-            _gameManager = new GameManager(Content, GraphicsDevice, _graphics, gameInput);
-            _editorManager = new EditorManager(Content, GraphicsDevice, _graphics, editorInput);
-            _menu = new MenuManager(Content, GraphicsDevice, _graphics, _gameManager, _editorManager, this, menuInput);
+
+            _gameManager = new GameManager(Content, GraphicsDevice, _graphics);
+            _editorManager = new EditorManager(Content, GraphicsDevice, _graphics);
+            _menu = new MenuManager(Content, GraphicsDevice, _graphics, _gameManager, _editorManager, this);
 
             IsMouseVisible = true;
             base.Initialize();

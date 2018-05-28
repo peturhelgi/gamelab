@@ -161,7 +161,20 @@
     <MonoGameContentReference Include="Content\Content.mgcb">
       <SubType>Designer</SubType>
     </MonoGameContentReference>
+    <Content Include="Content\Backstory\Storyboard_1.png" />
+    <Content Include="Content\Backstory\Storyboard_10.png" />
+    <Content Include="Content\Backstory\Storyboard_11.png" />
+    <Content Include="Content\Backstory\Storyboard_2.png" />
+    <Content Include="Content\Backstory\Storyboard_3.png" />
+    <Content Include="Content\Backstory\Storyboard_4.png" />
+    <Content Include="Content\Backstory\Storyboard_5.png" />
+    <Content Include="Content\Backstory\Storyboard_6.png" />
+    <Content Include="Content\Backstory\Storyboard_7.png" />
+    <Content Include="Content\Backstory\Storyboard_8.png" />
+    <Content Include="Content\Backstory\Storyboard_9.png" />
+    <Content Include="Content\Backstory\Storyboard_background.png" />
     <Content Include="Content\Fonts\CHAMPGNE.TTF" />
+    <None Include="Content\Backstory\Backstory.zip" />
     <None Include="Content\Fonts\Orbitron.spritefont" />
     <None Include="Content\Levels\level_1.json" />
     <None Include="Content\Levels\level_2.json" />
@@ -206,6 +219,17 @@
     <Content Include="Content\Lights\circular_light.png" />
     <Content Include="Content\Lights\directional_light.png" />
     <Content Include="Content\Lights\Lighting.fx" />
+    <Content Include="Content\Sounds\dying.wav" />
+    <Content Include="Content\Sounds\game_over.wav" />
+    <Content Include="Content\Sounds\ingame.mp3" />
+    <Content Include="Content\Sounds\interact_door.wav" />
+    <Content Include="Content\Sounds\level_completed.wav" />
+    <Content Include="Content\Sounds\menu.mp3" />
+    <Content Include="Content\Sounds\pickaxe.wav" />
+    <Content Include="Content\Sounds\pick_key.wav" />
+    <Content Include="Content\Sounds\soft_song.mp3" />
+    <Content Include="Content\Sounds\story_song.mp3" />
+    <Content Include="Content\Sounds\suspense_song.mp3" />
     <Content Include="Content\Sprites\Backgrounds\Level1Background.png" />
     <Content Include="Content\Sprites\Backgrounds\Level2Background.png" />
     <Content Include="Content\Sprites\Backgrounds\Level3Background.png" />

@@ -15,28 +15,6 @@ namespace TheGreatEscape.Menu
 {
     public class MenuManager
     {
-        Screen _currentScreen;
-        Screen _prevScreen;
-        SelectionMenu _mainMenu;
-        SelectionMenu _levelSelector;
-        PopOverMenu _popOver;
-        PopOverMenu _gameOver;
-        PopOverMenu _levelCompleted;
-        PopOverMenu _pauseGame;
-        PopOverMenu _editorHelp;
-        PopOverMenu _editorMenu;
-        PopOverMenu _gameHelps;
-
-        StoryScreen _story;
-        GameScreen _game;
-        LoadingScreen _loading;
-        EditorScreen _editor;
-
-        public static SoundPlayer SoundsPlayer;
-
-        IAsyncResult result;
-        bool _requestSave = false;
-
         public enum SoundToPlay
         {
             Ingame,
@@ -69,22 +47,46 @@ namespace TheGreatEscape.Menu
             ToggleEdit
         };
 
+        // Menus
+        PopOverMenu _popOver;
+        PopOverMenu _gameOver;
+        PopOverMenu _levelCompleted;
+        PopOverMenu _pauseGame;
+        PopOverMenu _editorHelp;
+        PopOverMenu _editorMenu;
+        PopOverMenu _gameHelp;
+
+        Screen _currentScreen;
+        Screen _prevScreen;
+
+        SelectionMenu _mainMenu;
+        SelectionMenu _levelSelector;
+
+        // Main Screens
+        StoryScreen _storyScreen;
+        GameScreen _gameScreen;
+        LoadingScreen _loadingScreen;
+        EditorScreen _editorScreen;
+
+        public static SoundPlayer SoundsPlayer;
+
+        // Managers
         GameManager _gameManager;
         EditorManager _editorManager;
         GraphicsDeviceManager _graphics;
         GraphicsDevice _graphicsDevice;
         ContentManager _content;
-        String _currentLevel;
+        public InputManager Input;
+
+        GreatEscape _theGame;
+
         int _currentLevelIdx;
         List<String> _allLevels;
-        GreatEscape _theGame;
         List<Screen> screenStack;
-        String TemplateName = "Template";
-
-        // TODO: move to renderer
-        // Assets for the Menu
+        String _currentLevel;
+        String _templateName = "Template";
         public SpriteFont MenuFont;
-        public InputManager Input;
+
 
         public void PlaySound(SoundToPlay sound)
         {
@@ -93,8 +95,7 @@ namespace TheGreatEscape.Menu
 
         public MenuManager(ContentManager content, GraphicsDevice graphicsDevice,
             GraphicsDeviceManager graphics, GameManager gameManager, 
-            EditorManager editorManager, GreatEscape game,
-            InputManager input)
+            EditorManager editorManager, GreatEscape game)
 
         {
             _content = content;
@@ -104,7 +105,7 @@ namespace TheGreatEscape.Menu
             _editorManager = editorManager;
             _popOver = null;
             _theGame = game;
-            Input = input;
+            Input = new InputManager(1);
             SoundsPlayer = new SoundPlayer(_content);
 
             IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication();
@@ -112,7 +113,7 @@ namespace TheGreatEscape.Menu
             _allLevels = new List<String>();
             foreach (String file in files)
             {
-                if (file.ToLower().Contains(TemplateName.ToLower()+".json"))
+                if (file.ToLower().Contains(_templateName.ToLower()+".json"))
                 {
                     continue;
                 }
@@ -121,22 +122,31 @@ namespace TheGreatEscape.Menu
 
             Texture2D selector = _content.Load<Texture2D>("Sprites/Tools/Pickaxe");
             screenStack = new List<Screen>();
+
             // create the screens
             _currentScreen = _mainMenu = new SelectionMenu(
-                "Main Menu", _content.Load<Texture2D>("Sprites/Menus/MenuImage"), selector, false, _graphicsDevice, this);
+                "Main Menu", _content.Load<Texture2D>("Sprites/Menus/MenuImage"),
+                selector, false, _graphicsDevice, this);
+            _gameHelp = new PopOverMenu("Controls", 
+                _content.Load<Texture2D>("Sprites/ScreenOverlays/PlayControls"),
+                selector, false, _graphicsDevice, this);
+            _editorHelp = new PopOverMenu("Controls", 
+                _content.Load<Texture2D>("Sprites/ScreenOverlays/EditorController"), 
+                selector, false, _graphicsDevice, this);
+            _levelSelector = new SelectionMenu(
+                "Select a Level", 
+                _content.Load<Texture2D>("Sprites/Menus/LevelSelector"), 
+                selector, true, _graphicsDevice, this);
+
             screenStack.Add(_currentScreen);
             string firstLvl = System.IO.Path.GetFileNameWithoutExtension(files[0]);
             _currentLevel = firstLvl;
             _currentLevelIdx = 0;
             _mainMenu.AddSelection("play", Action.StartStory, "Levels/" + _currentLevel, new Rectangle(71, 313, 458, 101));
             _mainMenu.AddSelection("choose level", Action.ShowLevelSelector, null, new Rectangle(82, 434, 471, 112));
-            _mainMenu.AddSelection("level editor", Action.ShowLevelEditor, "Levels/" + TemplateName, new Rectangle(220, 530, 349, 102));
+            _mainMenu.AddSelection("level editor", Action.ShowLevelEditor, "Levels/" + _templateName, new Rectangle(220, 530, 349, 102));
             _mainMenu.AddSelection("exit game", Action.ExitGame, null, new Rectangle(152, 636, 185, 94));
 
-            _gameHelps = new PopOverMenu("Controls", _content.Load<Texture2D>("Sprites/ScreenOverlays/PlayControls"), selector, false, _graphicsDevice, this);
-            _editorHelp = new PopOverMenu("Controls", _content.Load<Texture2D>("Sprites/ScreenOverlays/EditorController"), selector, false, _graphicsDevice, this);
-            _levelSelector = new SelectionMenu(
-                "Select a Level", _content.Load<Texture2D>("Sprites/Menus/LevelSelector"), selector, true, _graphicsDevice, this);
 
             foreach (string file in _allLevels)
             {
@@ -172,21 +182,13 @@ namespace TheGreatEscape.Menu
 
             _editorMenu.AddSelection("Continue", Action.Back, "", new Rectangle(0,0,0,0));
             _editorMenu.AddSelection("Play", Action.ToggleEdit, "", new Rectangle(0, 0, 0, 0));
-            _editorMenu.AddSelection("Save Level", Action.SaveLevel, TemplateName, new Rectangle());
+            _editorMenu.AddSelection("Save Level", Action.SaveLevel, _templateName, new Rectangle());
             _editorMenu.AddSelection("Main Menu", Action.ShowMainMenu, "", new Rectangle(0,0,0,0));
 
-            _loading = new LoadingScreen(_graphicsDevice, this);
-
-            _game = new GameScreen(_gameManager, _graphicsDevice, this);
-
-            _editor = new EditorScreen(_editorManager, _graphicsDevice, this);
-
-            _story = new StoryScreen(_graphicsDevice, this);
-
-            //OldKeyboardState = CurrKeyboardState;
-            //CurrKeyboardState = Keyboard.GetState();
-            //CurrPlayerOneState = GamePad.GetState(PlayerIndex.One);
-            //CurrPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
+            _loadingScreen = new LoadingScreen(_graphicsDevice, this);
+            _gameScreen = new GameScreen(_gameManager, _graphicsDevice, this);
+            _editorScreen = new EditorScreen(_editorManager, _graphicsDevice, this);
+            _storyScreen = new StoryScreen(_graphicsDevice, this);
         }
 
         /// <summary>
@@ -202,15 +204,15 @@ namespace TheGreatEscape.Menu
             switch (action)
             {
                 case Action.StartStory:
-                    _story.LoadStory();
-                    _currentScreen = _story;
+                    _storyScreen.LoadStory();
+                    _currentScreen = _storyScreen;
                     break;
                 case Action.StartGame:
                     string rawLvl = (value as string).Replace("Levels/", "");
                     _currentLevelIdx = _allLevels.IndexOf(rawLvl);
-                    _currentScreen = _loading;
-                    _game.LoadGame((string)value);
-                    _currentScreen = _game;
+                    _currentScreen = _loadingScreen;
+                    _gameScreen.LoadGame((string)value);
+                    _currentScreen = _gameScreen;
                     _prevScreen = null;
                     screenStack.Add(_currentScreen);
                     break;
@@ -239,8 +241,8 @@ namespace TheGreatEscape.Menu
                     break;
 
                 case Action.ShowLevelEditor:
-                    _editor.LoadGame((string)value);
-                    _currentScreen = _editor;
+                    _editorScreen.LoadGame((string)value);
+                    _currentScreen = _editorScreen;
                     screenStack.Add(_currentScreen);
                     break;
 
@@ -314,14 +316,13 @@ namespace TheGreatEscape.Menu
                     break;
                 case Action.Advance:
                     _currentLevelIdx = (++_currentLevelIdx) % _allLevels.Count;
-                    //value = "Levels/" + _allLevels[_currentLevelIdx];
                     CallAction(Action.StartGame, value);
                     break;
                 case Action.ExitGame:
                     _theGame.Exit();
                     break;
                 case Action.ShowHelp:
-                    if (_currentScreen == _gameHelps
+                    if (_currentScreen == _gameHelp
                         || _currentScreen == _editorHelp)
                     {
                         CallAction(Action.Back, value);
@@ -334,7 +335,7 @@ namespace TheGreatEscape.Menu
                     }
                     else if (_prevScreen == _pauseGame)
                     {
-                        _currentScreen = _gameHelps;
+                        _currentScreen = _gameHelp;
                     }
 
                     screenStack.Add(_currentScreen);
@@ -350,11 +351,11 @@ namespace TheGreatEscape.Menu
                     break;
 
                 case Action.SaveLevel:
-                    if(_prevScreen == _editor)
+                    if(_prevScreen == _editorScreen)
                     {
                         int numTemplates = 1;
                         foreach(var lvlname in _allLevels) {
-                            if (lvlname.ToLower().Contains(TemplateName.ToLower()))
+                            if (lvlname.ToLower().Contains(_templateName.ToLower()))
                             {
                                 ++numTemplates;
                             }
@@ -389,19 +390,11 @@ namespace TheGreatEscape.Menu
         {
         }
 
-
         public void Update(GameTime gameTime)
         {
             Input.Update();
             _currentScreen.Update(gameTime);
 
-            //OldKeyboardState = CurrKeyboardState;
-            //OldPlayerOneState = CurrPlayerOneState;
-            //OldPlayerTwoState = CurrPlayerTwoState;
-
-            //CurrKeyboardState = Keyboard.GetState();
-            //CurrPlayerOneState = GamePad.GetState(PlayerIndex.One);
-            //CurrPlayerTwoState = GamePad.GetState(PlayerIndex.Two);
             if (_gameManager?.GameEngine?.GameState != null
                 && _gameManager.GameEngine.GameState.Completed)
             {
@@ -579,7 +572,6 @@ namespace TheGreatEscape.Menu
             _spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
             Rectangle dest = new Rectangle(0, 0, _graphicsDevice.PresentationParameters.BackBufferWidth
                 , _graphicsDevice.PresentationParameters.BackBufferHeight);
-            //Rectangle dest = new Rectangle(0, 0, _currentSlide.Width, _currentSlide.Height);
             _spriteBatch.Draw(_currentSlide, dest, new Color((byte)255, (byte)255, (byte)255, (byte)MathHelper.Clamp(mAlphaValue, 0, 225)));
             _spriteBatch.End();
         }
